@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BIO-UPLINK | Clinical Research Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #040608; --panel: #0a1218;
+      --clinical-cyan: #00f2ff; --clinical-dim: #00444d;
+      --text: #e0f7fa; --text-dim: #607d8b;
+      --success: #00e676; --alert: #ff1744;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-ui: 'Orbitron', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { 
+      background: var(--bg); color: var(--text); font-family: var(--font-mono);
+      margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
+    }
+    
+    /* SCANLINE EFFECT */
+    body::after {
+      content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1000;
+    }
+
+    .header { width: 100%; max-width: 600px; border-bottom: 2px solid var(--clinical-dim); padding-bottom: 10px; margin-bottom: 20px; }
+    .header h1 { font-family: var(--font-ui); font-size: 1.2rem; letter-spacing: 4px; color: var(--clinical-cyan); margin: 0; }
+    .status { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; }
+
+    .search-box { 
+      width: 100%; max-width: 600px; display: flex; gap: 10px; margin-bottom: 15px; 
+    }
+    input { 
+      flex: 1; background: var(--panel); border: 1px solid var(--clinical-dim); 
+      color: var(--clinical-cyan); padding: 12px; font-family: var(--font-mono); font-size: 1rem;
+    }
+    button { 
+      background: var(--clinical-cyan); color: #000; border: none; padding: 0 20px; 
+      font-family: var(--font-ui); font-weight: bold; cursor: pointer; transition: 0.2s;
+    }
+    button:hover { background: #fff; box-shadow: 0 0 15px var(--clinical-cyan); }
+
+    .specialties { 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+      gap: 10px; width: 100%; max-width: 600px; margin-bottom: 20px; 
+    }
+    .spec-btn { 
+      background: transparent; border: 1px solid var(--clinical-dim); color: var(--text-dim);
+      padding: 8px; font-size: 0.7rem; text-align: center; cursor: pointer;
+    }
+    .spec-btn:hover { border-color: var(--clinical-cyan); color: var(--clinical-cyan); }
+
+    #feed { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
+    .article-card { 
+      background: var(--panel); border-left: 4px solid var(--clinical-cyan); padding: 15px;
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    
+    .article-title { color: #fff; font-weight: bold; font-size: 1rem; margin-bottom: 8px; line-height: 1.3; }
+    .article-journal { color: var(--clinical-cyan); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px; }
+    .article-snippet { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+    .article-link { 
+      display: inline-block; margin-top: 12px; color: var(--clinical-cyan); 
+      text-decoration: none; border: 1px solid var(--clinical-cyan); padding: 4px 10px; font-size: 0.7rem;
+    }
+    .article-link:hover { background: var(--clinical-cyan); color: #000; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>BIO-UPLINK v4.0</h1>
+    <div class="status">● CONNECTION: ENTRYZ/PUBMED SECURE ● SYNC: CLINICAL_DATA_ONLY</div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="query" placeholder="Enter Pathology or Protocol (e.g. Sepsis)..." onkeydown="if(event.key==='Enter') executeSearch()">
+    <button onclick="executeSearch()">SCAN</button>
+  </div>
+
+  <div class="specialties">
+    <div class="spec-btn" onclick="quickSearch('Cardiology STEMI')">CARDIOLOGY</div>
+    <div class="spec-btn" onclick="quickSearch('Emergency Medicine Nursing')">ER/TRAUMA</div>
+    <div class="spec-btn" onclick="quickSearch('Neurology Stroke Protocol')">NEURO</div>
+    <div class="spec-btn" onclick="quickSearch('Pharmacology dosage')">PHARMA</div>
+    <div class="spec-btn" onclick="quickSearch('Psychiatry nursing')">PSYCH</div>
+  </div>
+
+  <div id="feed">
+    </div>
+
+<script>
+  const NCBI_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/";
+
+  async function executeSearch() {
+    const query = document.getElementById('query').value;
+    if (!query) return;
+
+    const feed = document.getElementById('feed');
+    feed.innerHTML = "<div class='status'>INITIALIZING BIOMETRIC SCAN...</div>";
+
+    try {
+      // 1. Get IDs for the search
+      // We add "free full text[filter]" to ensure she can read what she finds!
+      const searchUrl = `${NCBI_BASE}esearch.fcgi?db=pubmed&term=${encodeURIComponent(query)}+AND+free+full+text[filter]&retmode=json&retmax=5`;
+      const searchRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(searchUrl)}`);
+      const searchData = await searchRes.json();
+      const ids = searchData.esearchresult.idlist;
+
+      if (!ids.length) {
+        feed.innerHTML = "<div class='status' style='color:var(--alert)'>ERROR: NO PEER-REVIEWED DATA FOUND.</div>";
+        return;
+      }
+
+      // 2. Fetch Summaries for those IDs
+      const summaryUrl = `${NCBI_BASE}esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`;
+      const summaryRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(summaryUrl)}`);
+      const summaryData = await summaryRes.json();
+      
+      renderResults(summaryData.result, ids);
+    } catch (err) {
+      feed.innerHTML = "<div class='status' style='color:var(--alert)'>UPLINK INTERRUPTED. CHECK NETWORK.</div>";
+    }
+  }
+
+  function renderResults(results, ids) {
+    const feed = document.getElementById('feed');
+    feed.innerHTML = "";
+
+    ids.forEach(id => {
+      const art = results[id];
+      const card = document.createElement('div');
+      card.className = "article-card";
+      card.innerHTML = `
+        <div class="article-journal">${art.fulljournalname || 'Medical Journal'} | ${art.pubdate}</div>
+        <div class="article-title">${art.title}</div>
+        <div class="article-snippet">Authors: ${art.authors.map(a => a.name).join(', ')}</div>
+        <a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" class="article-link">ACCESS FULL REPORT [PMID: ${id}]</a>
+      `;
+      feed.appendChild(card);
+    });
+  }
+
+  function quickSearch(val) {
+    document.getElementById('query').value = val;
+    executeSearch();
+  }
+</script>
+</body>
+</html>
