@@ -216,7 +216,8 @@ body {
 // whoosh.mp3 — lead switch swoosh
 function playSound(name) {
   try {
-    const a = new Audio(`audio/${name}.mp3`);
+    const a = new Audio(`https://maximumreality.github.io/game/audio/${name}.mp3`);
+
     a.volume = 0.5;
     a.play().catch(() => {});
   } catch(e) {}
