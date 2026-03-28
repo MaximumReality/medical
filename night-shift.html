@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NIGHT SHIFT — Nursing RPG | Maximum Reality</title>
+<meta name="description" content="Play NIGHT SHIFT — a fast-paced nursing RPG where you diagnose patients, make critical decisions, and survive an ICU night shift. Built as an interactive medical simulation experience.">
+<meta name="keywords" content="nursing game, medical simulation, ICU game, nurse RPG, healthcare game, diagnosis game, medical decision game, interactive fiction, browser game, Maximum Reality">
+<meta name="author" content="Maximum Reality">
+<meta property="og:title" content="NIGHT SHIFT — Nursing RPG">
+<meta property="og:description" content="ICU Floor 7. 02:00 hrs. Diagnose. Chart. Treat. Every call counts.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://maximumreality.github.io/game/night-shift.html">
+<meta property="og:image" content="https://maximumreality.github.io/game/night-shift-preview.PNG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NIGHT SHIFT — Nursing RPG">
+<meta name="twitter:description" content="A high-stakes ICU simulation where every decision matters.">
+<meta name="twitter:image" content="https://maximumreality.github.io/game/night-shift-preview.PNG">
+<link rel="icon" href="https://maximumreality.github.io/game/night-shift-preview.PNG">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060810; --bg2: #0d1117; --panel: #0f1520; --border: #1a2a3a;
+  --primary: #00d4ff; --primary-dim: #006680; --accent: #7c3aed;
+  --danger: #ff2d55; --warn: #ff9500; --success: #00e5a0;
+  --text: #c8d8e8; --text-dim: #4a6a7a;
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-ui: 'Rajdhani', sans-serif;
+  --font-title: 'Orbitron', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-ui); font-size: 16px; }
+body { background: radial-gradient(ellipse at 30% 20%, #0a1628 0%, #060810 60%); }
+body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px); pointer-events:none; z-index:999; }
+.screen { display:none; width:100%; height:100vh; position:absolute; inset:0; }
+.screen.active { display:flex; flex-direction:column; }
+
+#start-screen { align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 40%,#0a1f30 0%,transparent 70%),var(--bg); }
+.title-block { text-align:center; margin-bottom:28px; }
+.title-eyebrow { font-family:var(--font-mono); font-size:0.75rem; color:var(--primary-dim); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:12px; animation:pulse-text 2s ease-in-out infinite; }
+@keyframes pulse-text { 0%,100%{opacity:0.5} 50%{opacity:1} }
+.title-main { font-family:var(--font-title); font-size:clamp(2.8rem,8vw,5rem); font-weight:900; letter-spacing:0.05em; color:#fff; text-shadow:0 0 30px var(--primary),0 0 60px rgba(0,212,255,0.3); line-height:1; }
+.title-glitch { position:relative; display:inline-block; }
+.title-glitch::before { content:'NIGHT SHIFT'; position:absolute; inset:0; color:var(--danger); clip-path:inset(40% 0 50% 0); animation:glitch1 3s infinite steps(1); opacity:0.7; }
+.title-glitch::after { content:'NIGHT SHIFT'; position:absolute; inset:0; color:var(--primary); clip-path:inset(60% 0 20% 0); animation:glitch2 3.5s infinite steps(1); opacity:0.5; transform:translateX(3px); }
+@keyframes glitch1 { 0%,90%{transform:translateX(0);clip-path:inset(40% 0 50% 0)} 91%{transform:translateX(-4px);clip-path:inset(20% 0 60% 0)} 93%{transform:translateX(4px);clip-path:inset(70% 0 10% 0)} 95%{transform:translateX(0)} }
+@keyframes glitch2 { 0%,88%{transform:translateX(3px)} 89%{transform:translateX(-6px)} 91%{transform:translateX(3px)} }
+.title-sub { font-family:var(--font-ui); font-size:1rem; font-weight:600; letter-spacing:0.4em; color:var(--primary-dim); text-transform:uppercase; margin-top:10px; }
+.start-card { background:rgba(15,21,32,0.9); border:1px solid var(--border); border-top:2px solid var(--primary); padding:22px 26px; width:min(400px,92vw); text-align:center; position:relative; backdrop-filter:blur(10px); }
+.start-card::before { content:'◆ ICU NIGHT SHIFT — FLOOR 7 ◆'; font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.15em; color:var(--primary-dim); position:absolute; top:-10px; left:50%; transform:translateX(-50%); background:var(--bg); padding:0 8px; white-space:nowrap; }
+.start-desc { font-size:0.85rem; color:var(--text-dim); line-height:1.7; margin-bottom:18px; font-family:var(--font-mono); }
+.start-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px; }
+.start-stat { background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:8px 4px; }
+.start-stat-num { font-family:var(--font-title); font-size:1.3rem; color:var(--primary); font-weight:700; }
+.start-stat-label { font-family:var(--font-mono); font-size:0.55rem; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; margin-top:2px; }
+.btn { display:inline-block; font-family:var(--font-title); font-size:0.85rem; letter-spacing:0.2em; text-transform:uppercase; padding:14px 32px; background:transparent; border:2px solid var(--primary); color:var(--primary); cursor:pointer; position:relative; overflow:hidden; transition:all 0.2s; width:100%; }
+.btn::before { content:''; position:absolute; inset:0; background:var(--primary); transform:translateX(-101%); transition:transform 0.2s ease; z-index:0; }
+.btn:hover::before { transform:translateX(0); }
+.btn:hover { color:var(--bg); }
+.btn span { position:relative; z-index:1; }
+.btn-danger { border-color:var(--danger); color:var(--danger); }
+.btn-danger::before { background:var(--danger); }
+.btn-success { border-color:var(--success); color:var(--success); }
+.btn-success::before { background:var(--success); }
+
+#hud { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(6,8,16,0.95); border-bottom:1px solid var(--border); padding:8px 16px; display:none; align-items:center; justify-content:space-between; gap:8px; backdrop-filter:blur(8px); }
+#hud.visible { display:flex; }
+.hud-item { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; color:var(--text-dim); }
+.hud-item span { color:var(--primary); }
+#vitals-bar { display:flex; align-items:center; gap:6px; flex:1; justify-content:center; }
+.vital-pip { width:6px; height:6px; border-radius:50%; background:var(--success); animation:heartbeat 1.2s ease-in-out infinite; }
+@keyframes heartbeat { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:0.6} }
+.vital-text { font-family:var(--font-mono); font-size:0.6rem; color:var(--success); letter-spacing:0.05em; }
+
+#game-screen { padding-top:46px; flex-direction:column; overflow:hidden; }
+.game-layout { display:flex; flex-direction:column; flex:1; overflow-y:auto; padding:10px 12px; gap:8px; }
+.patient-card { background:var(--panel); border:1px solid var(--border); border-left:3px solid var(--primary); padding:12px 14px; }
+.patient-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.patient-name { font-family:var(--font-title); font-size:1rem; font-weight:700; color:#fff; }
+.patient-meta { font-family:var(--font-mono); font-size:0.65rem; color:var(--text-dim); margin-top:2px; }
+.patient-badge { font-family:var(--font-mono); font-size:0.6rem; padding:3px 8px; border:1px solid var(--warn); color:var(--warn); letter-spacing:0.1em; text-transform:uppercase; }
+.patient-cc { font-family:var(--font-mono); font-size:0.78rem; color:var(--text); background:rgba(0,0,0,0.3); border-left:2px solid var(--accent); padding:7px 10px; line-height:1.5; }
+.dialogue-box { background:rgba(0,0,0,0.4); border:1px solid var(--border); padding:10px 12px; min-height:62px; overflow-y:auto; }
+.dialogue-speaker { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.15em; color:var(--primary-dim); text-transform:uppercase; margin-bottom:5px; }
+.dialogue-text { font-size:0.85rem; line-height:1.6; color:var(--text); font-family:var(--font-mono); }
+.blink-cursor::after { content:'█'; animation:blink 1s step-start infinite; color:var(--primary); font-size:0.8em; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.section-label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.25em; color:var(--text-dim); text-transform:uppercase; margin-bottom:7px; display:flex; align-items:center; gap:8px; }
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+.tools-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+.tool-btn { background:rgba(15,21,32,0.8); border:1px solid var(--border); color:var(--text); font-family:var(--font-mono); font-size:0.63rem; padding:9px 4px; cursor:pointer; text-align:center; transition:all 0.15s; display:flex; flex-direction:column; align-items:center; gap:3px; letter-spacing:0.03em; position:relative; overflow:hidden; }
+.tool-btn:hover { border-color:var(--primary); color:var(--primary); background:rgba(0,212,255,0.05); }
+.tool-btn.used { border-color:var(--primary-dim); color:var(--primary-dim); background:rgba(0,100,128,0.1); }
+.tool-btn.used::after { content:'✓'; position:absolute; top:2px; right:4px; font-size:0.55rem; color:var(--success); }
+.tool-btn.mini-game-tool { border-color:var(--accent); }
+.tool-btn.mini-game-tool:hover { border-color:var(--primary); background:rgba(124,58,237,0.08); }
+.tool-btn.pending { border-color:var(--warn); color:var(--warn); animation:pulse-border 1s ease-in-out infinite; }
+@keyframes pulse-border { 0%,100%{border-color:var(--warn)} 50%{border-color:rgba(255,149,0,0.3)} }
+.tool-icon { font-size:1.1rem; }
+.choices-section { display:flex; flex-direction:column; gap:7px; }
+.choice-btn { background:rgba(15,21,32,0.8); border:1px solid var(--border); color:var(--text); font-family:var(--font-mono); font-size:0.7rem; padding:11px 12px; cursor:pointer; text-align:left; transition:all 0.15s; letter-spacing:0.02em; line-height:1.4; display:flex; align-items:flex-start; gap:10px; }
+.choice-btn:hover { border-color:var(--accent); background:rgba(124,58,237,0.08); color:#fff; }
+.choice-btn.correct { border-color:var(--success) !important; background:rgba(0,229,160,0.1) !important; color:var(--success) !important; animation:flash-good 0.4s ease; }
+.choice-btn.wrong { border-color:var(--danger) !important; background:rgba(255,45,85,0.1) !important; color:var(--danger) !important; animation:flash-bad 0.4s ease; }
+@keyframes flash-good { 0%,100%{opacity:1} 50%{opacity:0.5} }
+@keyframes flash-bad { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+.choice-num { font-size:0.6rem; border:1px solid currentColor; padding:1px 5px; min-width:22px; text-align:center; opacity:0.7; flex-shrink:0; margin-top:1px; }
+
+#outcome-screen { align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 50%,#0d1a28 0%,var(--bg) 70%); }
+.outcome-card { background:var(--panel); border:1px solid var(--border); width:min(420px,94vw); padding:26px 22px; text-align:center; max-height:90vh; overflow-y:auto; }
+.outcome-label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.3em; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; }
+.outcome-title { font-family:var(--font-title); font-size:1.6rem; font-weight:700; margin-bottom:6px; }
+.outcome-title.good { color:var(--success); text-shadow:0 0 20px var(--success); }
+.outcome-title.bad { color:var(--danger); text-shadow:0 0 20px var(--danger); }
+.outcome-rank { font-family:var(--font-title); font-size:0.9rem; color:var(--primary); letter-spacing:0.2em; margin-bottom:16px; }
+.outcome-stats { background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:14px; margin-bottom:16px; display:flex; flex-direction:column; gap:9px; }
+.stat-row { display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:0.75rem; }
+.stat-key { color:var(--text-dim); }
+.stat-val { color:var(--primary); }
+.outcome-buttons { display:flex; flex-direction:column; gap:8px; }
+
+#chart-screen { align-items:center; justify-content:center; background:rgba(6,8,16,0.97); }
+.chart-card { background:var(--panel); border:1px solid var(--border); border-top:2px solid var(--primary); width:min(420px,96vw); max-height:88vh; overflow-y:auto; padding:18px; }
+.chart-title { font-family:var(--font-title); font-size:0.9rem; letter-spacing:0.2em; color:var(--primary); margin-bottom:14px; text-align:center; }
+.chart-field { margin-bottom:12px; }
+.chart-field label { font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.15em; color:var(--text-dim); text-transform:uppercase; display:block; margin-bottom:4px; }
+.chart-field .field-value { font-family:var(--font-mono); font-size:0.76rem; color:var(--text); background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:7px 10px; min-height:30px; line-height:1.4; }
+.chart-field .field-value.filled { border-color:var(--primary-dim); color:var(--primary); }
+.chart-options { display:flex; flex-direction:column; gap:6px; margin-top:4px; }
+.chart-option { font-family:var(--font-mono); font-size:0.68rem; padding:9px 12px; background:rgba(0,0,0,0.2); border:1px solid var(--border); color:var(--text); cursor:pointer; transition:all 0.15s; text-align:left; line-height:1.4; }
+.chart-option:hover { border-color:var(--primary); color:var(--primary); }
+.chart-option.selected { border-color:var(--success); color:var(--success); background:rgba(0,229,160,0.08); }
+.chart-option.wrong { border-color:var(--danger); color:var(--danger); background:rgba(255,45,85,0.08); }
+
+.progress-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 8px 0;
+  flex-wrap: wrap; /* This allows dots to flow to the next line */
+  max-width: 90vw;
+  margin: 0 auto;
+}
+
+.dot { width:7px; height:7px; border-radius:50%; background:var(--border); transition:all 0.3s; }
+.dot.done { background:var(--success); }
+.dot.active { background:var(--primary); box-shadow:0 0 8px var(--primary); }
+
+#toast { position:fixed; top:54px; left:50%; transform:translateX(-50%) translateY(-10px); background:var(--panel); border:1px solid var(--primary); color:var(--primary); font-family:var(--font-mono); font-size:0.68rem; padding:8px 14px; letter-spacing:0.1em; z-index:200; opacity:0; transition:all 0.2s; white-space:nowrap; pointer-events:none; max-width:90vw; overflow:hidden; text-overflow:ellipsis; }
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.score-flash { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); font-family:var(--font-title); font-size:2.5rem; font-weight:900; pointer-events:none; z-index:500; animation:score-pop 1s ease forwards; }
+@keyframes score-pop { 0%{opacity:1;transform:translate(-50%,-50%) scale(0.5)} 30%{transform:translate(-50%,-50%) scale(1.2)} 60%{opacity:1;transform:translate(-50%,-50%) scale(1)} 100%{opacity:0;transform:translate(-50%,-80%)} }
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--primary-dim); border-radius:2px; }
+</style>
+</head>
+<body>
+<div id="toast"></div>
+<div id="hud">
+  <div class="hud-item">LOC: <span>ICU-7</span></div>
+  <div id="vitals-bar"><div class="vital-pip"></div><div class="vital-text">● MONITORING</div></div>
+  <div class="hud-item"><span id="hud-rank">STUDENT</span></div>
+  <div class="hud-item">PTS: <span id="hud-score">0</span></div>
+</div>
+
+<div id="start-screen" class="screen active">
+  <div class="title-block">
+    <div class="title-eyebrow">▸ MAXIMUM REALITY MED-SIM v3.0 ◂</div>
+    <div class="title-main"><div class="title-glitch">NIGHT SHIFT</div></div>
+    <div class="title-sub">Nursing RPG</div>
+  </div>
+<div class="start-card">
+    <div class="start-desc">ICU Floor 7. 02:00 hrs.<br>14 patients. One shift. Every call counts.</div>
+    <div class="start-stats">
+      <div class="start-stat"><div class="start-stat-num">14</div><div class="start-stat-label">Patients</div></div>
+      <div class="start-stat"><div class="start-stat-num">12+</div><div class="start-stat-label">Diagnostics</div></div>
+      <div class="start-stat"><div class="start-stat-num">6</div><div class="start-stat-label">Ranks</div></div>
+    </div>
+
+<div class="stat-row">
+  <span class="stat-key">PATIENTS TREATED</span>
+<span class="stat-val" id="start-stat-count">0/14</span>
+</div>
+
+    <button class="btn" onclick="startGame()"><span>▶ BEGIN ROUNDS</span></button>
+  </div>
+</div>
+
+<div id="game-screen" class="screen">
+  <div class="game-layout">
+    <div class="progress-dots" id="progress-dots"></div>
+    <div class="patient-card">
+      <div class="patient-header">
+        <div><div class="patient-name" id="patient-name">—</div><div class="patient-meta" id="patient-meta">—</div></div>
+        <div class="patient-badge" id="patient-acuity">STABLE</div>
+      </div>
+      <div class="patient-cc" id="patient-cc">Awaiting patient...</div>
+    </div>
+    <div class="dialogue-box">
+      <div class="dialogue-speaker" id="dialogue-speaker">PATIENT</div>
+      <div class="dialogue-text blink-cursor" id="dialogue-text"></div>
+    </div>
+    <div id="action-area"></div>
+  </div>
+</div>
+
+<div id="chart-screen" class="screen">
+  <div class="chart-card">
+    <div class="chart-title">◆ PATIENT CHART ◆</div>
+    <div id="chart-content"></div>
+  </div>
+</div>
+
+<div id="outcome-screen" class="screen">
+  <div class="outcome-card">
+    <div class="outcome-label">SHIFT COMPLETE — 06:00 HRS</div>
+    <div class="outcome-title" id="outcome-title">SHIFT COMPLETE</div>
+    <div class="outcome-rank" id="outcome-rank">RANK: STUDENT NURSE</div>
+    <div class="outcome-stats">
+      <div class="stat-row">
+  <span class="stat-key">PATIENTS TREATED</span>
+  <span class="stat-val" id="outcome-stat-count">0/14</span></div>
+      <div class="stat-row"><span class="stat-key">CORRECT ACTIONS</span><span class="stat-val" id="stat-correct">0</span></div>
+      <div class="stat-row"><span class="stat-key">CRITICAL SAVES</span><span class="stat-val" id="stat-critical">0</span></div>
+      <div class="stat-row"><span class="stat-key">FINAL SCORE</span><span class="stat-val" id="stat-score">0</span></div>
+    </div>
+    <div class="outcome-buttons">
+      <button class="btn btn-success" onclick="startGame()"><span>▶ NEW SHIFT</span></button>
+      <button class="btn" onclick="showReview()"><span>◎ REVIEW NOTES</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- Scenarios loaded from external file -->
+<script src="scenarios.js"></script>
+
+<script>
+// ── RANKS ──
+const RANKS = [
+  { min:0,    label:'NURSING STUDENT (Y1)', color:'#4a6a7a' },
+  { min:250,  label:'NURSING STUDENT (Y2)', color:'#64d1ff' },
+  { min:500,  label:'GRADUATE NURSE',       color:'#00d4ff' },
+  { min:800,  label:'REGISTERED NURSE',     color:'#7c3aed' },
+  { min:1100, label:'PRECEPTOR',            color:'#bb86fc' },
+  { min:1400, label:'CHARGE NURSE',         color:'#ff9500' },
+  { min:1800, label:'NURSE MANAGER',        color:'#ff2d55' },
+  { min:2100, label:'CHIEF NURSING OFFICER',color:'#ffffff' } // The "Perfect Score" Rank
+];
+
+
+
+// ── MINI-GAME TOOL MAP ──
+// Maps tool names to their popup page + window features
+const MINI_GAME_MAP = {
+  '12-Lead ECG':  'ekg-analyzer.html',
+  'IV Pump':      'med-math.html',
+  'Troponin Draw':'lab-analyzer.html',
+  'Lactate Draw': 'lab-analyzer.html',
+  'Urine Output': 'lab-analyzer.html',
+};
+const POPUP_FEATURES = 'width=420,height=700,top=80,left=80,scrollbars=yes';
+
+// ── STATE ──
+let state = {
+  score: 0,
+  correctActions: 0,
+  criticalSaves: 0,
+  patientIndex: 0,
+  phase: 'tools',
+  usedTools: {},
+  resultsCollected: {},
+  reviewNotes: [],
+  _chartReady: false,
+  _pendingMiniGame: null,  // tracks open mini-game tool name
+};
+
+function currentScenario() { return SCENARIOS[state.patientIndex]; }
+
+// ── SCREEN ──
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── GAME START ──
+function startGame() {
+  // Always clear saved score on new game
+  localStorage.removeItem('nightshift_score');
+
+  state = {
+    score: 0, correctActions: 0, criticalSaves: 0,
+    patientIndex: 0, phase: 'tools',
+    usedTools: {}, resultsCollected: {}, reviewNotes: [],
+    _chartReady: false, _pendingMiniGame: null
+  };
+  document.getElementById('hud').classList.add('visible');
+  switchScreen('game-screen');
+  loadPatient();
+}
+
+// ── LOAD PATIENT ──
+function loadPatient() {
+  // 1. Keep original way of getting the scenario
+  const s = SCENARIOS[state.patientIndex]; 
+  
+  // 2. Reset state (Using original naming style)
+  state.phase = 'tools';
+  state.usedTools = {};
+  state.resultsCollected = {};
+  state._chartReady = false;
+
+  // 3. Update the 0/14 Counter
+  document.getElementById('start-stat-count').textContent = `${state.patientIndex}/14`;
+
+
+  // 4. Update Progress Dots (original dynamic map style is better!)
+  const dots = document.getElementById('progress-dots');
+  dots.innerHTML = SCENARIOS.map((sc, i) => {
+    let cls = 'dot';
+    if (i < state.patientIndex) cls += ' done';
+    if (i === state.patientIndex) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  // 5. Populate the UI
+  document.getElementById('patient-name').textContent = s.name;
+  document.getElementById('patient-meta').textContent = `AGE: ${s.age} | RM: ${s.room}`;
+  
+  const acuityEl = document.getElementById('patient-acuity');
+  acuityEl.textContent = s.acuity;
+  // Using border/color to match original CSS style
+  acuityEl.style.borderColor = s.acuityColor;
+  acuityEl.style.color = s.acuityColor;
+  
+  document.getElementById('patient-cc').textContent = s.cc;
+
+  // 6. Keep "Typewriter" effect for the patient talking
+  typeText('dialogue-text', s.dialogue, 'PATIENT');
+  
+  // 7. Refresh the Top HUD (Points/Rank) and start the tools
+  updateHUD();
+  buildToolPhase();
+}
+
+// ── TOOL PHASE ──
+function buildToolPhase() {
+  const s = currentScenario();
+  const area = document.getElementById('action-area');
+  const toolKeys = Object.keys(s.tools);
+  area.innerHTML = `
+    <div>
+      <div class="section-label">◈ ASSESSMENT TOOLS</div>
+      <div class="tools-grid">
+        ${toolKeys.map(t => {
+          const isMini = !!MINI_GAME_MAP[t];
+          return `<button class="tool-btn${isMini ? ' mini-game-tool' : ''}" id="tool-${sanitize(t)}" onclick="useTool('${t}')">
+            <span class="tool-icon">${toolIcon(t)}</span>
+            <span>${t}</span>
+            ${isMini ? '<span style="font-size:0.45rem;color:var(--accent);letter-spacing:0.05em">◈ INTERACTIVE</span>' : ''}
+          </button>`;
+        }).join('')}
+      </div>
+    </div>
+    <div id="results-area" style="margin-top:8px"></div>
+    <div id="chart-trigger" style="margin-top:8px;display:none">
+      <button class="btn btn-success" onclick="goToChart()"><span>◎ CHART FINDINGS</span></button>
+    </div>`;
+}
+
+function sanitize(s) { return s.replace(/[^a-zA-Z0-9]/g, '_'); }
+
+function toolIcon(name) {
+  const icons = {
+    'BP Cuff':'🩺','Pulse Ox':'💉','12-Lead ECG':'📈','Stethoscope':'🔊',
+    'Troponin Draw':'🧪','Thermometer':'🌡️','Glucometer':'💊','Neuro Check':'🧠',
+    'Urine Output':'⚗️','Skin Turgor':'🖐️','Lactate Draw':'🧬','Skin Check':'🔴','IV Pump':'📟'
+  };
+  return icons[name] || '🔬';
+}
+
+// ── USE TOOL ──
+function useTool(toolName) {
+  if (state.usedTools[toolName]) return;
+
+  const s = currentScenario();
+  const d = s.tools[toolName];
+  if (!d) return;
+
+  // ── MINI-GAME TOOLS: open popup, wait for callback ──
+  if (MINI_GAME_MAP[toolName]) {
+    const page = MINI_GAME_MAP[toolName];
+    const url = `${page}?tool=${encodeURIComponent(toolName)}&patient=${state.patientIndex}&patientName=${encodeURIComponent(s.name)}&room=${encodeURIComponent(s.room)}`;
+    const win = window.open(url, 'DiagnosticWindow', POPUP_FEATURES);
+    if (!win) {
+      // Popup blocked — fall through to normal tool use
+      toast('Popup blocked — completing assessment inline', 'warn');
+      completeToolUse(toolName, d);
+    } else {
+      // Mark as pending — pulse the button
+      state._pendingMiniGame = toolName;
+      const btn = document.getElementById('tool-' + sanitize(toolName));
+      if (btn) btn.classList.add('pending');
+      toast(`${toolName} diagnostic launching...`, 'primary');
+    }
+    return; // Don't complete inline — wait for handleMiniGameResult callback
+  }
+
+  // ── STANDARD TOOLS: complete inline ──
+  completeToolUse(toolName, d);
+}
+
+// Called by either inline tool use OR mini-game callback
+function completeToolUse(toolName, toolData) {
+  if (state.usedTools[toolName]) return;
+
+  const s = currentScenario();
+  state.usedTools[toolName] = true;
+  state.resultsCollected[toolName] = toolData;
+  state._pendingMiniGame = null;
+
+  // Update button
+  const btn = document.getElementById('tool-' + sanitize(toolName));
+  if (btn) {
+    btn.classList.remove('pending');
+    btn.classList.add('used');
+  }
+
+  // Add result row
+  const ra = document.getElementById('results-area');
+  if (ra) {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:8px;align-items:baseline;font-family:var(--font-mono);font-size:0.67rem;margin-bottom:4px';
+    const col = toolData.class === 'danger' ? 'var(--danger)' : toolData.class === 'warn' ? 'var(--warn)' : 'var(--success)';
+    row.innerHTML = `<span style="color:var(--text-dim);min-width:100px;font-size:0.57rem;letter-spacing:0.08em;flex-shrink:0">${toolName.toUpperCase()}</span><span style="color:${col}">${toolData.result}</span>`;
+    ra.appendChild(row);
+  }
+
+  // Score
+  if (toolData.key) {
+    addScore(20, toolData.class === 'danger' ? '🚨 CRITICAL FIND' : '✓ KEY FINDING');
+    state.correctActions++;
+  } else {
+    addScore(5);
+  }
+
+  // Check if all required tools done
+  const allFound = s.requiredTools.every(r => state.usedTools[r]);
+  if (allFound && !state._chartReady) {
+    state._chartReady = true;
+    const trigger = document.getElementById('chart-trigger');
+    if (trigger) trigger.style.display = 'block';
+    toast('Assessment complete — chart your findings!', 'success');
+  }
+}
+
+// ── MINI-GAME CALLBACK (called from popup windows) ──
+function handleMiniGameResult(toolName, success, points) {
+  const s = currentScenario();
+  const toolData = s.tools[toolName];
+
+  if (success && toolData) {
+    completeToolUse(toolName, toolData);
+
+    // Visual feedback
+    document.body.style.boxShadow = 'inset 0 0 40px rgba(0,229,160,0.15)';
+    setTimeout(() => document.body.style.boxShadow = '', 600);
+
+    if (points >= 50) {
+      // Glitch flash for high-value tools
+      document.body.style.filter = 'hue-rotate(40deg) contrast(1.3)';
+      setTimeout(() => document.body.style.filter = '', 180);
+    }
+
+    toast(`${toolName} — data synced ✓`, 'success');
+  } else {
+    // Mini-game failed — clear pending state but don't mark complete
+    state._pendingMiniGame = null;
+    const btn = document.getElementById('tool-' + sanitize(toolName));
+    if (btn) btn.classList.remove('pending');
+    toast(`${toolName} — sync failed. Try again.`, 'danger');
+  }
+}
+
+// ── CHART PHASE ──
+function goToChart() {
+  state.phase = 'chart';
+  const s = currentScenario();
+  document.getElementById('chart-content').innerHTML = `
+    <div class="chart-field"><label>PATIENT</label><div class="field-value filled">${s.name} · ${s.age}yrs · Room ${s.room}</div></div>
+    <div class="chart-field"><label>KEY FINDINGS</label><div class="field-value filled" style="font-size:0.67rem;line-height:1.6">${Object.entries(state.resultsCollected).map(([k,v]) => `${k}: ${v.result}`).join('<br>')}</div></div>
+    <div class="chart-field"><label>◈ ${s.chartQuestion.prompt}</label>
+      <div class="chart-options">${s.chartQuestion.options.map((opt, i) => `<button class="chart-option" onclick="answerChart(${i})"><span style="color:var(--text-dim);margin-right:8px">${i+1}.</span>${opt.text}</button>`).join('')}</div>
+    </div>`;
+  switchScreen('chart-screen');
+}
+
+function answerChart(idx) {
+  const s = currentScenario();
+  const opt = s.chartQuestion.options[idx];
+  const btns = document.querySelectorAll('.chart-option');
+  btns.forEach((b, i) => {
+    b.onclick = null;
+    if (s.chartQuestion.options[i].correct) b.classList.add('selected');
+  });
+  if (opt.correct) {
+    btns[idx].classList.add('selected');
+    addScore(opt.points, '✓ CORRECT DX');
+    state.correctActions++;
+    toast('Correct nursing diagnosis!', 'success');
+    state.reviewNotes.push({ patient: s.name, phase: 'Diagnosis', result: '✓ CORRECT', note: s.education });
+  } else {
+    btns[idx].classList.add('wrong');
+    toast('Incorrect — correct answer shown above', 'danger');
+    state.reviewNotes.push({ patient: s.name, phase: 'Diagnosis', result: '✗ INCORRECT', note: s.education });
+  }
+  setTimeout(() => goToIntervention(), 2000);
+}
+
+// ── INTERVENTION PHASE ──
+function goToIntervention() {
+  state.phase = 'intervention';
+  const s = currentScenario();
+  switchScreen('game-screen');
+  typeText('dialogue-text', `[PHYSICIAN ORDER RECEIVED — ROOM ${s.room}]\n\nNurse, what do you do FIRST?`, 'SYSTEM');
+  document.getElementById('action-area').innerHTML = `
+    <div>
+      <div class="section-label">◈ INTERVENTION</div>
+      <div style="font-family:var(--font-mono);font-size:0.73rem;color:var(--text);background:rgba(0,0,0,0.3);border-left:2px solid var(--accent);padding:10px 12px;margin-bottom:10px;line-height:1.5">${s.interventionQuestion.prompt}</div>
+      <div class="choices-section">${s.interventionQuestion.options.map((opt, i) => `<button class="choice-btn" onclick="answerIntervention(${i})"><span class="choice-num">${i+1}</span>${opt.text}</button>`).join('')}</div>
+    </div>`;
+}
+
+function answerIntervention(idx) {
+  const s = currentScenario();
+  const opt = s.interventionQuestion.options[idx];
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach(b => b.onclick = null);
+  btns[idx].classList.add(opt.correct ? 'correct' : 'wrong');
+  if (opt.correct) {
+    if (s.critical) state.criticalSaves++;
+    addScore(opt.points, s.critical ? '🚨 CRITICAL SAVE' : '✓ CORRECT TX');
+    state.correctActions++;
+    typeText('dialogue-text', `[TREATMENT INITIATED — PATIENT STABILIZING]\n\n${s.education}`, 'SYSTEM');
+    state.reviewNotes.push({ patient: s.name, phase: 'Intervention', result: '✓ CORRECT', note: s.education });
+  } else {
+    s.interventionQuestion.options.forEach((o, i) => { if (o.correct) btns[i].classList.add('correct'); });
+    typeText('dialogue-text', `[INCORRECT]\n\n${s.education}`, 'SYSTEM');
+    state.reviewNotes.push({ patient: s.name, phase: 'Intervention', result: '✗ INCORRECT', note: s.education });
+  }
+  setTimeout(nextPatient, 3500);
+}
+
+// ── NEXT PATIENT / OUTCOME ──
+function nextPatient() {
+  state.patientIndex++;
+  if (state.patientIndex >= SCENARIOS.length) showOutcome();
+  else loadPatient();
+}
+
+function showOutcome() {
+  document.getElementById('hud').classList.remove('visible');
+  const rank = getRank();
+  document.getElementById('outcome-title').textContent = state.score >= 800 ? 'EXEMPLARY SHIFT' : state.score >= 450 ? 'SOLID SHIFT' : 'NEEDS REVIEW';
+  document.getElementById('outcome-title').className = 'outcome-title ' + (state.score >= 450 ? 'good' : 'bad');
+  document.getElementById('outcome-rank').textContent = `RANK: ${rank.label}`;
+  document.getElementById('outcome-rank').style.color = rank.color;
+  document.getElementById('outcome-stat-count').textContent = `${SCENARIOS.length}/${SCENARIOS.length}`;
+  document.getElementById('stat-correct').textContent = state.correctActions;
+  document.getElementById('stat-critical').textContent = state.criticalSaves;
+  document.getElementById('stat-score').textContent = state.score;
+  switchScreen('outcome-screen');
+}
+
+function showReview() {
+  document.getElementById('chart-content').innerHTML = `
+    <div style="font-family:var(--font-mono);font-size:0.6rem;color:var(--text-dim);letter-spacing:0.1em;margin-bottom:14px">◆ SHIFT REVIEW — CLINICAL NOTES</div>
+    ${state.reviewNotes.map(n => `
+      <div style="margin-bottom:13px;padding:10px;background:rgba(0,0,0,0.3);border-left:2px solid ${n.result.includes('✓') ? 'var(--success)' : 'var(--danger)'}">
+        <div style="font-family:var(--font-mono);font-size:0.57rem;color:var(--text-dim);margin-bottom:5px">${n.patient} — ${n.phase} — <span style="color:${n.result.includes('✓') ? 'var(--success)' : 'var(--danger)'}">${n.result}</span></div>
+        <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text);line-height:1.6">${n.note}</div>
+      </div>`).join('')}
+    <div style="margin-top:14px"><button class="btn" onclick="switchScreen('outcome-screen')"><span>◀ BACK</span></button></div>`;
+  switchScreen('chart-screen');
+}
+
+// ── HELPERS ──
+function getRank() {
+  let r = RANKS[0];
+  RANKS.forEach(rank => { if (state.score >= rank.min) r = rank; });
+  return r;
+}
+function updateHUD() {
+  document.getElementById('hud-score').textContent = state.score;
+  const rank = getRank();
+  const el = document.getElementById('hud-rank');
+  el.textContent = rank.label;
+  el.style.color = rank.color;
+}
+function addScore(pts, label) {
+  state.score += pts;
+  updateHUD();
+  // Save running score (for analytics only — never loaded on new game)
+  localStorage.setItem('nightshift_last_score', state.score);
+  if (label) {
+    const f = document.createElement('div');
+    f.className = 'score-flash';
+    f.style.color = label.includes('SAVE') ? 'var(--danger)' : label.includes('✓') ? 'var(--success)' : 'var(--primary)';
+    f.textContent = label;
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 1100);
+  }
+}
+let toastTimer;
+function toast(msg, type = 'primary') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.borderColor = type === 'success' ? 'var(--success)' : type === 'danger' ? 'var(--danger)' : type === 'warn' ? 'var(--warn)' : 'var(--primary)';
+  el.style.color = type === 'success' ? 'var(--success)' : type === 'danger' ? 'var(--danger)' : type === 'warn' ? 'var(--warn)' : 'var(--primary)';
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+let typeTimer;
+function typeText(elId, text, speaker) {
+  clearTimeout(typeTimer);
+  if (speaker) document.getElementById('dialogue-speaker').textContent = speaker;
+  const el = document.getElementById(elId);
+  el.textContent = '';
+  el.classList.add('blink-cursor');
+  let i = 0;
+  function next() {
+    if (i < text.length) { el.textContent += text[i++]; typeTimer = setTimeout(next, 13); }
+    else el.classList.remove('blink-cursor');
+  }
+  next();
+}
+</script>
+</body>
+</html>
