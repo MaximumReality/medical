@@ -20,54 +20,56 @@
       margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center;
     }
     
-    /* SCANLINE EFFECT */
     body::after {
       content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                  linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.01));
       background-size: 100% 4px, 3px 100%; pointer-events: none; z-index: 1000;
     }
 
-    .header { width: 100%; max-width: 600px; border-bottom: 2px solid var(--clinical-dim); padding-bottom: 10px; margin-bottom: 20px; }
+    .header { width: 100%; max-width: 650px; border-bottom: 2px solid var(--clinical-dim); padding-bottom: 15px; margin-bottom: 20px; text-align: left; }
     .header h1 { font-family: var(--font-ui); font-size: 1.2rem; letter-spacing: 4px; color: var(--clinical-cyan); margin: 0; }
-    .status { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; }
+    .status { font-size: 0.7rem; color: var(--text-dim); margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
 
-    .search-box { 
-      width: 100%; max-width: 600px; display: flex; gap: 10px; margin-bottom: 15px; 
-    }
+    .search-box { width: 100%; max-width: 650px; display: flex; gap: 10px; margin-bottom: 15px; }
     input { 
       flex: 1; background: var(--panel); border: 1px solid var(--clinical-dim); 
-      color: var(--clinical-cyan); padding: 12px; font-family: var(--font-mono); font-size: 1rem;
+      color: var(--clinical-cyan); padding: 14px; font-family: var(--font-mono); font-size: 1rem; outline: none;
     }
-    button { 
-      background: var(--clinical-cyan); color: #000; border: none; padding: 0 20px; 
+    input:focus { border-color: var(--clinical-cyan); box-shadow: 0 0 10px var(--clinical-dim); }
+    
+    button.scan-btn { 
+      background: var(--clinical-cyan); color: #000; border: none; padding: 0 25px; 
       font-family: var(--font-ui); font-weight: bold; cursor: pointer; transition: 0.2s;
     }
-    button:hover { background: #fff; box-shadow: 0 0 15px var(--clinical-cyan); }
+    button.scan-btn:hover { background: #fff; box-shadow: 0 0 15px var(--clinical-cyan); }
 
     .specialties { 
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-      gap: 10px; width: 100%; max-width: 600px; margin-bottom: 20px; 
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); 
+      gap: 10px; width: 100%; max-width: 650px; margin-bottom: 25px; 
     }
     .spec-btn { 
-      background: transparent; border: 1px solid var(--clinical-dim); color: var(--text-dim);
-      padding: 8px; font-size: 0.7rem; text-align: center; cursor: pointer;
+      background: rgba(0, 242, 255, 0.03); border: 1px solid var(--clinical-dim); color: var(--text-dim);
+      padding: 10px; font-size: 0.65rem; text-align: center; cursor: pointer; font-family: var(--font-ui);
     }
-    .spec-btn:hover { border-color: var(--clinical-cyan); color: var(--clinical-cyan); }
+    .spec-btn:hover { border-color: var(--clinical-cyan); color: var(--clinical-cyan); background: rgba(0, 242, 255, 0.08); }
 
-    #feed { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; }
+    #feed { width: 100%; max-width: 650px; display: flex; flex-direction: column; gap: 18px; }
     .article-card { 
-      background: var(--panel); border-left: 4px solid var(--clinical-cyan); padding: 15px;
-      animation: slideIn 0.3s ease-out;
+      background: var(--panel); border-left: 3px solid var(--clinical-cyan); padding: 18px;
+      animation: slideIn 0.4s ease-out; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     
-    .article-title { color: #fff; font-weight: bold; font-size: 1rem; margin-bottom: 8px; line-height: 1.3; }
-    .article-journal { color: var(--clinical-cyan); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px; }
-    .article-snippet { font-size: 0.85rem; color: var(--text-dim); line-height: 1.5; }
+    .article-journal { color: var(--clinical-cyan); font-size: 0.7rem; font-weight: bold; margin-bottom: 8px; }
+    .article-title { color: #fff; font-weight: bold; font-size: 1.05rem; margin-bottom: 12px; line-height: 1.4; }
+    .article-snippet { font-size: 0.8rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 15px; }
+    
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
     .article-link { 
-      display: inline-block; margin-top: 12px; color: var(--clinical-cyan); 
-      text-decoration: none; border: 1px solid var(--clinical-cyan); padding: 4px 10px; font-size: 0.7rem;
+      text-decoration: none; border: 1px solid var(--clinical-cyan); padding: 6px 14px; 
+      font-size: 0.65rem; color: var(--clinical-cyan); font-family: var(--font-ui); font-weight: bold;
+      background: transparent; cursor: pointer; transition: 0.2s;
     }
     .article-link:hover { background: var(--clinical-cyan); color: #000; }
   </style>
@@ -75,57 +77,64 @@
 <body>
 
   <div class="header">
-    <h1>BIO-UPLINK v4.0</h1>
-    <div class="status">● CONNECTION: ENTRYZ/PUBMED SECURE ● SYNC: CLINICAL_DATA_ONLY</div>
+    <h1>BIO-UPLINK v4.1</h1>
+    <div class="status" id="status-display">● SYSTEM STANDBY // NCBI PORT 443 SECURE</div>
   </div>
 
   <div class="search-box">
-    <input type="text" id="query" placeholder="Enter Pathology or Protocol (e.g. Sepsis)..." onkeydown="if(event.key==='Enter') executeSearch()">
-    <button onclick="executeSearch()">SCAN</button>
+    <input type="text" id="query" placeholder="SCAN PATHOLOGY / PROTOCOL..." onkeydown="if(event.key==='Enter') executeSearch()">
+    <button class="scan-btn" onclick="executeSearch()">SCAN</button>
   </div>
 
   <div class="specialties">
-    <div class="spec-btn" onclick="quickSearch('Cardiology STEMI')">CARDIOLOGY</div>
-    <div class="spec-btn" onclick="quickSearch('Emergency Medicine Nursing')">ER/TRAUMA</div>
-    <div class="spec-btn" onclick="quickSearch('Neurology Stroke Protocol')">NEURO</div>
-    <div class="spec-btn" onclick="quickSearch('Pharmacology dosage')">PHARMA</div>
-    <div class="spec-btn" onclick="quickSearch('Psychiatry nursing')">PSYCH</div>
+    <div class="spec-btn" onclick="quickSearch('Myocardial Infarction Nursing Intervention')">CARDIOLOGY</div>
+    <div class="spec-btn" onclick="quickSearch('Sepsis Bundle Protocols')">ER/TRAUMA</div>
+    <div class="spec-btn" onclick="quickSearch('Ischemic Stroke Management')">NEURO</div>
+    <div class="spec-btn" onclick="quickSearch('Pharmacology Pharmacokinetics Nursing')">PHARMA</div>
+    <div class="spec-btn" onclick="quickSearch('Infection Control Precautions')">MED-SURG</div>
   </div>
 
-  <div id="feed">
-    </div>
+  <div id="feed"></div>
 
 <script>
   const NCBI_BASE = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/";
+  window.currentResults = {}; 
 
   async function executeSearch() {
-    const query = document.getElementById('query').value;
-    if (!query) return;
+    const queryInput = document.getElementById('query').value;
+    if (!queryInput) return;
 
     const feed = document.getElementById('feed');
-    feed.innerHTML = "<div class='status'>INITIALIZING BIOMETRIC SCAN...</div>";
+    const status = document.getElementById('status-display');
+    
+    feed.innerHTML = "";
+    status.innerText = "● SCANNING CLINICAL SECTORS...";
+    status.style.color = "var(--clinical-cyan)";
 
     try {
-      // 1. Get IDs for the search
-      // We add "free full text[filter]" to ensure she can read what she finds!
-      const searchUrl = `${NCBI_BASE}esearch.fcgi?db=pubmed&term=${encodeURIComponent(query)}+AND+free+full+text[filter]&retmode=json&retmax=5`;
+      // Logic: Search for Free Full Text specifically for EBP
+      const searchUrl = `${NCBI_BASE}esearch.fcgi?db=pubmed&term=${encodeURIComponent(queryInput)}+AND+free+full+text[filter]&retmode=json&retmax=10`;
       const searchRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(searchUrl)}`);
       const searchData = await searchRes.json();
       const ids = searchData.esearchresult.idlist;
 
-      if (!ids.length) {
-        feed.innerHTML = "<div class='status' style='color:var(--alert)'>ERROR: NO PEER-REVIEWED DATA FOUND.</div>";
+      if (!ids || ids.length === 0) {
+        status.innerText = "● SCAN ERROR: NO RESULTS FOUND";
+        status.style.color = "var(--alert)";
+        feed.innerHTML = "<div class='status'>NO PEER-REVIEWED DATA IN THIS SECTOR.</div>";
         return;
       }
 
-      // 2. Fetch Summaries for those IDs
       const summaryUrl = `${NCBI_BASE}esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`;
       const summaryRes = await fetch(`https://corsproxy.io/?${encodeURIComponent(summaryUrl)}`);
       const summaryData = await summaryRes.json();
       
+      window.currentResults = summaryData.result;
       renderResults(summaryData.result, ids);
+      status.innerText = "● DATA SYNC COMPLETE // " + ids.length + " RECORDS RETRIEVED";
     } catch (err) {
-      feed.innerHTML = "<div class='status' style='color:var(--alert)'>UPLINK INTERRUPTED. CHECK NETWORK.</div>";
+      status.innerText = "● CONNECTION INTERRUPTED";
+      status.style.color = "var(--alert)";
     }
   }
 
@@ -137,13 +146,45 @@
       const art = results[id];
       const card = document.createElement('div');
       card.className = "article-card";
+      
+      const cleanTitle = art.title.replace(/[\[\]]/g, ""); // Remove PubMed's brackets
+
       card.innerHTML = `
-        <div class="article-journal">${art.fulljournalname || 'Medical Journal'} | ${art.pubdate}</div>
-        <div class="article-title">${art.title}</div>
-        <div class="article-snippet">Authors: ${art.authors.map(a => a.name).join(', ')}</div>
-        <a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" class="article-link">ACCESS FULL REPORT [PMID: ${id}]</a>
+        <div class="article-journal">${art.fulljournalname} | ${art.pubdate}</div>
+        <div class="article-title">${cleanTitle}</div>
+        <div class="article-snippet">AUTHORS: ${art.authors ? art.authors.map(a => a.name).join(', ') : 'N/A'}</div>
+        <div class="btn-row">
+          <a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" class="article-link">VIEW FULL STUDY</a>
+          <button id="apa-${id}" class="article-link" onclick="copyAPA('${id}')">COPY APA CITATION</button>
+        </div>
       `;
       feed.appendChild(card);
+    });
+  }
+
+  function copyAPA(id) {
+    const art = window.currentResults[id];
+    if (!art) return;
+
+    // APA 7th Edition: Author, A. A. (Year). Title. Journal. URL
+    const authors = art.authors ? art.authors.map(a => a.name).join(', ') : 'Unknown Authors';
+    const yearMatch = art.pubdate.match(/\d{4}/);
+    const year = yearMatch ? yearMatch[0] : 'n.d.';
+    const cleanTitle = art.title.replace(/[\[\]]/g, "").replace(/\.$/, "");
+    
+    const citation = `${authors} (${year}). ${cleanTitle}. ${art.fulljournalname}. https://pubmed.ncbi.nlm.nih.gov/${id}/`;
+
+    navigator.clipboard.writeText(citation).then(() => {
+      const btn = document.getElementById(`apa-${id}`);
+      const oldTxt = btn.innerText;
+      btn.innerText = "✓ COPIED";
+      btn.style.color = "var(--success)";
+      btn.style.borderColor = "var(--success)";
+      setTimeout(() => {
+        btn.innerText = oldTxt;
+        btn.style.color = "var(--clinical-cyan)";
+        btn.style.borderColor = "var(--clinical-cyan)";
+      }, 2000);
     });
   }
 
