@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAXIMUM REALITY | NURSING TERMINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lcd-blue: #00ffff;
+            --lcd-dim: #004444;
+            --danger: #ff0033;
+            --bg-dark: #0a0a0a;
+            --panel-bg: rgba(20, 20, 20, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        #terminal-frame {
+            width: 90vw;
+            max-width: 800px;
+            background: var(--panel-bg);
+            border: 2px solid var(--lcd-blue);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            padding: 40px;
+            position: relative;
+        }
+
+        #terminal-header {
+            border-bottom: 2px solid var(--lcd-blue);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            color: var(--lcd-blue);
+        }
+
+        .status-tag {
+            font-size: 0.8rem;
+            color: var(--lcd-blue);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .nav-card {
+            border: 1px solid var(--lcd-dim);
+            padding: 20px;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+            position: relative;
+            background: rgba(0, 255, 255, 0.02);
+        }
+
+        .nav-card:hover {
+            border-color: var(--lcd-blue);
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: var(--lcd-blue);
+        }
+
+        .nav-card p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        #footer-info {
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: var(--lcd-dim);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pulse {
+            animation: pulse-kf 2s infinite;
+        }
+
+        @keyframes pulse-kf {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="terminal-frame">
+    <div id="terminal-header">
+        <div>
+            <h1>MAXIMUM REALITY</h1>
+            <div class="status-tag">SYSTEM: ST. JUDE MEDICAL NETWORK // V 3.0</div>
+        </div>
+        <div class="status-tag pulse">● LOGGED IN: ELINA</div>
+    </div>
+
+    <div class="menu-grid">
+        <a href="https://maximumreality.github.io/game/night-shift.html" class="nav-card">
+            <h2>[01] NIGHT SHIFT</h2>
+            <p>Clinical Simulation: High-acuity patient management and diagnostic tools.</p>
+        </a>
+
+        <a href="https://maximumreality.github.io/game/nclex-arcade.html" class="nav-card">
+            <h2>[02] NCLEX ARCADE</h2>
+            <p>High-speed pharmacology and core-knowledge training terminal.</p>
+        </a>
+
+        <a href="https://maximumreality.github.io/game/bio.html" class="nav-card">
+            <h2>[03] RESEARCH ARCHIVE</h2>
+            <p>Access peer-reviewed publications and PubMed professional history.</p>
+        </a>
+
+        <a href="https://maximumreality.github.io/medical/" class="nav-card">
+            <h2>[04] REFERENCE LAB</h2>
+            <p>Isolated diagnostic tools: IV Pumps, EKG Analyzers, and Lab Kits.</p>
+        </a>
+
+        <a href="https://maximumreality.xyz" class="nav-card full-width" style="text-align: center;">
+            <h2 style="color: var(--danger);">[EXIT] SYSTEM LOGOUT</h2>
+        </a>
+    </div>
+
+    <div id="footer-info">
+        <span>ENCRYPTION: AES-256</span>
+        <span>STATION: 7-NORTH (7N)</span>
+        <span>FOR ELINA</span>
+    </div>
+</div>
+
+</body>
+</html>
