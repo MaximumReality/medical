@@ -11,7 +11,7 @@
             --lcd-dim: #004444;
             --danger: #ff0033;
             --bg-dark: #0a0a0a;
-            --panel-bg: rgba(20, 20, 20, 0.9);
+            --panel-bg: rgba(20, 20, 20, 0.95);
         }
 
         body {
@@ -22,8 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             background-image: 
                 linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
@@ -32,18 +31,18 @@
 
         #terminal-frame {
             width: 90vw;
-            max-width: 800px;
+            max-width: 700px;
             background: var(--panel-bg);
             border: 2px solid var(--lcd-blue);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+            padding: 30px;
             position: relative;
         }
 
         #terminal-header {
             border-bottom: 2px solid var(--lcd-blue);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
@@ -51,49 +50,74 @@
 
         h1 {
             margin: 0;
-            font-size: 1.8rem;
-            letter-spacing: 4px;
+            font-size: 1.6rem;
+            letter-spacing: 3px;
             color: var(--lcd-blue);
+            text-transform: uppercase;
         }
 
         .status-tag {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--lcd-blue);
+            opacity: 0.8;
         }
 
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
+        /* Standard Cards */
         .nav-card {
             border: 1px solid var(--lcd-dim);
-            padding: 20px;
+            padding: 15px;
             text-decoration: none;
             color: white;
-            transition: 0.3s;
-            position: relative;
+            transition: all 0.2s ease;
             background: rgba(0, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
         }
 
         .nav-card:hover {
             border-color: var(--lcd-blue);
-            background: rgba(0, 255, 255, 0.1);
-            transform: translateY(-2px);
+            background: rgba(0, 255, 255, 0.08);
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.1);
         }
 
         .nav-card h2 {
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
+            margin: 0 0 8px 0;
+            font-size: 1rem;
             color: var(--lcd-blue);
         }
 
         .nav-card p {
             margin: 0;
-            font-size: 0.8rem;
-            color: #ccc;
+            font-size: 0.75rem;
+            color: #aaa;
             line-height: 1.4;
+        }
+
+        /* Special Styling for the Tool Links in Section 04 */
+        .tool-links {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tool-btn {
+            font-size: 0.65rem;
+            color: var(--lcd-blue);
+            border: 1px solid var(--lcd-dim);
+            padding: 3px 6px;
+            text-decoration: none;
+        }
+
+        .tool-btn:hover {
+            background: var(--lcd-blue);
+            color: black;
         }
 
         .full-width {
@@ -101,11 +125,12 @@
         }
 
         #footer-info {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 0.7rem;
             color: var(--lcd-dim);
             display: flex;
             justify-content: space-between;
+            text-transform: uppercase;
         }
 
         .pulse {
@@ -113,9 +138,14 @@
         }
 
         @keyframes pulse-kf {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Mobile adjustment */
+        @media (max-width: 500px) {
+            .menu-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
         }
     </style>
 </head>
@@ -124,42 +154,45 @@
 <div id="terminal-frame">
     <div id="terminal-header">
         <div>
-            <h1>MAXIMUM REALITY</h1>
-            <div class="status-tag">SYSTEM: ST. JUDE MEDICAL NETWORK // V 3.0</div>
+            <h1>STATION TERMINAL</h1>
+            <div class="status-tag">ST. JUDE NETWORK // OS_VER: 3.0</div>
         </div>
-        <div class="status-tag pulse">● LOGGED IN: ELINA</div>
+        <div class="status-tag pulse">● USER: ELINA</div>
     </div>
 
     <div class="menu-grid">
         <a href="https://maximumreality.github.io/game/night-shift.html" class="nav-card">
             <h2>[01] NIGHT SHIFT</h2>
-            <p>Clinical Simulation: High-acuity patient management and diagnostic tools.</p>
+            <p>Full-spectrum clinical simulation. Manage 14 critical cases under hospital pressure.</p>
         </a>
 
         <a href="https://maximumreality.github.io/game/nclex-arcade.html" class="nav-card">
             <h2>[02] NCLEX ARCADE</h2>
-            <p>High-speed pharmacology and core-knowledge training terminal.</p>
+            <p>Rapid-fire board prep. Retro-style pharmacological and diagnostic training.</p>
         </a>
 
         <a href="https://maximumreality.github.io/game/bio.html" class="nav-card">
-            <h2>[03] RESEARCH ARCHIVE</h2>
-            <p>Access peer-reviewed publications and PubMed professional history.</p>
+            <h2>[03] RESEARCH</h2>
+            <p>Access PubMed publication history and professional clinical credentials.</p>
         </a>
 
-        <a href="https://maximumreality.github.io/medical/" class="nav-card">
-            <h2>[04] REFERENCE LAB</h2>
-            <p>Isolated diagnostic tools: IV Pumps, EKG Analyzers, and Lab Kits.</p>
-        </a>
+        <div class="nav-card">
+            <h2>[04] LAB MODULES</h2>
+            <p>Standalone diagnostic units:</p>
+            <div class="tool-links">
+                <a href="https://maximumreality.github.io/medical/iv-pump.html" class="tool-btn">> IV_PUMP</a>
+                <a href="https://maximumreality.github.io/medical/ekg-analyzer.html" class="tool-btn">> EKG_EVAL</a>
+            </div>
+        </div>
 
-        <a href="https://maximumreality.xyz" class="nav-card full-width" style="text-align: center;">
-            <h2 style="color: var(--danger);">[EXIT] SYSTEM LOGOUT</h2>
+        <a href="https://maximumreality.xyz" class="nav-card full-width" style="text-align: center; border-color: #440000;">
+            <h2 style="color: var(--danger); margin-bottom: 0;">[SYSTEM_LOGOUT]</h2>
         </a>
     </div>
 
     <div id="footer-info">
-        <span>ENCRYPTION: AES-256</span>
-        <span>STATION: 7-NORTH (7N)</span>
-        <span>FOR ELINA</span>
+        <span>STATION: 7-NORTH</span>
+        <span style="color: #ffff00; opacity: 0.4;">FOR ELINA</span>
     </div>
 </div>
 
