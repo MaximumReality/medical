@@ -263,7 +263,8 @@ body::before {
 // whoosh.mp3    — order loading / transition
 function playSound(name) {
   try {
-    const a = new Audio(`audio/${name}.mp3`);
+    const a = new Audio(`https://maximumreality.github.io/game/audio/${name}.mp3`);
+
     a.volume = name === 'keypress' ? 0.3 : 0.5;
     a.play().catch(() => {});
   } catch(e) {}
