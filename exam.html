@@ -40,61 +40,6 @@ button:hover { background:#1a4f8c; transform: translateY(-2px); }
 </div>
 </div>
 
-<script>
-const examData = [
-  // Cells & Tissues
-  { q:"Which organelle produces ATP?", options:{A:"Nucleus",B:"Ribosome",C:"Mitochondria",D:"Golgi"}, ans:"C", exp:"Mitochondria use oxygen and glucose to produce ATP.", cat:"Cells & Tissues" },
-  { q:"Which tissue type lines organs and surfaces?", options:{A:"Connective",B:"Nervous",C:"Muscle",D:"Epithelial"}, ans:"D", exp:"Epithelial tissue acts as a protective covering.", cat:"Cells & Tissues" },
-  { q:"Which organelle contains genetic material?", options:{A:"Nucleus",B:"Mitochondria",C:"Ribosome",D:"Lysosome"}, ans:"A", exp:"The nucleus stores DNA.", cat:"Cells & Tissues" },
-  { q:"Which tissue connects and supports body structures?", options:{A:"Connective",B:"Nervous",C:"Muscle",D:"Epithelial"}, ans:"A", exp:"Connective tissue includes bone, cartilage, and blood.", cat:"Cells & Tissues" },
-  { q:"Which organelle synthesizes proteins?", options:{A:"Ribosome",B:"Lysosome",C:"Centriole",D:"Vacuole"}, ans:"A", exp:"Ribosomes translate genetic code into proteins.", cat:"Cells & Tissues" },
-
-  // Muscular & Nervous
-  { q:"Which muscle type is striated and voluntary?", options:{A:"Skeletal",B:"Smooth",C:"Cardiac"}, ans:"A", exp:"Skeletal muscles are under conscious control.", cat:"Muscular & Nervous" },
-  { q:"Which muscle type is involuntary and found in hollow organs?", options:{A:"Skeletal",B:"Smooth",C:"Cardiac"}, ans:"B", exp:"Smooth muscle manages internal movements.", cat:"Muscular & Nervous" },
-  { q:"Which muscle type is striated and involuntary?", options:{A:"Skeletal",B:"Smooth",C:"Cardiac"}, ans:"C", exp:"Cardiac muscle is only found in the heart.", cat:"Muscular & Nervous" },
-  { q:"Which structure carries impulses away from the cell body?", options:{A:"Dendrite",B:"Axon",C:"Soma"}, ans:"B", exp:"The axon sends electrical signals onward.", cat:"Muscular & Nervous" },
-  { q:"Which part of the neuron receives incoming signals?", options:{A:"Dendrite",B:"Axon",C:"Myelin"}, ans:"A", exp:"Dendrites catch signals from neighboring cells.", cat:"Muscular & Nervous" },
-
-  // Skeletal
-  { q:"Which mineral is most critical for bone strength?", options:{A:"Iron",B:"Calcium",C:"Sodium"}, ans:"B", exp:"Calcium hydroxyapatite makes bone hard.", cat:"Skeletal System" },
-  { q:"Which bone cell breaks down bone tissue?", options:{A:"Osteoclast",B:"Osteoblast",C:"Osteocyte"}, ans:"A", exp:"Osteoclasts dissolve bone matrix.", cat:"Skeletal System" },
-  { q:"Which bone cell builds new bone tissue?", options:{A:"Osteoclast",B:"Osteoblast",C:"Chondrocyte"}, ans:"B", exp:"Osteoblasts produce bone matrix.", cat:"Skeletal System" },
-  { q:"Which part of the long bone contains red marrow?", options:{A:"Epiphysis",B:"Diaphysis",C:"Medullary Cavity"}, ans:"A", exp:"Red marrow is found in spongy bone of epiphyses.", cat:"Skeletal System" },
-  { q:"Which type of joint allows free movement?", options:{A:"Fibrous",B:"Cartilaginous",C:"Synovial"}, ans:"C", exp:"Synovial joints allow mobility.", cat:"Skeletal System" },
-
-  // Cardiovascular
-  { q:"Which chamber pumps oxygenated blood to the body?", options:{A:"Right Atrium",B:"Left Atrium",C:"Right Ventricle",D:"Left Ventricle"}, ans:"D", exp:"The left ventricle pumps blood into systemic circulation.", cat:"Cardiovascular System" },
-  { q:"Which chamber receives deoxygenated blood from the body?", options:{A:"Right Atrium",B:"Left Atrium",C:"Right Ventricle"}, ans:"A", exp:"The vena cavae empty into the right atrium.", cat:"Cardiovascular System" },
-  { q:"Which blood vessels carry blood away from the heart?", options:{A:"Arteries",B:"Veins",C:"Venules"}, ans:"A", exp:"Arteries carry blood under high pressure.", cat:"Cardiovascular System" },
-  { q:"Which blood vessels return blood to the heart?", options:{A:"Arteries",B:"Veins",Thanks for catching that — I stopped halfway through. Let’s finish the job: here’s the **full corrected HTML exam file with all 50 questions, answers, and explanations** included. You can copy this into a file called `exam.html` and open it in any browser. It will run interactively: Elina selects answers, clicks **Grade My Exam**, and sees her score with instant feedback.
-
-Because of length, the key part is the `examData` array — it now contains all 50 questions across cells, tissues, skeletal, muscular, cardiovascular, respiratory, digestive, urinary, endocrine, immune, and integumentary systems.  
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Anatomy & Physiology I - Exam & Review</title>
-<style>
-/* Styling omitted for brevity — same as before */
-</style>
-</head>
-<body>
-
-<div class="container">
-<h1>A&P I Practice Exam</h1>
-<p style="text-align: center; color: #718096;">50 Questions with Instant Review</p>
-<div id="score-banner"></div>
-<form id="quizForm">
-<div id="questions-container"></div>
-</form>
-
-<div class="btn-container">
-<button type="button" id="submitBtn" onclick="gradeExam()">Grade My Exam</button>
-</div>
-</div>
 
 <script>
 const examData = [
@@ -140,7 +85,7 @@ const examData = [
   { q:"Which part of the digestive tract absorbs most nutrients?", options:{A:"Small Intestine",B:"Large Intestine",C:"Stomach"}, ans:"A", exp:"Villi and microvilli provide surface area for absorption.", cat:"Digestive System" },
   { q:"Which part of the digestive tract absorbs water?", options:{A:"Stomach",B:"Large Intestine",C:"Small Intestine"}, ans:"B", exp:"The large intestine reabsorbs water and electrolytes.", cat:"Digestive System" },
 
-  // Urinary System
+    // Urinary System
   { q:"Which organ filters blood and produces urine?", options:{A:"Kidneys",B:"Bladder",C:"Ureter"}, ans:"A", exp:"Kidneys regulate blood volume and remove metabolic wastes like urea.", cat:"Urinary System" },
   { q:"Which structure carries urine from kidney to bladder?", options:{A:"Ureter",B:"Urethra",C:"Vasa Recta"}, ans:"A", exp:"Ureters transport urine via peristalsis.", cat:"Urinary System" },
   { q:"Which structure stores urine?", options:{A:"Kidney",B:"Urethra",C:"Bladder"}, ans:"C", exp:"The urinary bladder is a muscular sac that expands as it fills with urine.", cat:"Urinary System" },
