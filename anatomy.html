@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Anatomy Explorer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+–bg: #f5f2ed;
+–bg2: #edeae3;
+–paper: #faf8f4;
+–ink: #1a1714;
+–ink2: #3d3830;
+–ink3: #7a7268;
+–blue: #2b6cb0;
+–blue-light: #ebf4ff;
+–blue-mid: #bee3f8;
+–red: #c53030;
+–red-light: #fff5f5;
+–green: #276749;
+–green-light: #f0fff4;
+–amber: #b7791f;
+–amber-light: #fffbeb;
+–purple: #553c9a;
+–purple-light: #faf5ff;
+–teal: #2c7a7b;
+–teal-light: #e6fffa;
+–border: #d4cfc7;
+–shadow: 0 2px 12px rgba(26,23,20,0.08), 0 1px 3px rgba(26,23,20,0.05);
+–shadow-lg: 0 8px 32px rgba(26,23,20,0.12), 0 2px 8px rgba(26,23,20,0.06);
+–radius: 12px;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–bg);
+color: var(–ink);
+min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+background: var(–paper);
+border-bottom: 1px solid var(–border);
+padding: 16px 28px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: var(–shadow);
+}
+.logo {
+display: flex;
+align-items: baseline;
+gap: 10px;
+}
+.logo h1 {
+font-family: ‘Crimson Pro’, serif;
+font-weight: 600;
+font-size: 22px;
+letter-spacing: -0.3px;
+color: var(–ink);
+}
+.logo span {
+font-size: 12px;
+font-weight: 500;
+color: var(–ink3);
+letter-spacing: 1.5px;
+text-transform: uppercase;
+}
+.mode-tabs {
+display: flex;
+gap: 6px;
+background: var(–bg2);
+padding: 4px;
+border-radius: 10px;
+border: 1px solid var(–border);
+}
+.mode-tab {
+padding: 7px 18px;
+border: none;
+border-radius: 7px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 13px;
+font-weight: 500;
+cursor: pointer;
+background: transparent;
+color: var(–ink3);
+transition: all 0.18s;
+}
+.mode-tab.active {
+background: var(–paper);
+color: var(–blue);
+box-shadow: 0 1px 4px rgba(26,23,20,0.1);
+}
+.score-badge {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 13px;
+color: var(–ink3);
+font-weight: 500;
+}
+.score-num {
+font-family: ‘DM Mono’, monospace;
+font-size: 18px;
+font-weight: 500;
+color: var(–green);
+min-width: 36px;
+text-align: right;
+}
+
+/* ── LAYOUT ── */
+.app {
+display: grid;
+grid-template-columns: 1fr 340px;
+gap: 0;
+min-height: calc(100vh - 65px);
+}
+
+/* ── BODY CANVAS ── */
+.canvas-area {
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 32px 20px 20px;
+background: var(–bg);
+}
+.canvas-label {
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–ink3);
+margin-bottom: 16px;
+}
+.body-wrap {
+position: relative;
+width: 320px;
+height: 600px;
+flex-shrink: 0;
+}
+
+/* SVG body outline */
+.body-svg {
+position: absolute;
+top: 0; left: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+}
+
+/* organ drop zones */
+.drop-zone {
+position: absolute;
+border: 1.5px dashed transparent;
+border-radius: 50%;
+transition: background 0.2s, border-color 0.2s;
+z-index: 2;
+}
+.drop-zone.active {
+border-color: var(–blue);
+background: rgba(43,108,176,0.06);
+}
+.drop-zone.correct {
+border-color: var(–green);
+background: rgba(39,103,73,0.06);
+animation: correctPulse 0.4s ease;
+}
+@keyframes correctPulse {
+0%  { transform: scale(1.2); }
+100%{ transform: scale(1); }
+}
+
+/* organ tokens */
+.organ {
+position: absolute;
+cursor: pointer;
+transition: filter 0.15s, transform 0.15s;
+z-index: 5;
+transform-origin: center;
+}
+.organ:hover { filter: brightness(1.12); transform: scale(1.06); }
+.organ.selected { filter: drop-shadow(0 0 8px rgba(43,108,176,0.7)); transform: scale(1.1); z-index: 10; }
+.organ.dragging {
+cursor: grabbing;
+filter: drop-shadow(0 4px 14px rgba(26,23,20,0.25));
+z-index: 50;
+transition: none;
+}
+.organ.placed-correctly { filter: drop-shadow(0 0 6px rgba(39,103,73,0.5)); }
+
+.organ-label {
+position: absolute;
+bottom: -18px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 9px;
+font-weight: 600;
+letter-spacing: 0.8px;
+text-transform: uppercase;
+color: var(–ink3);
+white-space: nowrap;
+pointer-events: none;
+opacity: 0;
+transition: opacity 0.15s;
+}
+.organ:hover .organ-label { opacity: 1; }
+
+/* ── PUZZLE TRAY ── */
+.puzzle-tray {
+display: none;
+position: absolute;
+bottom: 0; left: 0; right: 0;
+background: var(–paper);
+border-top: 1px solid var(–border);
+padding: 16px 20px;
+z-index: 20;
+}
+.puzzle-tray.visible { display: block; }
+.tray-label {
+font-size: 11px;
+font-weight: 500;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–ink3);
+margin-bottom: 12px;
+}
+.tray-organs {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+min-height: 64px;
+}
+.tray-slot {
+position: relative;
+width: 60px;
+height: 60px;
+background: var(–bg);
+border: 1.5px dashed var(–border);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 10px;
+font-weight: 500;
+color: var(–ink3);
+text-align: center;
+line-height: 1.3;
+transition: border-color 0.2s, background 0.2s;
+}
+.tray-slot.drag-over {
+border-color: var(–blue);
+background: var(–blue-light);
+}
+
+/* ── INFO PANEL ── */
+.info-panel {
+background: var(–paper);
+border-left: 1px solid var(–border);
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+}
+.info-empty {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 40px 28px;
+text-align: center;
+color: var(–ink3);
+gap: 12px;
+}
+.info-empty svg { opacity: 0.25; }
+.info-empty p { font-family: ‘Crimson Pro’, serif; font-size: 17px; font-style: italic; line-height: 1.5; }
+.info-empty small { font-size: 12px; font-weight: 400; color: var(–ink3); }
+
+.info-content {
+display: none;
+flex-direction: column;
+height: 100%;
+}
+.info-content.visible { display: flex; }
+
+.info-header {
+padding: 24px 28px 20px;
+border-bottom: 1px solid var(–border);
+position: relative;
+}
+.info-system-tag {
+display: inline-block;
+font-size: 10px;
+font-weight: 600;
+letter-spacing: 1.2px;
+text-transform: uppercase;
+padding: 3px 9px;
+border-radius: 20px;
+margin-bottom: 10px;
+}
+.info-organ-name {
+font-family: ‘Crimson Pro’, serif;
+font-size: 30px;
+font-weight: 600;
+line-height: 1.1;
+color: var(–ink);
+margin-bottom: 6px;
+}
+.info-latin {
+font-family: ‘Crimson Pro’, serif;
+font-style: italic;
+font-size: 14px;
+color: var(–ink3);
+}
+
+.info-body {
+padding: 24px 28px;
+flex: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+.info-section-title {
+font-size: 10px;
+font-weight: 600;
+letter-spacing: 1.8px;
+text-transform: uppercase;
+color: var(–ink3);
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.info-section-title::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+
+.info-desc {
+font-family: ‘Crimson Pro’, serif;
+font-size: 16px;
+line-height: 1.65;
+color: var(–ink2);
+}
+
+.fact-list {
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.fact-item {
+display: flex;
+gap: 10px;
+align-items: flex-start;
+font-size: 13px;
+line-height: 1.5;
+color: var(–ink2);
+}
+.fact-bullet {
+width: 5px;
+height: 5px;
+border-radius: 50%;
+margin-top: 7px;
+flex-shrink: 0;
+background: var(–blue);
+}
+
+.stat-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+}
+.stat-card {
+background: var(–bg2);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 10px 12px;
+}
+.stat-card .label {
+font-size: 10px;
+font-weight: 600;
+letter-spacing: 0.8px;
+text-transform: uppercase;
+color: var(–ink3);
+margin-bottom: 3px;
+}
+.stat-card .value {
+font-family: ‘DM Mono’, monospace;
+font-size: 13px;
+font-weight: 500;
+color: var(–ink);
+}
+
+.close-btn {
+position: absolute;
+top: 20px; right: 20px;
+width: 28px; height: 28px;
+border: 1px solid var(–border);
+border-radius: 50%;
+background: var(–bg);
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+color: var(–ink3);
+font-size: 14px;
+transition: background 0.15s, color 0.15s;
+}
+.close-btn:hover { background: var(–ink); color: white; }
+
+/* ── PUZZLE MODE PANEL ── */
+.puzzle-sidebar {
+display: none;
+flex-direction: column;
+height: 100%;
+}
+.puzzle-sidebar.visible { display: flex; }
+
+.puzzle-header {
+padding: 24px 28px 20px;
+border-bottom: 1px solid var(–border);
+}
+.puzzle-header h2 {
+font-family: ‘Crimson Pro’, serif;
+font-size: 24px;
+font-weight: 600;
+margin-bottom: 6px;
+}
+.puzzle-header p {
+font-size: 13px;
+color: var(–ink3);
+line-height: 1.5;
+}
+.puzzle-progress {
+padding: 20px 28px;
+border-bottom: 1px solid var(–border);
+}
+.progress-label {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+font-size: 12px;
+font-weight: 500;
+color: var(–ink3);
+margin-bottom: 8px;
+}
+.progress-label strong { font-size: 20px; font-family: ‘DM Mono’, monospace; color: var(–green); }
+.progress-bar {
+height: 6px;
+background: var(–bg2);
+border-radius: 99px;
+overflow: hidden;
+border: 1px solid var(–border);
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–green), #48bb78);
+border-radius: 99px;
+transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+width: 0%;
+}
+
+.puzzle-organ-list {
+padding: 16px 28px;
+flex: 1;
+overflow-y: auto;
+display: flex;
+flex-direction: column;
+gap: 6px;
+}
+.puzzle-organ-item {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 8px 10px;
+border-radius: 8px;
+font-size: 13px;
+font-weight: 500;
+color: var(–ink2);
+border: 1px solid transparent;
+transition: all 0.15s;
+}
+.puzzle-organ-item.placed {
+background: var(–green-light);
+border-color: #c6f6d5;
+color: var(–green);
+}
+.puzzle-organ-item.in-tray {
+background: var(–bg2);
+border-color: var(–border);
+}
+.status-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+.placed .status-dot { background: var(–green); }
+.in-tray .status-dot { background: var(–border); }
+
+.puzzle-actions {
+padding: 20px 28px;
+border-top: 1px solid var(–border);
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+.btn {
+padding: 10px 18px;
+border-radius: 8px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 13px;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.15s;
+border: none;
+text-align: center;
+}
+.btn-primary { background: var(–blue); color: white; }
+.btn-primary:hover { background: #1a4f8c; }
+.btn-secondary { background: var(–bg2); color: var(–ink2); border: 1px solid var(–border); }
+.btn-secondary:hover { background: var(–border); }
+
+/* ── VICTORY ── */
+.victory-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(26,23,20,0.5);
+z-index: 200;
+align-items: center;
+justify-content: center;
+}
+.victory-overlay.visible { display: flex; }
+.victory-card {
+background: var(–paper);
+border-radius: 20px;
+padding: 48px 48px 40px;
+text-align: center;
+max-width: 380px;
+width: 90%;
+box-shadow: var(–shadow-lg);
+border: 1px solid var(–border);
+animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn {
+from { transform: scale(0.8); opacity: 0; }
+to   { transform: scale(1); opacity: 1; }
+}
+.victory-emoji { font-size: 52px; margin-bottom: 16px; }
+.victory-card h2 {
+font-family: ‘Crimson Pro’, serif;
+font-size: 32px;
+font-weight: 600;
+margin-bottom: 8px;
+}
+.victory-card p { font-size: 15px; color: var(–ink3); line-height: 1.6; margin-bottom: 24px; }
+
+/* ── TOOLTIP ── */
+.tooltip {
+position: fixed;
+background: var(–ink);
+color: white;
+font-size: 12px;
+font-weight: 500;
+padding: 6px 11px;
+border-radius: 6px;
+pointer-events: none;
+z-index: 300;
+opacity: 0;
+transition: opacity 0.15s;
+white-space: nowrap;
+letter-spacing: 0.2px;
+}
+.tooltip.visible { opacity: 1; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+.app { grid-template-columns: 1fr; }
+.info-panel { border-left: none; border-top: 1px solid var(–border); max-height: 45vh; }
+header { flex-wrap: wrap; gap: 10px; }
+.score-badge { margin-left: auto; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <h1>Anatomy Explorer</h1>
+    <span>A&amp;P I</span>
+  </div>
+  <div class="mode-tabs">
+    <button class="mode-tab active" onclick="setMode('explore')" id="tab-explore">🔍 Explore</button>
+    <button class="mode-tab" onclick="setMode('puzzle')" id="tab-puzzle">🧩 Puzzle</button>
+  </div>
+  <div class="score-badge">
+    <span>Placed</span>
+    <span class="score-num" id="score-display">0</span>
+    <span>/ <span id="total-count">0</span></span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- BODY DIAGRAM -->
+
+  <div class="canvas-area">
+    <div class="canvas-label" id="canvas-label">Anterior View — Click an organ to learn more</div>
+    <div class="body-wrap" id="body-wrap">
+
+```
+  <!-- SVG body outline -->
+  <svg class="body-svg" viewBox="0 0 320 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- Body fill -->
+    <defs>
+      <linearGradient id="skinGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f0e8dc"/>
+        <stop offset="100%" stop-color="#e8ddd0"/>
+      </linearGradient>
+    </defs>
+    <!-- Torso -->
+    <ellipse cx="160" cy="100" rx="50" ry="55" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Neck -->
+    <rect x="145" y="145" width="30" height="28" rx="8" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Body torso -->
+    <path d="M90 230 Q80 175 110 168 L210 168 Q240 175 230 230 L230 390 Q230 410 210 415 L110 415 Q90 410 90 390 Z" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Left arm -->
+    <path d="M90 180 Q70 185 65 210 L58 300 Q57 315 65 318 Q73 320 76 305 L80 220 Q82 200 90 195 Z" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Right arm -->
+    <path d="M230 180 Q250 185 255 210 L262 300 Q263 315 255 318 Q247 320 244 305 L240 220 Q238 200 230 195 Z" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Left leg -->
+    <path d="M110 415 L100 540 Q98 560 110 562 Q122 562 124 545 L130 430 Z" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Right leg -->
+    <path d="M210 415 L220 540 Q222 560 210 562 Q198 562 196 545 L190 430 Z" fill="url(#skinGrad)" stroke="#c8b89a" stroke-width="1.5"/>
+    <!-- Ribcage outline -->
+    <path d="M115 185 Q113 220 115 250 L205 250 Q207 220 205 185" fill="none" stroke="#c8b89a" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+    <!-- Rib lines -->
+    <path d="M118 200 Q160 208 202 200 M116 215 Q160 223 204 215 M115 230 Q160 238 205 230" fill="none" stroke="#c8b89a" stroke-width="0.8" opacity="0.35"/>
+    <!-- Sternum -->
+    <line x1="160" y1="182" x2="160" y2="256" stroke="#c8b89a" stroke-width="1.5" opacity="0.4"/>
+    <!-- Collar bones -->
+    <path d="M145 175 Q130 172 118 177 M175 175 Q190 172 202 177" fill="none" stroke="#c8b89a" stroke-width="1.5" opacity="0.5"/>
+    <!-- Pelvis hint -->
+    <path d="M108 355 Q108 380 130 392 L190 392 Q212 380 212 355" fill="none" stroke="#c8b89a" stroke-width="1" opacity="0.35"/>
+  </svg>
+
+  <!-- ORGANS (rendered by JS) -->
+  <div id="organs-container"></div>
+</div>
+
+<!-- Puzzle tray (shown in puzzle mode) -->
+<div class="puzzle-tray" id="puzzle-tray">
+  <div class="tray-label">Organ Tray — drag organs back onto the body</div>
+  <div class="tray-organs" id="tray-organs"></div>
+</div>
+```
+
+  </div>
+
+  <!-- INFO / PUZZLE PANEL -->
+
+  <div class="info-panel">
+
+```
+<!-- Explore mode: empty state -->
+<div class="info-empty" id="info-empty">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+  </svg>
+  <p>Select an organ to explore its anatomy &amp; physiology</p>
+  <small>Click any highlighted region on the body diagram</small>
+</div>
+
+<!-- Explore mode: organ info -->
+<div class="info-content" id="info-content">
+  <div class="info-header">
+    <button class="close-btn" onclick="closeInfo()">✕</button>
+    <div class="info-system-tag" id="info-tag"></div>
+    <div class="info-organ-name" id="info-name"></div>
+    <div class="info-latin" id="info-latin"></div>
+  </div>
+  <div class="info-body">
+    <div>
+      <div class="info-section-title">Function</div>
+      <p class="info-desc" id="info-desc"></p>
+    </div>
+    <div>
+      <div class="info-section-title">Key Facts</div>
+      <div class="fact-list" id="info-facts"></div>
+    </div>
+    <div id="info-stats-wrap">
+      <div class="info-section-title">Quick Stats</div>
+      <div class="stat-grid" id="info-stats"></div>
+    </div>
+    <div>
+      <div class="info-section-title">Nursing Relevance</div>
+      <div class="fact-list" id="info-nursing"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Puzzle mode panel -->
+<div class="puzzle-sidebar" id="puzzle-sidebar">
+  <div class="puzzle-header">
+    <h2>🧩 Organ Placement</h2>
+    <p>Drag organs from the tray back to their correct positions on the body. Score points for each correct placement!</p>
+  </div>
+  <div class="puzzle-progress">
+    <div class="progress-label">
+      <span>Organs placed</span>
+      <strong id="puzzle-score">0</strong>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+  <div class="puzzle-organ-list" id="puzzle-organ-list"></div>
+  <div class="puzzle-actions">
+    <button class="btn btn-primary" onclick="shuffleOrgans()">🔀 New Puzzle</button>
+    <button class="btn btn-secondary" onclick="resetPuzzle()">↺ Reset</button>
+  </div>
+</div>
+```
+
+  </div>
+
+</div>
+
+<!-- Victory overlay -->
+
+<div class="victory-overlay" id="victory-overlay">
+  <div class="victory-card">
+    <div class="victory-emoji">🎉</div>
+    <h2>All Organs Placed!</h2>
+    <p>Excellent work! You've correctly placed all organs.<br>Your anatomy knowledge is building up nicely.</p>
+    <button class="btn btn-primary" onclick="shuffleOrgans(); document.getElementById('victory-overlay').classList.remove('visible')">
+      Try Again
+    </button>
+  </div>
+</div>
+
+<!-- Tooltip -->
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ─────────────────────────────────────────────
+// ORGAN DATA
+// ─────────────────────────────────────────────
+const organs = [
+  {
+    id: 'brain',
+    name: 'Brain',
+    latin: 'Encephalon',
+    system: 'Nervous System',
+    systemColor: '#553c9a',
+    systemBg: '#faf5ff',
+    // position: center top of head
+    x: 125, y: 42, w: 70, h: 55,
+    color: '#e8c5a0',
+    stroke: '#c49a6e',
+    desc: 'The brain is the control center of the body, receiving and processing signals from throughout the nervous system. It governs thought, memory, emotion, motor control, and the regulation of virtually every organ and function.',
+    facts: [
+      'Contains approximately 86 billion neurons',
+      'Consumes ~20% of the body\'s total oxygen and glucose',
+      'Divided into cerebrum, cerebellum, and brainstem',
+      'The cerebral cortex handles higher cognition and sensory processing',
+    ],
+    stats: [
+      { label: 'Weight', value: '~1.4 kg' },
+      { label: 'Neurons', value: '86 billion' },
+      { label: 'Water content', value: '~75%' },
+      { label: 'Blood flow', value: '750 mL/min' },
+    ],
+    nursing: [
+      'Monitor for signs of increased intracranial pressure (ICP): headache, vomiting, altered consciousness',
+      'GCS (Glasgow Coma Scale) assesses brain function: eyes, verbal, motor responses',
+      'Stroke assessment: FAST — Face drooping, Arm weakness, Speech difficulty, Time to call',
+    ],
+    shape: 'brain',
+  },
+  {
+    id: 'heart',
+    name: 'Heart',
+    latin: 'Cor',
+    system: 'Cardiovascular',
+    systemColor: '#c53030',
+    systemBg: '#fff5f5',
+    x: 136, y: 196, w: 46, h: 44,
+    color: '#e05252',
+    stroke: '#b02020',
+    desc: 'The heart is a hollow muscular organ that pumps blood throughout the circulatory system, delivering oxygen and nutrients to tissues and removing waste products. It beats approximately 100,000 times per day.',
+    facts: [
+      'Four chambers: right/left atria and right/left ventricles',
+      'Pumps approximately 5 liters of blood per minute at rest',
+      'The left ventricle has the thickest wall — it pumps to the whole body',
+      'Coronary arteries supply blood to the heart muscle itself',
+    ],
+    stats: [
+      { label: 'Avg rate', value: '60–100 bpm' },
+      { label: 'Output', value: '~5 L/min' },
+      { label: 'Weight', value: '250–350 g' },
+      { label: 'Beats/day', value: '~100,000' },
+    ],
+    nursing: [
+      'Assess apical pulse for a full minute with a stethoscope at the 5th ICS, MCL',
+      'Know normal EKG waveform: P wave (atrial depolarization), QRS (ventricular), T wave (repolarization)',
+      'Cardiac enzymes (troponin I/T) are critical markers of myocardial infarction',
+    ],
+    shape: 'heart',
+  },
+  {
+    id: 'lung-left',
+    name: 'Left Lung',
+    latin: 'Pulmo sinister',
+    system: 'Respiratory',
+    systemColor: '#2b6cb0',
+    systemBg: '#ebf4ff',
+    x: 174, y: 185, w: 44, h: 65,
+    color: '#a8c4e0',
+    stroke: '#4a90c4',
+    desc: 'The left lung is slightly smaller than the right (it has 2 lobes vs. 3) to accommodate the heart. It participates in gas exchange — delivering oxygen to the blood and expelling carbon dioxide.',
+    facts: [
+      'Has 2 lobes: upper (superior) and lower (inferior)',
+      'Contains the cardiac notch to make room for the heart',
+      'Alveoli are the tiny air sacs where gas exchange occurs',
+      'Total alveolar surface area is roughly 70 m² — the size of a tennis court',
+    ],
+    stats: [
+      { label: 'Lobes', value: '2' },
+      { label: 'Capacity', value: '~2.4 L' },
+      { label: 'Alveoli', value: '~300 million' },
+      { label: 'Resp rate', value: '12–20/min' },
+    ],
+    nursing: [
+      'Auscultate all lung fields: anterior, posterior, and lateral; compare side to side',
+      'SpO₂ normal range: 95–100%; below 90% = hypoxemia requiring intervention',
+      'Distinguish breath sounds: vesicular (normal), bronchial, crackles, wheezes, rhonchi',
+    ],
+    shape: 'lung-left',
+  },
+  {
+    id: 'lung-right',
+    name: 'Right Lung',
+    latin: 'Pulmo dexter',
+    system: 'Respiratory',
+    systemColor: '#2b6cb0',
+    systemBg: '#ebf4ff',
+    x: 102, y: 183, w: 44, h: 68,
+    color: '#a8c4e0',
+    stroke: '#4a90c4',
+    desc: 'The right lung is the larger of the two lungs, containing three lobes. It is the more common site of aspiration events due to the straighter angle of the right main bronchus.',
+    facts: [
+      'Has 3 lobes: upper, middle, and lower',
+      'Right main bronchus is shorter, wider, and more vertical than the left',
+      'More common site for aspirated foreign bodies',
+      'Each lobe is further divided into bronchopulmonary segments',
+    ],
+    stats: [
+      { label: 'Lobes', value: '3' },
+      { label: 'Capacity', value: '~2.9 L' },
+      { label: 'Alveoli', value: '~350 million' },
+      { label: 'Resp rate', value: '12–20/min' },
+    ],
+    nursing: [
+      'Right bronchus angle makes right-sided aspiration more likely — position patients appropriately',
+      'Pleural effusion: fluid in pleural space; dullness on percussion, decreased breath sounds',
+      'Incentive spirometer use post-surgery prevents atelectasis in lung bases',
+    ],
+    shape: 'lung-right',
+  },
+  {
+    id: 'liver',
+    name: 'Liver',
+    latin: 'Hepar',
+    system: 'Digestive / Metabolic',
+    systemColor: '#b7791f',
+    systemBg: '#fffbeb',
+    x: 100, y: 255, w: 70, h: 50,
+    color: '#c4764a',
+    stroke: '#8b4e28',
+    desc: 'The liver is the largest internal organ and the body\'s primary metabolic factory. It performs over 500 functions including detoxification, protein synthesis, bile production, and glucose regulation.',
+    facts: [
+      'Largest internal organ, weighing 1.2–1.5 kg',
+      'Only organ capable of regenerating itself',
+      'Produces bile, which emulsifies fats for digestion',
+      'Processes all blood from the digestive tract before it reaches the systemic circulation',
+    ],
+    stats: [
+      { label: 'Weight', value: '1.2–1.5 kg' },
+      { label: 'Blood flow', value: '1.5 L/min' },
+      { label: 'Functions', value: '500+' },
+      { label: 'Bile/day', value: '~800 mL' },
+    ],
+    nursing: [
+      'Liver function tests: ALT, AST, ALP, bilirubin — elevated in hepatic disease',
+      'Assess for jaundice (scleral icterus), ascites, spider angiomas in liver disease',
+      'Many drugs are hepatically metabolized — dose adjustments needed in liver failure',
+    ],
+    shape: 'rect',
+  },
+  {
+    id: 'stomach',
+    name: 'Stomach',
+    latin: 'Gaster',
+    system: 'Digestive',
+    systemColor: '#276749',
+    systemBg: '#f0fff4',
+    x: 143, y: 263, w: 50, h: 55,
+    color: '#e8d570',
+    stroke: '#b8a038',
+    desc: 'The stomach is a muscular, J-shaped organ that stores food, begins mechanical and chemical digestion, and regulates the release of chyme into the small intestine. Its highly acidic environment (pH 1.5–3.5) activates digestive enzymes.',
+    facts: [
+      'Produces ~2 liters of gastric juice daily',
+      'Gastric acid (HCl) has a pH of 1.5–3.5',
+      'Three muscle layers allow churning and mechanical digestion',
+      'Intrinsic factor produced by parietal cells is needed for vitamin B12 absorption',
+    ],
+    stats: [
+      { label: 'pH', value: '1.5–3.5' },
+      { label: 'Capacity', value: '~1 liter' },
+      { label: 'Gastric juice', value: '2 L/day' },
+      { label: 'Empty time', value: '4–5 hrs' },
+    ],
+    nursing: [
+      'NGT placement: verify position with X-ray or pH testing of aspirate (pH < 5.5)',
+      'H₂ blockers (ranitidine) and PPIs (omeprazole) reduce gastric acid production',
+      'Peptic ulcer disease: H. pylori is the most common cause; treat with triple therapy',
+    ],
+    shape: 'stomach',
+  },
+  {
+    id: 'kidney-left',
+    name: 'Left Kidney',
+    latin: 'Ren sinister',
+    system: 'Urinary',
+    systemColor: '#2c7a7b',
+    systemBg: '#e6fffa',
+    x: 185, y: 295, w: 32, h: 46,
+    color: '#e88c68',
+    stroke: '#b85a38',
+    desc: 'The kidneys filter blood, remove waste products, regulate fluid and electrolyte balance, and produce urine. Each kidney contains about one million nephrons — the functional filtering units.',
+    facts: [
+      'Filter ~180 liters of blood daily; produce ~1–2 L of urine',
+      'Regulate blood pressure via the renin-angiotensin-aldosterone system (RAAS)',
+      'Produce erythropoietin (EPO), which stimulates red blood cell production',
+      'Activate vitamin D for calcium absorption',
+    ],
+    stats: [
+      { label: 'Size', value: '~10 cm' },
+      { label: 'Filter/day', value: '180 L' },
+      { label: 'Nephrons', value: '~1 million' },
+      { label: 'Urine/day', value: '1–2 L' },
+    ],
+    nursing: [
+      'Normal urine output: ≥ 0.5 mL/kg/hr; oliguria < 400 mL/day indicates renal dysfunction',
+      'BUN and creatinine are key markers of renal function',
+      'Contrast dye and NSAIDs are nephrotoxic — monitor GFR and hydrate well',
+    ],
+    shape: 'kidney',
+  },
+  {
+    id: 'kidney-right',
+    name: 'Right Kidney',
+    latin: 'Ren dexter',
+    system: 'Urinary',
+    systemColor: '#2c7a7b',
+    systemBg: '#e6fffa',
+    x: 103, y: 298, w: 32, h: 46,
+    color: '#e88c68',
+    stroke: '#b85a38',
+    desc: 'The right kidney sits slightly lower than the left (displaced by the liver) but performs identical functions — filtering blood and regulating fluid, electrolytes, and blood pressure.',
+    facts: [
+      'Positioned slightly lower than the left kidney due to the liver',
+      'Connected to the bladder via the right ureter (~25–30 cm long)',
+      'The renal cortex contains most glomeruli (filtration units)',
+      'The renal medulla contains collecting ducts draining into the renal pelvis',
+    ],
+    stats: [
+      { label: 'Size', value: '~10 cm' },
+      { label: 'Position', value: 'Lower (R)' },
+      { label: 'Nephrons', value: '~1 million' },
+      { label: 'Blood/day', value: '1,700 L' },
+    ],
+    nursing: [
+      'CVA (costovertebral angle) tenderness: sign of pyelonephritis or nephrolithiasis',
+      'Urinalysis components: color, clarity, pH, specific gravity, protein, glucose, RBCs, WBCs, casts',
+      'Foley catheter care: maintain closed system, secure tubing, daily meatal care to prevent UTI',
+    ],
+    shape: 'kidney',
+  },
+  {
+    id: 'small-intestine',
+    name: 'Small Intestine',
+    latin: 'Intestinum tenue',
+    system: 'Digestive',
+    systemColor: '#276749',
+    systemBg: '#f0fff4',
+    x: 118, y: 318, w: 84, h: 60,
+    color: '#f0c070',
+    stroke: '#c89030',
+    desc: 'The small intestine is the primary site of digestion and nutrient absorption. Spanning approximately 6–7 meters in three sections — duodenum, jejunum, and ileum — it greatly increases its surface area via villi and microvilli.',
+    facts: [
+      'Three sections: duodenum, jejunum, ileum',
+      'Villi and microvilli increase surface area to ~200 m²',
+      'Absorbs ~90% of all nutrients from food',
+      'Receives bile from the gallbladder and pancreatic enzymes via the duodenum',
+    ],
+    stats: [
+      { label: 'Length', value: '6–7 m' },
+      { label: 'Surface area', value: '~200 m²' },
+      { label: 'Transit time', value: '3–5 hrs' },
+      { label: 'Diameter', value: '2.5–3 cm' },
+    ],
+    nursing: [
+      'Auscultate bowel sounds in all 4 quadrants; normal: 5–35 clicks/min',
+      'Absent bowel sounds after abdominal surgery may indicate ileus',
+      'Malabsorption (Crohn\'s, celiac) affects the ileum and nutrient absorption',
+    ],
+    shape: 'intestine',
+  },
+  {
+    id: 'large-intestine',
+    name: 'Large Intestine',
+    latin: 'Intestinum crassum',
+    system: 'Digestive',
+    systemColor: '#276749',
+    systemBg: '#f0fff4',
+    x: 105, y: 335, w: 110, h: 58,
+    color: '#d4a86a',
+    stroke: '#a07838',
+    desc: 'The large intestine absorbs water and electrolytes from indigestible material, forming and storing feces. It consists of the cecum, colon (ascending, transverse, descending, sigmoid), rectum, and anal canal.',
+    facts: [
+      'Absorbs ~1–1.5 liters of water per day',
+      'Houses trillions of gut bacteria (the microbiome)',
+      'Colon movements are primarily haustral contractions and mass movements',
+      'The appendix — attached to the cecum — may have immune functions',
+    ],
+    stats: [
+      { label: 'Length', value: '~1.5 m' },
+      { label: 'Diameter', value: '6–9 cm' },
+      { label: 'Water abs.', value: '1–1.5 L/day' },
+      { label: 'Transit', value: '10–59 hrs' },
+    ],
+    nursing: [
+      'Constipation: < 3 bowel movements/week; assess for obstruction, medication side effects',
+      'Colonoscopy prep: clear liquids + bowel cleanse; hold blood thinners as ordered',
+      'Colostomy care: assess stoma color (should be moist and pink/red), peristomal skin integrity',
+    ],
+    shape: 'colon',
+  },
+  {
+    id: 'gallbladder',
+    name: 'Gallbladder',
+    latin: 'Vesica biliaris',
+    system: 'Digestive',
+    systemColor: '#276749',
+    systemBg: '#f0fff4',
+    x: 167, y: 272, w: 26, h: 30,
+    color: '#7ec88a',
+    stroke: '#3a8a4a',
+    desc: 'The gallbladder is a small pear-shaped organ tucked beneath the liver. It concentrates and stores bile produced by the liver, releasing it into the duodenum to aid fat digestion when triggered by the hormone CCK.',
+    facts: [
+      'Concentrates bile up to 10-fold from its original liver concentration',
+      'Cholecystokinin (CCK) triggers gallbladder contraction after a fatty meal',
+      'Gallstones (cholelithiasis) are a very common disorder, often cholesterol-based',
+      'The cystic duct connects the gallbladder to the common bile duct',
+    ],
+    stats: [
+      { label: 'Capacity', value: '30–50 mL' },
+      { label: 'Bile stored', value: 'Up to 50 mL' },
+      { label: 'Concentration', value: '×10 fold' },
+      { label: 'Length', value: '7–10 cm' },
+    ],
+    nursing: [
+      'Murphy\'s sign: RUQ pain on deep inspiration with palpation — classic for cholecystitis',
+      'Post-cholecystectomy: advise low-fat diet initially; most patients adjust within weeks',
+      'Obstructive jaundice: dark urine + pale stools + scleral icterus = bile duct obstruction',
+    ],
+    shape: 'gallbladder',
+  },
+  {
+    id: 'pancreas',
+    name: 'Pancreas',
+    latin: 'Pancreas',
+    system: 'Endocrine / Digestive',
+    systemColor: '#553c9a',
+    systemBg: '#faf5ff',
+    x: 123, y: 276, w: 74, h: 26,
+    color: '#c4a0d8',
+    stroke: '#7a4a9a',
+    desc: 'The pancreas is a dual-function gland with both exocrine functions (secreting digestive enzymes into the duodenum) and endocrine functions (secreting insulin and glucagon directly into the bloodstream to regulate blood glucose).',
+    facts: [
+      'Exocrine: produces ~1.5 L of enzyme-rich fluid per day for digestion',
+      'Endocrine: islets of Langerhans — β cells secrete insulin, α cells secrete glucagon',
+      'Insulin lowers blood glucose; glucagon raises it',
+      'Pancreatitis: inflammation, often from gallstones or alcohol',
+    ],
+    stats: [
+      { label: 'Length', value: '15–25 cm' },
+      { label: 'Weight', value: '60–100 g' },
+      { label: 'Juice/day', value: '~1.5 L' },
+      { label: 'Islets', value: '~1 million' },
+    ],
+    nursing: [
+      'Monitor blood glucose in pancreatitis — endocrine disruption is common',
+      'Serum amylase and lipase are elevated in acute pancreatitis',
+      'Type 1 DM = no insulin production; Type 2 = insulin resistance; both require glucose monitoring',
+    ],
+    shape: 'pancreas',
+  },
+  {
+    id: 'spleen',
+    name: 'Spleen',
+    latin: 'Lien / Splen',
+    system: 'Lymphatic / Immune',
+    systemColor: '#c53030',
+    systemBg: '#fff5f5',
+    x: 88, y: 255, w: 30, h: 38,
+    color: '#d4608a',
+    stroke: '#a03060',
+    desc: 'The spleen is the largest lymphoid organ. It filters blood, removes old or damaged red blood cells, stores platelets and monocytes, and mounts immune responses against blood-borne pathogens.',
+    facts: [
+      'Filters ~350 mL of blood per minute',
+      'Stores ~30% of the body\'s platelet reserve',
+      'Can sequester and release blood during hemorrhagic shock (reservoir function)',
+      'Post-splenectomy patients are at risk for encapsulated bacteria (pneumonia, meningitis)',
+    ],
+    stats: [
+      { label: 'Size', value: '~12 cm' },
+      { label: 'Weight', value: '150–200 g' },
+      { label: 'Blood flow', value: '350 mL/min' },
+      { label: 'Platelet store', value: '~30%' },
+    ],
+    nursing: [
+      'Kehr\'s sign: left shoulder pain from splenic rupture — referred pain via phrenic nerve',
+      'Post-splenectomy vaccines: pneumococcal, meningococcal, Hib — before surgery if possible',
+      'Splenomegaly palpable below left costal margin in infection, portal hypertension, leukemia',
+    ],
+    shape: 'spleen',
+  },
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let currentMode = 'explore';
+let selectedOrgan = null;
+let puzzleState = {}; // organId -> 'body' | 'tray'
+let draggedOrganId = null;
+let dragOffset = { x: 0, y: 0 };
+let puzzleScore = 0;
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function init() {
+  document.getElementById('total-count').textContent = organs.length;
+  renderOrgans();
+  organs.forEach(o => puzzleState[o.id] = 'body');
+}
+
+// ─────────────────────────────────────────────
+// RENDER ORGANS
+// ─────────────────────────────────────────────
+function renderOrgans() {
+  const container = document.getElementById('organs-container');
+  container.innerHTML = '';
+
+  organs.forEach(organ => {
+    const div = document.createElement('div');
+    div.className = 'organ';
+    div.id = `organ-${organ.id}`;
+    div.style.left = organ.x + 'px';
+    div.style.top = organ.y + 'px';
+    div.style.width = organ.w + 'px';
+    div.style.height = organ.h + 'px';
+
+    // SVG shape
+    div.innerHTML = `
+      ${makeSVG(organ)}
+      <span class="organ-label">${organ.name}</span>
+    `;
+
+    if (currentMode === 'explore') {
+      div.addEventListener('click', () => showOrganInfo(organ));
+    } else {
+      // puzzle mode — no click info, draggable in tray
+    }
+
+    // hover tooltip
+    div.addEventListener('mouseenter', (e) => showTooltip(organ.name, e));
+    div.addEventListener('mouseleave', hideTooltip);
+
+    container.appendChild(div);
+  });
+}
+
+function makeSVG(organ) {
+  const w = organ.w, h = organ.h;
+  const c = organ.color, s = organ.stroke;
+
+  const shapes = {
+    brain: `<svg width="${w}" height="${h}" viewBox="0 0 70 55">
+      <ellipse cx="35" cy="28" rx="32" ry="24" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <path d="M35 6 Q35 14 28 18 Q22 22 24 30 Q26 36 22 40" fill="none" stroke="${s}" stroke-width="1" opacity="0.4"/>
+      <path d="M35 6 Q35 14 42 18 Q48 22 46 30 Q44 36 48 40" fill="none" stroke="${s}" stroke-width="1" opacity="0.4"/>
+      <line x1="35" y1="5" x2="35" y2="50" stroke="${s}" stroke-width="1" opacity="0.3"/>
+      <path d="M10 28 Q14 20 18 28 Q22 36 26 28 Q30 20 35 28" fill="none" stroke="${s}" stroke-width="1" opacity="0.35"/>
+    </svg>`,
+
+    heart: `<svg width="${w}" height="${h}" viewBox="0 0 46 44">
+      <path d="M23 38 Q8 26 6 18 Q4 8 13 6 Q19 5 23 12 Q27 5 33 6 Q42 8 40 18 Q38 26 23 38Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <path d="M14 14 Q16 10 20 12" fill="none" stroke="${s}" stroke-width="1" opacity="0.4"/>
+    </svg>`,
+
+    'lung-left': `<svg width="${w}" height="${h}" viewBox="0 0 44 65">
+      <path d="M22 5 Q32 8 36 20 L38 52 Q38 60 30 62 Q22 63 18 56 L14 38 Q10 25 14 14 Q17 8 22 5Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <path d="M22 5 L22 55 M22 25 L30 35 M22 40 L30 50" fill="none" stroke="${s}" stroke-width="0.8" opacity="0.3"/>
+    </svg>`,
+
+    'lung-right': `<svg width="${w}" height="${h}" viewBox="0 0 44 68">
+      <path d="M22 5 Q12 8 8 20 L6 54 Q6 62 14 64 Q22 65 26 58 L30 40 Q34 27 30 16 Q27 8 22 5Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <path d="M22 5 L22 58 M22 25 L14 35 M22 42 L14 52" fill="none" stroke="${s}" stroke-width="0.8" opacity="0.3"/>
+    </svg>`,
+
+    kidney: `<svg width="${organ.w}" height="${organ.h}" viewBox="0 0 32 46">
+      <path d="M16 3 Q26 5 28 16 Q30 28 26 38 Q22 46 16 46 Q10 44 8 36 Q4 24 6 12 Q8 3 16 3Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <ellipse cx="13" cy="22" rx="5" ry="9" fill="${s}" opacity="0.15"/>
+    </svg>`,
+
+    stomach: `<svg width="${w}" height="${h}" viewBox="0 0 50 55">
+      <path d="M16 5 Q30 2 38 8 Q46 15 44 30 Q42 46 30 50 Q18 53 12 44 Q6 35 8 22 Q10 10 16 5Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    </svg>`,
+
+    gallbladder: `<svg width="${w}" height="${h}" viewBox="0 0 26 30">
+      <path d="M13 2 Q20 4 22 12 Q24 20 18 25 Q13 29 8 25 Q4 20 6 12 Q8 4 13 2Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    </svg>`,
+
+    pancreas: `<svg width="${w}" height="${h}" viewBox="0 0 74 26">
+      <path d="M4 13 Q18 4 36 6 Q54 8 70 13 Q56 22 36 20 Q18 22 4 13Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    </svg>`,
+
+    spleen: `<svg width="${w}" height="${h}" viewBox="0 0 30 38">
+      <ellipse cx="15" cy="19" rx="13" ry="17" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    </svg>`,
+
+    intestine: `<svg width="${w}" height="${h}" viewBox="0 0 84 60">
+      <path d="M10 30 Q20 10 40 15 Q60 20 65 8 Q70 2 78 8 Q84 15 75 22 Q65 30 50 28 Q35 26 30 38 Q25 50 38 55 Q50 58 52 50" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round"/>
+      <path d="M10 30 Q20 10 40 15 Q60 20 65 8 Q70 2 78 8 Q84 15 75 22 Q65 30 50 28 Q35 26 30 38 Q25 50 38 55 Q50 58 52 50" fill="none" stroke="${s}" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
+
+    colon: `<svg width="${w}" height="${h}" viewBox="0 0 110 58">
+      <path d="M6 50 L6 20 Q6 6 20 6 L90 6 Q104 6 104 20 L104 50" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round"/>
+      <path d="M6 50 L6 20 Q6 6 20 6 L90 6 Q104 6 104 20 L104 50" fill="none" stroke="${s}" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
+
+    rect: `<svg width="${w}" height="${h}" viewBox="0 0 70 50">
+      <rect x="4" y="4" width="62" height="42" rx="12" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+      <line x1="35" y1="4" x2="35" y2="46" stroke="${s}" stroke-width="0.8" opacity="0.3"/>
+    </svg>`,
+  };
+
+  return shapes[organ.shape] || shapes.rect;
+}
+
+// ─────────────────────────────────────────────
+// INFO PANEL
+// ─────────────────────────────────────────────
+function showOrganInfo(organ) {
+  if (currentMode !== 'explore') return;
+
+  // deselect previous
+  if (selectedOrgan) {
+    document.getElementById(`organ-${selectedOrgan.id}`)?.classList.remove('selected');
+  }
+  selectedOrgan = organ;
+  document.getElementById(`organ-${organ.id}`)?.classList.add('selected');
+
+  // fill panel
+  const tag = document.getElementById('info-tag');
+  tag.textContent = organ.system;
+  tag.style.background = organ.systemBg;
+  tag.style.color = organ.systemColor;
+  tag.style.border = `1px solid ${organ.systemColor}30`;
+
+  document.getElementById('info-name').textContent = organ.name;
+  document.getElementById('info-latin').textContent = organ.latin;
+  document.getElementById('info-desc').textContent = organ.desc;
+
+  // facts
+  const factList = document.getElementById('info-facts');
+  factList.innerHTML = organ.facts.map(f => `
+    <div class="fact-item">
+      <div class="fact-bullet" style="background:${organ.systemColor}"></div>
+      <span>${f}</span>
+    </div>
+  `).join('');
+
+  // stats
+  const statsGrid = document.getElementById('info-stats');
+  statsGrid.innerHTML = organ.stats.map(s => `
+    <div class="stat-card">
+      <div class="label">${s.label}</div>
+      <div class="value">${s.value}</div>
+    </div>
+  `).join('');
+
+  // nursing
+  const nursingList = document.getElementById('info-nursing');
+  nursingList.innerHTML = organ.nursing.map(n => `
+    <div class="fact-item">
+      <div class="fact-bullet" style="background:#e05252"></div>
+      <span>${n}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('info-empty').style.display = 'none';
+  document.getElementById('info-content').classList.add('visible');
+}
+
+function closeInfo() {
+  document.getElementById('info-content').classList.remove('visible');
+  document.getElementById('info-empty').style.display = '';
+  if (selectedOrgan) {
+    document.getElementById(`organ-${selectedOrgan.id}`)?.classList.remove('selected');
+    selectedOrgan = null;
+  }
+}
+
+// ─────────────────────────────────────────────
+// MODE SWITCH
+// ─────────────────────────────────────────────
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('tab-explore').classList.toggle('active', mode === 'explore');
+  document.getElementById('tab-puzzle').classList.toggle('active', mode === 'puzzle');
+
+  if (mode === 'explore') {
+    document.getElementById('canvas-label').textContent = 'Anterior View — Click an organ to learn more';
+    document.getElementById('puzzle-tray').classList.remove('visible');
+    document.getElementById('puzzle-sidebar').classList.remove('visible');
+    document.getElementById('info-empty').style.display = '';
+    document.getElementById('info-content').classList.remove('visible');
+    // restore all organs to body
+    resetPuzzle();
+    renderOrgans();
+  } else {
+    document.getElementById('canvas-label').textContent = 'Puzzle Mode — Drag organs from the tray to the correct positions';
+    document.getElementById('puzzle-tray').classList.add('visible');
+    document.getElementById('info-empty').style.display = 'none';
+    document.getElementById('info-content').classList.remove('visible');
+    document.getElementById('puzzle-sidebar').classList.add('visible');
+    shuffleOrgans();
+  }
+}
+
+// ─────────────────────────────────────────────
+// PUZZLE MODE
+// ─────────────────────────────────────────────
+function shuffleOrgans() {
+  puzzleScore = 0;
+  // Move all organs to tray
+  organs.forEach(o => { puzzleState[o.id] = 'tray'; });
+  updatePuzzleUI();
+  renderPuzzleBody();
+  renderTray();
+}
+
+function resetPuzzle() {
+  puzzleScore = 0;
+  organs.forEach(o => { puzzleState[o.id] = 'body'; });
+  if (currentMode === 'puzzle') {
+    updatePuzzleUI();
+    renderPuzzleBody();
+    renderTray();
+  }
+}
+
+function renderPuzzleBody() {
+  const container = document.getElementById('organs-container');
+  container.innerHTML = '';
+
+  // Show drop zones for organs that are in tray
+  organs.forEach(organ => {
+    if (puzzleState[organ.id] === 'tray') {
+      // Drop zone
+      const zone = document.createElement('div');
+      zone.className = 'drop-zone';
+      zone.id = `zone-${organ.id}`;
+      zone.style.left = (organ.x + organ.w/2 - 24) + 'px';
+      zone.style.top = (organ.y + organ.h/2 - 20) + 'px';
+      zone.style.width = '48px';
+      zone.style.height = '40px';
+      zone.dataset.organId = organ.id;
+
+      // drop events
+      zone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        zone.classList.add('active');
+      });
+      zone.addEventListener('dragleave', () => zone.classList.remove('active'));
+      zone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        zone.classList.remove('active');
+        const id = e.dataTransfer.getData('organId');
+        if (id === organ.id) {
+          placeOrgan(id);
+        } else {
+          // wrong position
+          zone.style.borderColor = 'var(--red)';
+          setTimeout(() => zone.style.borderColor = '', 600);
+        }
+      });
+
+      container.appendChild(zone);
+    } else {
+      // Show organ in place
+      const div = document.createElement('div');
+      div.className = 'organ placed-correctly';
+      div.id = `organ-${organ.id}`;
+      div.style.left = organ.x + 'px';
+      div.style.top = organ.y + 'px';
+      div.style.width = organ.w + 'px';
+      div.style.height = organ.h + 'px';
+      div.innerHTML = makeSVG(organ) + `<span class="organ-label">${organ.name}</span>`;
+      div.style.cursor = 'default';
+      container.appendChild(div);
+    }
+  });
+}
+
+function renderTray() {
+  const tray = document.getElementById('tray-organs');
+  tray.innerHTML = '';
+
+  const trayOrgans = organs.filter(o => puzzleState[o.id] === 'tray');
+
+  trayOrgans.forEach(organ => {
+    const slot = document.createElement('div');
+    slot.style.position = 'relative';
+    slot.style.width = '64px';
+    slot.style.height = '64px';
+    slot.style.flexShrink = '0';
+
+    const miniW = Math.min(organ.w, 54);
+    const miniH = Math.min(organ.h, 54);
+    const scaleX = 54 / organ.w;
+    const scaleY = 54 / organ.h;
+    const scale = Math.min(scaleX, scaleY, 1);
+
+    const div = document.createElement('div');
+    div.className = 'organ';
+    div.id = `tray-organ-${organ.id}`;
+    div.style.position = 'relative';
+    div.style.width = organ.w + 'px';
+    div.style.height = organ.h + 'px';
+    div.style.transform = `scale(${scale})`;
+    div.style.transformOrigin = 'top left';
+    div.style.cursor = 'grab';
+    div.draggable = true;
+    div.innerHTML = makeSVG(organ) + `<span class="organ-label">${organ.name}</span>`;
+
+    div.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('organId', organ.id);
+      div.classList.add('dragging');
+      draggedOrganId = organ.id;
+    });
+    div.addEventListener('dragend', () => {
+      div.classList.remove('dragging');
+      draggedOrganId = null;
+    });
+
+    div.addEventListener('mouseenter', (e) => showTooltip(organ.name, e));
+    div.addEventListener('mouseleave', hideTooltip);
+
+    slot.appendChild(div);
+
+    // label under
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'font-size:9px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--ink3);text-align:center;margin-top:' + (organ.h * scale) + 'px;line-height:1.3;width:64px;';
+    lbl.textContent = organ.name;
+    slot.appendChild(lbl);
+
+    tray.appendChild(slot);
+  });
+
+  // empty message
+  if (trayOrgans.length === 0 && currentMode === 'puzzle') {
+    tray.innerHTML = '<div style="font-size:13px;color:var(--green);font-weight:500;padding:8px 0;">🎉 All organs placed!</div>';
+  }
+}
+
+function placeOrgan(organId) {
+  puzzleState[organId] = 'body';
+  puzzleScore++;
+  document.getElementById('score-display').textContent = puzzleScore;
+  document.getElementById('puzzle-score').textContent = puzzleScore;
+
+  const pct = (puzzleScore / organs.length * 100).toFixed(0);
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  updatePuzzleOrganList();
+  renderPuzzleBody();
+  renderTray();
+
+  if (puzzleScore === organs.length) {
+    setTimeout(() => document.getElementById('victory-overlay').classList.add('visible'), 600);
+  }
+}
+
+function updatePuzzleUI() {
+  document.getElementById('puzzle-score').textContent = puzzleScore;
+  document.getElementById('score-display').textContent = puzzleScore;
+  document.getElementById('progress-fill').style.width = '0%';
+  updatePuzzleOrganList();
+}
+
+function updatePuzzleOrganList() {
+  const list = document.getElementById('puzzle-organ-list');
+  list.innerHTML = organs.map(o => `
+    <div class="puzzle-organ-item ${puzzleState[o.id] === 'body' ? 'placed' : 'in-tray'}">
+      <div class="status-dot"></div>
+      <span>${o.name}</span>
+      ${puzzleState[o.id] === 'body' ? '<span style="margin-left:auto;font-size:11px;">✓</span>' : ''}
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────
+// TOOLTIP
+// ─────────────────────────────────────────────
+function showTooltip(text, e) {
+  const tip = document.getElementById('tooltip');
+  tip.textContent = text;
+  tip.classList.add('visible');
+  moveTooltip(e);
+}
+function hideTooltip() {
+  document.getElementById('tooltip').classList.remove('visible');
+}
+function moveTooltip(e) {
+  const tip = document.getElementById('tooltip');
+  tip.style.left = (e.clientX + 14) + 'px';
+  tip.style.top = (e.clientY - 30) + 'px';
+}
+document.addEventListener('mousemove', (e) => {
+  const tip = document.getElementById('tooltip');
+  if (tip.classList.contains('visible')) moveTooltip(e);
+});
+
+// ─────────────────────────────────────────────
+// START
+// ─────────────────────────────────────────────
+init();
+</script>
+
+</body>
+</html>
