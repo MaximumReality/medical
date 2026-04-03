@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anatomy & Physiology I - 50 Question Exam</title>
+<style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f0f2f5; margin:0; padding:20px; color: #333; }
+    .container { max-width: 800px; margin: auto; }
+    h1 { text-align:center; color: #2c3e50; }
+    .section-head { background: #2b6cb0; color: white; padding: 10px 15px; border-radius: 8px; margin: 20px 0 10px 0; }
+    .question { background:#fff; padding:20px; margin-bottom:15px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.08); border-left: 5px solid #2b6cb0; }
+    .question h3 { margin-top:0; font-size: 1.1rem; }
+    label { display: block; margin: 8px 0; cursor: pointer; padding: 5px; border-radius: 4px; transition: background 0.2s; }
+    label:hover { background: #edf2f7; }
+    input[type="radio"] { margin-right: 10px; }
+    .controls { text-align: center; margin: 40px 0; }
+    button { padding: 15px 40px; font-size: 1.1rem; border:none; border-radius:30px; background:#2b6cb0; color:#fff; cursor:pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    button:hover { background:#1a4f8c; transform: translateY(-1px); }
+    #results { font-size: 1.5rem; font-weight:bold; margin-top:20px; text-align:center; padding: 20px; border-radius: 8px; display: none; }
+    .pass { background: #c6f6d5; color: #22543d; }
+    .fail { background: #fed7d7; color: #822727; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Human Anatomy & Physiology I</h1>
+    <p style="text-align: center;">50 Question Practice Exam</p>
+
+    <form id="quizForm">
+        <div class="section-head">Cells & Tissues</div>
+        <div class="question"><h3>1. Which organelle produces ATP?</h3>
+            <label><input type="radio" name="q1" value="A"> Nucleus</label>
+            <label><input type="radio" name="q1" value="B"> Ribosome</label>
+            <label><input type="radio" name="q1" value="C"> Mitochondria</label>
+            <label><input type="radio" name="q1" value="D"> Endoplasmic Reticulum</label>
+        </div>
+        <div class="question"><h3>2. Which tissue type lines organs and surfaces?</h3>
+            <label><input type="radio" name="q2" value="A"> Connective</label>
+            <label><input type="radio" name="q2" value="B"> Nervous</label>
+            <label><input type="radio" name="q2" value="C"> Muscle</label>
+            <label><input type="radio" name="q2" value="D"> Epithelial</label>
+        </div>
+        <div class="question"><h3>3. Which organelle contains genetic material?</h3>
+            <label><input type="radio" name="q3" value="A"> Nucleus</label>
+            <label><input type="radio" name="q3" value="B"> Mitochondria</label>
+            <label><input type="radio" name="q3" value="C"> Ribosome</label>
+            <label><input type="radio" name="q3" value="D"> Golgi Apparatus</label>
+        </div>
+        <div class="question"><h3>4. Which tissue connects and supports body structures?</h3>
+            <label><input type="radio" name="q4" value="A"> Connective</label>
+            <label><input type="radio" name="q4" value="B"> Nervous</label>
+            <label><input type="radio" name="q4" value="C"> Muscle</label>
+            <label><input type="radio" name="q4" value="D"> Epithelial</label>
+        </div>
+        <div class="question"><h3>5. Which organelle synthesizes proteins?</h3>
+            <label><input type="radio" name="q5" value="A"> Ribosome</label>
+            <label><input type="radio" name="q5" value="B"> Lysosome</label>
+            <label><input type="radio" name="q5" value="C"> Mitochondria</label>
+            <label><input type="radio" name="q5" value="D"> Nucleus</label>
+        </div>
+
+        <div class="section-head">Muscular & Nervous Systems</div>
+        <div class="question"><h3>6. Which muscle type is striated and voluntary?</h3>
+            <label><input type="radio" name="q6" value="A"> Skeletal</label>
+            <label><input type="radio" name="q6" value="B"> Smooth</label>
+            <label><input type="radio" name="q6" value="C"> Cardiac</label>
+        </div>
+        <div class="question"><h3>7. Which muscle type is involuntary and found in hollow organs?</h3>
+            <label><input type="radio" name="q7" value="A"> Skeletal</label>
+            <label><input type="radio" name="q7" value="B"> Smooth</label>
+            <label><input type="radio" name="q7" value="C"> Cardiac</label>
+        </div>
+        <div class="question"><h3>8. Which muscle type is striated and involuntary?</h3>
+            <label><input type="radio" name="q8" value="A"> Skeletal</label>
+            <label><input type="radio" name="q8" value="B"> Smooth</label>
+            <label><input type="radio" name="q8" value="C"> Cardiac</label>
+        </div>
+        <div class="question"><h3>9. Which structure carries impulses away from the cell body?</h3>
+            <label><input type="radio" name="q9" value="A"> Dendrite</label>
+            <label><input type="radio" name="q9" value="B"> Axon</label>
+            <label><input type="radio" name="q9" value="C"> Synapse</label>
+        </div>
+        <div class="question"><h3>10. Which part of the neuron receives incoming signals?</h3>
+            <label><input type="radio" name="q10" value="A"> Dendrite</label>
+            <label><input type="radio" name="q10" value="B"> Axon</label>
+            <label><input type="radio" name="q10" value="C"> Soma</label>
+        </div>
+
+        <div class="section-head">Skeletal System</div>
+        <div class="question"><h3>11. Which mineral is most critical for bone strength?</h3>
+            <label><input type="radio" name="q11" value="A"> Iron</label>
+            <label><input type="radio" name="q11" value="B"> Calcium</label>
+            <label><input type="radio" name="q11" value="C"> Potassium</label>
+        </div>
+        <div class="question"><h3>12. Which bone cell breaks down bone tissue?</h3>
+            <label><input type="radio" name="q12" value="A"> Osteoclast</label>
+            <label><input type="radio" name="q12" value="B"> Osteoblast</label>
+            <label><input type="radio" name="q12" value="C"> Osteocyte</label>
+        </div>
+        <div class="question"><h3>13. Which bone cell builds new bone tissue?</h3>
+            <label><input type="radio" name="q13" value="A"> Osteoclast</label>
+            <label><input type="radio" name="q13" value="B"> Osteoblast</label>
+            <label><input type="radio" name="q13" value="C"> Chondrocyte</label>
+        </div>
+        <div class="question"><h3>14. Which part of the long bone contains red marrow?</h3>
+            <label><input type="radio" name="q14" value="A"> Epiphysis</label>
+            <label><input type="radio" name="q14" value="B"> Diaphysis</label>
+            <label><input type="radio" name="q14" value="C"> Periosteum</label>
+        </div>
+        <div class="question"><h3>15. Which type of joint allows free movement?</h3>
+            <label><input type="radio" name="q15" value="A"> Fibrous</label>
+            <label><input type="radio" name="q15" value="B"> Cartilaginous</label>
+            <label><input type="radio" name="q15" value="C"> Suture</label>
+            <label><input type="radio" name="q15" value="D"> Synovial</label>
+        </div>
+
+        <div class="section-head">Cardiovascular System</div>
+        <div class="question"><h3>16. Which chamber pumps oxygenated blood to the body?</h3>
+            <label><input type="radio" name="q16" value="A"> Right Atrium</label>
+            <label><input type="radio" name="q16" value="B"> Right Ventricle</label>
+            <label><input type="radio" name="q16" value="C"> Left Atrium</label>
+            <label><input type="radio" name="q16" value="D"> Left Ventricle</label>
+        </div>
+        <div class="question"><h3>17. Which chamber receives deoxygenated blood from the body?</h3>
+            <label><input type="radio" name="q17" value="A"> Right Atrium</label>
+            <label><input type="radio" name="q17" value="B"> Left Atrium</label>
+            <label><input type="radio" name="q17" value="C"> Left Ventricle</label>
+        </div>
+        <div class="question"><h3>18. Which vessels carry blood away from the heart?</h3>
+            <label><input type="radio" name="q18" value="A"> Arteries</label>
+            <label><input type="radio" name="q18" value="B"> Veins</label>
+            <label><input type="radio" name="q18" value="C"> Capillaries</label>
+        </div>
+        <div class="question"><h3>19. Which vessels return blood to the heart?</h3>
+            <label><input type="radio" name="q19" value="A"> Arteries</label>
+            <label><input type="radio" name="q19" value="B"> Veins</label>
+            <label><input type="radio" name="q19" value="C"> Arterioles</label>
+        </div>
+        <div class="question"><h3>20. Where does gas/nutrient exchange occur?</h3>
+            <label><input type="radio" name="q20" value="A"> Arteries</label>
+            <label><input type="radio" name="q20" value="B"> Veins</label>
+            <label><input type="radio" name="q20" value="C"> Capillaries</label>
+        </div>
+
+        <div class="section-head">Respiratory System</div>
+        <div class="question"><h3>21. Where does gas exchange occur?</h3>
+            <label><input type="radio" name="q21" value="A"> Bronchi</label>
+            <label><input type="radio" name="q21" value="B"> Alveoli</label>
+            <label><input type="radio" name="q21" value="C"> Trachea</label>
+        </div>
+        <div class="question"><h3>22. What is the primary muscle of breathing?</h3>
+            <label><input type="radio" name="q22" value="A"> Intercostals</label>
+            <label><input type="radio" name="q22" value="B"> Diaphragm</label>
+            <label><input type="radio" name="q22" value="C"> Scalenes</label>
+        </div>
+        <div class="question"><h3>23. Which structure is the "windpipe"?</h3>
+            <label><input type="radio" name="q23" value="A"> Esophagus</label>
+            <label><input type="radio" name="q23" value="B"> Larynx</label>
+            <label><input type="radio" name="q23" value="C"> Trachea</label>
+        </div>
+        <div class="question"><h3>24. Which lung has 3 lobes?</h3>
+            <label><input type="radio" name="q24" value="A"> Right</label>
+            <label><input type="radio" name="q24" value="B"> Left</label>
+        </div>
+        <div class="question"><h3>25. Which lung has the cardiac notch?</h3>
+            <label><input type="radio" name="q25" value="A"> Right</label>
+            <label><input type="radio" name="q25" value="B"> Left</label>
+        </div>
+
+        <div class="section-head">Digestive System</div>
+        <div class="question"><h3>26. Which organ produces bile?</h3>
+            <label><input type="radio" name="q26" value="A"> Liver</label>
+            <label><input type="radio" name="q26" value="B"> Pancreas</label>
+            <label><input type="radio" name="q26" value="C"> Gallbladder</label>
+        </div>
+        <div class="question"><h3>27. Which organ stores bile?</h3>
+            <label><input type="radio" name="q27" value="A"> Liver</label>
+            <label><input type="radio" name="q27" value="B"> Gallbladder</label>
+            <label><input type="radio" name="q27" value="C"> Spleen</label>
+        </div>
+        <div class="question"><h3>28. Which organ secretes insulin?</h3>
+            <label><input type="radio" name="q28" value="A"> Liver</label>
+            <label><input type="radio" name="q28" value="B"> Stomach</label>
+            <label><input type="radio" name="q28" value="C"> Pancreas</label>
+        </div>
+        <div class="question"><h3>29. Where are most nutrients absorbed?</h3>
+            <label><input type="radio" name="q29" value="A"> Small Intestine</label>
+            <label><input type="radio" name="q29" value="B"> Large Intestine</label>
+            <label><input type="radio" name="q29" value="C"> Stomach</label>
+        </div>
+        <div class="question"><h3>30. Where is water primarily absorbed?</h3>
+            <label><input type="radio" name="q30" value="A"> Small Intestine</label>
+            <label><input type="radio" name="q30" value="B"> Large Intestine</label>
+            <label><input type="radio" name="q30" value="C"> Esophagus</label>
+        </div>
+
+        <div class="section-head">Urinary System</div>
+        <div class="question"><h3>31. Which organ produces urine?</h3>
+            <label><input type="radio" name="q31" value="A"> Kidneys</label>
+            <label><input type="radio" name="q31" value="B"> Bladder</label>
+            <label><input type="radio" name="q31" value="C"> Liver</label>
+        </div>
+        <div class="question"><h3>32. Tube from kidney to bladder?</h3>
+            <label><input type="radio" name="q32" value="A"> Ureter</label>
+            <label><input type="radio" name="q32" value="B"> Urethra</label>
+            <label><input type="radio" name="q32" value="C"> Nephron</label>
+        </div>
+        <div class="question"><h3>33. Which structure stores urine?</h3>
+            <label><input type="radio" name="q33" value="A"> Kidney</label>
+            <label><input type="radio" name="q33" value="B"> Ureter</label>
+            <label><input type="radio" name="q33" value="C"> Bladder</label>
+        </div>
+        <div class="question"><h3>34. Tube carrying urine out of the body?</h3>
+            <label><input type="radio" name="q34" value="A"> Ureter</label>
+            <label><input type="radio" name="q34" value="B"> Proximal Tubule</label>
+            <label><input type="radio" name="q34" value="C"> Glomerulus</label>
+            <label><input type="radio" name="q34" value="D"> Urethra</label>
+        </div>
+        <div class="question"><h3>35. Functional unit of the kidney?</h3>
+            <label><input type="radio" name="q35" value="A"> Nephron</label>
+            <label><input type="radio" name="q35" value="B"> Neuron</label>
+            <label><input type="radio" name="q35" value="C"> Alveoli</label>
+        </div>
+
+        <div class="section-head">Endocrine System</div>
+        <div class="question"><h3>36. Which gland regulates metabolism?</h3>
+            <label><input type="radio" name="q36" value="A"> Thyroid</label>
+            <label><input type="radio" name="q36" value="B"> Thymus</label>
+            <label><input type="radio" name="q36" value="C"> Adrenal</label>
+        </div>
+        <div class="question"><h3>37. The "Master Gland"?</h3>
+            <label><input type="radio" name="q37" value="A"> Thyroid</label>
+            <label><input type="radio" name="q37" value="B"> Pituitary</label>
+            <label><input type="radio" name="q37" value="C"> Pineal</label>
+        </div>
+        <div class="question"><h3>38. Gland producing glucagon?</h3>
+            <label><input type="radio" name="q38" value="A"> Thyroid</label>
+            <label><input type="radio" name="q38" value="B"> Pituitary</label>
+            <label><input type="radio" name="q38" value="C"> Pancreas</label>
+        </div>
+        <div class="question"><h3>39. Glands atop the kidneys?</h3>
+            <label><input type="radio" name="q39" value="A"> Thyroid</label>
+            <label><input type="radio" name="q39" value="B"> Ovaries</label>
+            <label><input type="radio" name="q39" value="C"> Testes</label>
+            <label><input type="radio" name="q39" value="D"> Adrenal</label>
+        </div>
+        <div class="question"><h3>40. Gland regulating melatonin/circadian rhythm?</h3>
+            <label><input type="radio" name="q40" value="A"> Pituitary</label>
+            <label><input type="radio" name="q40" value="B"> Thyroid</label>
+            <label><input type="radio" name="q40" value="C"> Pineal</label>
+        </div>
+
+        <div class="section-head">Immune & Blood</div>
+        <div class="question"><h3>41. WBC that produces antibodies?</h3>
+            <label><input type="radio" name="q41" value="A"> Lymphocyte</label>
+            <label><input type="radio" name="q41" value="B"> Monocyte</label>
+            <label><input type="radio" name="q41" value="C"> Basophil</label>
+        </div>
+        <div class="question"><h3>42. Most numerous WBC?</h3>
+            <label><input type="radio" name="q42" value="A"> Lymphocyte</label>
+            <label><input type="radio" name="q42" value="B"> Neutrophil</label>
+            <label><input type="radio" name="q42" value="C"> Eosinophil</label>
+        </div>
+        <div class="question"><h3>43. Cells carrying oxygen?</h3>
+            <label><input type="radio" name="q43" value="A"> Erythrocytes (RBC)</label>
+            <label><input type="radio" name="q43" value="B"> Leukocytes (WBC)</label>
+            <label><input type="radio" name="q43" value="C"> Thrombocytes</label>
+        </div>
+        <div class="question"><h3>44. Component critical for clotting?</h3>
+            <label><input type="radio" name="q44" value="A"> Plasma</label>
+            <label><input type="radio" name="q44" value="B"> Hemoglobin</label>
+            <label><input type="radio" name="q44" value="C"> Platelets</label>
+        </div>
+        <div class="question"><h3>45. Oxygen-binding protein in RBCs?</h3>
+            <label><input type="radio" name="q45" value="A"> Myoglobin</label>
+            <label><input type="radio" name="q45" value="B"> Albumin</label>
+            <label><input type="radio" name="q45" value="C"> Fibrinogen</label>
+            <label><input type="radio" name="q45" value="D"> Hemoglobin</label>
+        </div>
+
+        <div class="section-head">Integumentary System</div>
+        <div class="question"><h3>46. Outermost skin layer?</h3>
+            <label><input type="radio" name="q46" value="A"> Epidermis</label>
+            <label><input type="radio" name="q46" value="B"> Dermis</label>
+            <label><input type="radio" name="q46" value="C"> Hypodermis</label>
+        </div>
+        <div class="question"><h3>47. Layer containing nerves and blood vessels?</h3>
+            <label><input type="radio" name="q47" value="A"> Epidermis</label>
+            <label><input type="radio" name="q47" value="B"> Dermis</label>
+            <label><input type="radio" name="q47" value="C"> Stratum Corneum</label>
+        </div>
+        <div class="question"><h3>48. Pigment providing skin color?</h3>
+            <label><input type="radio" name="q48" value="A"> Carotene</label>
+            <label><input type="radio" name="q48" value="B"> Keratin</label>
+            <label><input type="radio" name="q48" value="C"> Melanin</label>
+        </div>
+        <div class="question"><h3>49. Glands producing sweat?</h3>
+            <label><input type="radio" name="q49" value="A"> Sudoriferous</label>
+            <label><input type="radio" name="q49" value="B"> Sebaceous</label>
+            <label><input type="radio" name="q49" value="C"> Adrenal</label>
+        </div>
+        <div class="question"><h3>50. Glands producing oil?</h3>
+            <label><input type="radio" name="q50" value="A"> Sudoriferous</label>
+            <label><input type="radio" name="q50" value="B"> Sebaceous</label>
+            <label><input type="radio" name="q50" value="C"> Pituitary</label>
+        </div>
+    </form>
+
+    <div class="controls">
+        <button type="button" onclick="gradeQuiz()">Submit Final Exam</button>
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script>
+function gradeQuiz() {
+  const answers = {
+    q1:"C", q2:"D", q3:"A", q4:"A", q5:"A",
+    q6:"A", q7:"B", q8:"C", q9:"B", q10:"A",
+    q11:"B", q12:"A", q13:"B", q14:"A", q15:"D",
+    q16:"D", q17:"A", q18:"A", q19:"B", q20:"C",
+    q21:"B", q22:"B", q23:"C", q24:"A", q25:"B",
+    q26:"A", q27:"B", q28:"C", q29:"A", q30:"B",
+    q31:"A", q32:"A", q33:"C", q34:"D", q35:"A",
+    q36:"A", q37:"B", q38:"C", q39:"D", q40:"C",
+    q41:"A", q42:"B", q43:"A", q44:"C", q45:"D",
+    q46:"A", q47:"B", q48:"C", q49:"A", q50:"B"
+  };
+  
+  let score = 0;
+  const total = 50;
+  const resultDiv = document.getElementById("results");
+
+  for (let q in answers) {
+    const selected = document.querySelector('input[name="'+q+'"]:checked');
+    if (selected && selected.value === answers[q]) {
+      score++;
+    }
+  }
+
+  const percentage = (score / total) * 100;
+  resultDiv.style.display = "block";
+  resultDiv.className = percentage >= 70 ? "pass" : "fail";
+  resultDiv.innerHTML = `Exam Complete!<br>You scored ${score} out of ${total} (${percentage}%).`;
+  
+  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
