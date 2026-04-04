@@ -187,14 +187,44 @@
         <div class="status-tag">XP: <span id="xp">0</span></div>
     </div>
 <script>
-let xp = localStorage.getItem("xp") || 0;
-document.getElementById("xp").textContent = xp;
+document.addEventListener("DOMContentLoaded", () => {
 
-document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
-    link.addEventListener("click", () => {
-        xp++;
-        localStorage.setItem("xp", xp);
+    // XP SYSTEM
+    let xp = parseInt(localStorage.getItem("xp")) || 0;
+    document.getElementById("xp").textContent = xp;
+
+    // CLICK TRACKING (XP + LAST MODULE)
+    document.querySelectorAll(".nav-card, .tool-btn").forEach(link => {
+        link.addEventListener("click", () => {
+            xp++;
+            localStorage.setItem("xp", xp);
+            localStorage.setItem("lastModule", link.href);
+        });
     });
+
+    // RESUME BUTTON
+    const last = localStorage.getItem("lastModule");
+    if (last) {
+        const resume = document.createElement("a");
+        resume.href = last;
+        resume.className = "nav-card full-width";
+        resume.innerHTML = `
+            <h2>[RESUME LAST SESSION]</h2>
+            <p>Continue where you left off.</p>
+        `;
+        document.querySelector(".menu-grid").prepend(resume);
+    }
+
+    // BOOT ANIMATION
+    const cards = document.querySelectorAll(".nav-card");
+    cards.forEach((card, i) => {
+        card.style.opacity = 0;
+        setTimeout(() => {
+            card.style.transition = "opacity 0.4s ease";
+            card.style.opacity = 1;
+        }, i * 120);
+    });
+
 });
 </script>
     <div class="menu-grid">
@@ -215,7 +245,7 @@ document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
 
         <div class="nav-card">
             <h2>[04] LAB MODULES</h2>
-            <p>Standalone diagnostic units:</p>
+            <p>Clinical tools & calculations:</p>
             <div class="tool-links">
                 <a href="https://maximumreality.github.io/medical/med-math.html" class="tool-btn">> IV_PUMP</a>
                 <a href="https://maximumreality.github.io/medical/ekg-analyzer.html" class="tool-btn">> EKG_EVAL</a>
@@ -244,38 +274,6 @@ document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
         <span style="color: #ffff00; opacity: 0.4;">🩺FOR ELINA💜</span>
     </div>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".nav-card");
-    cards.forEach((card, i) => {
-        card.style.opacity = 0;
-        setTimeout(() => {
-            card.style.transition = "opacity 0.4s ease";
-            card.style.opacity = 1;
-        }, i * 120);
-    });
-});
-</script>
-   <script>
-document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
-    link.addEventListener("click", () => {
-        localStorage.setItem("lastModule", link.href);
-    });
-});
 
-window.addEventListener("load", () => {
-    const last = localStorage.getItem("lastModule");
-    if (last) {
-        const resume = document.createElement("a");
-        resume.href = last;
-        resume.className = "nav-card full-width";
-        resume.innerHTML = `
-            <h2>[RESUME LAST SESSION]</h2>
-            <p>Continue where you left off.</p>
-        `;
-        document.querySelector(".menu-grid").prepend(resume);
-    }
-});
-</script> 
 </body>
 </html>
