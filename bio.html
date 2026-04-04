@@ -75,6 +75,30 @@
       background: transparent; cursor: pointer; transition: 0.2s;
     }
     .article-link:hover { background: var(--clinical-cyan); color: #000; }
+
+   .return-btn {
+  display: inline-block;
+  text-decoration: none;
+  font-family: var(--font-ui);
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: var(--clinical-cyan);
+  border: 2px solid var(--clinical-cyan);
+  padding: 8px 18px;
+  border-radius: 4px;
+  transition: 0.25s;
+  text-align: center;
+  margin-bottom: 15px;
+  box-shadow: 0 0 6px rgba(0, 242, 255, 0.5);
+  background: rgba(0,242,255,0.03);
+}
+
+.return-btn:hover {
+  background: var(--clinical-cyan);
+  color: #000;
+  box-shadow: 0 0 12px var(--clinical-cyan);
+  transform: translateY(-2px);
+} 
   </style>
 </head>
 <body>
@@ -197,8 +221,9 @@
     executeSearch();
   }
 </script>
-  <a href="https://maximumreality.github.io/medical/index.html" class="nav-card" style="margin-bottom:15px;">
-    <h2>⏮️ RETURN TO TERMINAL⚕️</h2>
+  <a href="https://maximumreality.github.io/medical/index.html" class="return-btn">
+  ⏮️ RETURN TO TERMINAL ⚕️
+</a>
 </a>
 </body>
 </html>
