@@ -756,18 +756,19 @@ const examData = [
 // IMAGE BANK — Add your images here!
 // For each entry: title, notes, src (file path or URL), icon (emoji placeholder)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const BASE = "https://maximumreality.github.io/medical/";
 const imageBank = [
-  { title:"Anatomical Position", notes:"Standard reference position: standing upright, palms forward, arms at sides. ALL directional terms (anterior, posterior, medial, lateral) are relative to this position.", src:"", icon:"🧍" },
-  { title:"Levels of Organization", notes:"Atom → Molecule → Organelle → Cell → Tissue → Organ → Organ System → Organism. Each level builds on the previous.", src:"", icon:"🔬" },
-  { title:"Circulatory System", notes:"Pulmonary circuit (right side → lungs → left side) and Systemic circuit (left side → body → right side). Blood pressure highest in aorta, lowest in veins.", src:"", icon:"❤️" },
-  { title:"Types of Body Movement", notes:"Flexion, Extension, Abduction, Adduction, Rotation, Circumduction, Pronation, Supination, Dorsiflexion, Plantar flexion.", src:"", icon:"🤸" },
-  { title:"Types of Tissue", notes:"4 types: Epithelial (covers/lines), Connective (supports/binds), Muscle (contracts), Nervous (conducts impulses). Each has subtypes.", src:"", icon:"🔷" },
-  { title:"Autonomic Nervous System", notes:"Sympathetic (fight-or-flight): increases HR, dilates pupils, inhibits digestion. Parasympathetic (rest-and-digest): decreases HR, constricts pupils, promotes digestion.", src:"", icon:"⚡" },
-  { title:"Mast Cell", notes:"Found in connective tissue. Contains granules with histamine and heparin. Key in allergic reactions and inflammation — releases chemicals when activated by allergens.", src:"", icon:"🦠" },
-  { title:"Stages of Pressure Sores", notes:"Stage 1: Intact skin, redness. Stage 2: Partial thickness, blister. Stage 3: Full thickness, subcutaneous visible. Stage 4: Bone/tendon exposed. Unstageable: covered by eschar.", src:"", icon:"🩹" },
-  { title:"Circadian Rhythm", notes:"24-hour internal clock regulated by the suprachiasmatic nucleus (SCN) in the hypothalamus. Melatonin rises at night (pineal gland). Disrupted by blue light, shift work.", src:"", icon:"🌙" },
-  { title:"Blood Pressure", notes:"BP = Cardiac Output × Peripheral Resistance. Normal: <120/80 mmHg. Systolic = ventricular contraction. Diastolic = ventricular relaxation. Measured in mmHg.", src:"", icon:"💉" },
-  { title:"Negative Feedback Loop", notes:"Most common regulatory mechanism. Example: High blood glucose → insulin released → glucose lowers → insulin decreases. The response OPPOSES the stimulus.", src:"", icon:"🔄" },
+  { title:"Anatomical Position", notes:"Standard reference position: standing upright, palms forward, arms at sides. ALL directional terms (anterior, posterior, medial, lateral) are relative to this position.", src:BASE+"anatomical-position.JPG", icon:"🧍" },
+  { title:"Levels of Organization", notes:"Atom → Molecule → Organelle → Cell → Tissue → Organ → Organ System → Organism. Each level builds on the previous.", src:BASE+"levels-of-organization.JPG", icon:"🔬" },
+  { title:"Circulatory System", notes:"Pulmonary circuit (right side → lungs → left side) and Systemic circuit (left side → body → right side). Blood pressure highest in aorta, lowest in veins.", src:BASE+"circulatory-system.JPG", icon:"❤️" },
+  { title:"Types of Body Movement", notes:"Flexion, Extension, Abduction, Adduction, Rotation, Circumduction, Pronation, Supination, Dorsiflexion, Plantar flexion.", src:BASE+"types-of-movement.JPG", icon:"🤸" },
+  { title:"Types of Tissue", notes:"4 types: Epithelial (covers/lines), Connective (supports/binds), Muscle (contracts), Nervous (conducts impulses). Each has subtypes.", src:BASE+"types-of-tissues.JPG", icon:"🔷" },
+  { title:"Autonomic Nervous System", notes:"Sympathetic (fight-or-flight): increases HR, dilates pupils, inhibits digestion. Parasympathetic (rest-and-digest): decreases HR, constricts pupils, promotes digestion.", src:BASE+"autonomic-nervous-system .JPG", icon:"⚡" },
+  { title:"Mast Cell", notes:"Found in connective tissue. Contains granules with histamine and heparin. Key in allergic reactions and inflammation — releases chemicals when activated by allergens.", src:BASE+"mast-cell.JPG", icon:"🦠" },
+  { title:"Stages of Pressure Sores", notes:"Stage 1: Intact skin, redness. Stage 2: Partial thickness, blister. Stage 3: Full thickness, subcutaneous visible. Stage 4: Bone/tendon exposed. Unstageable: covered by eschar.", src:BASE+"pressure-sores.JPG", icon:"🩹" },
+  { title:"Circadian Rhythm", notes:"24-hour internal clock regulated by the suprachiasmatic nucleus (SCN) in the hypothalamus. Melatonin rises at night (pineal gland). Disrupted by blue light, shift work.", src:BASE+"circadian-rhythm.JPG", icon:"🌙" },
+  { title:"Blood Pressure", notes:"BP = Cardiac Output × Peripheral Resistance. Normal: <120/80 mmHg. Systolic = ventricular contraction. Diastolic = ventricular relaxation. Measured in mmHg.", src:BASE+"blood-pressure.JPG", icon:"💉" },
+  { title:"Feedback Loops", notes:"Negative feedback (most common): response opposes the stimulus — e.g. high glucose → insulin released → glucose drops. Positive feedback amplifies the stimulus — e.g. labor contractions.", src:BASE+"multiple-feedback-loop.JPG", icon:"🔄" },
 ];
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
