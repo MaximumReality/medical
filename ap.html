@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A&P I Study Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2240;
+    --teal: #1a7a74;
+    --teal-light: #25a99f;
+    --cream: #f9f5ef;
+    --gold: #c9972b;
+    --gold-light: #f0c050;
+    --red: #c0392b;
+    --green: #1e7e4d;
+    --white: #ffffff;
+    --gray: #667;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 20px rgba(15,34,64,0.12);
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Source Sans 3’, sans-serif;
+background: var(–cream);
+color: var(–navy);
+min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+background: var(–navy);
+color: var(–white);
+padding: 20px 24px 16px;
+text-align: center;
+position: relative;
+}
+header h1 {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(1.4rem, 4vw, 2rem);
+letter-spacing: 1px;
+}
+header p { font-size: 0.85rem; opacity: 0.7; margin-top: 4px; font-style: italic; }
+
+/* ── TABS ── */
+.tab-bar {
+display: flex;
+background: var(–navy);
+border-top: 1px solid rgba(255,255,255,0.1);
+}
+.tab-btn {
+flex: 1;
+padding: 12px;
+background: none;
+border: none;
+color: rgba(255,255,255,0.55);
+font-family: ‘Source Sans 3’, sans-serif;
+font-size: 0.9rem;
+font-weight: 600;
+cursor: pointer;
+letter-spacing: 0.5px;
+border-bottom: 3px solid transparent;
+transition: all 0.2s;
+}
+.tab-btn.active {
+color: var(–gold-light);
+border-bottom-color: var(–gold-light);
+}
+.tab-btn:hover:not(.active) { color: var(–white); }
+
+/* ── VIEWS ── */
+.view { display: none; padding: 20px 16px; }
+.view.active { display: block; }
+
+/* ── CATEGORY FILTER ── */
+.filter-scroll {
+display: flex;
+gap: 8px;
+overflow-x: auto;
+padding-bottom: 10px;
+margin-bottom: 16px;
+scrollbar-width: none;
+}
+.filter-scroll::-webkit-scrollbar { display: none; }
+.cat-btn {
+white-space: nowrap;
+padding: 6px 14px;
+border-radius: 20px;
+border: 1.5px solid var(–teal);
+background: transparent;
+color: var(–teal);
+font-family: ‘Source Sans 3’, sans-serif;
+font-size: 0.8rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+}
+.cat-btn.active, .cat-btn:hover {
+background: var(–teal);
+color: var(–white);
+}
+
+/* ── FLASHCARDS ── */
+#fc-counter {
+text-align: center;
+font-size: 0.85rem;
+color: var(–gray);
+margin-bottom: 12px;
+font-weight: 600;
+letter-spacing: 0.5px;
+}
+
+.card-scene {
+perspective: 1000px;
+max-width: 480px;
+margin: 0 auto;
+height: 240px;
+cursor: pointer;
+}
+.card-inner {
+width: 100%; height: 100%;
+position: relative;
+transform-style: preserve-3d;
+transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.card-scene.flipped .card-inner { transform: rotateY(180deg); }
+
+.card-face {
+position: absolute;
+inset: 0;
+backface-visibility: hidden;
+border-radius: 16px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 24px;
+text-align: center;
+box-shadow: var(–shadow);
+}
+.card-front {
+background: var(–navy);
+color: var(–white);
+}
+.card-front .card-label {
+font-size: 0.7rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+opacity: 0.5;
+margin-bottom: 12px;
+}
+.card-front .card-q {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(1rem, 3vw, 1.3rem);
+line-height: 1.4;
+}
+.card-front .card-hint {
+margin-top: 16px;
+font-size: 0.75rem;
+opacity: 0.45;
+}
+
+.card-back {
+background: var(–teal);
+color: var(–white);
+transform: rotateY(180deg);
+}
+.card-back .card-answer {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+font-weight: 700;
+margin-bottom: 10px;
+}
+.card-back .card-exp {
+font-size: 0.85rem;
+opacity: 0.85;
+line-height: 1.5;
+}
+
+.fc-nav {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin-top: 16px;
+align-items: center;
+}
+.fc-nav button {
+padding: 10px 24px;
+border: none;
+border-radius: 8px;
+font-family: ‘Source Sans 3’, sans-serif;
+font-size: 0.9rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+}
+#fc-prev { background: var(–cream); color: var(–navy); border: 2px solid #ccc; }
+#fc-next { background: var(–navy); color: var(–white); }
+#fc-shuffle { background: var(–gold); color: var(–navy); }
+#fc-prev:hover { border-color: var(–navy); }
+#fc-next:hover { background: var(–teal); }
+#fc-shuffle:hover { background: var(–gold-light); }
+
+.fc-progress-bar {
+max-width: 480px;
+margin: 12px auto 0;
+height: 4px;
+background: #ddd;
+border-radius: 2px;
+overflow: hidden;
+}
+.fc-progress-fill {
+height: 100%;
+background: var(–teal-light);
+transition: width 0.3s;
+}
+
+/* ── IMAGE CARDS ── */
+.img-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 12px;
+margin-top: 8px;
+}
+.img-card {
+background: var(–white);
+border-radius: 12px;
+overflow: hidden;
+box-shadow: var(–shadow);
+cursor: pointer;
+transition: transform 0.2s;
+border: 2px solid transparent;
+}
+.img-card:hover { transform: translateY(-3px); border-color: var(–teal); }
+.img-card-thumb {
+width: 100%;
+aspect-ratio: 4/3;
+background: linear-gradient(135deg, #e8f4f3, #d0ebea);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 2.5rem;
+color: var(–teal);
+}
+.img-card-label {
+padding: 8px 10px;
+font-size: 0.78rem;
+font-weight: 600;
+color: var(–navy);
+text-align: center;
+line-height: 1.3;
+}
+
+/* image modal */
+.img-modal {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+z-index: 1000;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+padding: 20px;
+}
+.img-modal.open { display: flex; }
+.img-modal img {
+max-width: 100%;
+max-height: 70vh;
+border-radius: 8px;
+object-fit: contain;
+}
+.img-modal-title {
+color: var(–white);
+font-family: ‘Playfair Display’, serif;
+font-size: 1.1rem;
+margin-top: 14px;
+text-align: center;
+}
+.img-modal-notes {
+color: rgba(255,255,255,0.7);
+font-size: 0.82rem;
+margin-top: 6px;
+text-align: center;
+max-width: 480px;
+line-height: 1.5;
+}
+.img-modal-close {
+position: absolute;
+top: 16px; right: 20px;
+background: none; border: none;
+color: white; font-size: 1.8rem;
+cursor: pointer; line-height: 1;
+}
+/* placeholder for images not yet added */
+.img-placeholder {
+background: linear-gradient(135deg, #e0f0ef, #c5e4e2);
+width: 100%;
+height: 100%;
+min-height: 200px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 10px;
+border-radius: 8px;
+color: var(–teal);
+}
+.img-placeholder .ph-icon { font-size: 3rem; }
+.img-placeholder p { font-size: 0.85rem; opacity: 0.7; }
+
+/* ── QUIZ ── */
+.quiz-meta {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 16px;
+flex-wrap: wrap;
+gap: 8px;
+}
+.quiz-meta .q-count { font-size: 0.85rem; color: var(–gray); font-weight: 600; }
+
+#score-banner {
+padding: 14px;
+border-radius: 10px;
+text-align: center;
+margin-bottom: 20px;
+font-weight: 700;
+font-size: 1.1rem;
+display: none;
+animation: slideIn 0.4s ease;
+}
+@keyframes slideIn { from { opacity:0; transform: translateY(-10px); } to { opacity:1; transform: translateY(0); } }
+.pass { background: #d4edda; color: #1e7e4d; border: 2px solid #1e7e4d; }
+.fail { background: #fce8e6; color: var(–red); border: 2px solid var(–red); }
+
+.section-head {
+background: var(–navy);
+color: var(–gold-light);
+padding: 10px 16px;
+border-radius: 8px;
+margin: 24px 0 12px;
+font-size: 0.8rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+font-weight: 600;
+}
+
+.question-block {
+background: var(–white);
+border-radius: 12px;
+padding: 18px;
+margin-bottom: 14px;
+box-shadow: 0 2px 10px rgba(15,34,64,0.07);
+border-left: 4px solid #dce3ee;
+transition: border-color 0.3s;
+}
+.question-block.answered { border-left-color: var(–teal-light); }
+.question-block h3 {
+font-size: 0.97rem;
+font-weight: 600;
+margin-bottom: 12px;
+line-height: 1.45;
+color: var(–navy);
+}
+
+label {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin: 6px 0;
+padding: 9px 12px;
+border-radius: 8px;
+border: 1.5px solid #e0e6ef;
+cursor: pointer;
+font-size: 0.9rem;
+transition: all 0.15s;
+line-height: 1.4;
+}
+label:hover { background: #f0f5ff; border-color: var(–teal-light); }
+input[type=“radio”] { margin-top: 2px; flex-shrink: 0; accent-color: var(–teal); transform: scale(1.1); }
+
+.correct-label { background: #d4edda !important; border-color: var(–green) !important; font-weight: 600; color: #1a5c38 !important; }
+.wrong-label   { background: #fce8e6 !important; border-color: var(–red) !important; text-decoration: line-through; color: #8c2020 !important; }
+
+.explanation {
+display: none;
+margin-top: 12px;
+padding: 10px 14px;
+background: #edf6f9;
+border-left: 4px solid var(–teal-light);
+border-radius: 0 8px 8px 0;
+font-size: 0.85rem;
+color: #1f4f5a;
+line-height: 1.5;
+}
+
+.quiz-actions {
+text-align: center;
+margin: 28px 0 40px;
+display: flex;
+justify-content: center;
+gap: 14px;
+flex-wrap: wrap;
+}
+.quiz-actions button {
+padding: 13px 32px;
+border: none;
+border-radius: 50px;
+font-family: ‘Source Sans 3’, sans-serif;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s;
+}
+#submitBtn { background: var(–navy); color: var(–white); }
+#submitBtn:hover { background: var(–teal); transform: translateY(-2px); }
+#submitBtn:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+#restartBtn { background: var(–cream); color: var(–navy); border: 2px solid #ccc; display: none; }
+#restartBtn:hover { border-color: var(–navy); transform: translateY(-2px); }
+
+/* score ring */
+.score-ring-wrap { display: inline-block; text-align: center; margin-top: 10px; }
+.score-ring { transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: #ddd; stroke-width: 8; }
+.ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+
+/* responsive tweaks */
+@media (max-width: 400px) {
+.card-scene { height: 200px; }
+.fc-nav button { padding: 9px 16px; font-size: 0.82rem; }
+}
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>A&amp;P I Study Suite</h1>
+  <p>Anatomy &amp; Physiology · Flashcards · Practice Exam · Reference Images</p>
+</header>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('fc')">🃏 Flashcards</button>
+  <button class="tab-btn" onclick="showTab('images')">🖼 Images</button>
+  <button class="tab-btn" onclick="showTab('quiz')">📝 Exam</button>
+</div>
+
+<!-- ═══════════ FLASHCARD VIEW ═══════════ -->
+
+<div id="view-fc" class="view active">
+  <div class="filter-scroll" id="fc-filters"></div>
+  <div id="fc-counter">Card 1 of 50</div>
+
+  <div class="card-scene" id="cardScene" onclick="flipCard()">
+    <div class="card-inner" id="cardInner">
+      <div class="card-face card-front">
+        <div class="card-label">Question</div>
+        <div class="card-q" id="fc-q"></div>
+        <div class="card-hint">Tap to reveal answer</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-answer" id="fc-a"></div>
+        <div class="card-exp" id="fc-exp"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-progress-bar">
+    <div class="fc-progress-fill" id="fc-progress"></div>
+  </div>
+
+  <div class="fc-nav">
+    <button id="fc-prev" onclick="navCard(-1)">← Prev</button>
+    <button id="fc-shuffle" onclick="shuffleCards()">⇄ Shuffle</button>
+    <button id="fc-next" onclick="navCard(1)">Next →</button>
+  </div>
+</div>
+
+<!-- ═══════════ IMAGES VIEW ═══════════ -->
+
+<div id="view-images" class="view">
+  <p style="font-size:0.85rem;color:var(--gray);margin-bottom:14px;font-style:italic;">
+    Tap any image card to expand. Replace the placeholder icons with your actual photos by editing the <code>imageBank</code> array in the script — just add your image file paths or URLs.
+  </p>
+  <div class="img-grid" id="imgGrid"></div>
+</div>
+
+<!-- ═══════════ QUIZ VIEW ═══════════ -->
+
+<div id="view-quiz" class="view">
+  <div class="quiz-meta">
+    <span class="q-count" id="quiz-count">50 Questions</span>
+    <span class="q-count" id="ans-count">0 answered</span>
+  </div>
+  <div id="score-banner"></div>
+  <div id="questions-container"></div>
+  <div class="quiz-actions">
+    <button id="submitBtn" onclick="gradeExam()">Grade My Exam</button>
+    <button id="restartBtn" onclick="restartExam()">↺ Restart</button>
+  </div>
+</div>
+
+<!-- ═══════════ IMAGE MODAL ═══════════ -->
+
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" onclick="closeModal()">✕</button>
+  <div id="modalContent"></div>
+  <div class="img-modal-title" id="modalTitle"></div>
+  <div class="img-modal-notes" id="modalNotes"></div>
+</div>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// EXAM DATA — 50 unique questions
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const examData = [
+  // CELLS & TISSUES
+  { q:"Which organelle is the powerhouse of the cell, producing ATP?",
+    options:{A:"Nucleus",B:"Ribosome",C:"Mitochondria",D:"Golgi apparatus"}, ans:"C",
+    exp:"Mitochondria use aerobic respiration (oxygen + glucose) to produce ATP — the cell's energy currency.",
+    cat:"Cells & Tissues" },
+  { q:"Which tissue type lines organs, body cavities, and external surfaces?",
+    options:{A:"Connective",B:"Nervous",C:"Muscle",D:"Epithelial"}, ans:"D",
+    exp:"Epithelial tissue forms protective coverings and linings, and is avascular (no blood vessels).",
+    cat:"Cells & Tissues" },
+  { q:"Which organelle contains and protects the cell's genetic material (DNA)?",
+    options:{A:"Nucleus",B:"Mitochondria",C:"Ribosome",D:"Lysosome"}, ans:"A",
+    exp:"The nucleus stores DNA and directs cell activity. Its double membrane is called the nuclear envelope.",
+    cat:"Cells & Tissues" },
+  { q:"Which tissue type connects, supports, and binds other tissues together?",
+    options:{A:"Connective",B:"Nervous",C:"Muscle",D:"Epithelial"}, ans:"A",
+    exp:"Connective tissue includes bone, cartilage, blood, adipose (fat), and fibrous tissues.",
+    cat:"Cells & Tissues" },
+  { q:"Which organelle synthesizes proteins by translating messenger RNA?",
+    options:{A:"Ribosome",B:"Lysosome",C:"Centriole",D:"Vacuole"}, ans:"A",
+    exp:"Ribosomes can be free in the cytoplasm or attached to the rough ER. They build all proteins in the body.",
+    cat:"Cells & Tissues" },
+  { q:"Which organelle acts as the cell's 'recycling center,' digesting waste and debris?",
+    options:{A:"Golgi apparatus",B:"Lysosome",C:"Peroxisome",D:"Centrosome"}, ans:"B",
+    exp:"Lysosomes contain digestive enzymes and break down worn-out organelles, bacteria, and debris.",
+    cat:"Cells & Tissues" },
+
+  // MUSCULAR & NERVOUS
+  { q:"Which muscle type is striated in appearance and under voluntary control?",
+    options:{A:"Skeletal",B:"Smooth",C:"Cardiac",D:"Visceral"}, ans:"A",
+    exp:"Skeletal muscle is attached to bone and controlled consciously. It has a banded (striated) pattern under a microscope.",
+    cat:"Muscular & Nervous" },
+  { q:"Which muscle type is involuntary and lines hollow organs like the stomach and intestines?",
+    options:{A:"Skeletal",B:"Smooth",C:"Cardiac",D:"Striated"}, ans:"B",
+    exp:"Smooth muscle moves materials through organs via slow, sustained contractions — not consciously controlled.",
+    cat:"Muscular & Nervous" },
+  { q:"Which muscle type is striated AND involuntary, found only in one organ?",
+    options:{A:"Skeletal",B:"Smooth",C:"Cardiac",D:"Visceral"}, ans:"C",
+    exp:"Cardiac muscle is found only in the heart. It contracts rhythmically without tiring under normal conditions.",
+    cat:"Muscular & Nervous" },
+  { q:"Which part of a neuron carries electrical impulses AWAY from the cell body?",
+    options:{A:"Dendrite",B:"Axon",C:"Soma",D:"Myelin sheath"}, ans:"B",
+    exp:"Axons transmit signals away from the neuron toward another cell. They can be coated with myelin to speed conduction.",
+    cat:"Muscular & Nervous" },
+  { q:"Which part of the neuron RECEIVES incoming signals from other neurons?",
+    options:{A:"Dendrite",B:"Axon",C:"Myelin sheath",D:"Node of Ranvier"}, ans:"A",
+    exp:"Dendrites are branching extensions that collect signals from neighboring neurons and pass them to the cell body.",
+    cat:"Muscular & Nervous" },
+  { q:"What is the term for the junction between two neurons where signals are transmitted chemically?",
+    options:{A:"Node of Ranvier",B:"Synapse",C:"Neuromuscular junction",D:"Soma"}, ans:"B",
+    exp:"At a synapse, neurotransmitters are released from the presynaptic neuron and bind to receptors on the postsynaptic cell.",
+    cat:"Muscular & Nervous" },
+
+  // SKELETAL SYSTEM
+  { q:"Which mineral is most critical for bone hardness and strength?",
+    options:{A:"Iron",B:"Calcium",C:"Sodium",D:"Magnesium"}, ans:"B",
+    exp:"Calcium hydroxyapatite crystals are deposited in bone matrix, giving bones their rigidity.",
+    cat:"Skeletal System" },
+  { q:"Which bone cell BREAKS DOWN bone tissue (resorption)?",
+    options:{A:"Osteoclast",B:"Osteoblast",C:"Osteocyte",D:"Chondrocyte"}, ans:"A",
+    exp:"Osteoclasts dissolve bone matrix by secreting acids and enzymes — key for remodeling and calcium release.",
+    cat:"Skeletal System" },
+  { q:"Which bone cell BUILDS new bone tissue?",
+    options:{A:"Osteoclast",B:"Osteoblast",C:"Chondrocyte",D:"Fibroblast"}, ans:"B",
+    exp:"Osteoblasts secrete collagen and minerals to form new bone matrix. When they become trapped, they become osteocytes.",
+    cat:"Skeletal System" },
+  { q:"Which part of a long bone contains RED bone marrow that produces blood cells?",
+    options:{A:"Epiphysis",B:"Diaphysis",C:"Medullary cavity",D:"Periosteum"}, ans:"A",
+    exp:"The epiphyses (ends of long bones) contain spongy bone with red marrow for hematopoiesis (blood cell production).",
+    cat:"Skeletal System" },
+  { q:"Which joint type allows the MOST freedom of movement?",
+    options:{A:"Fibrous",B:"Cartilaginous",C:"Synovial",D:"Gomphosis"}, ans:"C",
+    exp:"Synovial joints are enclosed in a capsule with synovial fluid for lubrication. Examples: knee, shoulder, hip.",
+    cat:"Skeletal System" },
+  { q:"Which protein gives bone its flexibility and tensile strength?",
+    options:{A:"Keratin",B:"Actin",C:"Collagen",D:"Elastin"}, ans:"C",
+    exp:"Collagen fibers in bone matrix provide resistance to pulling forces, while mineral salts resist compression.",
+    cat:"Skeletal System" },
+
+  // CARDIOVASCULAR SYSTEM
+  { q:"Which heart chamber pumps OXYGENATED blood to the entire body?",
+    options:{A:"Right Atrium",B:"Left Atrium",C:"Right Ventricle",D:"Left Ventricle"}, ans:"D",
+    exp:"The left ventricle has thick walls to generate the pressure needed for systemic circulation.",
+    cat:"Cardiovascular System" },
+  { q:"Which heart chamber receives DEOXYGENATED blood returning from the body?",
+    options:{A:"Right Atrium",B:"Left Atrium",C:"Right Ventricle",D:"Left Ventricle"}, ans:"A",
+    exp:"The superior and inferior vena cavae empty deoxygenated blood into the right atrium.",
+    cat:"Cardiovascular System" },
+  { q:"Which blood vessels carry blood AWAY from the heart?",
+    options:{A:"Arteries",B:"Veins",C:"Venules",D:"Sinusoids"}, ans:"A",
+    exp:"Arteries carry blood under high pressure. Most carry oxygenated blood, except the pulmonary arteries.",
+    cat:"Cardiovascular System" },
+  { q:"Which blood vessels RETURN blood to the heart?",
+    options:{A:"Arteries",B:"Veins",C:"Capillaries",D:"Arterioles"}, ans:"B",
+    exp:"Veins have valves to prevent backflow. They carry blood under low pressure back toward the heart.",
+    cat:"Cardiovascular System" },
+  { q:"Which tiny blood vessels allow exchange of gases, nutrients, and waste between blood and tissues?",
+    options:{A:"Arteries",B:"Veins",C:"Capillaries",D:"Venules"}, ans:"C",
+    exp:"Capillary walls are only one cell thick, allowing substances to diffuse in and out easily.",
+    cat:"Cardiovascular System" },
+
+  // RESPIRATORY SYSTEM
+  { q:"Where does gas exchange (O₂ in, CO₂ out) actually occur in the lungs?",
+    options:{A:"Bronchi",B:"Alveoli",C:"Larynx",D:"Trachea"}, ans:"B",
+    exp:"Alveoli are tiny grape-like air sacs surrounded by capillaries. Their huge surface area enables rapid gas exchange.",
+    cat:"Respiratory System" },
+  { q:"Which muscle is the PRIMARY driver of breathing (inhalation)?",
+    options:{A:"Intercostals",B:"Diaphragm",C:"Pectoralis major",D:"Sternocleidomastoid"}, ans:"B",
+    exp:"When the diaphragm contracts and flattens, it increases thoracic volume, pulling air into the lungs.",
+    cat:"Respiratory System" },
+  { q:"Which structure connects the larynx to the bronchi, reinforced by C-shaped cartilage rings?",
+    options:{A:"Esophagus",B:"Pharynx",C:"Trachea",D:"Epiglottis"}, ans:"C",
+    exp:"The trachea (windpipe) is kept open by cartilage rings and lined with cilia that sweep mucus upward.",
+    cat:"Respiratory System" },
+  { q:"Which lung has THREE lobes (superior, middle, and inferior)?",
+    options:{A:"Right lung",B:"Left lung"}, ans:"A",
+    exp:"The right lung is larger and has 3 lobes. The left lung has 2 lobes and a cardiac notch to accommodate the heart.",
+    cat:"Respiratory System" },
+  { q:"Which lung has a CARDIAC NOTCH to accommodate the heart?",
+    options:{A:"Right lung",B:"Left lung"}, ans:"B",
+    exp:"The left lung is smaller than the right due to the cardiac notch and lingula shaped around the heart.",
+    cat:"Respiratory System" },
+
+  // DIGESTIVE SYSTEM
+  { q:"Which organ PRODUCES bile to help digest fats?",
+    options:{A:"Liver",B:"Pancreas",C:"Stomach",D:"Gallbladder"}, ans:"A",
+    exp:"The liver produces bile continuously. It also detoxifies blood, stores glycogen, and produces clotting proteins.",
+    cat:"Digestive System" },
+  { q:"Which organ STORES bile and releases it into the small intestine when fat is present?",
+    options:{A:"Liver",B:"Gallbladder",C:"Spleen",D:"Pancreas"}, ans:"B",
+    exp:"The gallbladder concentrates and stores bile between meals, then contracts to release it via the bile duct.",
+    cat:"Digestive System" },
+  { q:"Which organ has BOTH exocrine (digestive enzymes) and endocrine (insulin/glucagon) functions?",
+    options:{A:"Liver",B:"Gallbladder",C:"Pancreas",D:"Spleen"}, ans:"C",
+    exp:"The pancreas secretes lipase, amylase, and protease into the duodenum, while islet cells regulate blood sugar.",
+    cat:"Digestive System" },
+  { q:"Which section of the digestive tract absorbs MOST nutrients using villi and microvilli?",
+    options:{A:"Small intestine",B:"Large intestine",C:"Stomach",D:"Esophagus"}, ans:"A",
+    exp:"The small intestine (duodenum, jejunum, ileum) absorbs carbohydrates, proteins, fats, and most vitamins.",
+    cat:"Digestive System" },
+  { q:"Which section of the digestive tract primarily absorbs WATER and electrolytes?",
+    options:{A:"Stomach",B:"Large intestine",C:"Small intestine",D:"Duodenum"}, ans:"B",
+    exp:"The large intestine reabsorbs water and forms solid waste (feces) from the remaining undigested material.",
+    cat:"Digestive System" },
+
+  // URINARY SYSTEM
+  { q:"Which organs filter blood and produce urine as a byproduct?",
+    options:{A:"Kidneys",B:"Bladder",C:"Ureters",D:"Adrenal glands"}, ans:"A",
+    exp:"Kidneys regulate blood pressure, fluid balance, and electrolytes while removing metabolic waste like urea.",
+    cat:"Urinary System" },
+  { q:"Which tubes carry urine from the kidneys DOWN to the urinary bladder?",
+    options:{A:"Ureters",B:"Urethra",C:"Vasa recta",D:"Renal pelvis"}, ans:"A",
+    exp:"There are two ureters (one per kidney). They use peristalsis to move urine to the bladder.",
+    cat:"Urinary System" },
+  { q:"Which muscular sac STORES urine until it is released?",
+    options:{A:"Kidney",B:"Urethra",C:"Urinary bladder",D:"Renal pelvis"}, ans:"C",
+    exp:"The bladder's detrusor muscle stretches to hold urine and contracts during urination (micturition).",
+    cat:"Urinary System" },
+  { q:"Which tube carries urine from the bladder OUT of the body?",
+    options:{A:"Ureter",B:"Glomerulus",C:"Loop of Henle",D:"Urethra"}, ans:"D",
+    exp:"The urethra is shorter in females (~4 cm) than males (~20 cm), which is why UTIs are more common in women.",
+    cat:"Urinary System" },
+  { q:"What is the functional unit of the kidney that filters blood and forms urine?",
+    options:{A:"Nephron",B:"Neuron",C:"Alveolus",D:"Glomerulus"}, ans:"A",
+    exp:"Each kidney has ~1 million nephrons. Each nephron contains a glomerulus (filter) and a tubule (reabsorption).",
+    cat:"Urinary System" },
+
+  // ENDOCRINE SYSTEM
+  { q:"Which gland regulates the body's metabolic rate by secreting thyroxine (T4) and T3?",
+    options:{A:"Thyroid",B:"Thymus",C:"Pituitary",D:"Adrenal"}, ans:"A",
+    exp:"The thyroid gland uses dietary iodine to produce hormones that control metabolism, heart rate, and temperature.",
+    cat:"Endocrine System" },
+  { q:"Which gland is called the 'master gland' because it controls many other endocrine glands?",
+    options:{A:"Adrenal",B:"Pituitary",C:"Pineal",D:"Thyroid"}, ans:"B",
+    exp:"The pituitary is controlled by the hypothalamus and releases hormones like TSH, ACTH, GH, FSH, and LH.",
+    cat:"Endocrine System" },
+  { q:"Which gland produces INSULIN (lowers blood sugar) and GLUCAGON (raises blood sugar)?",
+    options:{A:"Adrenal",B:"Thyroid",C:"Pancreas",D:"Liver"}, ans:"C",
+    exp:"The islets of Langerhans in the pancreas contain beta cells (insulin) and alpha cells (glucagon).",
+    cat:"Endocrine System" },
+  { q:"Which pair of glands sit atop the kidneys and produce cortisol, aldosterone, and adrenaline?",
+    options:{A:"Ovaries",B:"Testes",C:"Parathyroid glands",D:"Adrenal glands"}, ans:"D",
+    exp:"The adrenal cortex produces cortisol and aldosterone; the adrenal medulla produces epinephrine (adrenaline).",
+    cat:"Endocrine System" },
+  { q:"Which tiny gland in the brain regulates sleep-wake (circadian) rhythms by secreting melatonin?",
+    options:{A:"Pituitary",B:"Thymus",C:"Pineal gland",D:"Hypothalamus"}, ans:"C",
+    exp:"The pineal gland releases melatonin in darkness, signaling the body to prepare for sleep.",
+    cat:"Endocrine System" },
+
+  // IMMUNE & BLOOD
+  { q:"Which white blood cells (B-lymphocytes) produce antibodies to fight infection?",
+    options:{A:"Lymphocytes",B:"Neutrophils",C:"Monocytes",D:"Eosinophils"}, ans:"A",
+    exp:"B-lymphocytes differentiate into plasma cells that produce antibodies; T-lymphocytes coordinate immune attacks.",
+    cat:"Immune & Blood" },
+  { q:"Which white blood cell is the MOST NUMEROUS and acts as the first responder to bacterial infection?",
+    options:{A:"Basophil",B:"Neutrophils",C:"Eosinophil",D:"Monocyte"}, ans:"B",
+    exp:"Neutrophils make up 60–70% of all WBCs. They engulf and destroy bacteria through phagocytosis.",
+    cat:"Immune & Blood" },
+  { q:"Which blood cells carry OXYGEN throughout the body using hemoglobin?",
+    options:{A:"Erythrocytes (RBCs)",B:"Leukocytes (WBCs)",C:"Thrombocytes (Platelets)",D:"Plasma cells"}, ans:"A",
+    exp:"RBCs have no nucleus to maximize space for hemoglobin. They live about 120 days.",
+    cat:"Immune & Blood" },
+  { q:"Which blood component is critical for CLOTTING and sealing damaged blood vessels?",
+    options:{A:"Albumin",B:"Globulin",C:"Platelets (thrombocytes)",D:"Erythrocytes"}, ans:"C",
+    exp:"Platelets (thrombocytes) form a platelet plug at injury sites and trigger the clotting cascade.",
+    cat:"Immune & Blood" },
+  { q:"Which iron-containing protein in red blood cells binds and carries oxygen?",
+    options:{A:"Myosin",B:"Actin",C:"Keratin",D:"Hemoglobin"}, ans:"D",
+    exp:"Each hemoglobin molecule has 4 heme groups, each holding one iron atom that binds one oxygen molecule.",
+    cat:"Immune & Blood" },
+
+  // INTEGUMENTARY SYSTEM
+  { q:"Which is the OUTERMOST layer of the skin, forming a waterproof barrier?",
+    options:{A:"Epidermis",B:"Dermis",C:"Hypodermis",D:"Subcutaneous layer"}, ans:"A",
+    exp:"The epidermis is made of keratinized stratified squamous epithelium. It has no blood vessels.",
+    cat:"Integumentary System" },
+  { q:"Which skin layer contains BLOOD VESSELS, nerves, sweat glands, and hair follicles?",
+    options:{A:"Epidermis",B:"Dermis",C:"Hair shaft",D:"Stratum corneum"}, ans:"B",
+    exp:"The dermis contains collagen and elastin for strength and flexibility, plus sensory receptors.",
+    cat:"Integumentary System" },
+  { q:"Which pigment produced by melanocytes gives skin its color and protects against UV radiation?",
+    options:{A:"Carotene",B:"Hemoglobin",C:"Melanin",D:"Keratin"}, ans:"C",
+    exp:"Melanin absorbs UV rays before they can damage the DNA of deeper skin cells.",
+    cat:"Integumentary System" },
+  { q:"Which glands secrete SWEAT to help regulate body temperature?",
+    options:{A:"Sudoriferous (sweat) glands",B:"Sebaceous glands",C:"Endocrine glands",D:"Ceruminous glands"}, ans:"A",
+    exp:"Eccrine sudoriferous glands are found all over the body and produce watery sweat for thermoregulation.",
+    cat:"Integumentary System" },
+  { q:"Which glands secrete SEBUM (oil) to lubricate the skin and hair?",
+    options:{A:"Ceruminous glands",B:"Sebaceous glands",C:"Mammary glands",D:"Sudoriferous glands"}, ans:"B",
+    exp:"Sebaceous glands are usually attached to hair follicles. Sebum keeps skin supple and has mild antibacterial properties.",
+    cat:"Integumentary System" }
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// IMAGE BANK — Add your images here!
+// For each entry: title, notes, src (file path or URL), icon (emoji placeholder)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const imageBank = [
+  { title:"Anatomical Position", notes:"Standard reference position: standing upright, palms forward, arms at sides. ALL directional terms (anterior, posterior, medial, lateral) are relative to this position.", src:"", icon:"🧍" },
+  { title:"Levels of Organization", notes:"Atom → Molecule → Organelle → Cell → Tissue → Organ → Organ System → Organism. Each level builds on the previous.", src:"", icon:"🔬" },
+  { title:"Circulatory System", notes:"Pulmonary circuit (right side → lungs → left side) and Systemic circuit (left side → body → right side). Blood pressure highest in aorta, lowest in veins.", src:"", icon:"❤️" },
+  { title:"Types of Body Movement", notes:"Flexion, Extension, Abduction, Adduction, Rotation, Circumduction, Pronation, Supination, Dorsiflexion, Plantar flexion.", src:"", icon:"🤸" },
+  { title:"Types of Tissue", notes:"4 types: Epithelial (covers/lines), Connective (supports/binds), Muscle (contracts), Nervous (conducts impulses). Each has subtypes.", src:"", icon:"🔷" },
+  { title:"Autonomic Nervous System", notes:"Sympathetic (fight-or-flight): increases HR, dilates pupils, inhibits digestion. Parasympathetic (rest-and-digest): decreases HR, constricts pupils, promotes digestion.", src:"", icon:"⚡" },
+  { title:"Mast Cell", notes:"Found in connective tissue. Contains granules with histamine and heparin. Key in allergic reactions and inflammation — releases chemicals when activated by allergens.", src:"", icon:"🦠" },
+  { title:"Stages of Pressure Sores", notes:"Stage 1: Intact skin, redness. Stage 2: Partial thickness, blister. Stage 3: Full thickness, subcutaneous visible. Stage 4: Bone/tendon exposed. Unstageable: covered by eschar.", src:"", icon:"🩹" },
+  { title:"Circadian Rhythm", notes:"24-hour internal clock regulated by the suprachiasmatic nucleus (SCN) in the hypothalamus. Melatonin rises at night (pineal gland). Disrupted by blue light, shift work.", src:"", icon:"🌙" },
+  { title:"Blood Pressure", notes:"BP = Cardiac Output × Peripheral Resistance. Normal: <120/80 mmHg. Systolic = ventricular contraction. Diastolic = ventricular relaxation. Measured in mmHg.", src:"", icon:"💉" },
+  { title:"Negative Feedback Loop", notes:"Most common regulatory mechanism. Example: High blood glucose → insulin released → glucose lowers → insulin decreases. The response OPPOSES the stimulus.", src:"", icon:"🔄" },
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UTILITIES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// TABS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function showTab(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// FLASHCARDS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let fcData = [...examData];
+let fcIndex = 0;
+
+function buildFCFilters() {
+  const cats = ['All', ...new Set(examData.map(d => d.cat))];
+  const wrap = document.getElementById('fc-filters');
+  wrap.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c === 'All' ? ' active' : '');
+    btn.textContent = c;
+    btn.onclick = () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      fcData = c === 'All' ? [...examData] : examData.filter(d => d.cat === c);
+      fcIndex = 0;
+      renderCard();
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function renderCard() {
+  const item = fcData[fcIndex];
+  document.getElementById('cardScene').classList.remove('flipped');
+  setTimeout(() => {
+    document.getElementById('fc-q').textContent = item.q;
+    document.getElementById('fc-a').textContent = item.options[item.ans];
+    document.getElementById('fc-exp').textContent = item.exp;
+    document.getElementById('fc-counter').textContent = `Card ${fcIndex + 1} of ${fcData.length}`;
+    const pct = ((fcIndex + 1) / fcData.length * 100).toFixed(0);
+    document.getElementById('fc-progress').style.width = pct + '%';
+  }, 150);
+}
+
+function flipCard() {
+  document.getElementById('cardScene').classList.toggle('flipped');
+}
+
+function navCard(dir) {
+  fcIndex = (fcIndex + dir + fcData.length) % fcData.length;
+  renderCard();
+}
+
+function shuffleCards() {
+  shuffle(fcData);
+  fcIndex = 0;
+  renderCard();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// IMAGES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function buildImageGrid() {
+  const grid = document.getElementById('imgGrid');
+  grid.innerHTML = '';
+  imageBank.forEach((img, i) => {
+    const card = document.createElement('div');
+    card.className = 'img-card';
+    card.onclick = () => openModal(i);
+    card.innerHTML = `
+      <div class="img-card-thumb">${img.src ? `<img src="${img.src}" style="width:100%;height:100%;object-fit:cover;">` : img.icon}</div>
+      <div class="img-card-label">${img.title}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function openModal(i) {
+  const img = imageBank[i];
+  const content = img.src
+    ? `<img src="${img.src}" alt="${img.title}">`
+    : `<div class="img-placeholder" style="width:280px;height:210px;border-radius:8px;"><span class="ph-icon">${img.icon}</span><p>Add your image to the imageBank array</p></div>`;
+  document.getElementById('modalContent').innerHTML = content;
+  document.getElementById('modalTitle').textContent = img.title;
+  document.getElementById('modalNotes').textContent = img.notes;
+  document.getElementById('imgModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('imgModal').classList.remove('open');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// QUIZ
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let quizData = [];
+let answeredCount = 0;
+
+function buildQuiz() {
+  quizData = examData.map(item => {
+    const entries = Object.entries(item.options);
+    shuffle(entries);
+    const newOpts = {};
+    const keys = ['A','B','C','D','E'];
+    let newAns = '';
+    entries.forEach(([origKey, val], idx) => {
+      newOpts[keys[idx]] = val;
+      if (origKey === item.ans) newAns = keys[idx];
+    });
+    return { ...item, options: newOpts, ans: newAns };
+  });
+
+  answeredCount = 0;
+  const container = document.getElementById('questions-container');
+  container.innerHTML = '';
+  document.getElementById('score-banner').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').style.display = 'inline-block';
+  document.getElementById('restartBtn').style.display = 'none';
+  document.getElementById('quiz-count').textContent = `${quizData.length} Questions`;
+  document.getElementById('ans-count').textContent = '0 answered';
+
+  let currentCat = '';
+  quizData.forEach((item, index) => {
+    if (item.cat !== currentCat) {
+      currentCat = item.cat;
+      const head = document.createElement('div');
+      head.className = 'section-head';
+      head.textContent = currentCat;
+      container.appendChild(head);
+    }
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    block.id = `qbox-${index}`;
+
+    let optHtml = '';
+    for (const [key, val] of Object.entries(item.options)) {
+      optHtml += `<label id="label-${index}-${key}"><input type="radio" name="q${index}" value="${key}"> ${val}</label>`;
+    }
+    block.innerHTML = `
+      <h3>${index + 1}. ${item.q}</h3>
+      ${optHtml}
+      <div class="explanation" id="exp-${index}">💡 ${item.exp}</div>
+    `;
+    container.appendChild(block);
+  });
+
+  // Live feedback on selection
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.addEventListener('change', (e) => {
+      const name = e.target.name;
+      const index = parseInt(name.replace('q',''));
+      const block = document.getElementById(`qbox-${index}`);
+      if (!block.classList.contains('answered')) {
+        block.classList.add('answered');
+        answeredCount++;
+        document.getElementById('ans-count').textContent = `${answeredCount} answered`;
+      }
+    });
+  });
+}
+
+function gradeExam() {
+  let unanswered = 0;
+  quizData.forEach((_, i) => {
+    if (!document.querySelector(`input[name="q${i}"]:checked`)) unanswered++;
+  });
+  if (unanswered > 0) {
+    if (!confirm(`You have ${unanswered} unanswered question${unanswered > 1 ? 's' : ''}. Grade anyway?`)) return;
+  }
+
+  let score = 0;
+  quizData.forEach((item, index) => {
+    const selected = document.querySelector(`input[name="q${index}"]:checked`);
+    document.getElementById(`exp-${index}`).style.display = 'block';
+    const allLabels = document.querySelectorAll(`[id^="label-${index}-"]`);
+    allLabels.forEach(l => { l.classList.remove('correct-label','wrong-label'); l.style.pointerEvents = 'none'; });
+    document.getElementById(`label-${index}-${item.ans}`).classList.add('correct-label');
+    if (selected) {
+      if (selected.value === item.ans) {
+        score++;
+      } else {
+        document.getElementById(`label-${index}-${selected.value}`).classList.add('wrong-label');
+      }
+    }
+    document.querySelectorAll(`input[name="q${index}"]`).forEach(r => r.disabled = true);
+  });
+
+  const pct = (score / quizData.length * 100).toFixed(1);
+  const pass = parseFloat(pct) >= 70;
+  const banner = document.getElementById('score-banner');
+  banner.style.display = 'block';
+  banner.className = pass ? 'pass' : 'fail';
+  banner.innerHTML = `${pass ? '🎉' : '📚'} Score: ${score} / ${quizData.length} &nbsp;·&nbsp; ${pct}%<br>
+    <small style="font-weight:400">${pass ? 'Great work! Review any explanations you missed.' : 'Keep studying — you\'re getting there! Review the explanations below.'}</small>`;
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitBtn').style.display = 'none';
+  document.getElementById('restartBtn').style.display = 'inline-block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartExam() {
+  buildQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+buildFCFilters();
+renderCard();
+buildImageGrid();
+buildQuiz();
+
+// close modal on backdrop click
+document.getElementById('imgModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+// keyboard navigation for flashcards
+document.addEventListener('keydown', e => {
+  if (document.getElementById('view-fc').classList.contains('active')) {
+    if (e.key === 'ArrowRight') navCard(1);
+    if (e.key === 'ArrowLeft') navCard(-1);
+    if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  }
+});
+</script>
+
+</body>
+</html>
