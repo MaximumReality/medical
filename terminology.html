@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,177 +12,337 @@
             --bg: #f4f7f6;
             --card-bg: #ffffff;
             --text: #333;
-            --prefix-color: #c53030; /* Red for beginnings */
-            --suffix-color: #2b6cb0; /* Blue for endings */
+            --prefix-color: #c53030;
+            --suffix-color: #2b6cb0;
+            --root-color: #1abc9c;
         }
 
-        body {
-            background-color: var(--bg);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-        }
+```
+    body {
+        background-color: var(--bg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: var(--text);
+        margin: 0;
+        padding: 20px;
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .header h1 { margin-bottom: 4px; color: var(--primary); }
+    .header p { color: #666; margin: 0; }
+    .count-badge {
+        display: inline-block;
+        background: var(--accent);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: bold;
+        padding: 3px 10px;
+        border-radius: 20px;
+        margin-top: 6px;
+    }
 
-        .search-container {
-            position: sticky;
-            top: 10px;
-            z-index: 100;
-            margin-bottom: 20px;
-        }
+    .search-container {
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+        margin-bottom: 16px;
+    }
 
-        #termSearch {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 2px solid #ddd;
-            font-size: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            outline: none;
-        }
+    #termSearch {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: 2px solid #ddd;
+        font-size: 16px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        outline: none;
+        box-sizing: border-box;
+    }
+    #termSearch:focus { border-color: var(--accent); }
 
-        #termSearch:focus {
-            border-color: var(--accent);
-        }
+    /* filter buttons */
+    .filter-bar {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        scrollbar-width: none;
+    }
+    .filter-bar::-webkit-scrollbar { display: none; }
+    .filt-btn {
+        white-space: nowrap;
+        padding: 6px 16px;
+        border-radius: 20px;
+        border: 2px solid #ddd;
+        background: white;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+    }
+    .filt-btn.active, .filt-btn:hover { color: white; border-color: transparent; }
+    .filt-btn[data-type="all"].active    { background: var(--primary); }
+    .filt-btn[data-type="prefix"].active { background: var(--prefix-color); }
+    .filt-btn[data-type="root"].active   { background: var(--root-color); }
+    .filt-btn[data-type="suffix"].active { background: var(--suffix-color); }
+    .filt-btn[data-type="all"]:hover    { background: var(--primary); }
+    .filt-btn[data-type="prefix"]:hover { background: var(--prefix-color); }
+    .filt-btn[data-type="root"]:hover   { background: var(--root-color); }
+    .filt-btn[data-type="suffix"]:hover { background: var(--suffix-color); }
 
-        .term-grid {
-            display: grid;
-            gap: 15px;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        }
+    .no-results {
+        text-align: center;
+        color: #999;
+        padding: 40px;
+        font-style: italic;
+    }
 
-        .term-card {
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-        }
+    .term-grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
 
-        .term-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+    .term-card {
+        background: var(--card-bg);
+        padding: 14px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        display: flex;
+        flex-direction: column;
+        border-left: 4px solid #eee;
+        transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .term-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+    .term-card.prefix { border-left-color: var(--prefix-color); }
+    .term-card.root   { border-left-color: var(--root-color); }
+    .term-card.suffix { border-left-color: var(--suffix-color); }
 
-        .word-part {
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: var(--primary);
-            font-family: 'Courier New', Courier, monospace;
-        }
+    .term-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+    }
 
-        .tag {
-            font-size: 0.7rem;
-            padding: 3px 8px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: white;
-        }
+    .word-part {
+        font-weight: bold;
+        font-size: 1.15rem;
+        color: var(--primary);
+        font-family: 'Courier New', Courier, monospace;
+    }
 
-        .tag-prefix { background: var(--prefix-color); }
-        .tag-suffix { background: var(--suffix-color); }
-        .tag-root { background: var(--accent); }
+    .tag {
+        font-size: 0.68rem;
+        padding: 3px 8px;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+    }
+    .tag-prefix { background: var(--prefix-color); }
+    .tag-suffix { background: var(--suffix-color); }
+    .tag-root   { background: var(--root-color); color: #1a5c4e; }
 
-        .meaning {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
+    .meaning {
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+        font-weight: 500;
+    }
 
-        .example {
-            font-size: 0.85rem;
-            color: #666;
-            font-style: italic;
-            border-top: 1px solid #eee;
-            padding-top: 5px;
-        }
+    .example {
+        font-size: 0.82rem;
+        color: #777;
+        font-style: italic;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 6px;
+        line-height: 1.4;
+    }
 
-        .hidden { display: none; }
-    </style>
+    .hidden { display: none; }
+</style>
+```
+
 </head>
 <body>
 
-    <div class="header">
-        <h1>🩺 Terminology Decoder</h1>
-        <p>BSN Foundations & A&P I</p>
-    </div>
+<div class="header">
+    <h1>🩺 Terminology Decoder</h1>
+    <p>BSN Foundations &amp; A&amp;P I</p>
+    <span class="count-badge" id="countBadge">Loading...</span>
+</div>
 
-    <div class="search-container">
-        <input type="text" id="termSearch" placeholder="Search prefix, suffix, or meaning (e.g. 'heart' or '-itis')..." onkeyup="filterTerms()">
-    </div>
+<div class="search-container">
+    <input type="text" id="termSearch" placeholder="Search prefix, suffix, or meaning (e.g. 'heart' or '-itis')..." oninput="filterTerms()">
+</div>
 
-    <div class="term-grid" id="termGrid">
+<div class="filter-bar">
+    <button class="filt-btn active" data-type="all"    onclick="setFilter('all')">All</button>
+    <button class="filt-btn"        data-type="prefix" onclick="setFilter('prefix')">🔴 Prefixes</button>
+    <button class="filt-btn"        data-type="root"   onclick="setFilter('root')">🟢 Roots</button>
+    <button class="filt-btn"        data-type="suffix" onclick="setFilter('suffix')">🔵 Suffixes</button>
+</div>
+
+<div class="term-grid" id="termGrid"></div>
+
+<script>
+const dictionary = [
+    // ── PREFIXES ──────────────────────────────────────────────
+    { part:"A- / An-",    type:"prefix", mean:"Without, lacking",           ex:"Apnea (without breathing), Anemia (without enough blood)" },
+    { part:"Anti-",       type:"prefix", mean:"Against",                    ex:"Antibiotic (against bacteria), Antipyretic (against fever)" },
+    { part:"Auto-",       type:"prefix", mean:"Self",                       ex:"Autoimmune (immune system attacks self)" },
+    { part:"Brady-",      type:"prefix", mean:"Slow",                       ex:"Bradycardia (slow heart rate), Bradypnea (slow breathing)" },
+    { part:"Bi-",         type:"prefix", mean:"Two",                        ex:"Bilateral (both sides), Bicuspid (two cusps)" },
+    { part:"Contra-",     type:"prefix", mean:"Against, opposite",          ex:"Contraindicated (should not be used), Contralateral (opposite side)" },
+    { part:"Cyan-",       type:"prefix", mean:"Blue",                       ex:"Cyanosis (bluish skin from lack of oxygen)" },
+    { part:"Di-",         type:"prefix", mean:"Two, double",                ex:"Diplopia (double vision)" },
+    { part:"Dys-",        type:"prefix", mean:"Painful, difficult, abnormal",ex:"Dyspnea (difficulty breathing), Dysphagia (difficulty swallowing)" },
+    { part:"Ec- / Ecto-", type:"prefix", mean:"Outside, out of place",      ex:"Ectopic pregnancy (outside uterus)" },
+    { part:"Endo-",       type:"prefix", mean:"Within, inner",              ex:"Endoscopy (looking inside), Endocardium (inner heart lining)" },
+    { part:"Epi-",        type:"prefix", mean:"Upon, over, above",          ex:"Epidermis (outer skin), Epigastric (above stomach)" },
+    { part:"Erythr-",     type:"prefix", mean:"Red",                        ex:"Erythrocyte (red blood cell), Erythema (skin redness)" },
+    { part:"Ex- / Exo-",  type:"prefix", mean:"Out of, away from",         ex:"Exocrine (secretes outward), Exhale (breathe out)" },
+    { part:"Hemi-",       type:"prefix", mean:"Half",                       ex:"Hemiplegia (paralysis of one side of body)" },
+    { part:"Hyper-",      type:"prefix", mean:"Excessive, above normal",    ex:"Hypertension (high BP), Hyperglycemia (high blood sugar)" },
+    { part:"Hypo-",       type:"prefix", mean:"Deficient, below normal",    ex:"Hypoglycemia (low blood sugar), Hypothyroidism (underactive thyroid)" },
+    { part:"Inter-",      type:"prefix", mean:"Between",                    ex:"Intercostal (between ribs), Interstitial (between cells)" },
+    { part:"Intra-",      type:"prefix", mean:"Within, inside",             ex:"Intravenous (within a vein), Intracellular (within a cell)" },
+    { part:"Leuk-",       type:"prefix", mean:"White",                      ex:"Leukocyte (white blood cell), Leukemia (cancer of white cells)" },
+    { part:"Macro-",      type:"prefix", mean:"Large",                      ex:"Macrophage (large immune cell that eats debris)" },
+    { part:"Mal-",        type:"prefix", mean:"Bad, abnormal",              ex:"Malnutrition (bad nutrition), Malignant (harmful cancer)" },
+    { part:"Micro-",      type:"prefix", mean:"Small",                      ex:"Microscope (views small things), Microorganism" },
+    { part:"Multi-",      type:"prefix", mean:"Many",                       ex:"Multisystem, Multipara (many births)" },
+    { part:"Neo-",        type:"prefix", mean:"New",                        ex:"Neoplasm (new growth/tumor), Neonatal (newborn)" },
+    { part:"Null-",       type:"prefix", mean:"None",                       ex:"Nullipara (never given birth)" },
+    { part:"Peri-",       type:"prefix", mean:"Around, surrounding",        ex:"Pericardium (around the heart), Perioperative" },
+    { part:"Poly-",       type:"prefix", mean:"Many, much, excessive",      ex:"Polyuria (excessive urination), Polycythemia (many red cells)" },
+    { part:"Post-",       type:"prefix", mean:"After, behind",              ex:"Postoperative (after surgery), Posterior (back side)" },
+    { part:"Pre-",        type:"prefix", mean:"Before, in front of",        ex:"Preoperative (before surgery), Prenatal (before birth)" },
+    { part:"Sub-",        type:"prefix", mean:"Under, below",               ex:"Subcutaneous (under the skin), Sublingual (under tongue)" },
+    { part:"Super- / Supra-", type:"prefix", mean:"Above, over, excess",   ex:"Supine (lying face up), Supraventricular" },
+    { part:"Tachy-",      type:"prefix", mean:"Fast, rapid",                ex:"Tachycardia (fast heart rate), Tachypnea (rapid breathing)" },
+    { part:"Trans-",      type:"prefix", mean:"Through, across",            ex:"Transdermal (through the skin), Transfusion" },
+    { part:"Uni-",        type:"prefix", mean:"One",                        ex:"Unilateral (one side), Unicellular" },
+
+    // ── ROOTS ─────────────────────────────────────────────────
+    { part:"Angi-",       type:"root", mean:"Vessel (blood or lymph)",      ex:"Angioplasty (repair of a vessel), Angiogram" },
+    { part:"Arthr-",      type:"root", mean:"Joint",                        ex:"Arthritis (joint inflammation), Arthroscopy" },
+    { part:"Bronch-",     type:"root", mean:"Bronchus / airway",            ex:"Bronchitis, Bronchospasm" },
+    { part:"Carcin-",     type:"root", mean:"Cancer",                       ex:"Carcinoma (cancer of epithelial tissue)" },
+    { part:"Cardio-",     type:"root", mean:"Heart",                        ex:"Cardiology, Cardiomegaly (enlarged heart)" },
+    { part:"Cerebr-",     type:"root", mean:"Brain / cerebrum",             ex:"Cerebrovascular accident (stroke), Cerebrospinal fluid" },
+    { part:"Chol-",       type:"root", mean:"Bile, gall",                   ex:"Cholecystitis (gallbladder inflammation), Cholesterol" },
+    { part:"Cost-",       type:"root", mean:"Rib",                          ex:"Intercostal (between ribs), Costochondral" },
+    { part:"Cyst-",       type:"root", mean:"Bladder, sac",                 ex:"Cystitis (bladder infection), Cystoscopy" },
+    { part:"Derm- / Dermat-", type:"root", mean:"Skin",                    ex:"Dermatitis (skin inflammation), Dermatology" },
+    { part:"Enter-",      type:"root", mean:"Intestine",                    ex:"Enteritis (intestine inflammation), Gastroenteritis" },
+    { part:"Gastr-",      type:"root", mean:"Stomach",                      ex:"Gastritis, Gastrectomy, Gastroscopy" },
+    { part:"Glyc-",       type:"root", mean:"Sugar, glucose",               ex:"Glycogen (stored glucose), Glycosuria (sugar in urine)" },
+    { part:"Hem- / Hemo-",type:"root", mean:"Blood",                        ex:"Hemorrhage (bleeding), Hematuria (blood in urine)" },
+    { part:"Hepat-",      type:"root", mean:"Liver",                        ex:"Hepatitis (liver inflammation), Hepatomegaly (enlarged liver)" },
+    { part:"Hist-",       type:"root", mean:"Tissue",                       ex:"Histology (study of tissue), Histamine" },
+    { part:"Lip-",        type:"root", mean:"Fat",                          ex:"Lipoma (fatty tumor), Lipase (fat-digesting enzyme)" },
+    { part:"Lith-",       type:"root", mean:"Stone, calculus",              ex:"Nephrolithiasis (kidney stones), Lithotripsy" },
+    { part:"Myo-",        type:"root", mean:"Muscle",                       ex:"Myocardium (heart muscle), Myopathy (muscle disease)" },
+    { part:"Nephr-",      type:"root", mean:"Kidney",                       ex:"Nephrology, Nephritis, Nephrotic syndrome" },
+    { part:"Neur-",       type:"root", mean:"Nerve",                        ex:"Neuropathy (nerve disease), Neurology, Neurotransmitter" },
+    { part:"Onco-",       type:"root", mean:"Tumor, mass",                  ex:"Oncology (study of cancer), Oncogene" },
+    { part:"Oste-",       type:"root", mean:"Bone",                         ex:"Osteoporosis (porous bone), Osteoblast, Osteoclast" },
+    { part:"Ot-",         type:"root", mean:"Ear",                          ex:"Otitis media (middle ear infection), Otoscope" },
+    { part:"Path-",       type:"root", mean:"Disease, suffering",           ex:"Pathology (study of disease), Pathogen" },
+    { part:"Pneumo-",     type:"root", mean:"Lung, air",                    ex:"Pneumonia, Pneumothorax (air in chest cavity)" },
+    { part:"Pulmon-",     type:"root", mean:"Lung",                         ex:"Pulmonary embolism, Pulmonary edema" },
+    { part:"Ren-",        type:"root", mean:"Kidney",                       ex:"Renal failure, Renal artery" },
+    { part:"Sarc-",       type:"root", mean:"Flesh, connective tissue",     ex:"Sarcoma (connective tissue cancer), Sarcomere" },
+    { part:"Sept-",       type:"root", mean:"Infection, partition",         ex:"Septicemia (infection in blood), Septal defect" },
+    { part:"Thromb-",     type:"root", mean:"Clot",                         ex:"Thrombosis (clot formation), Thrombocyte (platelet)" },
+    { part:"Trache-",     type:"root", mean:"Trachea / windpipe",           ex:"Tracheotomy, Tracheostomy" },
+    { part:"Vas- / Vascul-", type:"root", mean:"Vessel",                   ex:"Vascular (relating to vessels), Vasodilation" },
+    { part:"Ven-",        type:"root", mean:"Vein",                         ex:"Intravenous (IV), Venipuncture, Venous" },
+
+    // ── SUFFIXES ──────────────────────────────────────────────
+    { part:"-algia",      type:"suffix", mean:"Pain",                       ex:"Neuralgia (nerve pain), Myalgia (muscle pain)" },
+    { part:"-cele",       type:"suffix", mean:"Hernia, swelling, protrusion",ex:"Hydrocele, Rectocele" },
+    { part:"-centesis",   type:"suffix", mean:"Surgical puncture to withdraw fluid", ex:"Thoracentesis (chest fluid), Amniocentesis" },
+    { part:"-cyte",       type:"suffix", mean:"Cell",                       ex:"Erythrocyte (RBC), Leukocyte (WBC), Osteocyte" },
+    { part:"-ectomy",     type:"suffix", mean:"Surgical removal of",        ex:"Appendectomy, Hysterectomy, Mastectomy" },
+    { part:"-emia",       type:"suffix", mean:"Blood condition",            ex:"Anemia (low RBCs), Hypoglycemia, Septicemia" },
+    { part:"-genesis",    type:"suffix", mean:"Origin, formation, production",ex:"Hematopoiesis → hematogenesis, Osteogenesis (bone formation)" },
+    { part:"-gram",       type:"suffix", mean:"Record, image",              ex:"Electrocardiogram (EKG), Mammogram, Angiogram" },
+    { part:"-graph",      type:"suffix", mean:"Instrument that records",    ex:"Electrocardiograph (machine), Electroencephalograph" },
+    { part:"-ia / -iasis",type:"suffix", mean:"Condition or state of",      ex:"Pneumonia, Nephrolithiasis (kidney stones)" },
+    { part:"-itis",       type:"suffix", mean:"Inflammation",               ex:"Arthritis, Appendicitis, Hepatitis, Colitis" },
+    { part:"-lysis",      type:"suffix", mean:"Destruction, breakdown, loosening", ex:"Hemolysis (destruction of RBCs), Dialysis" },
+    { part:"-megaly",     type:"suffix", mean:"Enlargement",                ex:"Cardiomegaly (enlarged heart), Hepatomegaly (enlarged liver)" },
+    { part:"-ology",      type:"suffix", mean:"Study of",                   ex:"Cardiology, Neurology, Pathology, Dermatology" },
+    { part:"-oma",        type:"suffix", mean:"Tumor, mass, swelling",      ex:"Lipoma (fat tumor), Carcinoma, Hematoma (blood swelling)" },
+    { part:"-opia",       type:"suffix", mean:"Vision condition",           ex:"Myopia (nearsighted), Diplopia (double vision)" },
+    { part:"-orrhagia",   type:"suffix", mean:"Rapid flow, excessive bleeding", ex:"Hemorrhage, Menorrhagia (heavy menstrual bleeding)" },
+    { part:"-orrhaphy",   type:"suffix", mean:"Surgical suturing / repair", ex:"Herniorrhaphy (hernia repair)" },
+    { part:"-osis",       type:"suffix", mean:"Abnormal condition or process",ex:"Cyanosis, Fibrosis, Stenosis, Thrombosis" },
+    { part:"-ostomy",     type:"suffix", mean:"Surgical creation of an opening", ex:"Colostomy, Tracheostomy, Ileostomy" },
+    { part:"-otomy",      type:"suffix", mean:"Surgical incision / cutting into", ex:"Tracheotomy, Craniotomy, Thoracotomy" },
+    { part:"-pathy",      type:"suffix", mean:"Disease, disorder",          ex:"Neuropathy (nerve disease), Cardiomyopathy" },
+    { part:"-penia",      type:"suffix", mean:"Deficiency, decrease",       ex:"Thrombocytopenia (low platelets), Leukopenia (low WBCs)" },
+    { part:"-plasty",     type:"suffix", mean:"Surgical repair or reconstruction", ex:"Angioplasty, Rhinoplasty, Arthroplasty" },
+    { part:"-plegia",     type:"suffix", mean:"Paralysis",                  ex:"Hemiplegia (one side), Quadriplegia (all four limbs)" },
+    { part:"-pnea",       type:"suffix", mean:"Breathing",                  ex:"Apnea (no breathing), Dyspnea, Tachypnea" },
+    { part:"-rrhea",      type:"suffix", mean:"Flow, discharge",            ex:"Diarrhea, Rhinorrhea (runny nose)" },
+    { part:"-scope",      type:"suffix", mean:"Instrument used to view",    ex:"Stethoscope, Endoscope, Otoscope" },
+    { part:"-scopy",      type:"suffix", mean:"Visual examination",         ex:"Colonoscopy, Bronchoscopy, Arthroscopy" },
+    { part:"-stenosis",   type:"suffix", mean:"Narrowing, stricture",       ex:"Aortic stenosis (narrowed aortic valve)" },
+    { part:"-tomy",       type:"suffix", mean:"Cutting, incision",          ex:"Appendectomy (cut + remove), Phlebotomy (cutting a vein)" },
+    { part:"-uria",       type:"suffix", mean:"Urine condition",            ex:"Hematuria (blood in urine), Polyuria, Glycosuria" },
+];
+
+let activeFilter = 'all';
+let activeSearch = '';
+
+function setFilter(type) {
+    activeFilter = type;
+    document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.filt-btn[data-type="${type}"]`).classList.add('active');
+    filterTerms();
+}
+
+function filterTerms() {
+    activeSearch = document.getElementById('termSearch').value.toLowerCase();
+    const filtered = dictionary.filter(item => {
+        const matchesType = activeFilter === 'all' || item.type === activeFilter;
+        const matchesSearch = !activeSearch ||
+            item.part.toLowerCase().includes(activeSearch) ||
+            item.mean.toLowerCase().includes(activeSearch) ||
+            item.ex.toLowerCase().includes(activeSearch);
+        return matchesType && matchesSearch;
+    });
+    displayTerms(filtered);
+}
+
+function displayTerms(data) {
+    const grid = document.getElementById('termGrid');
+    document.getElementById('countBadge').textContent = `${data.length} terms`;
+    if (data.length === 0) {
+        grid.innerHTML = '<div class="no-results">No terms found. Try a different search!</div>';
+        return;
+    }
+    grid.innerHTML = data.map(item => `
+        <div class="term-card ${item.type}">
+            <div class="term-header">
+                <span class="word-part">${item.part}</span>
+                <span class="tag tag-${item.type}">${item.type}</span>
+            </div>
+            <div class="meaning">${item.mean}</div>
+            <div class="example">Ex: ${item.ex}</div>
         </div>
+    `).join('');
+}
 
-    <script>
-        const dictionary = [
-            // PREFIXES
-            { part: "A- / An-", type: "prefix", mean: "Without, lacking", ex: "Apnea (without breathing)" },
-            { part: "Brady-", type: "prefix", mean: "Slow", ex: "Bradycardia (slow heart rate)" },
-            { part: "Tachy-", type: "prefix", mean: "Fast", ex: "Tachycardia (fast heart rate)" },
-            { part: "Dys-", type: "prefix", mean: "Painful, difficult", ex: "Dyspnea (difficulty breathing)" },
-            { part: "Hyper-", type: "prefix", mean: "Excessive, high", ex: "Hypertension (high blood pressure)" },
-            { part: "Hypo-", type: "prefix", mean: "Deficient, low", ex: "Hypoglycemia (low blood sugar)" },
-            { part: "Epi-", type: "prefix", mean: "Upon, over", ex: "Epicardium (outer layer of heart)" },
-            
-            // ROOTS
-            { part: "Cardio-", type: "root", mean: "Heart", ex: "Cardiology" },
-            { part: "Gastro-", type: "root", mean: "Stomach", ex: "Gastritis" },
-            { part: "Hemo-", type: "root", mean: "Blood", ex: "Hematuria (blood in urine)" },
-            { part: "Nephro-", type: "root", mean: "Kidney", ex: "Nephrology" },
-            { part: "Neuro-", type: "root", mean: "Nerve", ex: "Neuropathy" },
-            { part: "Pneumo-", type: "root", mean: "Lung/Air", ex: "Pneumonia" },
-            { part: "Carcin-", type: "root", mean: "Cancer", ex: "Carcinoma" },
-            { part: "Onco-", type: "root", mean: "Tumor/Bulk", ex: "Oncology (study of tumors)" },
-            { part: "Sarc-", type: "root", mean: "Flesh/Connective tissue", ex: "Sarcoma" },
-            
-            // SUFFIXES
-            { part: "-itis", type: "suffix", mean: "Inflammation", ex: "Arthritis (joint inflammation)" },
-            { part: "-ology", type: "suffix", mean: "Study of", ex: "Biology" },
-            { part: "-osis", type: "suffix", mean: "Condition, status", ex: "Cyanosis (blue skin condition)" },
-            { part: "-ectomy", type: "suffix", mean: "Surgical removal", ex: "Appendectomy" },
-            { part: "-pnea", type: "suffix", mean: "Breathing", ex: "Tachypnea (rapid breathing)" },
-            { part: "-uria", type: "suffix", mean: "Urine", ex: "Polyuria (excessive urination)" },
-            { part: "-oma", type: "suffix", mean: "Tumor, mass, or swelling", ex: "Lipoma (fatty mass)" },
+displayTerms(dictionary);
+</script>
 
-
-        ];
-
-        function displayTerms(data) {
-            const grid = document.getElementById('termGrid');
-            grid.innerHTML = data.map(item => `
-                <div class="term-card">
-                    <div class="term-header">
-                        <span class="word-part">${item.part}</span>
-                        <span class="tag tag-${item.type}">${item.type}</span>
-                    </div>
-                    <div class="meaning">${item.mean}</div>
-                    <div class="example">Ex: ${item.ex}</div>
-                </div>
-            `).join('');
-        }
-
-        function filterTerms() {
-            const query = document.getElementById('termSearch').value.toLowerCase();
-            const filtered = dictionary.filter(item => 
-                item.part.toLowerCase().includes(query) || 
-                item.mean.toLowerCase().includes(query) ||
-                item.ex.toLowerCase().includes(query)
-            );
-            displayTerms(filtered);
-        }
-
-        // Initial Load
-        displayTerms(dictionary);
-    </script>
 </body>
 </html>
