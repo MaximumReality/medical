@@ -173,6 +173,24 @@
     }
 
     .hidden { display: none; }
+        .return-btn {
+    display: inline-block;
+    background: #000080;  /* Navy Blue */
+    color: #ffffff;       /* White text */
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    margin-top: 20px;
+    border: 2px solid #000080;
+    transition: 0.2s;
+}
+
+.return-btn:hover {
+    background: #0000cd;  /* Medium blue on hover */
+    border-color: #0000cd;
+}
 </style>
 ```
 
@@ -352,8 +370,10 @@ function displayTerms(data) {
 
 displayTerms(dictionary);
 </script>
-<a href="https://maximumreality.github.io/medical/index.html" class="return-btn">
-    🔙RETURN TO TERMINAL⚕️
-</a>
+<div style="text-align:center;">
+    <a href="https://maximumreality.github.io/medical/index.html" class="return-btn">
+        🔙 RETURN TO TERMINAL⚕️
+    </a>
+</div>
 </body>
 </html>
