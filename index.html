@@ -102,6 +102,7 @@
             background: rgba(0, 255, 255, 0.02);
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .nav-card:hover {
@@ -121,6 +122,7 @@
             font-size: 0.75rem;
             color: #aaa;
             line-height: 1.4;
+            
         }
 
         /* Special Styling for the Tool Links in Section 04 */
@@ -182,8 +184,19 @@
             <div class="status-tag">ecpi⚕️BSN // OS_VER: 3.0</div>
         </div>
         <div class="status-tag pulse">● USER: ELINA</div>
+        <div class="status-tag">XP: <span id="xp">0</span></div>
     </div>
+<script>
+let xp = localStorage.getItem("xp") || 0;
+document.getElementById("xp").textContent = xp;
 
+document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
+    link.addEventListener("click", () => {
+        xp++;
+        localStorage.setItem("xp", xp);
+    });
+});
+</script>
     <div class="menu-grid">
         <a href="https://maximumreality.github.io/medical/night-shift.html" class="nav-card">
             <h2>[01] NIGHT SHIFT</h2>
@@ -231,6 +244,38 @@
         <span style="color: #ffff00; opacity: 0.4;">🩺FOR ELINA💜</span>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".nav-card");
+    cards.forEach((card, i) => {
+        card.style.opacity = 0;
+        setTimeout(() => {
+            card.style.transition = "opacity 0.4s ease";
+            card.style.opacity = 1;
+        }, i * 120);
+    });
+});
+</script>
+   <script>
+document.querySelectorAll(".nav-card a, .tool-btn").forEach(link => {
+    link.addEventListener("click", () => {
+        localStorage.setItem("lastModule", link.href);
+    });
+});
 
+window.addEventListener("load", () => {
+    const last = localStorage.getItem("lastModule");
+    if (last) {
+        const resume = document.createElement("a");
+        resume.href = last;
+        resume.className = "nav-card full-width";
+        resume.innerHTML = `
+            <h2>[RESUME LAST SESSION]</h2>
+            <p>Continue where you left off.</p>
+        `;
+        document.querySelector(".menu-grid").prepend(resume);
+    }
+});
+</script> 
 </body>
 </html>
