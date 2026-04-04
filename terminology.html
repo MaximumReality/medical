@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSN Terminology Decoder</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #1abc9c;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333;
+            --prefix-color: #c53030; /* Red for beginnings */
+            --suffix-color: #2b6cb0; /* Blue for endings */
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            margin-bottom: 20px;
+        }
+
+        #termSearch {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            outline: none;
+        }
+
+        #termSearch:focus {
+            border-color: var(--accent);
+        }
+
+        .term-grid {
+            display: grid;
+            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .term-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .term-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .word-part {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: white;
+        }
+
+        .tag-prefix { background: var(--prefix-color); }
+        .tag-suffix { background: var(--suffix-color); }
+        .tag-root { background: var(--accent); }
+
+        .meaning {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .example {
+            font-size: 0.85rem;
+            color: #666;
+            font-style: italic;
+            border-top: 1px solid #eee;
+            padding-top: 5px;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🩺 Terminology Decoder</h1>
+        <p>BSN Foundations & A&P I</p>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="termSearch" placeholder="Search prefix, suffix, or meaning (e.g. 'heart' or '-itis')..." onkeyup="filterTerms()">
+    </div>
+
+    <div class="term-grid" id="termGrid">
+        </div>
+
+    <script>
+        const dictionary = [
+            // PREFIXES
+            { part: "A- / An-", type: "prefix", mean: "Without, lacking", ex: "Apnea (without breathing)" },
+            { part: "Brady-", type: "prefix", mean: "Slow", ex: "Bradycardia (slow heart rate)" },
+            { part: "Tachy-", type: "prefix", mean: "Fast", ex: "Tachycardia (fast heart rate)" },
+            { part: "Dys-", type: "prefix", mean: "Painful, difficult", ex: "Dyspnea (difficulty breathing)" },
+            { part: "Hyper-", type: "prefix", mean: "Excessive, high", ex: "Hypertension (high blood pressure)" },
+            { part: "Hypo-", type: "prefix", mean: "Deficient, low", ex: "Hypoglycemia (low blood sugar)" },
+            { part: "Epi-", type: "prefix", mean: "Upon, over", ex: "Epicardium (outer layer of heart)" },
+            
+            // ROOTS
+            { part: "Cardio-", type: "root", mean: "Heart", ex: "Cardiology" },
+            { part: "Gastro-", type: "root", mean: "Stomach", ex: "Gastritis" },
+            { part: "Hemo-", type: "root", mean: "Blood", ex: "Hematuria (blood in urine)" },
+            { part: "Nephro-", type: "root", mean: "Kidney", ex: "Nephrology" },
+            { part: "Neuro-", type: "root", mean: "Nerve", ex: "Neuropathy" },
+            { part: "Pneumo-", type: "root", mean: "Lung/Air", ex: "Pneumonia" },
+            
+            // SUFFIXES
+            { part: "-itis", type: "suffix", mean: "Inflammation", ex: "Arthritis (joint inflammation)" },
+            { part: "-ology", type: "suffix", mean: "Study of", ex: "Biology" },
+            { part: "-osis", type: "suffix", mean: "Condition, status", ex: "Cyanosis (blue skin condition)" },
+            { part: "-ectomy", type: "suffix", mean: "Surgical removal", ex: "Appendectomy" },
+            { part: "-pnea", type: "suffix", mean: "Breathing", ex: "Tachypnea (rapid breathing)" },
+            { part: "-uria", type: "suffix", mean: "Urine", ex: "Polyuria (excessive urination)" }
+        ];
+
+        function displayTerms(data) {
+            const grid = document.getElementById('termGrid');
+            grid.innerHTML = data.map(item => `
+                <div class="term-card">
+                    <div class="term-header">
+                        <span class="word-part">${item.part}</span>
+                        <span class="tag tag-${item.type}">${item.type}</span>
+                    </div>
+                    <div class="meaning">${item.mean}</div>
+                    <div class="example">Ex: ${item.ex}</div>
+                </div>
+            `).join('');
+        }
+
+        function filterTerms() {
+            const query = document.getElementById('termSearch').value.toLowerCase();
+            const filtered = dictionary.filter(item => 
+                item.part.toLowerCase().includes(query) || 
+                item.mean.toLowerCase().includes(query) ||
+                item.ex.toLowerCase().includes(query)
+            );
+            displayTerms(filtered);
+        }
+
+        // Initial Load
+        displayTerms(dictionary);
+    </script>
+</body>
+</html>
