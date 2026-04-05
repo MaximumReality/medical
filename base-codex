@@ -1,212 +1,801 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLINICAL CODEX: LAB INTERPRETATION</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060810;
+  --panel: #0a1018;
+  --panel2: #0d1520;
+  --primary: #00d4ff;
+  --secondary: #ff00ff;
+  --danger: #ff2d55;
+  --warning: #ffb800;
+  --success: #00e5a0;
+  --text: #c8d8e8;
+  --muted: #4a6a7a;
+  --border: #1a2a3a;
+}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLINICAL CODEX: LAB INTERPRETATION</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #060810;
-            --panel: #0a1018;
-            --primary: #00d4ff;
-            --secondary: #ff00ff;
-            --danger: #ff2d55;
-            --success: #00e5a0;
-            --text: #c8d8e8;
-            --border: #1a2a3a;
-        }
+- { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Share Tech Mono', monospace;
-            margin: 0;
-            padding: 15px;
-            line-height: 1.4;
-        }
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Share Tech Mono’, monospace;
+padding: 0 0 60px 0;
+line-height: 1.5;
+min-height: 100vh;
+}
 
-        header {
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
+/* scanline overlay */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+pointer-events: none;
+z-index: 999;
+}
 
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin: 0;
-            text-transform: uppercase;
-        }
+/* ── HEADER ── */
+header {
+background: var(–panel);
+border-bottom: 2px solid var(–primary);
+padding: 14px 16px 10px;
+position: sticky;
+top: 0;
+z-index: 100;
+box-shadow: 0 0 20px rgba(0,212,255,0.15);
+}
+h1 {
+font-family: ‘Orbitron’, sans-serif;
+font-size: clamp(0.9rem, 3vw, 1.2rem);
+color: var(–primary);
+text-transform: uppercase;
+letter-spacing: 2px;
+}
+.header-sub {
+font-size: 0.6rem;
+opacity: 0.5;
+margin-top: 2px;
+letter-spacing: 1px;
+}
 
-        .panel-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+/* ── SEARCH ── */
+.search-wrap {
+padding: 12px 16px 0;
+}
+#labSearch {
+width: 100%;
+background: var(–panel2);
+border: 1px solid var(–border);
+color: var(–primary);
+font-family: ‘Share Tech Mono’, monospace;
+font-size: 0.85rem;
+padding: 10px 14px;
+outline: none;
+letter-spacing: 1px;
+}
+#labSearch::placeholder { color: var(–muted); }
+#labSearch:focus { border-color: var(–primary); box-shadow: 0 0 8px rgba(0,212,255,0.2); }
 
-        .tab-btn {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* ── TABS ── */
+.tab-bar {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 6px;
+padding: 12px 16px 0;
+}
+.tab-btn {
+background: var(–panel);
+border: 1px solid var(–border);
+color: var(–muted);
+padding: 8px 4px;
+font-family: ‘Orbitron’, sans-serif;
+font-size: 0.55rem;
+cursor: pointer;
+transition: all 0.2s;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+text-align: center;
+}
+.tab-btn:hover { border-color: var(–primary); color: var(–text); }
+.tab-btn.active {
+border-color: var(–primary);
+color: var(–primary);
+background: rgba(0,212,255,0.07);
+box-shadow: 0 0 8px rgba(0,212,255,0.2);
+}
+.tab-bar {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding: 12px 16px;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+.tab-bar::-webkit-scrollbar { display: none; } /* Hide scrollbar for Chrome/Safari */
+.tab-btn {
+  flex: 0 0 85px; /* Keeps buttons a consistent width */
+}
 
-        .tab-btn.active {
-            border-color: var(--primary);
-            color: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
-        }
 
-        .lab-card {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            margin-bottom: 15px;
-            padding: 15px;
-            border-left: 4px solid var(--primary);
-        }
+/* ── PANELS ── */
+.panel-view { display: none; padding: 14px 16px 0; }
+.panel-view.active { display: block; }
 
-        .lab-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
+/* ── CRITICAL BANNER ── */
+.critical-banner {
+background: rgba(255,45,85,0.12);
+border: 1px solid var(–danger);
+padding: 10px 14px;
+margin-bottom: 16px;
+font-size: 0.75rem;
+color: var(–danger);
+letter-spacing: 0.5px;
+animation: pulse-border 2s infinite;
+}
+@keyframes pulse-border {
+0%,100% { box-shadow: 0 0 5px rgba(255,45,85,0.3); }
+50%      { box-shadow: 0 0 14px rgba(255,45,85,0.6); }
+}
 
-        .lab-title {
-            font-weight: bold;
-            color: #fff;
-            font-size: 1.1rem;
-        }
+/* ── LAB CARDS ── */
+.lab-card {
+background: var(–panel);
+border: 1px solid var(–border);
+border-left: 4px solid var(–primary);
+margin-bottom: 12px;
+padding: 14px;
+transition: box-shadow 0.2s;
+}
+.lab-card:hover { box-shadow: 0 0 12px rgba(0,212,255,0.1); }
+.lab-card.danger  { border-left-color: var(–danger); }
+.lab-card.warning { border-left-color: var(–warning); }
+.lab-card.success { border-left-color: var(–success); }
+.lab-card.magenta { border-left-color: var(–secondary); }
 
-        .lab-range {
-            font-size: 0.8rem;
-            color: var(--primary);
-        }
+/* ── SUDDEN DEATH — Potassium, Sodium, Troponin ── */
+.lab-card.sudden-death {
+border-left-color: var(–secondary);
+border-left-width: 5px;
+animation: sd-pulse 2.5s infinite;
+}
+@keyframes sd-pulse {
+0%,100% { box-shadow: -3px 0 12px rgba(255,0,255,0.2), 0 0 6px rgba(255,0,255,0.1); }
+50%      { box-shadow: -3px 0 22px rgba(255,0,255,0.55), 0 0 14px rgba(255,0,255,0.2); }
+}
+.sudden-death .lab-title { color: #ff99ff; }
+.sudden-death-badge {
+display: inline-block;
+background: rgba(255,0,255,0.15);
+border: 1px solid var(–secondary);
+color: var(–secondary);
+font-family: ‘Orbitron’, sans-serif;
+font-size: 0.55rem;
+padding: 2px 7px;
+letter-spacing: 1px;
+margin-left: 8px;
+vertical-align: middle;
+animation: sd-pulse 2.5s infinite;
+}
 
-        .clinical-impact {
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-        }
+.lab-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+gap: 8px;
+border-bottom: 1px solid var(–border);
+padding-bottom: 8px;
+margin-bottom: 10px;
+}
+.lab-title {
+color: #fff;
+font-size: 1rem;
+font-weight: bold;
+line-height: 1.3;
+}
+.lab-title small {
+display: block;
+font-size: 0.7rem;
+color: var(–muted);
+font-weight: normal;
+margin-top: 2px;
+}
+.lab-range {
+font-size: 0.72rem;
+color: var(–primary);
+text-align: right;
+white-space: nowrap;
+flex-shrink: 0;
+}
+.lab-range .critical-val {
+display: block;
+color: var(–danger);
+margin-top: 2px;
+}
 
-        .nursing-priority {
-            background: rgba(255, 0, 255, 0.1);
-            border: 1px dashed var(--secondary);
-            padding: 10px;
-            font-size: 0.8rem;
-            color: var(--secondary);
-        }
+.clinical-impact {
+font-size: 0.82rem;
+margin-bottom: 10px;
+color: var(–text);
+line-height: 1.5;
+}
 
-        .nursing-priority strong {
-            text-transform: uppercase;
-            text-decoration: underline;
-        }
+.high-low {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-bottom: 10px;
+}
+.hl-box {
+padding: 8px;
+font-size: 0.75rem;
+line-height: 1.4;
+}
+.hl-high { background: rgba(255,45,85,0.1); border: 1px solid rgba(255,45,85,0.3); color: #ff8099; }
+.hl-low  { background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.2); color: #7ee8ff; }
+.hl-label { font-family: ‘Orbitron’, sans-serif; font-size: 0.6rem; letter-spacing: 1px; margin-bottom: 4px; display: block; }
 
-        footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #4a6a7a;
-            margin-top: 30px;
-            border-top: 1px solid var(--border);
-            padding-top: 10px;
-        }
-    </style>
+.nursing-priority {
+background: rgba(255,0,255,0.07);
+border: 1px dashed rgba(255,0,255,0.4);
+padding: 10px;
+font-size: 0.78rem;
+color: #ff99ff;
+line-height: 1.5;
+}
+.nursing-priority .np-label {
+font-family: ‘Orbitron’, sans-serif;
+font-size: 0.6rem;
+letter-spacing: 1px;
+color: var(–secondary);
+display: block;
+margin-bottom: 4px;
+}
+
+.no-results {
+text-align: center;
+color: var(–muted);
+padding: 40px 20px;
+font-size: 0.85rem;
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+font-family: ‘Orbitron’, sans-serif;
+font-size: 0.6rem;
+color: var(–muted);
+letter-spacing: 2px;
+border-bottom: 1px solid var(–border);
+padding-bottom: 6px;
+margin: 18px 0 12px;
+text-transform: uppercase;
+}
+
+footer {
+text-align: center;
+font-size: 0.65rem;
+color: var(–muted);
+padding: 20px 16px 10px;
+border-top: 1px solid var(–border);
+letter-spacing: 1px;
+}
+</style>
+
 </head>
 <body>
 
-    <header>
-        <h1>◈ CLINICAL LAB CODEX</h1>
-        <div style="font-size: 0.6rem; opacity: 0.7;">STATION TERMINAL: MEDICAL OVERRIDE ACTIVE</div>
-    </header>
+<header>
+  <h1>◈ CLINICAL LAB CODEX</h1>
+  <div class="header-sub">MAXIMUM REALITY // NURSE EDUCATION PROTOCOL V2.0 // STATION: 7-NORTH</div>
+</header>
 
-    <div class="panel-selector">
-        <button class="tab-btn active">HEMATOLOGY (CBC)</button>
-        <button class="tab-btn">METABOLIC (BMP)</button>
+<div class="search-wrap">
+  <input type="text" id="labSearch" placeholder="> SEARCH LAB, VALUE, OR KEYWORD..." oninput="searchLabs()">
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="showPanel('cbc')">CBC<br>Hematology</button>
+  <button class="tab-btn" onclick="showPanel('bmp')">BMP<br>Metabolic</button>
+  <button class="tab-btn" onclick="showPanel('cardiac')">Cardiac<br>Markers</button>
+  <button class="tab-btn" onclick="showPanel('coag')">Coag<br>Panel</button>
+  <button class="tab-btn" onclick="showPanel('lft')">LFT<br>Liver</button>
+  <button class="tab-btn" onclick="showPanel('urine')">Urinalysis<br>& Renal</button>
+  <button class="tab-btn" onclick="showPanel('abg')">ABG<br>Acid-Base</button>
+
+</div>
+
+<!-- ══════════ CBC ══════════ -->
+
+<div id="panel-cbc" class="panel-view active">
+  <div class="critical-banner">⚠ CRITICAL VALUES REQUIRE IMMEDIATE MD NOTIFICATION — DO NOT DELAY</div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">WBC — White Blood Cells<small>Leukocytes</small></div>
+      <div class="lab-range">4.5–11.0 K/µL<span class="critical-val">CRIT: &lt;2 or &gt;30</span></div>
     </div>
-
-    <div id="cbc-panel">
-        <div class="lab-card">
-            <div class="lab-header">
-                <span class="lab-title">WBC (White Blood Cells)</span>
-                <span class="lab-range">4.5 - 11.0 K/µL</span>
-            </div>
-            <div class="clinical-impact">
-                High levels (Leukocytosis) indicate infection or inflammation. Low levels (Leukopenia) suggest immunocompromise.
-            </div>
-            <div class="nursing-priority">
-                <strong>Nursing Action:</strong> Monitor for fever/chills. Check "Differential" for Neutrophil count. Initiate Neutropenic Precautions if low.
-            </div>
-        </div>
-
-        <div class="lab-card" style="border-left-color: var(--danger);">
-            <div class="lab-header">
-                <span class="lab-title">Hemoglobin (Hgb)</span>
-                <span class="lab-range">12 - 18 g/dL</span>
-            </div>
-            <div class="clinical-impact">
-                Determines blood's oxygen-carrying capacity. Critical low indicates severe anemia or active hemorrhage.
-            </div>
-            <div class="nursing-priority">
-                <strong>Nursing Action:</strong> If <strong>< 7.0 g/dL</strong>, prepare for blood transfusion protocol. Monitor O2 saturation and heart rate.
-            </div>
-        </div>
-
-        <div class="lab-card">
-            <div class="lab-header">
-                <span class="lab-title">Platelets (PLT)</span>
-                <span class="lab-range">150 - 450 K/µL</span>
-            </div>
-            <div class="clinical-impact">
-                Essential for blood clotting. Low levels (Thrombocytopenia) lead to spontaneous bruising and bleeding.
-            </div>
-            <div class="nursing-priority">
-                <strong>Nursing Action:</strong> **BLEEDING PRECAUTIONS.** Use electric razors, soft toothbrushes. Monitor for petechiae (red spots).
-            </div>
-        </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Leukocytosis</span>Infection, inflammation, leukemia, steroid use, stress response</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Leukopenia</span>Bone marrow suppression, chemo, HIV, autoimmune disease</div>
     </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Check differential — focus on Neutrophils (ANC). If ANC &lt;500: Neutropenic Precautions (private room, no fresh flowers/fruit, mask). Monitor for fever ≥38°C (100.4°F) as first sign of infection.</div>
+  </div>
 
-    <div id="bmp-panel" style="display:none;">
-        <div class="lab-card" style="border-left-color: var(--secondary);">
-            <div class="lab-header">
-                <span class="lab-title">Potassium (K+)</span>
-                <span class="lab-range">3.5 - 5.0 mEq/L</span>
-            </div>
-            <div class="clinical-impact">
-                The "Cardiac Electrolyte." Essential for nerve conduction and muscle contraction in the heart.
-            </div>
-            <div class="nursing-priority">
-                <strong>Nursing Action:</strong> CRITICAL RISK. Both High/Low cause arrhythmias. <strong>GET EKG IMMEDIATELY.</strong> Never IV Push.
-            </div>
-        </div>
-        
-        <div class="lab-card">
-            <div class="lab-header">
-                <span class="lab-title">Creatinine</span>
-                <span class="lab-range">0.6 - 1.2 mg/dL</span>
-            </div>
-            <div class="clinical-impact">
-                The gold standard for Kidney function. Elevation indicates renal failure or severe dehydration.
-            </div>
-            <div class="nursing-priority">
-                <strong>Nursing Action:</strong> Monitor Intake/Output. If high, notify MD before giving nephrotoxic meds (like NSAIDs or IV contrast).
-            </div>
-        </div>
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">Hemoglobin (Hgb)<small>Oxygen-carrying protein in RBCs</small></div>
+      <div class="lab-range">M: 13.5–17.5 g/dL<br>F: 12.0–15.5 g/dL<span class="critical-val">CRIT: &lt;7.0 g/dL</span></div>
     </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Polycythemia</span>Dehydration, COPD, high altitude adaptation, polycythemia vera</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Anemia</span>Blood loss, iron deficiency, B12/folate deficiency, hemolysis, CKD</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Hgb &lt;7: prepare transfusion protocol, monitor O2 sat, HR, BP. Hgb &lt;8 with symptoms: O2 therapy, activity restrictions. Assess for dyspnea, fatigue, pallor, tachycardia.</div>
+  </div>
 
-    <footer>
-        MAXIMUM REALITY | NURSE EDUCATION PROTOCOL V1.0
-    </footer>
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Hematocrit (Hct)<small>% of blood volume that is RBCs</small></div>
+      <div class="lab-range">M: 41–53%<br>F: 36–46%</div>
+    </div>
+    <div class="clinical-impact">Roughly 3× the Hgb value. Drops in anemia/hemorrhage, rises in dehydration. Trending Hct is key in GI bleeds.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Trending matters more than a single value. Rapid drop = active bleeding. Monitor serial CBC every 4–6 hrs in acute hemorrhage.</div>
+  </div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">Platelets (PLT)<small>Thrombocytes — clotting</small></div>
+      <div class="lab-range">150–450 K/µL<span class="critical-val">CRIT: &lt;50 or &gt;1000</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Thrombocytosis</span>Infection, iron deficiency, post-splenectomy, inflammatory disease. Risk of clot.</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Thrombocytopenia</span>Heparin-induced (HIT), ITP, chemo, liver disease, sepsis. Spontaneous bleeding risk.</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>PLT &lt;50K: BLEEDING PRECAUTIONS — electric razor, soft toothbrush, no IM injections, fall precautions. PLT &lt;20K: spontaneous intracranial bleed risk — prepare platelet transfusion. Monitor petechiae, ecchymosis, guaiac stool.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">RBC Count<small>Red Blood Cell count</small></div>
+      <div class="lab-range">M: 4.5–5.9 M/µL<br>F: 4.0–5.2 M/µL</div>
+    </div>
+    <div class="clinical-impact">Reflects total number of RBCs. Used with Hgb/Hct to classify type of anemia (microcytic, macrocytic, normocytic).</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Use MCV alongside RBC: MCV &lt;80 = microcytic (iron deficiency). MCV &gt;100 = macrocytic (B12/folate). Normal MCV with low RBC = normocytic (blood loss, CKD).</div>
+  </div>
+</div>
+
+<!-- ══════════ BMP ══════════ -->
+
+<div id="panel-bmp" class="panel-view">
+  <div class="critical-banner">⚠ ELECTROLYTE CRITICAL VALUES → CARDIAC MONITORING REQUIRED</div>
+
+  <div class="section-divider">// ELECTROLYTES</div>
+
+  <div class="lab-card sudden-death">
+    <div class="lab-header">
+      <div class="lab-title">Sodium (Na+) <span class="sudden-death-badge">⚡ SUDDEN DEATH</span><small>Primary extracellular electrolyte</small></div>
+      <div class="lab-range">135–145 mEq/L<span class="critical-val">CRIT: &lt;120 or &gt;160</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Hypernatremia</span>Dehydration, diabetes insipidus, excessive sodium intake. Causes cellular shrinkage.</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Hyponatremia</span>Excess water intake, SIADH, heart failure, liver cirrhosis. Causes cellular swelling → SEIZURE RISK.</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Correct SLOWLY — rapid correction causes osmotic demyelination (brain damage). Seizure precautions if &lt;125. Assess neuro status: confusion, lethargy, seizures. Restrict free water in SIADH.</div>
+  </div>
+
+  <div class="lab-card sudden-death">
+    <div class="lab-header">
+      <div class="lab-title">Potassium (K+) <span class="sudden-death-badge">⚡ SUDDEN DEATH</span><small>The Cardiac Electrolyte</small></div>
+      <div class="lab-range">3.5–5.0 mEq/L<span class="critical-val">CRIT: &lt;2.5 or &gt;6.5</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Hyperkalemia</span>Renal failure, ACE inhibitors, K-sparing diuretics, tissue destruction, acidosis</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Hypokalemia</span>Diuretics (furosemide), vomiting, diarrhea, alkalosis, poor intake</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>BOTH high AND low cause life-threatening arrhythmias. GET EKG IMMEDIATELY. NEVER IV push K+ — always dilute, max 10 mEq/hr peripheral. Low K+: replace with oral or IV. High K+: Kayexalate, insulin+dextrose, calcium gluconate (cardiac protection), dialysis.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Calcium (Ca2+)<small>Bone, muscle, nerve function</small></div>
+      <div class="lab-range">8.5–10.5 mg/dL<span class="critical-val">CRIT: &lt;7.0 or &gt;13.0</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Hypercalcemia</span>Hyperparathyroidism, bone metastases, prolonged immobility. "Bones, groans, stones, moans."</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Hypocalcemia</span>Hypoparathyroidism, vitamin D deficiency, pancreatitis, post-thyroidectomy</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Low Ca2+: Chvostek's sign (tap facial nerve → twitch) and Trousseau's sign (BP cuff → carpal spasm) = positive = TETANY RISK. Seizure precautions. Have IV calcium gluconate at bedside post-thyroidectomy.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Magnesium (Mg2+)<small>Muscle/nerve function, K+ regulation</small></div>
+      <div class="lab-range">1.5–2.5 mEq/L<span class="critical-val">CRIT: &lt;1.0 or &gt;5.0</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Hypermagnesemia</span>Renal failure, excess Mg antacids/laxatives. Causes CNS depression, respiratory failure.</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Hypomagnesemia</span>Alcoholism, malnutrition, diuretics, diarrhea. Often co-exists with low K+ and Ca2+.</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Mg is the "forgotten electrolyte." Always check when K+ or Ca2+ are abnormal — hard to correct K+ without fixing Mg first. High Mg toxicity antidote: CALCIUM GLUCONATE IV. Monitor deep tendon reflexes (DTRs) — loss of DTRs = early toxicity sign.</div>
+  </div>
+
+  <div class="section-divider">// GLUCOSE & RENAL</div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">Blood Glucose (BG)<small>Blood sugar level</small></div>
+      <div class="lab-range">Fasting: 70–99 mg/dL<br>Random: &lt;140 mg/dL<span class="critical-val">CRIT: &lt;40 or &gt;500</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Hyperglycemia</span>Diabetes, steroids, stress response, TPN, pancreatitis. DKA if &gt;250 with ketones.</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Hypoglycemia</span>Too much insulin, missed meals, alcohol, sepsis. Brain uses ONLY glucose — damage within minutes.</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Hypoglycemia is the PRIORITY — treat first, ask questions later. Conscious: 15g fast carbs (OJ, glucose tabs). Unconscious: D50 IV or glucagon IM. Recheck in 15 min. Never leave patient alone during hypoglycemic event.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">BUN — Blood Urea Nitrogen<small>Kidney waste product</small></div>
+      <div class="lab-range">7–20 mg/dL</div>
+    </div>
+    <div class="clinical-impact">Measures kidney waste clearance. Also elevated in dehydration, GI bleed, and high protein diet. Less specific than creatinine alone.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>BUN:Creatinine ratio &gt;20:1 = pre-renal cause (dehydration, reduced perfusion). Ratio &lt;10:1 = intrinsic renal disease. Fluid resuscitation often fixes pre-renal azotemia. Monitor I&O strictly.</div>
+  </div>
+
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">Creatinine (Cr)<small>Gold standard kidney marker</small></div>
+      <div class="lab-range">M: 0.7–1.3 mg/dL<br>F: 0.5–1.1 mg/dL<span class="critical-val">CRIT: &gt;10 mg/dL</span></div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH</span>Renal failure (AKI or CKD), rhabdomyolysis, dehydration, nephrotoxic drugs</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW</span>Low muscle mass, malnutrition, advanced liver disease (rarely clinically significant)</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Creatinine &gt;2× baseline = AKI. HOLD nephrotoxic meds: NSAIDs, aminoglycosides, IV contrast, ACE inhibitors. Monitor strict I&O — urine output &lt;0.5 mL/kg/hr = oliguria. Notify MD. Prepare for possible dialysis.</div>
+  </div>
+</div>
+
+<!-- ══════════ CARDIAC ══════════ -->
+
+<div id="panel-cardiac" class="panel-view">
+  <div class="critical-banner">⚠ ELEVATED CARDIAC MARKERS + CHEST PAIN = POTENTIAL MI — ACTIVATE PROTOCOL IMMEDIATELY</div>
+
+  <div class="lab-card sudden-death">
+    <div class="lab-header">
+      <div class="lab-title">Troponin I / Troponin T <span class="sudden-death-badge">⚡ SUDDEN DEATH</span><small>GOLD STANDARD for MI detection</small></div>
+      <div class="lab-range">Normal: &lt;0.04 ng/mL<span class="critical-val">ANY elevation = CRITICAL</span></div>
+    </div>
+    <div class="clinical-impact">Most specific marker for myocardial damage. Rises 3–6 hrs after injury, peaks at 24 hrs, stays elevated 7–14 days. Serial troponins every 3–6 hrs are key.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>ANY positive troponin = cardiac event until proven otherwise. 12-lead EKG STAT. Continuous cardiac monitoring. IV access × 2. O2 if SpO2 &lt;94%. Aspirin 325mg (unless contraindicated). Prepare for cath lab activation. NPO status. Do NOT leave patient unattended.</div>
+  </div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">CK-MB<small>Creatine Kinase — Myocardial Band</small></div>
+      <div class="lab-range">Normal: &lt;5% total CK<br>&lt;25 U/L</div>
+    </div>
+    <div class="clinical-impact">Rises 4–8 hrs post-MI, peaks at 18–24 hrs, normalizes in 72 hrs. Useful for detecting reinfarction because it normalizes faster than troponin.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Used alongside troponin. If troponin elevated but CK-MB normal — consider older MI. If CK-MB re-elevates after normalizing — suspect reinfarction. Monitor chest pain pattern, radiation, diaphoresis.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">BNP / NT-proBNP<small>Brain Natriuretic Peptide — Heart Failure Marker</small></div>
+      <div class="lab-range">BNP: &lt;100 pg/mL<br>NT-proBNP: &lt;300 pg/mL</div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH</span>Heart failure (ventricular stretch), fluid overload, pulmonary embolism, renal failure</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW / NORMAL</span>Effectively rules OUT heart failure as cause of dyspnea (high negative predictive value)</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>BNP &gt;400 = high probability HF. Trending BNP guides treatment response — decreasing = responding to diuresis. Daily weights, strict I&O, fluid restriction per order, assess for edema/crackles/JVD.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Lipid Panel<small>Cholesterol profile</small></div>
+      <div class="lab-range">Total Chol: &lt;200 mg/dL<br>LDL: &lt;100 mg/dL<br>HDL: &gt;60 mg/dL<br>TG: &lt;150 mg/dL</div>
+    </div>
+    <div class="clinical-impact">LDL = "Lousy" cholesterol — deposits in arteries. HDL = "Healthy" — removes cholesterol. High triglycerides = pancreatitis risk if &gt;500.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Must fast 9–12 hrs before draw (especially for accurate TG). Statin therapy monitoring: check LFTs — myopathy risk (muscle pain + elevated CK = rhabdo risk). Counsel on diet, exercise, smoking cessation.</div>
+  </div>
+</div>
+
+<!-- ══════════ COAGULATION ══════════ -->
+
+<div id="panel-coag" class="panel-view">
+  <div class="critical-banner">⚠ CRITICAL COAG VALUES = SEVERE BLEEDING OR CLOTTING RISK — NOTIFY MD STAT</div>
+
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">PT — Prothrombin Time<small>Extrinsic pathway / Warfarin monitoring</small></div>
+      <div class="lab-range">11–13.5 seconds<span class="critical-val">CRIT: &gt;35 sec</span></div>
+    </div>
+    <div class="clinical-impact">Measures how long blood takes to clot via the extrinsic pathway. Prolonged by warfarin, liver disease, Vitamin K deficiency, DIC.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Used to monitor WARFARIN therapy. Target PT usually 1.5–2.5× normal. Antidote: Vitamin K (slow) or FFP (fast). Assess for bleeding: gums, urine, stool, bruising. Hold warfarin if supratherapeutic — call MD.</div>
+  </div>
+
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">INR — International Normalized Ratio<small>Standardized PT ratio</small></div>
+      <div class="lab-range">Normal: 0.8–1.2<br>Therapeutic (anticoag): 2.0–3.0<span class="critical-val">CRIT: &gt;5.0</span></div>
+    </div>
+    <div class="clinical-impact">Standardized version of PT used globally. INR 2–3 = therapeutic anticoagulation for A-fib, DVT, PE. INR 2.5–3.5 = mechanical heart valves.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>INR &gt;5 = HIGH bleed risk. Hold warfarin, notify MD. INR &gt;9 = consider Vitamin K reversal. Check ALL medications — many drugs affect INR (antibiotics, NSAIDs, OTC meds). Instruct patients never to start/stop meds without telling provider.</div>
+  </div>
+
+  <div class="lab-card magenta">
+    <div class="lab-header">
+      <div class="lab-title">aPTT — Activated Partial Thromboplastin Time<small>Intrinsic pathway / Heparin monitoring</small></div>
+      <div class="lab-range">Normal: 25–35 sec<br>Therapeutic: 60–100 sec<span class="critical-val">CRIT: &gt;120 sec</span></div>
+    </div>
+    <div class="clinical-impact">Measures intrinsic clotting pathway. Used to monitor UNFRACTIONATED HEPARIN drip therapy. Prolonged in hemophilia, DIC, heparin excess.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Check aPTT every 6 hrs when on heparin drip. Adjust per protocol/nomogram. ANTIDOTE: Protamine sulfate. Watch for HIT (heparin-induced thrombocytopenia) — paradoxical CLOTTING with low platelets. If platelets drop &gt;50% → STOP heparin immediately.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">D-Dimer<small>Fibrin degradation product</small></div>
+      <div class="lab-range">Normal: &lt;500 ng/mL<br>(0.5 µg/mL FEU)</div>
+    </div>
+    <div class="clinical-impact">Elevated when clots are forming and breaking down — sensitive but NOT specific. Good for RULING OUT DVT/PE. Elevated in pregnancy, surgery, infection, cancer, trauma.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Normal D-dimer effectively rules out DVT/PE in low-risk patients. Elevated D-dimer requires imaging (CT-PA for PE, duplex ultrasound for DVT). Assess for calf pain, swelling (DVT) or sudden dyspnea, pleuritic chest pain (PE).</div>
+  </div>
+</div>
+
+<!-- ══════════ LFT ══════════ -->
+
+<div id="panel-lft" class="panel-view">
+  <div class="critical-banner">⚠ SEVERE LFT ELEVATION = POSSIBLE ACUTE LIVER FAILURE — MONITOR FOR ENCEPHALOPATHY</div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">ALT — Alanine Aminotransferase<small>Liver-specific enzyme</small></div>
+      <div class="lab-range">7–56 U/L</div>
+    </div>
+    <div class="clinical-impact">Most specific marker for hepatocellular (liver cell) damage. Elevated in hepatitis, acetaminophen toxicity, alcohol liver disease, fatty liver, ischemia.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>ALT &gt;3× normal = significant liver injury. &gt;10× = severe. Assess for jaundice, RUQ pain, dark urine, clay-colored stools. HOLD hepatotoxic drugs (acetaminophen limit 2g/day, statins). Alcohol counseling. Monitor coagulation — liver makes clotting factors.</div>
+  </div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">AST — Aspartate Aminotransferase<small>Liver + cardiac enzyme</small></div>
+      <div class="lab-range">10–40 U/L</div>
+    </div>
+    <div class="clinical-impact">Less specific than ALT — also elevated in cardiac, muscle, and kidney damage. AST:ALT ratio &gt;2:1 suggests alcoholic liver disease.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Always interpret with ALT. AST/ALT ratio helps differentiate alcoholic hepatitis (ratio &gt;2) from viral hepatitis (ALT &gt; AST). If cardiac cause suspected, correlate with troponin and CK.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Bilirubin (Total)<small>Breakdown product of heme</small></div>
+      <div class="lab-range">Total: 0.1–1.2 mg/dL<br>Direct: 0–0.3 mg/dL<br>Indirect: 0.1–1.0 mg/dL</div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Jaundice &gt;2.5</span>Pre-hepatic (hemolysis), hepatic (hepatitis, cirrhosis), post-hepatic (bile duct obstruction, gallstones)</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW</span>Clinically insignificant</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Assess skin and sclerae (whites of eyes) for jaundice — scleral icterus appears first. In neonates: phototherapy initiated per protocol (jaundice can cause kernicterus/brain damage). Direct bili elevated = obstruction → assess for dark urine, clay stools.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Albumin<small>Protein made by liver — nutritional/hepatic marker</small></div>
+      <div class="lab-range">3.5–5.0 g/dL<span class="critical-val">CRIT: &lt;2.0 g/dL</span></div>
+    </div>
+    <div class="clinical-impact">Reflects liver synthetic function and nutritional status. Low albumin = edema (decreased oncotic pressure), poor wound healing, altered drug binding (toxic levels possible).</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Low albumin alters drug pharmacokinetics — many drugs (phenytoin, warfarin) are albumin-bound. Check for ascites, peripheral edema, poor wound healing. Nutritional consult for albumin &lt;3. Pressure ulcer prevention critical in hypoalbuminemia.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Ammonia (NH3)<small>Byproduct of protein metabolism</small></div>
+      <div class="lab-range">15–45 mcg/dL<span class="critical-val">CRIT: &gt;200 mcg/dL</span></div>
+    </div>
+    <div class="clinical-impact">Liver converts ammonia to urea. In liver failure, ammonia accumulates → hepatic encephalopathy (confusion, asterixis, coma).</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Elevated ammonia = neuro assessment priority. Check for asterixis (flapping tremor — ask patient to extend arms/wrists). Safety: fall precautions, call light within reach. Lactulose is treatment of choice — goal: 2–3 soft stools/day to trap and excrete ammonia.</div>
+  </div>
+</div>
+
+<!-- ══════════ URINALYSIS ══════════ -->
+
+<div id="panel-urine" class="panel-view">
+  <div class="critical-banner">⚠ POSITIVE CULTURE + SEPSIS SIGNS = UROSEPSIS — HIGH MORTALITY IF DELAYED TREATMENT</div>
+
+  <div class="section-divider">// URINALYSIS (UA)</div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Specific Gravity<small>Urine concentration</small></div>
+      <div class="lab-range">1.005–1.030</div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH (&gt;1.030)</span>Dehydration, SIADH, DM, contrast media — urine is concentrated</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW (&lt;1.005)</span>Overhydration, diabetes insipidus, renal tubular damage — urine is dilute</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div style="background:linear-gradient(135deg,#2a1800,#6b3a00);border:1px solid #8b5a00;padding:8px;font-size:0.72rem;border-radius:2px;text-align:center;">
+        <span style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:#ffb800;display:block;margin-bottom:4px;">🟤 DARK URINE</span>
+        Concentrated · High SG<br>Dehydrated · Needs fluids
+      </div>
+      <div style="background:linear-gradient(135deg,#001a2a,#003a5a);border:1px solid #005580;padding:8px;font-size:0.72rem;border-radius:2px;text-align:center;">
+        <span style="font-family:'Orbitron',sans-serif;font-size:0.55rem;color:#00d4ff;display:block;margin-bottom:4px;">💧 PALE/CLEAR URINE</span>
+        Dilute · Low SG<br>Well hydrated or DI
+      </div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Quick bedside assessment of hydration. Encourage fluids if high. In DI: monitor for massive urine output (may be 10–20L/day). Compare with serum osmolality for complete picture.</div>
+  </div>
+
+  <div class="lab-card warning">
+    <div class="lab-header">
+      <div class="lab-title">Urine pH<small>Acid-base of urine</small></div>
+      <div class="lab-range">4.5–8.0<br>(Normal ~6.0)</div>
+    </div>
+    <div class="clinical-impact">Acidic urine (&lt;6): high protein diet, acidosis, UTI with certain bacteria, cranberry juice. Alkaline urine (&gt;7): UTI (Proteus), vegetarian diet, metabolic alkalosis, kidney tubular acidosis.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>Alkaline urine promotes calcium stone formation. Acidic urine promotes uric acid stones. In kidney stone patients: target urine pH per MD order. Hydration is KEY — goal urine output 2–3L/day for stone prevention.</div>
+  </div>
+
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">Urine Protein<small>Should NOT be present normally</small></div>
+      <div class="lab-range">Normal: Negative / trace<br>&lt;150 mg/24hr</div>
+    </div>
+    <div class="clinical-impact">Proteinuria signals glomerular damage (protein leaks through damaged filters). Present in nephrotic syndrome, diabetic nephropathy, hypertension, preeclampsia.</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>In pregnancy: &gt;300mg/24hr = preeclampsia → monitor BP, reflexes, CNS symptoms, fetal heart tones. Dipstick 3+ or 4+ = significant. Collect 24-hr urine accurately — save ALL urine on ice. Nephrotic syndrome: assess for massive edema, low albumin.</div>
+  </div>
+
+  <div class="lab-card danger">
+    <div class="lab-header">
+      <div class="lab-title">Urine WBCs / Leukocyte Esterase<small>Infection marker</small></div>
+      <div class="lab-range">Normal: &lt;5 WBC/hpf<br>LE: Negative</div>
+    </div>
+    <div class="clinical-impact">Elevated WBCs in urine = pyuria = UTI or kidney infection until proven otherwise. LE positive is rapid screening test — confirm with culture and sensitivity (C&S).</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>ALWAYS get urine C&S BEFORE starting antibiotics. Mid-stream clean catch technique is critical for accurate results. Catheter-associated UTI (CAUTI) prevention: maintain closed system, peri-care, remove catheter ASAP. In elderly: UTI often presents as CONFUSION, not classic symptoms.</div>
+  </div>
+
+  <div class="section-divider">// RENAL FUNCTION</div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">eGFR — Estimated Glomerular Filtration Rate<small>Best overall kidney function indicator</small></div>
+      <div class="lab-range">Normal: &gt;90 mL/min/1.73m²<span class="critical-val">CRIT: &lt;15 = Kidney Failure</span></div>
+    </div>
+    <div class="clinical-impact">Calculated from creatinine, age, and sex (CKD-EPI 2021 formula — race-neutral as of 2021/2022 update). Stages CKD: Stage 1 (&gt;90, normal), Stage 2 (60–89), Stage 3 (30–59, moderate), Stage 4 (15–29, severe), Stage 5 (&lt;15, kidney failure).</div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>eGFR &lt;30: dose-adjust or HOLD renally-cleared drugs (metformin, many antibiotics, opioids, NSAIDs). eGFR &lt;15: dialysis planning begins. Prepare for AV fistula placement (protect that arm — NO BP, NO blood draws). Dietary restrictions: low K+, low phosphorus, fluid restriction.</div>
+  </div>
+
+  <div class="lab-card">
+    <div class="lab-header">
+      <div class="lab-title">Urine Output (UO)<small>Hourly renal perfusion monitor</small></div>
+      <div class="lab-range">Normal: 0.5–1 mL/kg/hr<br>Min acceptable: 30 mL/hr</div>
+    </div>
+    <div class="high-low">
+      <div class="hl-box hl-high"><span class="hl-label">▲ HIGH — Polyuria</span>Diabetes insipidus, hyperglycemia, diuretics, recovering AKI</div>
+      <div class="hl-box hl-low"><span class="hl-label">▼ LOW — Oliguria &lt;400 mL/day</span>Dehydration, AKI, cardiogenic shock, sepsis, obstruction</div>
+    </div>
+    <div class="nursing-priority"><span class="np-label">⬡ NURSING PRIORITY</span>UO &lt;30 mL/hr for 2 consecutive hours = NOTIFY MD. First assess: is catheter kinked? Is patient dehydrated? Give fluid bolus per order. No response to fluids = suspect AKI or cardiac cause. Anuria (&lt;50 mL/day) = emergency — dialysis may be needed urgently.</div>
+  </div>
+</div>
+
+<!-- ══════════ ABG ══════════ -->
+
+<div id="panel-abg" class="panel-view">
+  <div class="critical-banner">⚠ RESPIRATORY FAILURE / KUSSMAUL BREATHING — PREPARE FOR INTUBATION</div>
+
+  <div class="lab-card success">
+    <div class="lab-header">
+      <div class="lab-title">ABG Cheat Sheet<small>The "ROME" Method</small></div>
+      <div class="section-divider">// INTERPRETATION MATRIX</div>
+<table style="width:100%; font-size:0.7rem; border-collapse: collapse; margin-bottom: 15px; color: var(--text); border: 1px solid var(--border);">
+  <tr style="background: var(--panel2); color: var(--primary);">
+    <th style="padding: 8px; border: 1px solid var(--border);">CONDITION</th>
+    <th style="padding: 8px; border: 1px solid var(--border);">pH</th>
+    <th style="padding: 8px; border: 1px solid var(--border);">PaCO2</th>
+    <th style="padding: 8px; border: 1px solid var(--border);">HCO3</th>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border: 1px solid var(--border);">Resp. Acidosis</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↑</td>
+    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border: 1px solid var(--border);">Resp. Alkalosis</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↓</td>
+    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border: 1px solid var(--border);">Meta. Acidosis</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+  </tr>
+  <tr>
+    <td style="padding: 8px; border: 1px solid var(--border);">Meta. Alkalosis</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
+    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
+    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
+  </tr>
+</table>
+
+      <div class="lab-range">pH: 7.35–7.45<br>PaCO2: 35–45<br>HCO3: 22–26</div>
+    </div>
+    <div class="clinical-impact">
+      <strong>R</strong>espiratory <strong>O</strong>pposite (pH ↑, CO2 ↓ = Alkalosis)<br>
+      <strong>M</strong>etabolic <strong>E</strong>qual (pH ↑, HCO3 ↑ = Alkalosis)
+    </div>
+    <div class="nursing-priority">
+      <span class="np-label">⬡ NURSING PRIORITY</span>
+      Assess respiratory rate/depth. pH < 7.35 = Acidosis. pH > 7.45 = Alkalosis. 
+      Check PaO2 (Normal 80-100) — if low, titrate O2 as ordered.
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ SEARCH RESULTS ══════════ -->
+
+<div id="panel-search" class="panel-view"></div>
+
+<footer>MAXIMUM REALITY // CLINICAL LAB CODEX V2.0 // FOR ELINA // ST. JUDE NETWORK</footer>
+
+<script>
+let currentPanel = 'cbc';
+
+function showPanel(name) {
+  document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('labSearch').value = '';
+  // find and activate the right tab button
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = ['cbc','bmp','cardiac','coag','lft','urine','abg'];
+
+  const idx = panels.indexOf(name);
+  if (idx >= 0) tabs[idx].classList.add('active');
+  currentPanel = name;
+}
+
+function searchLabs() {
+  const query = document.getElementById('labSearch').value.trim().toLowerCase();
+  if (!query) {
+    document.getElementById('panel-search').classList.remove('active');
+    document.getElementById('panel-' + currentPanel).classList.add('active');
+    return;
+  }
+  // search all lab card content
+  const allCards = document.querySelectorAll('#panel-cbc .lab-card, #panel-bmp .lab-card, #panel-cardiac .lab-card, #panel-coag .lab-card, #panel-lft .lab-card, #panel-urine .lab-card');
+  const results = [];
+  allCards.forEach(card => {
+    if (card.textContent.toLowerCase().includes(query)) {
+      results.push(card.cloneNode(true));
+    }
+  });
+  const searchPanel = document.getElementById('panel-search');
+  document.querySelectorAll('.panel-view').forEach(p => p.classList.remove('active'));
+  searchPanel.classList.add('active');
+  if (results.length === 0) {
+    searchPanel.innerHTML = '<div class="no-results">> NO MATCHING LAB VALUES FOUND<br><span style="font-size:0.75rem;color:#4a6a7a">Try: "potassium", "kidney", "bleeding", "MI"</span></div>';
+  } else {
+    searchPanel.innerHTML = `<div style="font-size:0.7rem;color:var(--muted);margin-bottom:12px;letter-spacing:1px">> ${results.length} RESULT${results.length > 1 ? 'S' : ''} FOR "${query.toUpperCase()}"</div>`;
+    results.forEach(card => searchPanel.appendChild(card));
+  }
+}
+
+// keyboard: Escape clears search
+document.getElementById('labSearch').addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('labSearch').value = '';
+    searchLabs();
+  }
+});
+</script>
 
 </body>
 </html>
