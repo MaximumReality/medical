@@ -24,8 +24,8 @@
 - { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-background: var(–bg);
-color: var(–text);
+background: var(--bg);
+color: var(--text);
 font-family: ‘Share Tech Mono’, monospace;
 padding: 0 0 60px 0;
 line-height: 1.5;
@@ -44,8 +44,8 @@ z-index: 999;
 
 /* ── HEADER ── */
 header {
-background: var(–panel);
-border-bottom: 2px solid var(–primary);
+background: var(--panel);
+border-bottom: 2px solid var(--primary);
 padding: 14px 16px 10px;
 position: sticky;
 top: 0;
@@ -55,7 +55,7 @@ box-shadow: 0 0 20px rgba(0,212,255,0.15);
 h1 {
 font-family: ‘Orbitron’, sans-serif;
 font-size: clamp(0.9rem, 3vw, 1.2rem);
-color: var(–primary);
+color: var(--primary);
 text-transform: uppercase;
 letter-spacing: 2px;
 }
@@ -72,9 +72,9 @@ padding: 12px 16px 0;
 }
 #labSearch {
 width: 100%;
-background: var(–panel2);
-border: 1px solid var(–border);
-color: var(–primary);
+background: var(--panel2);
+border: 1px solid var(--border);
+color: var(--primary);
 font-family: ‘Share Tech Mono’, monospace;
 font-size: 0.85rem;
 padding: 10px 14px;
@@ -92,9 +92,9 @@ gap: 6px;
 padding: 12px 16px 0;
 }
 .tab-btn {
-background: var(–panel);
-border: 1px solid var(–border);
-color: var(–muted);
+background: var(--panel);
+border: 1px solid var(--border);
+color: var(--muted);
 padding: 8px 4px;
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.55rem;
@@ -104,10 +104,10 @@ text-transform: uppercase;
 letter-spacing: 0.5px;
 text-align: center;
 }
-.tab-btn:hover { border-color: var(–primary); color: var(–text); }
+.tab-btn:hover { border-color: var(--primary); color: var(–text); }
 .tab-btn.active {
-border-color: var(–primary);
-color: var(–primary);
+border-color: var(--primary);
+color: var(--primary);
 background: rgba(0,212,255,0.07);
 box-shadow: 0 0 8px rgba(0,212,255,0.2);
 }
@@ -131,11 +131,11 @@ box-shadow: 0 0 8px rgba(0,212,255,0.2);
 /* ── CRITICAL BANNER ── */
 .critical-banner {
 background: rgba(255,45,85,0.12);
-border: 1px solid var(–danger);
+border: 1px solid var(--danger);
 padding: 10px 14px;
 margin-bottom: 16px;
 font-size: 0.75rem;
-color: var(–danger);
+color: var(--danger);
 letter-spacing: 0.5px;
 animation: pulse-border 2s infinite;
 }
@@ -146,22 +146,22 @@ animation: pulse-border 2s infinite;
 
 /* ── LAB CARDS ── */
 .lab-card {
-background: var(–panel);
-border: 1px solid var(–border);
-border-left: 4px solid var(–primary);
+background: var(--panel);
+border: 1px solid var(--border);
+border-left: 4px solid var(--primary);
 margin-bottom: 12px;
 padding: 14px;
 transition: box-shadow 0.2s;
 }
 .lab-card:hover { box-shadow: 0 0 12px rgba(0,212,255,0.1); }
-.lab-card.danger  { border-left-color: var(–danger); }
-.lab-card.warning { border-left-color: var(–warning); }
-.lab-card.success { border-left-color: var(–success); }
-.lab-card.magenta { border-left-color: var(–secondary); }
+.lab-card.danger  { border-left-color: var(--danger); }
+.lab-card.warning { border-left-color: var(--warning); }
+.lab-card.success { border-left-color: var(--success); }
+.lab-card.magenta { border-left-color: var(--secondary); }
 
 /* ── SUDDEN DEATH — Potassium, Sodium, Troponin ── */
 .lab-card.sudden-death {
-border-left-color: var(–secondary);
+border-left-color: var(--secondary);
 border-left-width: 5px;
 animation: sd-pulse 2.5s infinite;
 }
@@ -173,8 +173,8 @@ animation: sd-pulse 2.5s infinite;
 .sudden-death-badge {
 display: inline-block;
 background: rgba(255,0,255,0.15);
-border: 1px solid var(–secondary);
-color: var(–secondary);
+border: 1px solid var(--secondary);
+color: var(--secondary);
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.55rem;
 padding: 2px 7px;
@@ -189,7 +189,7 @@ display: flex;
 justify-content: space-between;
 align-items: flex-start;
 gap: 8px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 padding-bottom: 8px;
 margin-bottom: 10px;
 }
@@ -202,20 +202,20 @@ line-height: 1.3;
 .lab-title small {
 display: block;
 font-size: 0.7rem;
-color: var(–muted);
+color: var(--muted);
 font-weight: normal;
 margin-top: 2px;
 }
 .lab-range {
 font-size: 0.72rem;
-color: var(–primary);
+color: var(--primary);
 text-align: right;
 white-space: nowrap;
 flex-shrink: 0;
 }
 .lab-range .critical-val {
 display: block;
-color: var(–danger);
+color: var(--danger);
 margin-top: 2px;
 }
 
@@ -253,14 +253,14 @@ line-height: 1.5;
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.6rem;
 letter-spacing: 1px;
-color: var(–secondary);
+color: var(--secondary);
 display: block;
 margin-bottom: 4px;
 }
 
 .no-results {
 text-align: center;
-color: var(–muted);
+color: var(--muted);
 padding: 40px 20px;
 font-size: 0.85rem;
 }
@@ -269,9 +269,9 @@ font-size: 0.85rem;
 .section-divider {
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.6rem;
-color: var(–muted);
+color: var(--muted);
 letter-spacing: 2px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 padding-bottom: 6px;
 margin: 18px 0 12px;
 text-transform: uppercase;
@@ -280,9 +280,9 @@ text-transform: uppercase;
 footer {
 text-align: center;
 font-size: 0.65rem;
-color: var(–muted);
+color: var(--muted);
 padding: 20px 16px 10px;
-border-top: 1px solid var(–border);
+border-top: 1px solid var(--border);
 letter-spacing: 1px;
 }
 </style>
