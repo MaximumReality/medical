@@ -63,18 +63,16 @@
 
     <div class="header" style="margin-top: 30px; border-top: 1px dashed var(--pharma-dim); padding-top: 20px;">
     <h1>PILL_IDENTIFIER v1.0</h1>
-    <div style="font-size: 0.7rem; color: var(--text-dim);">● VISUAL_SCAN_MODE ACTIVE</div>
+    <div id="pill-status" style="font-size: 0.7rem; color: var(--text-dim);">● VISUAL_SCAN_MODE ACTIVE</div>
 </div>
 
 <div class="search-box" style="flex-direction: column; gap: 10px;">
     <div style="display: flex; gap: 5px;">
         <input type="text" id="imprint" placeholder="INPUT IMPRINT (Letters/Numbers on Pill)">
-
-        </select>
-      
     </div>
     <button class="scan-btn" onclick="identifyPill()" style="width: 100%; height: 40px;">RUN VISUAL MATCH</button>
 </div>
+
 
 <div id="feed"></div>
 
@@ -121,35 +119,29 @@
     }
 
     function identifyPill() {
-    const imprint = document.getElementById('imprint').value.trim();
-    const color = document.getElementById('color').value;
-    const shape = document.getElementById('shape').value;
+    const imprintInput = document.getElementById('imprint');
+    const imprint = imprintInput.value.trim();
+    const status = document.getElementById('pill-status');
     
     if (!imprint) {
         alert("CRITICAL: Imprint required for physical ID.");
         return;
     }
 
-    const status = document.getElementById('status-display');
-    status.innerText = "● UPLINKING TO DRUGS.COM DATABASE...";
+    status.innerText = "● UPLINKING TO DATABASE...";
+    status.style.color = "var(--pharma-gold)";
     
-    // Map the shape/color to the IDs Drugs.com uses (Numeric mapping)
-    // Most common: Round = 24, Oval = 20, Capsule = 5
-    let shapeID = "";
-    if(shape === "round") shapeID = 24;
-    if(shape === "oval") shapeID = 20;
-    if(shape === "capsule") shapeID = 5;
-
-    // Construct the direct search URL
-    const searchUrl = `https://www.drugs.com/pill_identification.html?imprint=${encodeURIComponent(imprint)}&shape=${shapeID}`;
+    // Construct the direct search URL for Drugs.com
+    const searchUrl = `https://www.drugs.com/pill_identification.html?imprint=${encodeURIComponent(imprint)}`;
     
-    // Open in a new tab so she stays logged into your Terminal
+    // Open in a new tab
     window.open(searchUrl, '_blank');
     
     setTimeout(() => {
         status.innerText = "● SCAN COMPLETE // CHECK EXTERNAL TAB";
     }, 1500);
 }
+
 
 
 </script>
