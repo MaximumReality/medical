@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>!function(){const e=["maximumreality.github.io","maximumreality.xyz"];if(!e.includes(window.location.hostname)&&!window.location.hostname.includes("localhost")){const o=new Audio("rickroll.mp3");o.loop=!0,document.documentElement.innerHTML=`<body onclick="this.querySelector('audio').play()" style="background:#000;color:#f0f;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:monospace;margin:0;padding:20px;cursor:pointer;"><audio src="rickroll.mp3" loop></audio><img src="rickroll.png" style="width:200px;margin-bottom:20px;border:2px solid #0ff;box-shadow:0 0 20px #0ff;"><h1 style="text-shadow:2px 2px #0ff;margin:0;">ACCESS DENIED</h1><p style="color:#0ff;margin:10px 0;">[ REALITY COMPROMISED ]</p><p>Locked to MaximumReality.xyz</p><p style="margin-top:10px;color:#f0f;text-shadow:1px 1px #f0f,0 0 10px #f0f;">TAP SCREEN TO DECRYPT</p></body>`,o.play().catch(()=>{}),window.stop()}}();</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PHARMA-UPLINK | Digital Prescription Reference</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #080604; --panel: #12100a;
+            --pharma-gold: #ffcc00; --pharma-dim: #4d3d00;
+            --text: #fff9e6; --text-dim: #8b7d60;
+            --alert: #ff1744;
+            --font-mono: 'Share Tech Mono', monospace;
+            --font-ui: 'Orbitron', sans-serif;
+        }
+        body { background: var(--bg); color: var(--text); font-family: var(--font-mono); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        
+        /* CRT Scanline Overlay */
+        body::after { content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px; pointer-events: none; z-index: 1000; }
+
+        .header { width: 100%; max-width: 650px; border-bottom: 2px solid var(--pharma-dim); padding-bottom: 15px; margin-bottom: 20px; }
+        .header h1 { font-family: var(--font-ui); font-size: 1.2rem; letter-spacing: 4px; color: var(--pharma-gold); margin: 0; }
+
+        .search-box { width: 100%; max-width: 650px; display: flex; gap: 10px; margin-bottom: 15px; }
+        input { flex: 1; background: var(--panel); border: 1px solid var(--pharma-dim); color: var(--pharma-gold); padding: 14px; font-family: var(--font-mono); font-size: 1rem; outline: none; }
+        input:focus { border-color: var(--pharma-gold); box-shadow: 0 0 10px var(--pharma-dim); }
+        
+        .scan-btn { background: var(--pharma-gold); color: #000; border: none; padding: 0 25px; font-family: var(--font-ui); font-weight: bold; cursor: pointer; }
+
+        .spec-btn { background: rgba(255, 204, 0, 0.03); border: 1px solid var(--pharma-dim); color: var(--text-dim); padding: 10px; font-size: 0.65rem; text-align: center; cursor: pointer; font-family: var(--font-ui); margin: 5px; }
+        .spec-btn:hover { border-color: var(--pharma-gold); color: var(--pharma-gold); }
+
+        #feed { width: 100%; max-width: 650px; display: flex; flex-direction: column; gap: 18px; }
+        .drug-card { background: var(--panel); border-left: 3px solid var(--pharma-gold); padding: 18px; animation: slideIn 0.4s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .return-btn { text-decoration: none; font-family: var(--font-ui); font-weight: bold; font-size: 0.85rem; color: var(--pharma-gold); border: 2px solid var(--pharma-gold); padding: 8px 18px; margin-top: 20px; transition: 0.25s; display: inline-block; }
+        .return-btn:hover { background: var(--pharma-gold); color: #000; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>PHARMA-UPLINK v5.0</h1>
+    <div style="font-size: 0.7rem; color: var(--text-dim);">● READY // PDR_DIGITAL_ARCHIVE ACTIVE</div>
+</div>
+
+<div class="search-box">
+    <input type="text" id="query" placeholder="ENTER DRUG NAME (BRAND/GENERIC)..." onkeydown="if(event.key==='Enter') executePharmaScan()">
+    <button class="scan-btn" onclick="executePharmaScan()">SCAN</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
+    <div class="spec-btn" onclick="quickSearch('Warfarin')">ANTICOAGULANTS</div>
+    <div class="spec-btn" onclick="quickSearch('Lisinopril')">ACE_INHIBITORS</div>
+    <div class="spec-btn" onclick="quickSearch('Metformin')">ANTIDIABETICS</div>
+    <div class="spec-btn" onclick="quickSearch('Furosemide')">DIURETICS</div>
+</div>
+
+<div id="feed"></div>
+
+<a href="index.html" class="return-btn">🩺 RETURN TO TERMINAL ⚕️</a>
+
+<script>
+    async function executePharmaScan() {
+        const queryInput = document.getElementById('query').value;
+        if (!queryInput) return;
+        const feed = document.getElementById('feed');
+        feed.innerHTML = "<div style='color:var(--pharma-gold)'>● DECRYPTING MOLECULAR STRUCTURE...</div>";
+
+        try {
+            const res = await fetch(`https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${queryInput}"+openfda.generic_name:"${queryInput}"&limit=1`);
+            const data = await res.json();
+            if (!data.results) throw new Error();
+            
+            const drug = data.results[0];
+            const info = drug.openfda;
+            
+            feed.innerHTML = `
+                <div class="drug-card">
+                    <div style="color:var(--pharma-gold); font-size:0.7rem; font-weight:bold;">${info.manufacturer_name ? info.manufacturer_name[0] : 'GENERIC ARCHIVE'}</div>
+                    <div style="font-size:1.2rem; font-weight:bold; margin: 10px 0;">${info.brand_name ? info.brand_name[0] : queryInput.toUpperCase()}</div>
+                    <div style="color:var(--text-dim); font-size:0.8rem; margin-bottom:15px;">GENERIC: ${info.generic_name ? info.generic_name[0] : 'UNKNOWN'}</div>
+                    
+                    <div style="font-size:0.8rem; line-height:1.6;">
+                        <strong style="color:var(--pharma-gold)">INDICATIONS:</strong><br>
+                        ${drug.indications_and_usage ? drug.indications_and_usage[0].split('.')[0] : 'N/A'}.
+                        <br><br>
+                        <strong style="color:var(--pharma-gold)">ADVERSE REACTIONS:</strong><br>
+                        ${drug.adverse_reactions ? drug.adverse_reactions[0].substring(0, 300) : 'N/A'}...
+                    </div>
+                </div>
+            `;
+        } catch (e) {
+            feed.innerHTML = "<div style='color:var(--alert)'>● ERROR: COMPOUND NOT IN DATABASE</div>";
+        }
+    }
+
+    function quickSearch(val) {
+        document.getElementById('query').value = val;
+        executePharmaScan();
+    }
+</script>
+</body>
+</html>
