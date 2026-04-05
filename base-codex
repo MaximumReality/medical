@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLINICAL CODEX: LAB INTERPRETATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #060810;
+            --panel: #0a1018;
+            --primary: #00d4ff;
+            --secondary: #ff00ff;
+            --danger: #ff2d55;
+            --success: #00e5a0;
+            --text: #c8d8e8;
+            --border: #1a2a3a;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.4;
+        }
+
+        header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .panel-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .lab-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .lab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .lab-title {
+            font-weight: bold;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        .lab-range {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .clinical-impact {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .nursing-priority {
+            background: rgba(255, 0, 255, 0.1);
+            border: 1px dashed var(--secondary);
+            padding: 10px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .nursing-priority strong {
+            text-transform: uppercase;
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #4a6a7a;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>◈ CLINICAL LAB CODEX</h1>
+        <div style="font-size: 0.6rem; opacity: 0.7;">STATION TERMINAL: MEDICAL OVERRIDE ACTIVE</div>
+    </header>
+
+    <div class="panel-selector">
+        <button class="tab-btn active">HEMATOLOGY (CBC)</button>
+        <button class="tab-btn">METABOLIC (BMP)</button>
+    </div>
+
+    <div id="cbc-panel">
+        <div class="lab-card">
+            <div class="lab-header">
+                <span class="lab-title">WBC (White Blood Cells)</span>
+                <span class="lab-range">4.5 - 11.0 K/µL</span>
+            </div>
+            <div class="clinical-impact">
+                High levels (Leukocytosis) indicate infection or inflammation. Low levels (Leukopenia) suggest immunocompromise.
+            </div>
+            <div class="nursing-priority">
+                <strong>Nursing Action:</strong> Monitor for fever/chills. Check "Differential" for Neutrophil count. Initiate Neutropenic Precautions if low.
+            </div>
+        </div>
+
+        <div class="lab-card" style="border-left-color: var(--danger);">
+            <div class="lab-header">
+                <span class="lab-title">Hemoglobin (Hgb)</span>
+                <span class="lab-range">12 - 18 g/dL</span>
+            </div>
+            <div class="clinical-impact">
+                Determines blood's oxygen-carrying capacity. Critical low indicates severe anemia or active hemorrhage.
+            </div>
+            <div class="nursing-priority">
+                <strong>Nursing Action:</strong> If <strong>< 7.0 g/dL</strong>, prepare for blood transfusion protocol. Monitor O2 saturation and heart rate.
+            </div>
+        </div>
+
+        <div class="lab-card">
+            <div class="lab-header">
+                <span class="lab-title">Platelets (PLT)</span>
+                <span class="lab-range">150 - 450 K/µL</span>
+            </div>
+            <div class="clinical-impact">
+                Essential for blood clotting. Low levels (Thrombocytopenia) lead to spontaneous bruising and bleeding.
+            </div>
+            <div class="nursing-priority">
+                <strong>Nursing Action:</strong> **BLEEDING PRECAUTIONS.** Use electric razors, soft toothbrushes. Monitor for petechiae (red spots).
+            </div>
+        </div>
+    </div>
+
+    <div id="bmp-panel" style="display:none;">
+        <div class="lab-card" style="border-left-color: var(--secondary);">
+            <div class="lab-header">
+                <span class="lab-title">Potassium (K+)</span>
+                <span class="lab-range">3.5 - 5.0 mEq/L</span>
+            </div>
+            <div class="clinical-impact">
+                The "Cardiac Electrolyte." Essential for nerve conduction and muscle contraction in the heart.
+            </div>
+            <div class="nursing-priority">
+                <strong>Nursing Action:</strong> CRITICAL RISK. Both High/Low cause arrhythmias. <strong>GET EKG IMMEDIATELY.</strong> Never IV Push.
+            </div>
+        </div>
+        
+        <div class="lab-card">
+            <div class="lab-header">
+                <span class="lab-title">Creatinine</span>
+                <span class="lab-range">0.6 - 1.2 mg/dL</span>
+            </div>
+            <div class="clinical-impact">
+                The gold standard for Kidney function. Elevation indicates renal failure or severe dehydration.
+            </div>
+            <div class="nursing-priority">
+                <strong>Nursing Action:</strong> Monitor Intake/Output. If high, notify MD before giving nephrotoxic meds (like NSAIDs or IV contrast).
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        MAXIMUM REALITY | NURSE EDUCATION PROTOCOL V1.0
+    </footer>
+
+</body>
+</html>
