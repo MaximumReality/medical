@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Human Anatomy Explorer</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 .nav-card {
 display: inline-block; padding: 10px 18px; background: var(–blue);
@@ -19,7 +20,6 @@ box-shadow: 0 3px 8px rgba(26,23,20,0.12); transition: all 0.18s ease; margin-bo
 }
 .nav-card:hover { background: #1a4f8c; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(26,23,20,0.18); }
 .nav-card h2 { margin: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
-@import url(‘https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap’);
 
 :root {
 –bg: #f5f2ed; –bg2: #edeae3; –paper: #faf8f4;
@@ -210,7 +210,7 @@ filter:drop-shadow(0 8px 20px rgba(26,23,20,0.3)); opacity:.9;
 
 <div class="app">
   <div class="canvas-area">
-    <div class="canvas-label" id="canvas-label">Anterior View — Tap an organ to learn more</div>
+    <div class="canvas-label" id="canvas-label">Anterior View - Tap an organ to learn more</div>
     <div class="body-outer" id="body-outer">
       <div class="body-wrap" id="body-wrap">
         <svg class="body-svg" viewBox="0 0 320 600" xmlns="http://www.w3.org/2000/svg">
@@ -233,7 +233,7 @@ filter:drop-shadow(0 8px 20px rgba(26,23,20,0.3)); opacity:.9;
     </div>
     <div class="hint-bar" id="hint-bar">👆 On mobile: tap an organ in the tray to select it, then tap its zone on the body</div>
     <div class="puzzle-tray" id="puzzle-tray">
-      <div class="tray-label">Organ Tray — drag or tap to place</div>
+      <div class="tray-label">Organ Tray - drag or tap to place</div>
       <div class="tray-organs" id="tray-organs"></div>
     </div>
   </div>
@@ -299,74 +299,74 @@ const organs = [
   { id:'heart', name:'Heart', latin:'Cor', system:'Cardiovascular', systemColor:'#c53030', systemBg:'#fff5f5',
     x:136, y:196, w:46, h:44, color:'#e05252', stroke:'#b02020', shape:'heart',
     desc:'The heart pumps blood throughout the circulatory system, delivering oxygen and nutrients to tissues while removing waste products.',
-    facts:['Four chambers: right/left atria and ventricles','Pumps ~5 liters per minute at rest','Left ventricle has thickest wall — pumps to whole body','Coronary arteries supply blood to heart muscle itself'],
-    stats:[{l:'Rate',v:'60–100 bpm'},{l:'Output',v:'~5 L/min'},{l:'Weight',v:'250–350 g'},{l:'Beats/day',v:'~100,000'}],
+    facts:['Four chambers: right/left atria and ventricles','Pumps ~5 liters per minute at rest','Left ventricle has thickest wall - pumps to whole body','Coronary arteries supply blood to heart muscle itself'],
+    stats:[{l:'Rate',v:'60-100 bpm'},{l:'Output',v:'~5 L/min'},{l:'Weight',v:'250-350 g'},{l:'Beats/day',v:'~100,000'}],
     nursing:['Assess apical pulse 1 full min at 5th ICS, MCL','EKG: P wave (atrial), QRS (ventricular), T wave (repolarization)','Troponin I/T: key marker of myocardial infarction'] },
   { id:'lung-left', name:'Left Lung', latin:'Pulmo sinister', system:'Respiratory', systemColor:'#2b6cb0', systemBg:'#ebf4ff',
     x:174, y:185, w:44, h:65, color:'#a8c4e0', stroke:'#4a90c4', shape:'lung-left',
-    desc:'The left lung (2 lobes) is slightly smaller than the right to accommodate the heart. It performs gas exchange — delivering O₂ to blood and expelling CO₂.',
-    facts:['2 lobes: upper (superior) and lower (inferior)','Cardiac notch accommodates the heart','Alveoli are the air sacs where gas exchange occurs','Alveolar surface area ~70 m² — a tennis court'],
-    stats:[{l:'Lobes',v:'2'},{l:'Capacity',v:'~2.4 L'},{l:'Alveoli',v:'~300 million'},{l:'Resp rate',v:'12–20/min'}],
-    nursing:['Auscultate all lung fields; compare side to side','SpO₂ normal: 95–100%; < 90% = hypoxemia','Sounds: vesicular (normal), crackles, wheezes, rhonchi'] },
+    desc:'The left lung (2 lobes) is slightly smaller than the right to accommodate the heart. It performs gas exchange - delivering O₂ to blood and expelling CO₂.',
+    facts:['2 lobes: upper (superior) and lower (inferior)','Cardiac notch accommodates the heart','Alveoli are the air sacs where gas exchange occurs','Alveolar surface area ~70 m² - a tennis court'],
+    stats:[{l:'Lobes',v:'2'},{l:'Capacity',v:'~2.4 L'},{l:'Alveoli',v:'~300 million'},{l:'Resp rate',v:'12-20/min'}],
+    nursing:['Auscultate all lung fields; compare side to side','SpO₂ normal: 95-100%; < 90% = hypoxemia','Sounds: vesicular (normal), crackles, wheezes, rhonchi'] },
   { id:'lung-right', name:'Right Lung', latin:'Pulmo dexter', system:'Respiratory', systemColor:'#2b6cb0', systemBg:'#ebf4ff',
     x:102, y:183, w:44, h:68, color:'#a8c4e0', stroke:'#4a90c4', shape:'lung-right',
     desc:'The right lung has 3 lobes and is the larger lung. Its straighter bronchus makes it the more common site of aspiration events.',
     facts:['3 lobes: upper, middle, and lower','Right bronchus: shorter, wider, more vertical','More common aspiration site','Each lobe divided into bronchopulmonary segments'],
-    stats:[{l:'Lobes',v:'3'},{l:'Capacity',v:'~2.9 L'},{l:'Alveoli',v:'~350 million'},{l:'Resp rate',v:'12–20/min'}],
+    stats:[{l:'Lobes',v:'3'},{l:'Capacity',v:'~2.9 L'},{l:'Alveoli',v:'~350 million'},{l:'Resp rate',v:'12-20/min'}],
     nursing:['Position patients to reduce aspiration risk','Pleural effusion: dullness on percussion, decreased sounds','Incentive spirometer prevents atelectasis post-surgery'] },
   { id:'liver', name:'Liver', latin:'Hepar', system:'Digestive / Metabolic', systemColor:'#b7791f', systemBg:'#fffbeb',
     x:100, y:255, w:70, h:50, color:'#c4764a', stroke:'#8b4e28', shape:'rect',
     desc:'The liver is the largest internal organ and primary metabolic factory, performing 500+ functions including detox, protein synthesis, bile production, and glucose regulation.',
-    facts:['Largest internal organ: 1.2–1.5 kg','Only organ capable of regenerating itself','Produces bile to emulsify fats','Processes all blood from digestive tract before systemic circulation'],
-    stats:[{l:'Weight',v:'1.2–1.5 kg'},{l:'Blood flow',v:'1.5 L/min'},{l:'Functions',v:'500+'},{l:'Bile/day',v:'~800 mL'}],
-    nursing:['LFTs: ALT, AST, ALP, bilirubin — elevated in hepatic disease','Assess for jaundice (scleral icterus) and ascites','Many drugs hepatically metabolized — adjust dose in liver failure'] },
+    facts:['Largest internal organ: 1.2-1.5 kg','Only organ capable of regenerating itself','Produces bile to emulsify fats','Processes all blood from digestive tract before systemic circulation'],
+    stats:[{l:'Weight',v:'1.2-1.5 kg'},{l:'Blood flow',v:'1.5 L/min'},{l:'Functions',v:'500+'},{l:'Bile/day',v:'~800 mL'}],
+    nursing:['LFTs: ALT, AST, ALP, bilirubin - elevated in hepatic disease','Assess for jaundice (scleral icterus) and ascites','Many drugs hepatically metabolized - adjust dose in liver failure'] },
   { id:'stomach', name:'Stomach', latin:'Gaster', system:'Digestive', systemColor:'#276749', systemBg:'#f0fff4',
     x:143, y:263, w:50, h:55, color:'#e8d570', stroke:'#b8a038', shape:'stomach',
     desc:'The stomach is a muscular J-shaped organ storing food, beginning chemical and mechanical digestion, and regulating the release of chyme into the small intestine.',
-    facts:['Produces ~2 L of gastric juice daily','Gastric acid (HCl) pH 1.5–3.5','Three muscle layers allow churning','Intrinsic factor (parietal cells) needed for B12 absorption'],
-    stats:[{l:'pH',v:'1.5–3.5'},{l:'Capacity',v:'~1 liter'},{l:'Juice/day',v:'2 L'},{l:'Empty time',v:'4–5 hrs'}],
+    facts:['Produces ~2 L of gastric juice daily','Gastric acid (HCl) pH 1.5-3.5','Three muscle layers allow churning','Intrinsic factor (parietal cells) needed for B12 absorption'],
+    stats:[{l:'pH',v:'1.5-3.5'},{l:'Capacity',v:'~1 liter'},{l:'Juice/day',v:'2 L'},{l:'Empty time',v:'4-5 hrs'}],
     nursing:['Verify NGT placement: X-ray or pH < 5.5 of aspirate','PPIs (omeprazole) reduce gastric acid production','H. pylori: most common cause of peptic ulcer disease'] },
   { id:'kidney-left', name:'Left Kidney', latin:'Ren sinister', system:'Urinary', systemColor:'#2c7a7b', systemBg:'#e6fffa',
     x:185, y:295, w:32, h:46, color:'#e88c68', stroke:'#b85a38', shape:'kidney',
     desc:'The kidneys filter blood, regulate fluid/electrolyte balance, remove waste products, and produce urine via ~1 million nephrons each.',
-    facts:['Filter ~180 L of blood daily; produce 1–2 L urine','Regulate BP via RAAS (renin-angiotensin-aldosterone)','Produce EPO to stimulate red blood cell production','Activate vitamin D for calcium absorption'],
-    stats:[{l:'Size',v:'~10 cm'},{l:'Filter/day',v:'180 L'},{l:'Nephrons',v:'~1 million'},{l:'Urine/day',v:'1–2 L'}],
-    nursing:['Normal output: ≥ 0.5 mL/kg/hr; oliguria < 400 mL/day = concern','BUN and creatinine are primary renal function markers','NSAIDs and contrast dye are nephrotoxic — hydrate well'] },
+    facts:['Filter ~180 L of blood daily; produce 1-2 L urine','Regulate BP via RAAS (renin-angiotensin-aldosterone)','Produce EPO to stimulate red blood cell production','Activate vitamin D for calcium absorption'],
+    stats:[{l:'Size',v:'~10 cm'},{l:'Filter/day',v:'180 L'},{l:'Nephrons',v:'~1 million'},{l:'Urine/day',v:'1-2 L'}],
+    nursing:['Normal output: ≥ 0.5 mL/kg/hr; oliguria < 400 mL/day = concern','BUN and creatinine are primary renal function markers','NSAIDs and contrast dye are nephrotoxic - hydrate well'] },
   { id:'kidney-right', name:'Right Kidney', latin:'Ren dexter', system:'Urinary', systemColor:'#2c7a7b', systemBg:'#e6fffa',
     x:103, y:298, w:32, h:46, color:'#e88c68', stroke:'#b85a38', shape:'kidney',
     desc:'The right kidney sits slightly lower than the left (displaced by the liver) but performs identical filtering and regulatory functions.',
-    facts:['Slightly lower position due to the liver','Connected to bladder via right ureter (~25–30 cm)','Renal cortex contains most glomeruli (filtration units)','Renal medulla contains collecting ducts → renal pelvis'],
+    facts:['Slightly lower position due to the liver','Connected to bladder via right ureter (~25-30 cm)','Renal cortex contains most glomeruli (filtration units)','Renal medulla contains collecting ducts → renal pelvis'],
     stats:[{l:'Size',v:'~10 cm'},{l:'Position',v:'Lower (R)'},{l:'Nephrons',v:'~1 million'},{l:'Blood/day',v:'1,700 L'}],
     nursing:['CVA tenderness: sign of pyelonephritis or kidney stones','Urinalysis: color, pH, specific gravity, protein, glucose, RBCs, WBCs','Foley: maintain closed system, daily meatal care → prevent UTI'] },
   { id:'small-intestine', name:'Small Intestine', latin:'Intestinum tenue', system:'Digestive', systemColor:'#276749', systemBg:'#f0fff4',
     x:118, y:318, w:84, h:60, color:'#f0c070', stroke:'#c89030', shape:'intestine',
-    desc:'The small intestine (~6–7 m) is the primary site of digestion and nutrient absorption, with villi and microvilli creating ~200 m² of surface area.',
+    desc:'The small intestine (~6-7 m) is the primary site of digestion and nutrient absorption, with villi and microvilli creating ~200 m² of surface area.',
     facts:['Three sections: duodenum, jejunum, ileum','Villi + microvilli = ~200 m² surface area','Absorbs ~90% of all nutrients','Receives bile and pancreatic enzymes at duodenum'],
-    stats:[{l:'Length',v:'6–7 m'},{l:'Surface',v:'~200 m²'},{l:'Transit',v:'3–5 hrs'},{l:'Diameter',v:'2.5–3 cm'}],
-    nursing:['Bowel sounds: 5–35 clicks/min in all 4 quadrants','Absent sounds post-surgery may indicate ileus','Malabsorption in Crohn\'s/celiac affects ileum and nutrients'] },
+    stats:[{l:'Length',v:'6-7 m'},{l:'Surface',v:'~200 m²'},{l:'Transit',v:'3-5 hrs'},{l:'Diameter',v:'2.5-3 cm'}],
+    nursing:['Bowel sounds: 5-35 clicks/min in all 4 quadrants','Absent sounds post-surgery may indicate ileus','Malabsorption in Crohn\'s/celiac affects ileum and nutrients'] },
   { id:'large-intestine', name:'Large Intestine', latin:'Intestinum crassum', system:'Digestive', systemColor:'#276749', systemBg:'#f0fff4',
     x:105, y:335, w:110, h:58, color:'#d4a86a', stroke:'#a07838', shape:'colon',
     desc:'The large intestine absorbs water and electrolytes from indigestible material, forming and storing feces via the cecum, colon, rectum, and anal canal.',
-    facts:['Absorbs ~1–1.5 L of water per day','Houses trillions of gut bacteria (microbiome)','Haustral contractions and mass movements propel contents','Appendix (at cecum) may have immune functions'],
-    stats:[{l:'Length',v:'~1.5 m'},{l:'Diameter',v:'6–9 cm'},{l:'Water abs.',v:'1–1.5 L/day'},{l:'Transit',v:'10–59 hrs'}],
-    nursing:['Constipation: < 3 BMs/week — assess obstruction, meds','Colonoscopy prep: clear liquids + bowel cleanse, hold anticoagulants','Colostomy: stoma should be moist, pink/red; assess peristomal skin'] },
+    facts:['Absorbs ~1-1.5 L of water per day','Houses trillions of gut bacteria (microbiome)','Haustral contractions and mass movements propel contents','Appendix (at cecum) may have immune functions'],
+    stats:[{l:'Length',v:'~1.5 m'},{l:'Diameter',v:'6-9 cm'},{l:'Water abs.',v:'1-1.5 L/day'},{l:'Transit',v:'10-59 hrs'}],
+    nursing:['Constipation: < 3 BMs/week - assess obstruction, meds','Colonoscopy prep: clear liquids + bowel cleanse, hold anticoagulants','Colostomy: stoma should be moist, pink/red; assess peristomal skin'] },
   { id:'gallbladder', name:'Gallbladder', latin:'Vesica biliaris', system:'Digestive', systemColor:'#276749', systemBg:'#f0fff4',
     x:167, y:272, w:26, h:30, color:'#7ec88a', stroke:'#3a8a4a', shape:'gallbladder',
     desc:'The gallbladder concentrates and stores bile from the liver, releasing it into the duodenum via CCK stimulation to aid fat digestion.',
     facts:['Concentrates bile up to 10×','CCK triggers release after a fatty meal','Gallstones (cholelithiasis) are very common, often cholesterol-based','Cystic duct connects to common bile duct'],
-    stats:[{l:'Capacity',v:'30–50 mL'},{l:'Concentration',v:'×10 fold'},{l:'Length',v:'7–10 cm'},{l:'Bile/day',v:'800 mL'}],
+    stats:[{l:'Capacity',v:'30-50 mL'},{l:'Concentration',v:'×10 fold'},{l:'Length',v:'7-10 cm'},{l:'Bile/day',v:'800 mL'}],
     nursing:['Murphy\'s sign: RUQ pain on inspiration = classic cholecystitis','Post-cholecystectomy: advise low-fat diet initially','Dark urine + pale stools + jaundice = bile duct obstruction'] },
   { id:'pancreas', name:'Pancreas', latin:'Pancreas', system:'Endocrine / Digestive', systemColor:'#553c9a', systemBg:'#faf5ff',
     x:123, y:276, w:74, h:26, color:'#c4a0d8', stroke:'#7a4a9a', shape:'pancreas',
     desc:'The pancreas has dual roles: exocrine (digestive enzymes to duodenum) and endocrine (insulin and glucagon to regulate blood glucose).',
     facts:['Exocrine: ~1.5 L enzyme-rich fluid/day','β cells → insulin (lowers glucose); α cells → glucagon (raises it)','Pancreatitis: inflammation from gallstones or alcohol','Key enzymes: amylase, lipase'],
-    stats:[{l:'Length',v:'15–25 cm'},{l:'Weight',v:'60–100 g'},{l:'Juice/day',v:'~1.5 L'},{l:'Islets',v:'~1 million'}],
-    nursing:['Amylase and lipase elevated in acute pancreatitis','Monitor blood glucose — pancreatitis disrupts endocrine function','Type 1 DM = no insulin; Type 2 = insulin resistance'] },
+    stats:[{l:'Length',v:'15-25 cm'},{l:'Weight',v:'60-100 g'},{l:'Juice/day',v:'~1.5 L'},{l:'Islets',v:'~1 million'}],
+    nursing:['Amylase and lipase elevated in acute pancreatitis','Monitor blood glucose - pancreatitis disrupts endocrine function','Type 1 DM = no insulin; Type 2 = insulin resistance'] },
   { id:'spleen', name:'Spleen', latin:'Lien / Splen', system:'Lymphatic / Immune', systemColor:'#c53030', systemBg:'#fff5f5',
     x:88, y:255, w:30, h:38, color:'#d4608a', stroke:'#a03060', shape:'spleen',
-    desc:'The spleen is the largest lymphoid organ — filtering blood, removing old RBCs, storing platelets, and mounting immune responses to blood-borne pathogens.',
+    desc:'The spleen is the largest lymphoid organ - filtering blood, removing old RBCs, storing platelets, and mounting immune responses to blood-borne pathogens.',
     facts:['Filters ~350 mL blood/minute','Stores ~30% of platelet reserve','Can sequester/release blood during hemorrhagic shock','Post-splenectomy: risk of encapsulated bacterial infections'],
-    stats:[{l:'Size',v:'~12 cm'},{l:'Weight',v:'150–200 g'},{l:'Blood flow',v:'350 mL/min'},{l:'Platelet store',v:'~30%'}],
+    stats:[{l:'Size',v:'~12 cm'},{l:'Weight',v:'150-200 g'},{l:'Blood flow',v:'350 mL/min'},{l:'Platelet store',v:'~30%'}],
     nursing:['Kehr\'s sign: left shoulder pain = possible splenic rupture','Post-splenectomy vaccines: pneumococcal, meningococcal, Hib','Splenomegaly palpable below left costal margin'] },
 ];
 
@@ -468,7 +468,7 @@ function setMode(mode) {
   document.getElementById('tab-explore').classList.toggle('active', mode==='explore');
   document.getElementById('tab-puzzle').classList.toggle('active', mode==='puzzle');
   if (mode === 'explore') {
-    document.getElementById('canvas-label').textContent = 'Anterior View — Tap an organ to learn more';
+    document.getElementById('canvas-label').textContent = 'Anterior View - Tap an organ to learn more';
     document.getElementById('puzzle-tray').classList.remove('visible');
     document.getElementById('puzzle-sidebar').classList.remove('visible');
     document.getElementById('hint-bar').classList.remove('visible');
@@ -477,7 +477,7 @@ function setMode(mode) {
     organs.forEach(o => puzzleState[o.id] = 'body');
     renderOrgans();
   } else {
-    document.getElementById('canvas-label').textContent = 'Puzzle Mode — Drag or tap organs to place them';
+    document.getElementById('canvas-label').textContent = 'Puzzle Mode - Drag or tap organs to place them';
     document.getElementById('puzzle-tray').classList.add('visible');
     document.getElementById('info-empty').style.display = 'none';
     document.getElementById('info-content').classList.remove('visible');
