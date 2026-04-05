@@ -1,12 +1,25 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<script>!function(){const e=["maximumreality.github.io","maximumreality.xyz"];if(!e.includes(window.location.hostname)&&!window.location.hostname.includes("localhost")){const o=new Audio("rickroll.mp3");o.loop=!0,document.documentElement.innerHTML=`<body onclick="this.querySelector('audio').play()" style="background:#000;color:#f0f;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:monospace;margin:0;padding:20px;cursor:pointer;"><audio src="rickroll.mp3" loop></audio><img src="rickroll.png" style="width:200px;margin-bottom:20px;border:2px solid #0ff;box-shadow:0 0 20px #0ff;"><h1 style="text-shadow:2px 2px #0ff;margin:0;">ACCESS DENIED</h1><p style="color:#0ff;margin:10px 0;">[ REALITY COMPROMISED ]</p><p>Locked to MaximumReality.xyz</p><p style="margin-top:10px;color:#f0f;text-shadow:1px 1px #f0f,0 0 10px #f0f;">Ask… and you shall receive.</p><p style="font-size:1.2rem;margin-top:10px;color:#f0f;">TAP SCREEN TO DECRYPT</p><p style="font-size:.8rem;margin-top:20px;opacity:.7;">Ticket #404-POO: Unauthorized Mirror.</p></body>`,o.play().catch(()=>{console.log("Waiting for interaction.")}),window.stop()}}();</script>
+<script>!function(){const e=["maximumreality.github.io","maximumreality.xyz"];if(!e.includes(window.location.hostname)&&!window.location.hostname.includes("localhost")){const o=new Audio("rickroll.mp3");o.loop=!0,document.documentElement.innerHTML=`<body onclick="this.querySelector('audio').play()" style="background:#000;color:#f0f;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:monospace;margin:0;padding:20px;cursor:pointer;"><audio src="rickroll.mp3" loop></audio><img src="rickroll.png" style="width:200px;margin-bottom:20px;border:2px solid #0ff;box-shadow:0 0 20px #0ff;"><h1 style="text-shadow:2px 2px #0ff;margin:0;">ACCESS DENIED</h1><p style="color:#0ff;margin:10px 0;">[ REALITY COMPROMISED ]</p><p>Locked to MaximumReality.xyz</p><p style="margin-top:10px;color:#f0f;text-shadow:1px 1px #f0f,0 0 10px #f0f;">Ask... and you shall receive.</p><p style="font-size:1.2rem;margin-top:10px;color:#f0f;">TAP SCREEN TO DECRYPT</p><p style="font-size:.8rem;margin-top:20px;opacity:.7;">Ticket #404-POO: Unauthorized Mirror.</p></body>`,o.play().catch(()=>{console.log("Waiting for interaction.")}),window.stop()}}();</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/jpeg" href="https://maximumreality.github.io/medical/elina.jpeg">
+<link rel="apple-touch-icon" href="https://maximumreality.github.io/medical/elina.jpeg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Human Anatomy Explorer</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+.nav-card {
+display: inline-block; padding: 10px 18px; background: var(–blue);
+color: white; border-radius: 12px; text-decoration: none; font-weight: 600;
+font-family: ‘DM Sans’, sans-serif; font-size: 14px;
+box-shadow: 0 3px 8px rgba(26,23,20,0.12); transition: all 0.18s ease; margin-bottom: 15px;
+}
+.nav-card:hover { background: #1a4f8c; transform: translateY(-1px); box-shadow: 0 5px 12px rgba(26,23,20,0.18); }
+.nav-card h2 { margin: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; }
+@import url(‘https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap’);
 
 :root {
 –bg: #f5f2ed; –bg2: #edeae3; –paper: #faf8f4;
@@ -39,28 +52,6 @@ cursor:pointer; background:transparent; color:var(–ink3); transition:all .18s;
 .mode-tab.active { background:var(–paper); color:var(–blue); box-shadow:0 1px 4px rgba(26,23,20,0.1); }
 .score-badge { display:flex; align-items:center; gap:6px; font-size:13px; color:var(–ink3); font-weight:500; }
 .score-num { font-family:‘DM Mono’,monospace; font-size:18px; font-weight:500; color:var(–green); }
-
-      .btn-terminal {
-  background: var(--ink);
-  color: #00ff00; /* Classic Terminal Green */
-  font-family: 'DM Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border: 1px solid #00ff00;
-  margin-top: 10px;
-  text-decoration: none;
-  display: block;
-  padding: 10px;
-  text-align: center;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.btn-terminal:hover {
-  background: #00ff00;
-  color: var(--ink);
-  box-shadow: 0 0 10px #00ff00;
-}
 
 /* LAYOUT */
 .app { display:grid; grid-template-columns:1fr 310px; min-height:calc(100vh - 55px); }
@@ -200,8 +191,8 @@ filter:drop-shadow(0 8px 20px rgba(26,23,20,0.3)); opacity:.9;
 
 </head>
 <body>
-<a href="https://maximumreality.github.io/medical/index.html" class="btn btn-terminal">
-  >TERMINAL</a>
+<a href="https://maximumreality.github.io/medical/index.html" class="nav-card"><h2>🔙 RETURN TO TERMINAL ⚕️</h2></a>
+
 <header>
   <div class="logo">
     <h1>Anatomy Explorer<span>A&amp;P I</span></h1>
