@@ -113,30 +113,10 @@ color: var(--primary);
 background: rgba(0,212,255,0.07);
 box-shadow: 0 0 8px rgba(0,212,255,0.2);
 }
-
-  .terminal-reset-card {
-  background: rgba(0, 212, 255, 0.05);
-  border: 1px dashed var(--primary);
-  padding: 15px;
-  text-align: center;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
+.reset-btn {
+  border-color: var(--secondary) !important;
+  color: var(--secondary) !important;
 }
-
-.terminal-reset-card:hover {
-  background: rgba(0, 212, 255, 0.15);
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-}
-
-.terminal-reset-card span {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 2px;
-  color: var(--primary);
-}
-
-
 
 /* ── PANELS ── */
 .panel-view { display: none; padding: 14px 16px 0; }
@@ -321,6 +301,10 @@ letter-spacing: 1px;
   <button class="tab-btn" onclick="showPanel('lft')">LFT<br>Liver</button>
   <button class="tab-btn" onclick="showPanel('urine')">Urinalysis<br>& Renal</button>
   <button class="tab-btn" onclick="showPanel('abg')">ABG<br>Acid-Base</button>
+  <a href="index.html" class="tab-btn reset-btn" style="text-decoration: none; display: block;">
+  ⎋<br>TERMINAL</a>
+
+
 
 </div>
 
@@ -753,10 +737,6 @@ letter-spacing: 1px;
       <span class="np-label">⬡ NURSING PRIORITY</span>
       Assess RR/Depth. pH < 7.35 = Acidosis. pH > 7.45 = Alkalosis. 
       Check PaO2 (Normal 80-100) — if low, titrate O2 as ordered. Monitor for Kussmaul breathing.
-    </div>
-  </div>
-<div class="terminal-reset-card" onclick="showPanel('cbc')">
-      <span>[ ⎋ RETURN TO MAIN TERMINAL ]</span>
     </div>
   </div>
 </div>
