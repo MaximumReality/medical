@@ -54,6 +54,32 @@
     <button class="scan-btn" onclick="executePharmaScan()">SCAN</button>
 </div>
 
+    <div class="header" style="margin-top: 30px; border-top: 1px dashed var(--pharma-dim); padding-top: 20px;">
+    <h1>PILL_IDENTIFIER v1.0</h1>
+    <div style="font-size: 0.7rem; color: var(--text-dim);">● VISUAL_SCAN_MODE ACTIVE</div>
+</div>
+
+<div class="search-box" style="flex-direction: column; gap: 10px;">
+    <div style="display: flex; gap: 5px;">
+        <input type="text" id="imprint" placeholder="IMPRINT (e.g. M367, L484)">
+        <select id="color" class="scan-btn" style="background: var(--panel); color: var(--pharma-gold); border: 1px solid var(--pharma-dim);">
+            <option value="">COLOR</option>
+            <option value="white">WHITE</option>
+            <option value="blue">BLUE</option>
+            <option value="yellow">YELLOW</option>
+            <option value="pink">PINK</option>
+        </select>
+        <select id="shape" class="scan-btn" style="background: var(--panel); color: var(--pharma-gold); border: 1px solid var(--pharma-dim);">
+            <option value="">SHAPE</option>
+            <option value="round">ROUND</option>
+            <option value="oval">OVAL</option>
+            <option value="capsule">CAPSULE</option>
+        </select>
+    </div>
+    <button class="scan-btn" onclick="identifyPill()" style="width: 100%; height: 40px;">RUN VISUAL MATCH</button>
+</div>
+
+
 <div style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
     <div class="spec-btn" onclick="quickSearch('Warfarin')">ANTICOAGULANTS</div>
     <div class="spec-btn" onclick="quickSearch('Lisinopril')">ACE_INHIBITORS</div>
@@ -104,6 +130,32 @@
         document.getElementById('query').value = val;
         executePharmaScan();
     }
+
+    function identifyPill() {
+    const imprint = document.getElementById('imprint').value;
+    const color = document.getElementById('color').value;
+    const shape = document.getElementById('shape').value;
+    
+    if (!imprint && !color && !shape) {
+        alert("Enter at least one physical attribute (Imprint is best!)");
+        return;
+    }
+
+    const status = document.getElementById('status-display');
+    status.innerText = "● CROSS-REFERENCING VISUAL DATABASE...";
+    
+    // This constructs a search to the professional NLM / DailyMed Pillbox 
+    // which is the gold standard for physical identification.
+    const searchUrl = `https://pills-prod.nlm.nih.gov/pillbox/search.cfm?imprint=${encodeURIComponent(imprint)}&color=${color}&shape=${shape}`;
+    
+    // We open this in a new tab so she doesn't lose her Terminal session
+    window.open(searchUrl, '_blank');
+    
+    setTimeout(() => {
+        status.innerText = "● MATCH REQUEST SENT TO EXTERNAL UPLINK";
+    }, 1500);
+}
+
 </script>
 </body>
 </html>
