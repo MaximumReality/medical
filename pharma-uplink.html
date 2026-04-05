@@ -1,159 +1,702 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <script>!function(){const e=["maximumreality.github.io","maximumreality.xyz"];if(!e.includes(window.location.hostname)&&!window.location.hostname.includes("localhost")){const o=new Audio("rickroll.mp3");o.loop=!0,document.documentElement.innerHTML=`<body onclick="this.querySelector('audio').play()" style="background:#000;color:#f0f;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:monospace;margin:0;padding:20px;cursor:pointer;"><audio src="rickroll.mp3" loop></audio><img src="rickroll.png" style="width:200px;margin-bottom:20px;border:2px solid #0ff;box-shadow:0 0 20px #0ff;"><h1 style="text-shadow:2px 2px #0ff;margin:0;">ACCESS DENIED</h1><p style="color:#0ff;margin:10px 0;">[ REALITY COMPROMISED ]</p><p>Locked to MaximumReality.xyz</p><p style="margin-top:10px;color:#f0f;text-shadow:1px 1px #f0f,0 0 10px #f0f;">TAP SCREEN TO DECRYPT</p></body>`,o.play().catch(()=>{}),window.stop()}}();</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PHARMA-UPLINK | Digital Prescription Reference</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
-            --bg: #080604; --panel: #12100a;
-            --pharma-gold: #ffcc00; --pharma-dim: #4d3d00;
-            --text: #fff9e6; --text-dim: #8b7d60;
+            --bg: #080604;
+            --panel: #12100a;
+            --panel2: #1a1710;
+            --pharma-gold: #ffcc00;
+            --pharma-dim: #4d3d00;
+            --pharma-amber: #ff9900;
+            --text: #fff9e6;
+            --text-dim: #8b7d60;
             --alert: #ff1744;
+            --ok: #00e676;
             --font-mono: 'Share Tech Mono', monospace;
             --font-ui: 'Orbitron', sans-serif;
         }
-        body { background: var(--bg); color: var(--text); font-family: var(--font-mono); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        
-        /* CRT Scanline Overlay */
-        body::after { content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%); background-size: 100% 4px; pointer-events: none; z-index: 1000; }
 
-        .header { width: 100%; max-width: 650px; border-bottom: 2px solid var(--pharma-dim); padding-bottom: 15px; margin-bottom: 20px; }
-        .header h1 { font-family: var(--font-ui); font-size: 1.2rem; letter-spacing: 4px; color: var(--pharma-gold); margin: 0; }
+```
+    * { box-sizing: border-box; }
 
-        .search-box { width: 100%; max-width: 650px; display: flex; gap: 10px; margin-bottom: 15px; }
-        input { flex: 1; background: var(--panel); border: 1px solid var(--pharma-dim); color: var(--pharma-gold); padding: 14px; font-family: var(--font-mono); font-size: 1rem; outline: none; }
-        input:focus { border-color: var(--pharma-gold); box-shadow: 0 0 10px var(--pharma-dim); }
-        
-        .scan-btn { background: var(--pharma-gold); color: #000; border: none; padding: 0 25px; font-family: var(--font-ui); font-weight: bold; cursor: pointer; }
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-mono);
+        margin: 0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
 
-        .spec-btn { background: rgba(255, 204, 0, 0.03); border: 1px solid var(--pharma-dim); color: var(--text-dim); padding: 10px; font-size: 0.65rem; text-align: center; cursor: pointer; font-family: var(--font-ui); margin: 5px; }
-        .spec-btn:hover { border-color: var(--pharma-gold); color: var(--pharma-gold); }
+    body::after {
+        content: " ";
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.08) 50%);
+        background-size: 100% 4px;
+        pointer-events: none;
+        z-index: 1000;
+    }
 
-        #feed { width: 100%; max-width: 650px; display: flex; flex-direction: column; gap: 18px; }
-        .drug-card { background: var(--panel); border-left: 3px solid var(--pharma-gold); padding: 18px; animation: slideIn 0.4s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .container { width: 100%; max-width: 660px; }
 
-        .return-btn { text-decoration: none; font-family: var(--font-ui); font-weight: bold; font-size: 0.85rem; color: var(--pharma-gold); border: 2px solid var(--pharma-gold); padding: 8px 18px; margin-top: 20px; transition: 0.25s; display: inline-block; }
-        .return-btn:hover { background: var(--pharma-gold); color: #000; }
-    </style>
+    /* HEADER */
+    .header {
+        border-bottom: 2px solid var(--pharma-dim);
+        padding-bottom: 12px;
+        margin-bottom: 18px;
+    }
+    .header h1 {
+        font-family: var(--font-ui);
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+        color: var(--pharma-gold);
+        margin: 0 0 4px 0;
+    }
+    .header-sub {
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        display: flex;
+        gap: 20px;
+    }
+    .status-dot { color: var(--ok); }
+
+    /* TABS */
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--pharma-dim);
+        margin-bottom: 18px;
+    }
+    .tab {
+        font-family: var(--font-ui);
+        font-size: 0.6rem;
+        letter-spacing: 2px;
+        padding: 10px 16px;
+        cursor: pointer;
+        color: var(--text-dim);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: 0.2s;
+    }
+    .tab.active {
+        color: var(--pharma-gold);
+        border-bottom-color: var(--pharma-gold);
+    }
+    .tab:hover { color: var(--pharma-gold); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* SEARCH */
+    .search-box {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    input[type="text"] {
+        flex: 1;
+        background: var(--panel);
+        border: 1px solid var(--pharma-dim);
+        color: var(--pharma-gold);
+        padding: 13px;
+        font-family: var(--font-mono);
+        font-size: 0.95rem;
+        outline: none;
+        transition: 0.2s;
+    }
+    input[type="text"]:focus {
+        border-color: var(--pharma-gold);
+        box-shadow: 0 0 12px rgba(255,204,0,0.15);
+    }
+    input[type="text"]::placeholder { color: var(--pharma-dim); }
+
+    .scan-btn {
+        background: var(--pharma-gold);
+        color: #000;
+        border: none;
+        padding: 0 22px;
+        font-family: var(--font-ui);
+        font-size: 0.65rem;
+        font-weight: bold;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .scan-btn:hover { background: #fff; }
+    .scan-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* QUICK FILTERS */
+    .quick-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 18px;
+    }
+    .qbtn {
+        background: rgba(255,204,0,0.04);
+        border: 1px solid var(--pharma-dim);
+        color: var(--text-dim);
+        padding: 7px 11px;
+        font-size: 0.58rem;
+        letter-spacing: 1px;
+        cursor: pointer;
+        font-family: var(--font-ui);
+        transition: 0.2s;
+    }
+    .qbtn:hover {
+        border-color: var(--pharma-gold);
+        color: var(--pharma-gold);
+        background: rgba(255,204,0,0.08);
+    }
+
+    /* DRUG CARDS */
+    #feed { display: flex; flex-direction: column; gap: 16px; }
+
+    .drug-card {
+        background: var(--panel);
+        border-left: 3px solid var(--pharma-gold);
+        padding: 18px;
+        animation: slideIn 0.35s ease-out;
+    }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-mfr {
+        font-size: 0.62rem;
+        color: var(--pharma-amber);
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+    }
+    .card-brand {
+        font-size: 1.25rem;
+        font-family: var(--font-ui);
+        color: var(--text);
+        margin-bottom: 4px;
+        letter-spacing: 1px;
+    }
+    .card-generic {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-bottom: 14px;
+    }
+    .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+    .tag {
+        font-size: 0.58rem;
+        padding: 3px 8px;
+        border: 1px solid var(--pharma-dim);
+        color: var(--pharma-gold);
+        letter-spacing: 1px;
+        font-family: var(--font-ui);
+    }
+    .tag.class { border-color: rgba(0,230,118,0.3); color: var(--ok); }
+    .tag.route { border-color: rgba(255,153,0,0.3); color: var(--pharma-amber); }
+
+    .card-section { margin-bottom: 14px; }
+    .card-label {
+        font-size: 0.65rem;
+        color: var(--pharma-gold);
+        letter-spacing: 2px;
+        margin-bottom: 5px;
+    }
+    .card-text {
+        font-size: 0.78rem;
+        line-height: 1.65;
+        color: var(--text);
+        opacity: 0.9;
+    }
+
+    .interactions-list { list-style: none; padding: 0; margin: 0; }
+    .interactions-list li {
+        font-size: 0.72rem;
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255,204,0,0.08);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .interactions-list li::before {
+        content: "⚠";
+        color: var(--pharma-amber);
+        font-size: 0.7rem;
+        flex-shrink: 0;
+    }
+    .interactions-list li:last-child { border-bottom: none; }
+
+    .rxnorm-badge {
+        display: inline-block;
+        font-size: 0.58rem;
+        padding: 2px 7px;
+        background: rgba(255,204,0,0.08);
+        border: 1px solid var(--pharma-dim);
+        color: var(--text-dim);
+        margin-top: 10px;
+    }
+
+    /* STATUS MESSAGES */
+    .status-msg {
+        font-size: 0.8rem;
+        padding: 14px;
+        border-left: 3px solid var(--pharma-dim);
+    }
+    .status-msg.loading { color: var(--pharma-gold); border-color: var(--pharma-gold); }
+    .status-msg.error   { color: var(--alert); border-color: var(--alert); }
+
+    /* DIVIDER */
+    .section-divider {
+        border: none;
+        border-top: 1px dashed var(--pharma-dim);
+        margin: 8px 0 14px 0;
+    }
+
+    /* PILL IDENTIFIER PANEL */
+    .pill-panel {
+        background: var(--panel);
+        border: 1px solid var(--pharma-dim);
+        padding: 20px;
+    }
+    .pill-panel-title {
+        font-family: var(--font-ui);
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        color: var(--pharma-gold);
+        margin-bottom: 14px;
+    }
+    .pill-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .pill-field label {
+        display: block;
+        font-size: 0.6rem;
+        color: var(--text-dim);
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+    select {
+        width: 100%;
+        background: var(--panel2);
+        border: 1px solid var(--pharma-dim);
+        color: var(--pharma-gold);
+        padding: 9px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        outline: none;
+        cursor: pointer;
+    }
+    select:focus { border-color: var(--pharma-gold); }
+    option { background: var(--panel); }
+
+    .pill-imprint-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .pill-note {
+        font-size: 0.6rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+    }
+    .pill-note a { color: var(--pharma-gold); }
+
+    .launch-btn {
+        width: 100%;
+        background: transparent;
+        border: 2px solid var(--pharma-gold);
+        color: var(--pharma-gold);
+        padding: 13px;
+        font-family: var(--font-ui);
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 4px;
+    }
+    .launch-btn:hover { background: var(--pharma-gold); color: #000; }
+
+    #pill-status {
+        font-size: 0.62rem;
+        color: var(--text-dim);
+        margin-top: 10px;
+        min-height: 16px;
+        transition: 0.2s;
+    }
+
+    /* RETURN LINK */
+    .return-btn {
+        text-decoration: none;
+        font-family: var(--font-ui);
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: var(--pharma-gold);
+        border: 1px solid var(--pharma-dim);
+        padding: 10px 20px;
+        margin-top: 30px;
+        transition: 0.2s;
+        display: inline-block;
+    }
+    .return-btn:hover { border-color: var(--pharma-gold); background: rgba(255,204,0,0.06); }
+
+    /* FOOTNOTE */
+    .footnote {
+        font-size: 0.58rem;
+        color: var(--text-dim);
+        text-align: center;
+        margin-top: 20px;
+        line-height: 1.8;
+        opacity: 0.7;
+    }
+</style>
+```
+
 </head>
 <body>
 
+<div class="container">
+
+```
 <div class="header">
-    <h1>PHARMA-UPLINK v5.0</h1>
-    <div style="font-size: 0.7rem; color: var(--text-dim);">● READY // PDR_DIGITAL_ARCHIVE ACTIVE</div>
-</div>
-
-<div class="search-box">
-    <input type="text" id="query" placeholder="ENTER DRUG NAME (BRAND/GENERIC)..." onkeydown="if(event.key==='Enter') executePharmaScan()">
-    <button class="scan-btn" onclick="executePharmaScan()">SCAN</button>
-</div>
-
-<div style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
-    <div class="spec-btn" onclick="quickSearch('Warfarin')">ANTICOAGULANTS</div>
-    <div class="spec-btn" onclick="quickSearch('Lisinopril')">ACE_INHIBITORS</div>
-    <div class="spec-btn" onclick="quickSearch('Metformin')">ANTIDIABETICS</div>
-    <div class="spec-btn" onclick="quickSearch('Furosemide')">DIURETICS</div>
-</div>
-
-    
-<div id="feed"></div>
-
-   <div id="feed"></div> <div style="margin-top: 50px; border-top: 1px dashed var(--pharma-dim); padding: 15px; max-width: 650px; width: 100%;">
-    <p style="font-size: 0.7rem; color: var(--pharma-gold); margin-bottom: 10px; letter-spacing: 2px;">
-        [ SUPPLEMENTAL: PILL_IDENTIFIER v1.5 ]
-    </p>
-    
-    <div style="display: flex; gap: 10px; align-items: center;">
-        <input type="text" id="imprint" 
-               placeholder="Pill Imprint..." 
-               style="padding: 8px; font-size: 0.8rem; border-style: dotted; flex: 2;">
-        
-        <button class="scan-btn" onclick="identifyPill()" 
-                style="padding: 8px 15px; font-size: 0.7rem; flex: 1;">
-            LAUNCH ID
-        </button>
+    <h1>PHARMA-UPLINK v6.0</h1>
+    <div class="header-sub">
+        <span><span class="status-dot">●</span> RXNAV_API LINKED</span>
+        <span><span class="status-dot">●</span> FDA_PDR ACTIVE</span>
+        <span><span style="color:var(--pharma-amber)">●</span> PILL_ID v2.0</span>
     </div>
-    
-    <p id="pill-status" style="font-size: 0.55rem; color: var(--text-dim); margin-top: 5px;">
-        Note: Opens external visual database in new window.
-    </p>
 </div>
 
-<a href="index.html" class="return-btn">🩺 RETURN TO TERMINAL ⚕️</a>
+<!-- TABS -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('drug')">DRUG LOOKUP</div>
+    <div class="tab" onclick="switchTab('pill')">PILL IDENTIFIER</div>
+</div>
 
+<!-- ═══════════════ DRUG LOOKUP TAB ═══════════════ -->
+<div id="tab-drug" class="tab-panel active">
+
+    <div class="search-box">
+        <input type="text" id="query"
+               placeholder="BRAND OR GENERIC NAME..."
+               onkeydown="if(event.key==='Enter') executePharmaScan()">
+        <button class="scan-btn" onclick="executePharmaScan()">SCAN</button>
+    </div>
+
+    <div class="quick-filters">
+        <div class="qbtn" onclick="quickSearch('Warfarin')">ANTICOAGULANTS</div>
+        <div class="qbtn" onclick="quickSearch('Lisinopril')">ACE INHIBITORS</div>
+        <div class="qbtn" onclick="quickSearch('Metformin')">ANTIDIABETICS</div>
+        <div class="qbtn" onclick="quickSearch('Furosemide')">DIURETICS</div>
+        <div class="qbtn" onclick="quickSearch('Atorvastatin')">STATINS</div>
+        <div class="qbtn" onclick="quickSearch('Amoxicillin')">ANTIBIOTICS</div>
+        <div class="qbtn" onclick="quickSearch('Morphine')">OPIOID ANALGESICS</div>
+        <div class="qbtn" onclick="quickSearch('Albuterol')">BRONCHODILATORS</div>
+    </div>
+
+    <div id="feed"></div>
+
+</div>
+
+<!-- ═══════════════ PILL IDENTIFIER TAB ═══════════════ -->
+<div id="tab-pill" class="tab-panel">
+
+    <div class="pill-panel">
+        <div class="pill-panel-title">◈ PHYSICAL PILL IDENTIFICATION MATRIX</div>
+
+        <div class="pill-imprint-row">
+            <input type="text" id="imprint"
+                   placeholder="IMPRINT / STAMP CODE..."
+                   style="flex:2">
+        </div>
+
+        <div class="pill-grid">
+            <div class="pill-field">
+                <label>SHAPE</label>
+                <select id="pill-shape">
+                    <option value="">ANY SHAPE</option>
+                    <option value="round">ROUND</option>
+                    <option value="oval">OVAL</option>
+                    <option value="capsule">CAPSULE</option>
+                    <option value="oblong">OBLONG</option>
+                    <option value="rectangle">RECTANGLE</option>
+                    <option value="square">SQUARE</option>
+                    <option value="triangle">TRIANGLE</option>
+                    <option value="diamond">DIAMOND</option>
+                    <option value="pentagon">PENTAGON</option>
+                    <option value="hexagon">HEXAGON</option>
+                </select>
+            </div>
+            <div class="pill-field">
+                <label>COLOR</label>
+                <select id="pill-color">
+                    <option value="">ANY COLOR</option>
+                    <option value="white">WHITE</option>
+                    <option value="yellow">YELLOW</option>
+                    <option value="orange">ORANGE</option>
+                    <option value="pink">PINK</option>
+                    <option value="red">RED</option>
+                    <option value="blue">BLUE</option>
+                    <option value="green">GREEN</option>
+                    <option value="purple">PURPLE</option>
+                    <option value="brown">BROWN</option>
+                    <option value="gray">GRAY</option>
+                    <option value="black">BLACK</option>
+                    <option value="beige">BEIGE</option>
+                    <option value="turquoise">TURQUOISE</option>
+                </select>
+            </div>
+            <div class="pill-field">
+                <label>SCORING</label>
+                <select id="pill-score">
+                    <option value="">ANY</option>
+                    <option value="1">NO SCORE</option>
+                    <option value="2">HALF SCORE</option>
+                    <option value="3">QUARTER SCORE</option>
+                </select>
+            </div>
+            <div class="pill-field">
+                <label>FORM</label>
+                <select id="pill-type">
+                    <option value="">ANY FORM</option>
+                    <option value="tablet">TABLET</option>
+                    <option value="capsule">CAPSULE</option>
+                    <option value="gelcap">GELCAP</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="launch-btn" onclick="identifyPill()">
+            ◈ LAUNCH PILL IDENTIFIER DATABASE
+        </button>
+
+        <div id="pill-status">Enter imprint + filters, then launch external visual database.</div>
+
+        <hr class="section-divider" style="margin-top:18px">
+
+        <div class="pill-note">
+            <strong style="color:var(--pharma-gold)">WHY EXTERNAL?</strong><br>
+            No free pill identification API exists — the NIH Pillbox database was decommissioned in 2021.
+            This tool constructs a targeted query to <strong>Drugs.com</strong> using your filters
+            for accurate visual matching. The more fields you fill in, the narrower the results.<br><br>
+            <strong style="color:var(--pharma-amber)">⚠ SAFETY:</strong>
+            Never identify a pill solely by appearance. Always verify with a pharmacist.
+        </div>
+    </div>
+
+</div>
+
+<div style="text-align:center">
+    <a href="index.html" class="return-btn">⚕ RETURN TO TERMINAL</a>
+</div>
+
+<div class="footnote">
+    DATA SOURCES: FDA OPEN DATA · NIH RXNAV · RXNORM<br>
+    FOR EDUCATIONAL USE ONLY · NOT A SUBSTITUTE FOR CLINICAL JUDGMENT
+</div>
+```
+
+</div>
 
 <script>
-    async function executePharmaScan() {
-        const queryInput = document.getElementById('query').value;
-        if (!queryInput) return;
-        const feed = document.getElementById('feed');
-        feed.innerHTML = "<div style='color:var(--pharma-gold)'>● DECRYPTING MOLECULAR STRUCTURE...</div>";
+
+// ─── TAB SWITCHING ────────────────────────────────────────────
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+        t.classList.toggle('active', (name === 'drug' && i === 0) || (name === 'pill' && i === 1));
+    });
+    document.getElementById('tab-drug').classList.toggle('active', name === 'drug');
+    document.getElementById('tab-pill').classList.toggle('active', name === 'pill');
+}
+
+// ─── DRUG LOOKUP ──────────────────────────────────────────────
+async function executePharmaScan() {
+    const query = document.getElementById('query').value.trim();
+    if (!query) return;
+    const feed = document.getElementById('feed');
+    feed.innerHTML = `<div class="status-msg loading">● SCANNING FDA DATABASE...</div>`;
+
+    try {
+        // 1. FDA label data
+        const fdaRes = await fetch(
+            `https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${encodeURIComponent(query)}"+openfda.generic_name:"${encodeURIComponent(query)}"&limit=1`
+        );
+        const fdaData = await fdaRes.json();
+        if (!fdaData.results) throw new Error('NOT_FOUND');
+
+        const drug = fdaData.results[0];
+        const info = drug.openfda || {};
+
+        const brandName   = info.brand_name   ? info.brand_name[0]   : query.toUpperCase();
+        const genericName = info.generic_name ? info.generic_name[0] : 'UNKNOWN';
+        const mfrName     = info.manufacturer_name ? info.manufacturer_name[0] : 'GENERIC ARCHIVE';
+        const routes      = info.route         ? info.route           : [];
+        const dosageForms = info.dosage_form   ? info.dosage_form     : [];
+
+        // 2. RxNorm ID lookup
+        feed.innerHTML = `<div class="status-msg loading">● CROSS-REFERENCING RXNORM...</div>`;
+        let rxcui = null, drugClass = [], interactions = [];
 
         try {
-            const res = await fetch(`https://api.fda.gov/drug/label.json?search=openfda.brand_name:"${queryInput}"+openfda.generic_name:"${queryInput}"&limit=1`);
-            const data = await res.json();
-            if (!data.results) throw new Error();
-            
-            const drug = data.results[0];
-            const info = drug.openfda;
-            
-            feed.innerHTML = `
-                <div class="drug-card">
-                    <div style="color:var(--pharma-gold); font-size:0.7rem; font-weight:bold;">${info.manufacturer_name ? info.manufacturer_name[0] : 'GENERIC ARCHIVE'}</div>
-                    <div style="font-size:1.2rem; font-weight:bold; margin: 10px 0;">${info.brand_name ? info.brand_name[0] : queryInput.toUpperCase()}</div>
-                    <div style="color:var(--text-dim); font-size:0.8rem; margin-bottom:15px;">GENERIC: ${info.generic_name ? info.generic_name[0] : 'UNKNOWN'}</div>
-                    
-                    <div style="font-size:0.8rem; line-height:1.6;">
-                        <strong style="color:var(--pharma-gold)">INDICATIONS:</strong><br>
-                        ${drug.indications_and_usage ? drug.indications_and_usage[0].split('.')[0] : 'N/A'}.
-                        <br><br>
-                        <strong style="color:var(--pharma-gold)">ADVERSE REACTIONS:</strong><br>
-                        ${drug.adverse_reactions ? drug.adverse_reactions[0].substring(0, 300) : 'N/A'}...
-                    </div>
+            const rxRes = await fetch(
+                `https://rxnav.nlm.nih.gov/REST/rxcui.json?name=${encodeURIComponent(genericName.split(' ')[0])}&search=1`
+            );
+            const rxData = await rxRes.json();
+            rxcui = rxData?.idGroup?.rxnormId?.[0] || null;
+        } catch(e) {}
+
+        // 3. Drug class from RxNav
+        if (rxcui) {
+            try {
+                const classRes = await fetch(
+                    `https://rxnav.nlm.nih.gov/REST/rxclass/class/byRxcui.json?rxcui=${rxcui}&relaSource=FDASPL`
+                );
+                const classData = await classRes.json();
+                const classes = classData?.rxclassDrugInfoList?.rxclassDrugInfo || [];
+                drugClass = [...new Set(classes.map(c => c.rxclassMinConceptItem?.className).filter(Boolean))].slice(0, 3);
+            } catch(e) {}
+
+            // 4. Interaction data
+            feed.innerHTML = `<div class="status-msg loading">● LOADING INTERACTION DATA...</div>`;
+            try {
+                const intRes = await fetch(
+                    `https://rxnav.nlm.nih.gov/REST/interaction/interaction.json?rxcui=${rxcui}&sources=ONCHigh`
+                );
+                const intData = await intRes.json();
+                const pairs = intData?.interactionTypeGroup?.[0]?.interactionType?.[0]?.interactionPair || [];
+                interactions = pairs.slice(0, 5).map(p => {
+                    const drugs = p.interactionConcept.map(c => c.minConceptItem.name).join(' + ');
+                    return drugs;
+                });
+            } catch(e) {}
+        }
+
+        // ─── RENDER CARD ──────────────────────────────────────
+        const tagHTML = [
+            ...drugClass.map(c => `<span class="tag class">${c}</span>`),
+            ...routes.map(r => `<span class="tag route">${r}</span>`),
+            ...dosageForms.slice(0,2).map(d => `<span class="tag">${d}</span>`),
+        ].join('');
+
+        const indicationsRaw = drug.indications_and_usage?.[0] || '';
+        const indicationsClean = indicationsRaw.replace(/\n/g, ' ').trim();
+        const indicationsShort = indicationsClean.length > 400
+            ? indicationsClean.substring(0, 400) + '...'
+            : indicationsClean;
+
+        const warningsRaw = drug.warnings?.[0] || drug.boxed_warning?.[0] || '';
+        const warningsShort = warningsRaw.replace(/\n/g, ' ').trim().substring(0, 350);
+
+        const adverseRaw = drug.adverse_reactions?.[0] || '';
+        const adverseShort = adverseRaw.replace(/\n/g, ' ').trim().substring(0, 300);
+
+        const interactionsHTML = interactions.length
+            ? `<ul class="interactions-list">${interactions.map(i => `<li>${i}</li>`).join('')}</ul>`
+            : `<div style="font-size:0.72rem;color:var(--text-dim)">No high-severity interactions indexed.</div>`;
+
+        feed.innerHTML = `
+            <div class="drug-card">
+                <div class="card-mfr">${mfrName}</div>
+                <div class="card-brand">${brandName}</div>
+                <div class="card-generic">GENERIC: ${genericName}</div>
+
+                ${tagHTML ? `<div class="card-tags">${tagHTML}</div>` : ''}
+
+                <div class="card-section">
+                    <div class="card-label">▸ INDICATIONS &amp; USAGE</div>
+                    <div class="card-text">${indicationsShort || 'Data not available.'}</div>
                 </div>
-            `;
-        } catch (e) {
-            feed.innerHTML = "<div style='color:var(--alert)'>● ERROR: COMPOUND NOT IN DATABASE</div>";
+
+                ${warningsShort ? `
+                <div class="card-section">
+                    <div class="card-label" style="color:var(--pharma-amber)">▸ WARNINGS</div>
+                    <div class="card-text">${warningsShort}...</div>
+                </div>` : ''}
+
+                <div class="card-section">
+                    <div class="card-label">▸ ADVERSE REACTIONS</div>
+                    <div class="card-text">${adverseShort || 'Data not available.'}${adverseShort ? '...' : ''}</div>
+                </div>
+
+                <div class="card-section">
+                    <div class="card-label" style="color:var(--alert)">▸ KNOWN DRUG INTERACTIONS (HIGH SEVERITY)</div>
+                    ${interactionsHTML}
+                </div>
+
+                ${rxcui ? `<div class="rxnorm-badge">RxNorm CUI: ${rxcui}</div>` : ''}
+            </div>
+        `;
+
+    } catch(e) {
+        if (e.message === 'NOT_FOUND') {
+            feed.innerHTML = `<div class="status-msg error">● ERROR: "${query}" not found in FDA label database.<br><span style="font-size:0.7rem;color:var(--text-dim)">Try the generic name, or check spelling.</span></div>`;
+        } else {
+            feed.innerHTML = `<div class="status-msg error">● UPLINK ERROR: Could not reach database. Check connection.</div>`;
         }
     }
+}
 
-    function quickSearch(val) {
-        document.getElementById('query').value = val;
-        executePharmaScan();
-    }
+function quickSearch(val) {
+    switchTab('drug');
+    document.getElementById('query').value = val;
+    executePharmaScan();
+}
 
-    function identifyPill() {
-    const imprintInput = document.getElementById('imprint');
-    const imprint = imprintInput.value.trim();
-    const status = document.getElementById('pill-status');
-    
-    if (!imprint) {
-        alert("CRITICAL: Imprint required for physical ID.");
+// ─── PILL IDENTIFIER ─────────────────────────────────────────
+function identifyPill() {
+    const imprint = document.getElementById('imprint').value.trim();
+    const shape   = document.getElementById('pill-shape').value;
+    const color   = document.getElementById('pill-color').value;
+    const score   = document.getElementById('pill-score').value;
+    const type    = document.getElementById('pill-type').value;
+    const status  = document.getElementById('pill-status');
+
+    if (!imprint && !shape && !color) {
+        status.innerText = '⚠ Enter at least an imprint, shape, or color to search.';
+        status.style.color = 'var(--alert)';
         return;
     }
 
-    status.innerText = "● UPLINKING TO DATABASE...";
-    status.style.color = "var(--pharma-gold)";
-    
-    // Construct the direct search URL for Drugs.com
-    const searchUrl = `https://www.drugs.com/pill_identification.html?imprint=${encodeURIComponent(imprint)}`;
-    
-    // Open in a new tab
-    window.open(searchUrl, '_blank');
-    
+    status.innerText = '● CONSTRUCTING QUERY...';
+    status.style.color = 'var(--pharma-gold)';
+
+    // Build Drugs.com pill identifier URL with all available params
+    let url = 'https://www.drugs.com/pill_identification.html?';
+    const params = [];
+    if (imprint) params.push(`imprint=${encodeURIComponent(imprint)}`);
+    if (color)   params.push(`color=${encodeURIComponent(color)}`);
+    if (shape)   params.push(`shape=${encodeURIComponent(shape)}`);
+    if (score)   params.push(`score=${encodeURIComponent(score)}`);
+    if (type)    params.push(`type=${encodeURIComponent(type)}`);
+
+    url += params.join('&');
+
+    window.open(url, '_blank');
+
     setTimeout(() => {
-        status.innerText = "● SCAN COMPLETE // CHECK EXTERNAL TAB";
-    }, 1500);
+        status.innerText = '● DATABASE OPENED IN NEW TAB // VERIFY WITH PHARMACIST';
+        status.style.color = 'var(--ok)';
+    }, 1000);
 }
 
-
-
 </script>
+
 </body>
 </html>
