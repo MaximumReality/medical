@@ -62,16 +62,25 @@
 </div>
 
     <div class="header" style="margin-top: 30px; border-top: 1px dashed var(--pharma-dim); padding-top: 20px;">
-    <h1>PILL_IDENTIFIER v1.0</h1>
-    <div id="pill-status" style="font-size: 0.7rem; color: var(--text-dim);">● VISUAL_SCAN_MODE ACTIVE</div>
+    <h1>PILL_IDENTIFIER v1.5</h1>
+    <div id="pill-status" style="font-size: 0.7rem; color: var(--text-dim);">● EXTERNAL UPLINK REQUIRED</div>
 </div>
 
 <div class="search-box" style="flex-direction: column; gap: 10px;">
-    <div style="display: flex; gap: 5px;">
-        <input type="text" id="imprint" placeholder="INPUT IMPRINT (Letters/Numbers on Pill)">
-    </div>
-    <button class="scan-btn" onclick="identifyPill()" style="width: 100%; height: 40px;">RUN VISUAL MATCH</button>
+    <input type="text" id="imprint" 
+           placeholder="INPUT IMPRINT (e.g. L484)" 
+           style="text-align: center; letter-spacing: 2px;">
+    
+    <button class="scan-btn" onclick="identifyPill()" 
+            style="width: 100%; height: 50px; font-size: 0.85rem; border: 1px solid var(--pharma-gold);">
+        LAUNCH IDENTIFIER [NEW_WINDOW]
+    </button>
+    
+    <p style="font-size: 0.6rem; color: var(--text-dim); text-align: center; margin-top: 5px;">
+        NOTE: Visual matching requires a secure external database link.
+    </p>
 </div>
+
 
 
 <div id="feed"></div>
