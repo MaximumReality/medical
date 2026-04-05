@@ -13,8 +13,7 @@
             --neon-green: #39ff14;
             --neon-pink: #ff00ff;
             --neon-blue: #00ffff;
-            --retro-purple: #2b0040;
-            --dark-bg: #0b1426; /* Deep space/cyberpunk blue */
+            --dark-bg: #0b1426; 
         }
 
         body {
@@ -26,13 +25,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: 'Courier New', Courier, monospace; /* Hard hacker font */
+            font-family: 'Courier New', Courier, monospace;
             text-align: center;
             overflow: hidden;
             padding: 20px;
         }
 
-        /* ── THE "TERMINAL NOISE" BACKGROUND ── */
         body::before {
             content: "";
             position: absolute;
@@ -44,7 +42,6 @@
             opacity: 0.3;
         }
 
-        /* ── ELINA'S PORTRAIT ── */
         #elina-icon {
             width: 150px;
             height: 150px;
@@ -57,7 +54,6 @@
             z-index: 10;
         }
 
-        /* ── THE MAIN ERROR TEXT ── */
         h1 {
             font-size: clamp(2rem, 8vw, 4rem);
             color: var(--neon-pink);
@@ -67,7 +63,6 @@
             letter-spacing: 4px;
         }
 
-        /* ── THE "NO ESCAPE" JOKE ── */
         p {
             font-size: clamp(1rem, 4vw, 1.2rem);
             color: var(--neon-green);
@@ -84,7 +79,6 @@
             50% { opacity: 0; }
         }
 
-        /* ── THE REROUTING MESSAGE ── */
         #reroute-msg {
             margin-top: 30px;
             font-size: 0.9rem;
@@ -92,10 +86,8 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
         }
-    }
     </style>
 </head>
-
 <body>
 
     <img src="elina.jpeg" id="elina-icon" alt="Student Protocol">
@@ -116,14 +108,9 @@
     </div>
 
     <script>
-    // Reroute back to the Station Terminal entrance after 5 seconds
-    setTimeout(function() {
-        // If Station Terminal is in the same folder, use "index.html"
-        
-        window.location.href = "index.html"; 
-    }, 5000);
-</script>
-
-
+        setTimeout(function() {
+            window.location.href = "index.html"; 
+        }, 5000);
+    </script>
 </body>
 </html>
