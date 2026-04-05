@@ -778,7 +778,7 @@ function searchLabs() {
     return;
   }
   // search all lab card content
-  const allCards = document.querySelectorAll('#panel-cbc .lab-card, #panel-bmp .lab-card, #panel-cardiac .lab-card, #panel-coag .lab-card, #panel-lft .lab-card, #panel-urine .lab-card');
+  const allCards = document.querySelectorAll('#panel-cbc .lab-card, #panel-bmp .lab-card, #panel-cardiac .lab-card, #panel-coag .lab-card, #panel-lft .lab-card, #panel-urine .lab-card, #panel-abg .lab-card');
   const results = [];
   allCards.forEach(card => {
     if (card.textContent.toLowerCase().includes(query)) {
