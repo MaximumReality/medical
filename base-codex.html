@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,8 +23,8 @@
 - { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-background: var(–bg);
-color: var(–text);
+background: var(--bg);
+color: var(--text);
 font-family: ‘Share Tech Mono’, monospace;
 padding: 0 0 60px 0;
 line-height: 1.5;
@@ -44,8 +43,8 @@ z-index: 999;
 
 /* ── HEADER ── */
 header {
-background: var(–panel);
-border-bottom: 2px solid var(–primary);
+background: var(--panel);
+border-bottom: 2px solid var(--primary);
 padding: 14px 16px 10px;
 position: sticky;
 top: 0;
@@ -55,7 +54,7 @@ box-shadow: 0 0 20px rgba(0,212,255,0.15);
 h1 {
 font-family: ‘Orbitron’, sans-serif;
 font-size: clamp(0.9rem, 3vw, 1.2rem);
-color: var(–primary);
+color: var(--primary);
 text-transform: uppercase;
 letter-spacing: 2px;
 }
@@ -72,17 +71,19 @@ padding: 12px 16px 0;
 }
 #labSearch {
 width: 100%;
-background: var(–panel2);
-border: 1px solid var(–border);
-color: var(–primary);
-font-family: ‘Share Tech Mono’, monospace;
+background: var(--panel2);
+border: 1px solid var(--border);
+color: var(--primary);
+font-family: 'Share Tech Mono', monospace;
 font-size: 0.85rem;
 padding: 10px 14px;
 outline: none;
 letter-spacing: 1px;
 }
-#labSearch::placeholder { color: var(–muted); }
-#labSearch:focus { border-color: var(–primary); box-shadow: 0 0 8px rgba(0,212,255,0.2); }
+#labSearch::placeholder { color: var(--muted); }
+#labSearch:focus { border-color: var(--primary); box-shadow: 0 0 8px rgba(0,212,255,0.2); }
+
+
 
 /* ── TABS ── */
 .tab-bar {
@@ -92,9 +93,9 @@ gap: 6px;
 padding: 12px 16px 0;
 }
 .tab-btn {
-background: var(–panel);
-border: 1px solid var(–border);
-color: var(–muted);
+background: var(--panel);
+border: 1px solid var(--border);
+color: var(--muted);
 padding: 8px 4px;
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.55rem;
@@ -104,10 +105,10 @@ text-transform: uppercase;
 letter-spacing: 0.5px;
 text-align: center;
 }
-.tab-btn:hover { border-color: var(–primary); color: var(–text); }
+.tab-btn:hover { border-color: var(--primary); color: var(--text); }
 .tab-btn.active {
-border-color: var(–primary);
-color: var(–primary);
+border-color: var(--primary);
+color: var(--primary);
 background: rgba(0,212,255,0.07);
 box-shadow: 0 0 8px rgba(0,212,255,0.2);
 }
@@ -131,11 +132,11 @@ box-shadow: 0 0 8px rgba(0,212,255,0.2);
 /* ── CRITICAL BANNER ── */
 .critical-banner {
 background: rgba(255,45,85,0.12);
-border: 1px solid var(–danger);
+border: 1px solid var(--danger);
 padding: 10px 14px;
 margin-bottom: 16px;
 font-size: 0.75rem;
-color: var(–danger);
+color: var(--danger);
 letter-spacing: 0.5px;
 animation: pulse-border 2s infinite;
 }
@@ -146,22 +147,22 @@ animation: pulse-border 2s infinite;
 
 /* ── LAB CARDS ── */
 .lab-card {
-background: var(–panel);
-border: 1px solid var(–border);
-border-left: 4px solid var(–primary);
+background: var(--panel);
+border: 1px solid var(--border);
+border-left: 4px solid var(--primary);
 margin-bottom: 12px;
 padding: 14px;
 transition: box-shadow 0.2s;
 }
 .lab-card:hover { box-shadow: 0 0 12px rgba(0,212,255,0.1); }
-.lab-card.danger  { border-left-color: var(–danger); }
-.lab-card.warning { border-left-color: var(–warning); }
-.lab-card.success { border-left-color: var(–success); }
-.lab-card.magenta { border-left-color: var(–secondary); }
+.lab-card.danger  { border-left-color: var(--danger); }
+.lab-card.warning { border-left-color: var(--warning); }
+.lab-card.success { border-left-color: var(--success); }
+.lab-card.magenta { border-left-color: var(--secondary); }
 
 /* ── SUDDEN DEATH — Potassium, Sodium, Troponin ── */
 .lab-card.sudden-death {
-border-left-color: var(–secondary);
+border-left-color: var(--secondary);
 border-left-width: 5px;
 animation: sd-pulse 2.5s infinite;
 }
@@ -173,8 +174,8 @@ animation: sd-pulse 2.5s infinite;
 .sudden-death-badge {
 display: inline-block;
 background: rgba(255,0,255,0.15);
-border: 1px solid var(–secondary);
-color: var(–secondary);
+border: 1px solid var(--secondary);
+color: var(--secondary);
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.55rem;
 padding: 2px 7px;
@@ -189,7 +190,7 @@ display: flex;
 justify-content: space-between;
 align-items: flex-start;
 gap: 8px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 padding-bottom: 8px;
 margin-bottom: 10px;
 }
@@ -202,20 +203,20 @@ line-height: 1.3;
 .lab-title small {
 display: block;
 font-size: 0.7rem;
-color: var(–muted);
+color: var(--muted);
 font-weight: normal;
 margin-top: 2px;
 }
 .lab-range {
 font-size: 0.72rem;
-color: var(–primary);
+color: var(--primary);
 text-align: right;
 white-space: nowrap;
 flex-shrink: 0;
 }
 .lab-range .critical-val {
 display: block;
-color: var(–danger);
+color: var(--danger);
 margin-top: 2px;
 }
 
@@ -253,14 +254,14 @@ line-height: 1.5;
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.6rem;
 letter-spacing: 1px;
-color: var(–secondary);
+color: var(--secondary);
 display: block;
 margin-bottom: 4px;
 }
 
 .no-results {
 text-align: center;
-color: var(–muted);
+color: var(--muted);
 padding: 40px 20px;
 font-size: 0.85rem;
 }
@@ -269,9 +270,9 @@ font-size: 0.85rem;
 .section-divider {
 font-family: ‘Orbitron’, sans-serif;
 font-size: 0.6rem;
-color: var(–muted);
+color: var(--muted);
 letter-spacing: 2px;
-border-bottom: 1px solid var(–border);
+border-bottom: 1px solid var(--border);
 padding-bottom: 6px;
 margin: 18px 0 12px;
 text-transform: uppercase;
@@ -280,9 +281,9 @@ text-transform: uppercase;
 footer {
 text-align: center;
 font-size: 0.65rem;
-color: var(–muted);
+color: var(--muted);
 padding: 20px 16px 10px;
-border-top: 1px solid var(–border);
+border-top: 1px solid var(--border);
 letter-spacing: 1px;
 }
 </style>
@@ -688,62 +689,68 @@ letter-spacing: 1px;
   <div class="critical-banner">⚠ RESPIRATORY FAILURE / KUSSMAUL BREATHING — PREPARE FOR INTUBATION</div>
 
   <div class="lab-card success">
-    <div class="lab-header">
-      <div class="lab-title">ABG Cheat Sheet<small>The "ROME" Method</small></div>
-      <div class="section-divider">// INTERPRETATION MATRIX</div>
-<table style="width:100%; font-size:0.7rem; border-collapse: collapse; margin-bottom: 15px; color: var(--text); border: 1px solid var(--border);">
-  <tr style="background: var(--panel2); color: var(--primary);">
-    <th style="padding: 8px; border: 1px solid var(--border);">CONDITION</th>
-    <th style="padding: 8px; border: 1px solid var(--border);">pH</th>
-    <th style="padding: 8px; border: 1px solid var(--border);">PaCO2</th>
-    <th style="padding: 8px; border: 1px solid var(--border);">HCO3</th>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid var(--border);">Resp. Acidosis</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↑</td>
-    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid var(--border);">Resp. Alkalosis</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↓</td>
-    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid var(--border);">Meta. Acidosis</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
-    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--danger);">↓</td>
-  </tr>
-  <tr>
-    <td style="padding: 8px; border: 1px solid var(--border);">Meta. Alkalosis</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
-    <td style="padding: 8px; border: 1px solid var(--border);">Normal</td>
-    <td style="padding: 8px; border: 1px solid var(--border); color: var(--success);">↑</td>
-  </tr>
-</table>
+    <div class="lab-header" style="flex-direction: column; align-items: flex-start; border-bottom: none;">
+      <div class="lab-title">ABG Interpretation Matrix<small>The "ROME" Method Protocol</small></div>
+      <div class="lab-range" style="text-align: left; margin-top: 10px; color: var(--primary);">
+        pH: 7.35–7.45 | PaCO2: 35–45 | HCO3: 22–26
+      </div>
+    </div>
 
-      <div class="lab-range">pH: 7.35–7.45<br>PaCO2: 35–45<br>HCO3: 22–26</div>
+    <div style="width: 100%; overflow-x: auto; margin: 15px 0; border: 1px solid var(--border); border-radius: 4px;">
+      <table style="width: 100%; font-size: 0.75rem; border-collapse: collapse; color: var(--text); text-align: center;">
+        <tr style="background: var(--panel2); color: var(--primary); font-family: 'Orbitron';">
+          <th style="padding: 10px; border: 1px solid var(--border);">CONDITION</th>
+          <th style="padding: 10px; border: 1px solid var(--border);">pH</th>
+          <th style="padding: 10px; border: 1px solid var(--border);">PaCO2</th>
+          <th style="padding: 10px; border: 1px solid var(--border);">HCO3</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border: 1px solid var(--border);">Resp. Acidosis</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--danger);">↑</td>
+          <td style="padding: 10px; border: 1px solid var(--border);">Normal</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border: 1px solid var(--border);">Resp. Alkalosis</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--success);">↑</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--success);">↓</td>
+          <td style="padding: 10px; border: 1px solid var(--border);">Normal</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border: 1px solid var(--border);">Meta. Acidosis</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+          <td style="padding: 10px; border: 1px solid var(--border);">Normal</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--danger);">↓</td>
+        </tr>
+        <tr>
+          <td style="padding: 10px; border: 1px solid var(--border);">Meta. Alkalosis</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--success);">↑</td>
+          <td style="padding: 10px; border: 1px solid var(--border);">Normal</td>
+          <td style="padding: 10px; border: 1px solid var(--border); color: var(--success);">↑</td>
+        </tr>
+      </table>
     </div>
-    <div class="clinical-impact">
-      <strong>R</strong>espiratory <strong>O</strong>pposite (pH ↑, CO2 ↓ = Alkalosis)<br>
-      <strong>M</strong>etabolic <strong>E</strong>qual (pH ↑, HCO3 ↑ = Alkalosis)
+
+    <div class="clinical-impact" style="background: rgba(0,212,255,0.05); padding: 12px; border-left: 2px solid var(--primary); margin-bottom: 15px;">
+      <div style="margin-bottom: 5px;"><strong style="color: var(--primary);">R</strong>espiratory <strong style="color: var(--primary);">O</strong>pposite (pH ↑, CO2 ↓ = Alkalosis)</div>
+      <div><strong style="color: var(--secondary);">M</strong>etabolic <strong style="color: var(--secondary);">E</strong>qual (pH ↑, HCO3 ↑ = Alkalosis)</div>
     </div>
+
     <div class="nursing-priority">
       <span class="np-label">⬡ NURSING PRIORITY</span>
-      Assess respiratory rate/depth. pH < 7.35 = Acidosis. pH > 7.45 = Alkalosis. 
-      Check PaO2 (Normal 80-100) — if low, titrate O2 as ordered.
+      Assess RR/Depth. pH < 7.35 = Acidosis. pH > 7.45 = Alkalosis. 
+      Check PaO2 (Normal 80-100) — if low, titrate O2 as ordered. Monitor for Kussmaul breathing.
     </div>
   </div>
 </div>
+
 
 
 <!-- ══════════ SEARCH RESULTS ══════════ -->
 
 <div id="panel-search" class="panel-view"></div>
 
-<footer>MAXIMUM REALITY // CLINICAL LAB CODEX V2.0 // FOR ELINA // ST. JUDE NETWORK</footer>
+
 
 <script>
 let currentPanel = 'cbc';
@@ -770,7 +777,7 @@ function searchLabs() {
     return;
   }
   // search all lab card content
-  const allCards = document.querySelectorAll('#panel-cbc .lab-card, #panel-bmp .lab-card, #panel-cardiac .lab-card, #panel-coag .lab-card, #panel-lft .lab-card, #panel-urine .lab-card');
+  const allCards = document.querySelectorAll('#panel-cbc .lab-card, #panel-bmp .lab-card, #panel-cardiac .lab-card, #panel-coag .lab-card, #panel-lft .lab-card, #panel-urine .lab-card, #panel-abg .lab-card');
   const results = [];
   allCards.forEach(card => {
     if (card.textContent.toLowerCase().includes(query)) {
@@ -796,6 +803,7 @@ document.getElementById('labSearch').addEventListener('keydown', e => {
   }
 });
 </script>
+ <footer>MAXIMUM REALITY // CLINICAL LAB CODEX V2.0 // <br>FOR ELINA // NURSE EDUCATION PROTOCOL</footer>
 
-</body>
+  </body>
 </html>
