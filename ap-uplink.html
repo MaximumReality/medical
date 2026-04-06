@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A&P UPLINK: Hole's Edition</title>
+    <style>
+        :root {
+            --bg: #050a0f;
+            --panel: #0d151c;
+            --text: #e0f2f1;
+            --accent: #00cfff;
+            --accent-dim: rgba(0, 207, 255, 0.3);
+            --clinical: #ff9d00; /* Distinct color for Hole's Clinical Notes */
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Orbitron, sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; overflow: hidden; }
+
+        /* Cyberpunk Header */
+        header {
+            padding: 15px 25px;
+            background: linear-gradient(90deg, #0d151c, #1a2a36);
+            border-bottom: 2px solid var(--accent);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        #main-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px; padding: 20px;
+            max-height: 85vh; overflow-y: auto;
+        }
+
+        .chapter-card {
+            background: var(--panel);
+            border: 1px solid var(--accent-dim);
+            padding: 20px; text-align: center; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .chapter-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-dim);
+            transform: translateY(-3px);
+        }
+
+        /* Study Overlay */
+        #overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+            display: none; flex-direction: column; padding: 20px;
+        }
+
+        .study-content {
+            max-width: 800px; margin: 0 auto; width: 100%;
+            overflow-y: auto; padding-right: 15px;
+        }
+
+        .study-section {
+            background: rgba(255,255,255,0.05);
+            border-left: 4px solid var(--accent);
+            padding: 20px; margin-bottom: 20px;
+        }
+
+        .clinical-note {
+            background: rgba(255, 157, 0, 0.1);
+            border-left: 4px solid var(--clinical);
+            padding: 10px; margin: 10px 0; font-size: 0.9rem;
+        }
+
+        .concept-list { padding-left: 20px; color: #b0bec5; }
+        .concept-list li { margin: 8px 0; }
+
+        button {
+            background: none; border: 1px solid var(--accent);
+            color: var(--accent); padding: 10px 20px; cursor: pointer;
+        }
+
+        button:hover { background: var(--accent); color: white; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight: bold; letter-spacing: 2px;">NEURAL LINK: HOLE'S A&P</div>
+    <div id="stats">CREDITS: <span id="credit-count">0</span></div>
+</header>
+
+<div id="main-grid"></div>
+
+<div id="overlay">
+    <div style="display:flex; justify-content: space-between; margin-bottom: 20px;">
+        <h2 id="modal-title" style="color:var(--accent); margin:0;"></h2>
+        <button onclick="closeOverlay()">TERMINATE LINK</button>
+    </div>
+    <div class="study-content" id="study-body"></div>
+</div>
+
+<script src="data/ch1.js"></script>
+<script src="data/ch2.js"></script>
+<script src="data/ch3.js"></script>
+<script src="data/ch4.js"></script>
+<script src="data/ch5.js"></script>
+<script src="data/ch6.js"></script>
+<script src="data/ch7.js"></script>
+<script src="data/ch8.js"></script>
+<script src="data/ch9.js"></script>
+<script src="data/ch10.js"></script>
+<script src="data/ch11.js"></script>
+<script src="data/ch12.js"></script>
+<script src="data/ch13.js"></script>
+
+<script>
+    const CHAPTERS = [
+        CH1_DATA, CH2_DATA, CH3_DATA, CH4_DATA, CH5_DATA, 
+        CH6_DATA, CH7_DATA, CH8_DATA, CH9_DATA, CH10_DATA, 
+        CH11_DATA, CH12_DATA, CH13_DATA
+    ];
+
+    let currentCH = null;
+
+    function init() {
+        const grid = document.getElementById('main-grid');
+        grid.innerHTML = CHAPTERS.map((ch, idx) => `
+            <div class="chapter-card" onclick="openChapter(${idx})">
+                <div style="font-size: 0.8rem; opacity: 0.6;">MODULE ${ch.num}</div>
+                <div style="font-weight: bold; margin: 10px 0;">${ch.title}</div>
+            </div>
+        `).join('');
+    }
+
+    function openChapter(index) {
+        currentCH = CHAPTERS[index];
+        document.getElementById('modal-title').innerText = currentCH.title;
+        document.getElementById('overlay').style.display = 'flex';
+        renderStudy();
+    }
+
+    function renderStudy() {
+        const body = document.getElementById('study-body');
+        
+        // 1. Map through the "In-Depth" sections from our JS files
+        const sectionsHTML = currentCH.sections.map(sec => {
+            // Check for Clinical Notes and style them differently
+            const detailItems = sec.details.map(detail => {
+                if(detail.includes("Clinical Note")) {
+                    return `<div class="clinical-note">${detail}</div>`;
+                }
+                return `<li>${detail}</li>`;
+            }).join('');
+
+            return `
+                <div class="study-section">
+                    <h3 style="margin-top:0;">${sec.label}</h3>
+                    <p>${sec.content}</p>
+                    <ul class="concept-list">${detailItems}</ul>
+                </div>
+            `;
+        }).join('');
+
+        // 2. Add the vocab at the end
+        const vocabHTML = `
+            <div class="study-section">
+                <h3>TERMINOLOGY DATABASE</h3>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    ${currentCH.vocab.map(v => `
+                        <div style="border-bottom: 1px solid #222; padding: 5px;">
+                            <b style="color:var(--accent)">${v.t}:</b> ${v.d}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        body.innerHTML = sectionsHTML + vocabHTML;
+    }
+
+    function closeOverlay() {
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    init();
+</script>
+</body>
+</html>
