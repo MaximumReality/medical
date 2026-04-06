@@ -33,7 +33,20 @@ const CH8_DATA = {
                 "**Greater Sciatic Notch**: Significantly wider in females to accommodate a wider birth canal.",
                 "**Clinical Note**: These structural differences are a primary method used in forensic anthropology to determine the biological sex of skeletal remains."
             ]
+        },
+                {
+            label: "CARPAL BONES & MNEMONIC",
+            content: "The 8 carpal bones of the wrist are arranged in two rows. Use the mnemonic to remember them from Lateral (thumb side) to Medial, starting with the bottom row.",
+            image: "img/ch8_wrist_mnemonic.JPG", 
+            details: [
+                "**The Mnemonic**: 'Some Lovers Try Positions That They Can't Handle'.",
+                "**Proximal Row (Bottom)**: **S**caphoid, **L**unate, **T**riquetrum, **P**isiform.",
+                "**Distal Row (Top)**: **T**rapezium, **T**rapezoid, **C**apitate, **H**amate.",
+                "**Study Tip**: The **Trapezi-UM** is by the Th-**UMB**. This helps distinguish it from the Trapezoid!",
+                "**Clinical Note**: The Scaphoid is the most commonly fractured bone in the wrist, often resulting from a 'FOOSH' injury (Fall On OutStretched Hand)."
+            ]
         }
+
 
     ],
     vocab: [
