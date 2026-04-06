@@ -4,55 +4,67 @@ const CH2_DATA = {
     accentColor: "#f0f",
     sections: [
         {
-            label: "CHEMICAL BONDS",
-            content: "How atoms stick together to form the molecules of life. Understanding these helps explain how drugs interact with the body.",
+            label: "LEVELS OF BIOLOGICAL ORGANIZATION",
+            content: "From atoms to organisms—understanding how small parts build the complex human machine.",
+            image: "img/Ch2_levels_of_organization.JPG", 
             details: [
-                "**Ionic Bonds**: Formed when one atom 'steals' an electron (e.g., NaCl). They dissociate in water into electrolytes.",
-                "**Covalent Bonds**: Atoms 'share' electrons. The strongest bond. Essential for building proteins and DNA.",
-                "**Hydrogen Bonds**: Weak attractions between polar molecules. These give water its unique properties and hold DNA strands together."
+                "**Chemical Level**: Atoms (C, H, O, N) combine to form molecules (DNA, Glucose).",
+                "**Cellular Level**: Molecules associate to form organelles and functional cells.",
+                "**Tissue Level**: Groups of similar cells working together (Muscle, Nerve).",
+                "**Organ/System Level**: Different tissues forming structures like the Heart or Stomach.",
+                "**Organism**: All systems working in unison to maintain life."
             ]
         },
         {
-            label: "pH & HOMEOSTASIS",
-            content: "The pH scale measures Hydrogen ion [H+] concentration. Blood must stay between 7.35 and 7.45.",
+            label: "THE PERIODIC TABLE & ELEMENTS OF LIFE",
+            content: "The body is composed of specific elements that drive every electrical and chemical signal.",
+            image: "img/ch2_periodic_table.JPG", 
             details: [
-                "**Acids**: Proton donors. They release [H+]. pH < 7.",
-                "**Bases**: Proton acceptors. They take up [H+]. pH > 7.",
-                "**Buffers**: Chemical 'sponges' that prevent sudden pH changes. The Bicarbonate Buffer System is key in human blood.",
-                "**Clinical Note**: Acidosis (pH < 7.35) can lead to coma or death."
+                "**Major Elements (96%)**: Carbon, Hydrogen, Oxygen, and Nitrogen.",
+                "**Lesser Elements**: Calcium (bones/clotting), Phosphorus (ATP), Potassium (nerve impulses).",
+                "**Trace Elements**: Iron (hemoglobin), Iodine (thyroid function).",
+                "**Atomic Structure**: Protons (+) and Neutrons (0) in the nucleus; Electrons (-) in the shells."
             ]
         },
         {
-            label: "ORGANIC COMPOUNDS",
-            content: "The four macromolecules that build the human body.",
+            label: "CHEMICAL BONDS & REACTIONS",
+            content: "How atoms stick together. Understanding bonds explains how drugs and nutrients interact with the body.",
             details: [
-                "**Carbohydrates**: Primary energy source (Glucose).",
-                "**Lipids**: Energy storage, hormones, and cell membranes.",
-                "**Proteins**: The 'workhorses' (enzymes, muscle fibers). Made of Amino Acids.",
-                "**Nucleic Acids**: Genetic blueprint (DNA & RNA)."
+                "**Ionic Bonds**: One atom 'steals' an electron (e.g., NaCl). They dissociate into **Electrolytes** in water.",
+                "**Covalent Bonds**: Atoms 'share' electrons. The strongest bond; builds proteins and DNA.",
+                "**Hydrogen Bonds**: Weak attractions between polar molecules. Essential for water properties and DNA folding.",
+                "**Synthesis vs. Decomposition**: Anabolism (building up) vs. Catabolism (breaking down)."
+            ]
+        },
+        {
+            label: "pH, BUFFERS & HOMEOSTASIS",
+            content: "Blood pH must stay between 7.35 and 7.45 for survival.",
+            details: [
+                "**Acids**: Release [H+]; pH < 7. **Bases**: Accept [H+]; pH > 7.",
+                "**Buffers**: Chemical 'sponges' like Bicarbonate that prevent sudden pH shifts.",
+                "**Clinical Note**: Even a small shift in blood pH can denature proteins and stop the heart."
             ]
         }
     ],
     vocab: [
-        {t: "Atom", d: "Smallest unit of matter."},
-        {t: "Electrolyte", d: "An ion in solution that can conduct electricity."},
-        {t: "Enzyme", d: "A protein catalyst that speeds up chemical reactions."},
-        {t: "ATP", d: "Adenosine Triphosphate; the energy currency of the cell."},
-        {t: "Hydrophilic", d: "Water-loving; dissolves easily in water."},
-        {t: "Hydrophobic", d: "Water-fearing; does not dissolve in water."}
+        {t: "Electrolyte", d: "An ion in solution (like Na+ or K+) that can conduct electricity."},
+        {t: "Enzyme", d: "A protein catalyst that speeds up chemical reactions without being consumed."},
+        {t: "ATP", d: "Adenosine Triphosphate; the universal energy currency of the cell."},
+        {t: "Hydrophilic", d: "Water-loving; substances that dissolve easily (like sugar)."},
+        {t: "Hydrophobic", d: "Water-fearing; substances that do not mix (like lipids)."}
     ],
     questions: [
         {
-            q: "A solution with a pH of 3.0 is considered:",
-            opts: ["Strongly Basic", "Strongly Acidic", "Neutral", "Weakly Alkaline"],
-            ans: 1,
-            exp: "Anything below 7 is acidic. 3.0 is significantly below 7."
+            q: "Which element is a 'trace element' but is vital for the thyroid gland to produce hormones?",
+            opts: ["Calcium", "Iron", "Iodine", "Sodium"],
+            ans: 2,
+            exp: "Iodine is required by the thyroid; a deficiency can lead to a goiter."
         },
         {
-            q: "Which macromolecule is primarily used for long-term energy storage?",
-            opts: ["Proteins", "Carbohydrates", "Lipids", "Nucleic Acids"],
+            q: "What is the strongest type of chemical bond found in organic molecules like DNA?",
+            opts: ["Ionic", "Hydrogen", "Covalent", "Electrostatic"],
             ans: 2,
-            exp: "Lipids (fats) provide high-density, long-term energy storage."
+            exp: "Covalent bonds share electrons and provide the stable backbone for complex molecules."
         }
     ]
 };
