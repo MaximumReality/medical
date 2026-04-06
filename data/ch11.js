@@ -1,73 +1,59 @@
 const CH11_DATA = {
     num: 11,
-    title: "The Muscular System",
-    accentColor: "#f39c12", // "Action Orange"
+    title: "Endocrine System",
+    accentColor: "#8e44ad", // Hormone Purple
     sections: [
         {
-            label: "HOW MUSCLES PRODUCE MOVEMENT",
-            content: "Muscles pull on tendons, which pull on bones. They never 'push.'",
+            label: "MECHANISMS OF HORMONE ACTION",
+            content: "The endocrine system uses chemical messengers (hormones) to communicate with target cells via the bloodstream.",
             details: [
-                "**Origin**: The attachment to the stationary bone (usually proximal).",
-                "**Insertion**: The attachment to the movable bone (usually distal).",
-                "**Prime Mover (Agonist)**: The leader; the muscle mainly responsible for the move.",
-                "**Antagonist**: The 'opposer'; stretches or yields to the prime mover.",
-                "**Synergist**: Helps the prime mover by adding extra force or reducing unnecessary movement."
+                "**Endocrine vs. Exocrine**: Endocrine glands are ductless and secrete into the blood; Exocrine glands secrete into ducts (e.g., sweat).",
+                "**Steroid Hormones**: Lipid-soluble; can cross the cell membrane to bind receptors inside the nucleus.",
+                "**Non-Steroid Hormones**: Water-soluble; bind to receptors on the cell membrane and use 'Second Messengers' (like cAMP).",
+                "**Negative Feedback**: The primary mechanism for regulating hormone levels; once a desired effect is achieved, secretion is inhibited."
             ]
         },
         {
-            label: "NAMING CONVENTIONS",
-            content: "Muscle names aren't random; they describe the muscle's features.",
+            label: "THE MASTER GLANDS: HYPOTHALAMUS & PITUITARY",
+            content: "The hypothalamus controls the pituitary gland, which in turn regulates many other endocrine glands.",
             details: [
-                "**Direction**: Rectus (parallel to midline), Transverse (perpendicular).",
-                "**Size**: Maximus (largest), Minimus (smallest), Longus (long).",
-                "**Shape**: Deltoid (triangular), Trapezius (trapezoid).",
-                "**Action**: Flexor, Extensor, Adductor.",
-                "**Number of Origins**: Biceps (2), Triceps (3), Quadriceps (4)."
+                "**Hypothalamus**: The link between the nervous and endocrine systems; controls the 'Master Gland.'",
+                "**Anterior Pituitary**: Secretes GH (Growth), PRL (Prolactin), TSH (Thyroid-stimulating), ACTH, FSH, and LH.",
+                "**Posterior Pituitary**: Stores and releases **Antidiuretic Hormone (ADH)** for water retention and **Oxytocin** for labor/milk let-down.",
+                "**Clinical Note**: ADH is crucial in nursing for managing fluid balance and blood pressure."
             ]
         },
         {
-            label: "MAJOR MUSCLE GROUPS",
-            content: "Key muscles she must identify for clinical practice.",
+            label: "PERIPHERAL ENDOCRINE GLANDS",
+            content: "Major glands that regulate metabolism, stress, and blood glucose.",
             details: [
-                "**Head/Neck**: Sternocleidomastoid (rotates head), Masseter (chewing).",
-                "**Torso**: Rectus Abdominis ('6-pack'), Pectoralis Major (chest).",
-                "**Upper Limb**: Deltoid (shoulder injection site), Biceps Brachii.",
-                "**Lower Limb**: Gluteus Maximus, Quadriceps Femoris (4 muscles), Hamstrings (3 muscles).",
-                "**Clinical Note**: The Intramuscular (IM) injection sites are usually the Deltoid, Gluteus Medius, or Vastus Lateralis."
+                "**Thyroid Gland**: Produces T3 and T4 (metabolism) and Calcitonin (lowers blood calcium).",
+                "**Parathyroid Glands**: Produce PTH, which increases blood calcium by stimulating osteoclasts.",
+                "**Adrenal Cortex**: Secretes Cortisol (stress) and Aldosterone (sodium/water balance).",
+                "**Adrenal Medulla**: Secretes Epinephrine and Norepinephrine (Fight or Flight).",
+                "**Pancreas**: Dual-function gland; **Insulin** (Beta cells) lowers blood glucose, while **Glucagon** (Alpha cells) raises it."
             ]
-        },
-       
-{
-    label: "SUPERFICIAL MUSCLE MAP",
-    content: "Overview of the primary muscles responsible for body movement.",
-    image: "img/ch11_muscle_map.PNG", 
-    details: [
-        "**Anterior View**: Focus on Pectorals, Abdominals, and Quadriceps.",
-        "**Posterior View**: Focus on Trapezius, Latissimus Dorsi, and Hamstrings."
-    ]
-}
- 
+        }
     ],
     vocab: [
-        {t: "Lever", d: "A rigid structure (bone) that moves about a fixed point (joint)."},
-        {t: "Fulcrum", d: "The fixed point/joint in a lever system."},
-        {t: "Bellies", d: "The fleshy portion of the muscle between the tendons."},
-        {t: "Fixator", d: "A muscle that stabilizes the origin of the prime mover."},
-        {t: "Diaphragm", d: "The primary muscle used for breathing; separates thoracic and abdominal cavities."},
-        {t: "Aponeurosis", d: "A broad, flat tendon (like on the top of the skull)."}
+        {t: "Target Cells", d: "Cells with specific receptors for a particular hormone."},
+        {t: "Prostaglandins", d: "Lipids that act as 'local hormones' affecting only neighboring cells."},
+        {t: "Diabetes Mellitus", d: "A metabolic disorder caused by insulin deficiency or resistance."},
+        {t: "Goiter", d: "Enlargement of the thyroid gland, often due to iodine deficiency."},
+        {t: "Circadian Rhythms", d: "Patterns of activity associated with the 24-hour cycle of day and night."}
     ],
     questions: [
         {
-            q: "In a 'biceps curl,' the triceps brachii acts as the:",
-            opts: ["Agonist", "Antagonist", "Synergist", "Fixator"],
-            ans: 1,
-            exp: "The triceps must relax and stretch while the biceps (agonist) contracts."
+            q: "Which hormone is responsible for lowering blood glucose levels by facilitating glucose uptake into cells?",
+            opts: ["Glucagon", "Cortisol", "Insulin", "Aldosterone"],
+            ans: 2,
+            exp: "Insulin, secreted by Beta cells in the pancreas, is the primary hormone that lowers blood sugar."
         },
         {
-            q: "Which muscle is a common site for intramuscular injections in the shoulder?",
-            opts: ["Biceps Brachii", "Deltoid", "Trapezius", "Platysma"],
+            q: "The 'fight-or-flight' response is mediated by hormones secreted from which specific area?",
+            opts: ["Adrenal Cortex", "Adrenal Medulla", "Thyroid Gland", "Anterior Pituitary"],
             ans: 1,
-            exp: "The Deltoid is the standard site for many vaccinations."
+            exp: "The Adrenal Medulla secretes catecholamines (Epinephrine/Norepinephrine) during acute stress."
         }
     ]
 };
