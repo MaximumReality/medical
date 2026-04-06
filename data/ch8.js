@@ -1,87 +1,72 @@
 const CH8_DATA = {
     num: 8,
-    title: "The Appendicular Skeleton",
-    accentColor: "#3498db", // Cool Blue for the limbs
+    title: "Muscular System",
+    accentColor: "#e74c3c", // Muscle Red
     sections: [
         {
-            label: "PECTORAL GIRDLE & UPPER LIMB",
-            content: "Attaches the upper limbs to the axial skeleton. Designed for maximum mobility.",
+            label: "SKELETAL MUSCLE PHYSIOLOGY",
+            content: "Understanding how a nerve impulse becomes a physical contraction at the cellular level.",
             details: [
-                "**Clavicle**: The collarbone; the most frequently fractured bone in the body.",
-                "**Scapula**: The shoulder blade; features the Acromion (connects to clavicle) and Glenoid Cavity (socket for humerus).",
-                "**Humerus**: The arm bone; fits into the scapula.",
-                "**Ulna & Radius**: The forearm. The Ulna is on the pinky side (medial), Radius is on the thumb side (lateral)."
+                "**Neuromuscular Junction (NMJ)**: The synapse where Acetylcholine (ACh) is released to trigger a contraction.",
+                "**Acetylcholinesterase (AChE)**: The enzyme that breaks down ACh to allow the muscle to relax.",
+                "**Sarcoplasmic Reticulum**: The specialized ER that stores and releases Calcium ($Ca^{2+}$).",
+                "**Muscle Metabolism**: Creatine Phosphate (15s energy), Anaerobic Glycolysis (Lactic acid), and Aerobic Respiration (Efficiency)."
             ]
         },
         {
-            label: "PELVIC GIRDLE & LOWER LIMB",
-            content: "Attaches the lower limbs to the axial skeleton. Designed for weight-bearing and stability.",
+            label: "THE SARCOMERE & CONTRACTION",
+            content: "The sarcomere is the functional unit of contraction where actin and myosin interact.",
+            image: "img/ch10_sarcomere.PNG", 
             details: [
-                "**Coxal Bone**: The hip bone, composed of three fused bones: Ilium, Ischium, and Pubis.",
-                "**Femur**: The thigh bone; the longest, heaviest, and strongest bone in the body.",
-                "**Tibia & Fibula**: The leg. Tibia is the weight-bearing 'shin bone'; Fibula is the slender lateral bone.",
-                "**Patella**: The kneecap; a sesamoid bone that protects the knee joint."
+                "**Myosin**: The 'Thick' filament with 'heads' that pull on actin.",
+                "**Actin**: The 'Thin' filament that slides toward the center (M-line).",
+                "**Sliding Filament Theory**: Myosin heads bind to actin (Cross-bridge), pull (Power Stroke), and release using ATP.",
+                "**Troponin & Tropomyosin**: The 'lock' on the actin; Calcium is the 'key' that moves them out of the way."
             ]
         },
-               {
-            label: "MALE VS. FEMALE PELVIS",
-            content: "The female pelvis is adapted for pregnancy and childbirth, resulting in distinct structural differences.",
-            image: "img/ch8_pelvis.png", 
+        {
+            label: "MUSCLE ACTIONS & ATTACHMENTS",
+            content: "Muscles generate movement by pulling on bones across a joint (the fulcrum).",
             details: [
-                "**Female Pelvis**: Wider, shallower, and has a larger pelvic inlet. The pubic arch is usually greater than 90°.",
-                "**Male Pelvis**: Narrower, deeper, and heavier. The pubic arch is usually less than 90°.",
-                "**Greater Sciatic Notch**: Significantly wider in females to accommodate a wider birth canal.",
-                "**Clinical Note**: These structural differences are a primary method used in forensic anthropology to determine the biological sex of skeletal remains."
+                "**Origin**: The stationary attachment point (usually proximal).",
+                "**Insertion**: The movable attachment point (usually distal); it moves toward the origin.",
+                "**Agonist (Prime Mover)**: The leader responsible for a specific movement.",
+                "**Antagonist**: The muscle that opposes or reverses a movement (e.g., Triceps opposes Biceps).",
+                "**Synergist**: Helps the prime mover by adding force or stabilizing the joint."
             ]
         },
-                {
-            label: "CARPAL BONES & MNEMONIC",
-            content: "The 8 carpal bones of the wrist are arranged in two rows. Use the mnemonic to remember them from Lateral (thumb side) to Medial, starting with the bottom row.",
-            image: "img/ch8_wrist_mnemonic.JPG", 
+        {
+            label: "SUPERFICIAL MUSCLE MAP & CLINICAL SITES",
+            content: "Overview of the primary muscles and their clinical significance in nursing.",
+            image: "img/ch11_muscle_map.PNG", 
             details: [
-                "**The Mnemonic**: 'Some Lovers Try Positions That They Can't Handle'.",
-                "**Proximal Row (Bottom)**: **S**caphoid, **L**unate, **T**riquetrum, **P**isiform.",
-                "**Distal Row (Top)**: **T**rapezium, **T**rapezoid, **C**apitate, **H**amate.",
-                "**Study Tip**: The **Trapezi-UM** is by the Th-**UMB**. This helps distinguish it from the Trapezoid!",
-                "**Clinical Note**: The Scaphoid is the most commonly fractured bone in the wrist, often resulting from a 'FOOSH' injury (Fall On OutStretched Hand)."
-            ]
-        },
-                {
-            label: "BONES OF THE ANKLE & FOOT",
-            content: "The foot consists of the tarsals, metatarsals, and phalanges. It is structured to provide both a stable base and a flexible lever for movement.",
-            image: "img/ch8_foot.JPG", 
-            details: [
-                "**Tarsal Bones**: 7 total. The **Talus** is the 'ankle bone' that joins the Tibia. The **Calcaneus** is the large 'heel bone'.",
-                "**Other Tarsals**: Includes the Navicular, Cuboid, and three Cuneiform bones (Medial, Intermediate, Lateral).",
-                "**Metatarsals**: 5 bones labeled I-V (Big toe to pinky toe).",
-                "**Phalanges**: 14 bones of the toes. The big toe (Hallux) lacks a middle phalanx.",
-                "**Clinical Note**: The 'Arches' of the foot (Longitudinal and Transverse) act as shock absorbers. Flat feet occur when these arches weaken and collapse."
+                "**Anterior Muscles**: Pectoralis Major, Rectus Abdominis, Quadriceps Femoris.",
+                "**Posterior Muscles**: Trapezius, Latissimus Dorsi, Gluteus Maximus, Gastrocnemius.",
+                "**IM Injection Sites**: Key nursing sites include the **Deltoid** (shoulder), **Vastus Lateralis** (lateral thigh), and **Ventral Gluteal** (hip).",
+                "**Diaphragm**: The most important muscle for respiration; separates the thoracic and abdominal cavities."
             ]
         }
-
-
-
     ],
     vocab: [
-        {t: "Carpals", d: "The 8 bones of the wrist."},
-        {t: "Tarsals", d: "The 7 bones of the ankle/foot (includes the Calcaneus/heel)."},
-        {t: "Phalanges", d: "The bones of the fingers and toes."},
-        {t: "Acetabulum", d: "The deep socket in the hip bone that receives the head of the femur."},
-        {t: "Olecranon", d: "The 'elbow' point on the proximal end of the ulna."},
-        {t: "Malleolus", d: "The 'ankle bone' bumps (Medial on Tibia, Lateral on Fibula)."}
+        {t: "Sarcomere", d: "The region between two Z-discs; the unit of contraction."},
+        {t: "Aponeurosis", d: "A broad, sheet-like tendon connecting muscles to other structures."},
+        {t: "Hypertrophy", d: "Increase in muscle fiber diameter due to use."},
+        {t: "Atrophy", d: "Degeneration of muscle tissue due to disuse or nerve damage."},
+        {t: "Myoglobin", d: "Oxygen-binding protein found in muscle sarcoplasm."},
+        {t: "Oxygen Debt", d: "The amount of oxygen required after exercise to restore pre-exercise conditions."}
     ],
     questions: [
         {
-            q: "Which forearm bone is located on the thumb side (lateral)?",
-            opts: ["Ulna", "Radius", "Tibia", "Humerus"],
+            q: "What role does Calcium play in the Sliding Filament Theory?",
+            opts: ["It provides ATP for the power stroke", "It binds to troponin to expose actin binding sites", "It breaks down Acetylcholine", "It forms the Z-line"],
             ans: 1,
-            exp: "The Radius 'radiates' around the thumb. It is always lateral in anatomical position."
+            exp: "Calcium is the 'on switch' for contraction by moving the regulatory proteins."
         },
         {
-            q: "The 'heel bone' is technically called the:",
-            opts: ["Talus", "Cuboid", "Calcaneus", "Navicular"],
+            q: "Which muscle is the standard site for intramuscular injections in the lateral thigh?",
+            opts: ["Biceps Femoris", "Rectus Abdominis", "Vastus Lateralis", "Gastrocnemius"],
             ans: 2,
-            exp: "The Calcaneus is the largest tarsal bone and forms the heel."
+            exp: "The Vastus Lateralis is a preferred IM site, especially in pediatric patients."
         }
     ]
 };
