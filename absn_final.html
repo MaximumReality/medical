@@ -80,6 +80,7 @@ const container = document.getElementById('questions-container');
 let currentCat = "";
 
 examData.forEach((item, index) => {
+    examData.sort(() => Math.random() - 0.5);
     if (item.category !== currentCat) {
         currentCat = item.category;
         const head = document.createElement('div');
