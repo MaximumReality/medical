@@ -35,7 +35,18 @@ const CH11_DATA = {
                 "**Lower Limb**: Gluteus Maximus, Quadriceps Femoris (4 muscles), Hamstrings (3 muscles).",
                 "**Clinical Note**: The Intramuscular (IM) injection sites are usually the Deltoid, Gluteus Medius, or Vastus Lateralis."
             ]
-        }
+        },
+       
+{
+    label: "SUPERFICIAL MUSCLE MAP",
+    content: "Overview of the primary muscles responsible for body movement.",
+    image: "img/ch11_muscle_map.PNG", 
+    details: [
+        "**Anterior View**: Focus on Pectorals, Abdominals, and Quadriceps.",
+        "**Posterior View**: Focus on Trapezius, Latissimus Dorsi, and Hamstrings."
+    ]
+}
+ 
     ],
     vocab: [
         {t: "Lever", d: "A rigid structure (bone) that moves about a fixed point (joint)."},
