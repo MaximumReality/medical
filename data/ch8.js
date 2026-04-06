@@ -45,7 +45,20 @@ const CH8_DATA = {
                 "**Study Tip**: The **Trapezi-UM** is by the Th-**UMB**. This helps distinguish it from the Trapezoid!",
                 "**Clinical Note**: The Scaphoid is the most commonly fractured bone in the wrist, often resulting from a 'FOOSH' injury (Fall On OutStretched Hand)."
             ]
+        },
+                {
+            label: "BONES OF THE ANKLE & FOOT",
+            content: "The foot consists of the tarsals, metatarsals, and phalanges. It is structured to provide both a stable base and a flexible lever for movement.",
+            image: "img/ch8_foot.JPG", 
+            details: [
+                "**Tarsal Bones**: 7 total. The **Talus** is the 'ankle bone' that joins the Tibia. The **Calcaneus** is the large 'heel bone'.",
+                "**Other Tarsals**: Includes the Navicular, Cuboid, and three Cuneiform bones (Medial, Intermediate, Lateral).",
+                "**Metatarsals**: 5 bones labeled I-V (Big toe to pinky toe).",
+                "**Phalanges**: 14 bones of the toes. The big toe (Hallux) lacks a middle phalanx.",
+                "**Clinical Note**: The 'Arches' of the foot (Longitudinal and Transverse) act as shock absorbers. Flat feet occur when these arches weaken and collapse."
+            ]
         }
+
 
 
     ],
