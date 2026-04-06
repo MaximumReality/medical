@@ -13,14 +13,27 @@ const CH12_DATA = {
                 "**Clinical Note**: Multiple Sclerosis (MS) is an autoimmune disease that destroys the myelin sheath in the CNS."
             ]
         },
+        
         {
-            label: "THE ACTION POTENTIAL",
+            label: "NERVE IMPULSE SPEED",
+            content: "Not all nerves send signals at the same speed. It depends on the 'wrapping'.",
+            details: [
+                "**Myelin Sheath**: A fatty 'insulation' that allows signals to jump instead of crawl.",
+                "**Nodes of Ranvier**: The gaps in the myelin where the actual 'jumping' happens.",
+                "**Saltatory Conduction**: The name for the 'jumping' signal. It's much faster than an unmyelinated signal.",
+                "**Clinical Note**: Multiple Sclerosis (MS) is a disease where the immune system attacks the Myelin, slowing down or stopping nerve signals."
+            ]
+        },
+         {
+            label: "ELECTRICAL SIGNALING: THE ACTION POTENTIAL",
             content: "The electrical signal that travels down an axon. It follows an 'All-or-None' principle.",
+            image: "img/ch12_action_potential.JPG", 
             details: [
                 "**Resting State**: -70mV. High Sodium (Na+) outside, High Potassium (K+) inside.",
-                "**Depolarization**: Na+ channels open, Na+ rushes in, charge goes to +30mV.",
-                "**Repolarization**: K+ channels open, K+ rushes out, charge returns toward negative.",
-                "**Hyperpolarization**: The 'undershoot' where the cell becomes briefly more negative than resting."
+                "**The Threshold (-55mV)**: The 'Point of No Return.' If the stimulus reaches this, the nerve MUST fire.",
+                "**Depolarization**:  Na+ channels open, Na+ rushes in, charge goes to +30mV.",
+                "**Repolarization**:  K+ channels open, K+ rushes out, charge returns toward negative.",
+                "**Hyperpolarization**: The 'undershoot' where the cell becomes briefly more negative than resting. (A brief 'time-out' where the cell goes below -70mV so it can't fire again too fast)."
             ]
         },
         {
@@ -52,7 +65,11 @@ const CH12_DATA = {
         {t: "Threshold", d: "The voltage (-55mV) required to trigger an action potential."},
         {t: "Synapse", d: "The site of communication between two neurons."},
         {t: "Grey Matter", d: "Contains neuronal cell bodies and unmyelinated axons."},
-        {t: "White Matter", d: "Contains myelinated axons; the 'highways' of the brain."}
+        {t: "White Matter", d: "Contains myelinated axons; the 'highways' of the brain."},
+        {t: "Refractory Period", d: "The short time after a signal where a nerve cannot fire again."},
+        {t: "Synaptic Cleft", d: "The tiny physical gap between two neurons."},
+        {t: "Neurotransmitters", d: "Chemicals like Dopamine or Serotonin that jump the gap."},
+        {t: "Efferent Neurons", d: "Motor neurons that carry signals AWAY from the brain to muscles."}
     ],
     questions: [
         {
