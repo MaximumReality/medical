@@ -1,5 +1,5 @@
-const CH12_DATA = {
-    num: 12,
+const CH9_DATA = {
+    num: 9,
     title: "Nervous Tissue & Physiology",
     accentColor: "#34495e", 
     sections: [
