@@ -4,57 +4,57 @@ const CH14_DATA = {
     accentColor: "#c0392b", 
     sections: [
         {
-            label: "BLOOD STRUCTURE & COMPOSITION",
-            content: "Blood is a liquid connective tissue. The proportions of its components are essential for clinical diagnosis.",
-            image: "img/ch12_blood.PNG", // The 55/1/45 split diagram
+            label: "MECHANICAL SEPARATION (CENTRIFUGATION)",
+            content: "When blood is spun in a centrifuge, its components separate by density, providing a snapshot of a patient's health.",
+            image: "img/ch12_blood_centerfuge.PNG", 
             details: [
-                "**Plasma (55%)**: Contains 92% water, plus proteins (Albumin), glucose, and electrolytes.",
-                "**Buffy Coat (<1%)**: The thin layer containing **White Blood Cells** and **Platelets**.",
-                "**Red Blood Cells (45%)**: Also called the **Hematocrit**; these transport $O_2$ and $CO_2$.",
-                "**Plasma vs. Serum**: Serum is plasma with the clotting factors (like fibrinogen) removed."
+                "**Plasma (Top Layer)**: Approximately 55% of the volume; contains water, electrolytes, and proteins.",
+                "**Buffy Coat (Middle Layer)**: Less than 1% of the volume; consists of White Blood Cells and Platelets.",
+                "**Red Blood Cells (Bottom Layer)**: Approximately 45% of the volume; also known as the Hematocrit.",
+                "**Clinical Application**: Dehydration often results in a higher hematocrit percentage because the plasma volume (water) decreases."
             ]
         },
         {
-            label: "FORMED ELEMENTS: CLINICAL ROLES",
-            content: "The specific cells within the blood have distinct life cycles and functions.",
-            image: "img/ch14_blood.PNG", // The second blood structure image
+            label: "BLOOD STRUCTURE & FORMED ELEMENTS",
+            content: "Blood consists of cells and cell fragments known as 'formed elements' suspended in plasma.",
+            image: "img/ch14_blood.PNG", 
             details: [
-                "**Erythrocytes (RBCs)**: Biconcave discs with no nucleus; live about 120 days.",
-                "**Leukocytes (WBCs)**: Divided into Granulocytes (Neutrophils, Eosinophils, Basophils) and Agranulocytes (Monocytes, Lymphocytes).",
-                "**Thrombocytes (Platelets)**: Fragments of megakaryocytes that initiate the clotting process.",
-                "**Hematopoiesis**: Blood cell formation occurring in the **Red Bone Marrow**."
+                "**Erythrocytes (RBCs)**: Biconcave discs specialized for carrying oxygen via Hemoglobin.",
+                "**Leukocytes (WBCs)**: The body's defense system, including Neutrophils (bacteria) and Lymphocytes (viruses).",
+                "**Thrombocytes (Platelets)**: Crucial fragments for the initiation of hemostasis (clotting).",
+                "**Hematopoiesis**: The continuous production of these cells within the Red Bone Marrow."
             ]
         },
         {
-            label: "ABO & RH BLOOD TYPING",
-            content: "Compatibility is determined by the interaction between donor antigens and recipient antibodies.",
+            label: "TRANSFUSION MEDICINE: ABO & Rh",
+            content: "Blood typing is based on the presence or absence of specific antigens on the erythrocyte surface.",
+            image: "img/ch12_blood.PNG", 
             details: [
-                "**Antigens (Agglutinogens)**: Proteins found on the surface of the Red Blood Cell.",
-                "**Antibodies (Agglutinins)**: Proteins in the plasma that attack foreign blood types.",
-                "**Type O-**: Universal Donor (no antigens).",
-                "**Type AB+**: Universal Recipient (no antibodies).",
-                "**Rh Incompatibility**: Crucial in pregnancy (Erythroblastosis Fetalis) if an Rh- mother carries an Rh+ fetus."
+                "**Antigens vs. Antibodies**: You possess antigens for your blood type and antibodies against types you lack.",
+                "**The Universal Rules**: Type O- is the Universal Donor; Type AB+ is the Universal Recipient.",
+                "**Rh Factor**: Differentiating between 'Positive' and 'Negative' blood; critical for preventing hemolytic disease of the newborn.",
+                "**Agglutination**: The life-threatening clumping reaction when incompatible blood types are mixed."
             ]
         }
     ],
     vocab: [
-        {t: "Hemostasis", d: "The process that stops bleeding (Vascular spasm, Platelet plug, Coagulation)."},
-        {t: "Fibrinogen", d: "A soluble plasma protein converted to insoluble Fibrin during clotting."},
-        {t: "Anemia", d: "A condition where the blood has an abnormally low oxygen-carrying capacity."},
-        {t: "Agglutination", d: "The clumping of RBCs when antigens meet their corresponding antibodies."}
+        {t: "Albumin", d: "The most abundant plasma protein; maintains osmotic pressure to prevent edema."},
+        {t: "Fibrin", d: "The thread-like protein that forms the structural basis of a blood clot."},
+        {t: "Erythropoietin (EPO)", d: "A kidney hormone that triggers the production of new Red Blood Cells."},
+        {t: "Hemostasis", d: "The multi-step process of stopping bleeding (Vascular spasm, Plug, Coagulation)."}
     ],
     questions: [
         {
-            q: "Which blood component is responsible for the 'Buffy Coat' seen after centrifugation?",
-            opts: ["Plasma", "Red Blood Cells", "White Blood Cells and Platelets", "Albumin"],
-            ans: 2,
-            exp: "The Buffy Coat is the thin middle layer containing the immune cells and clotting fragments."
+            q: "Which layer of a centrifuged blood sample contains the leukocytes?",
+            opts: ["The Plasma", "The Buffy Coat", "The Hematocrit", "The Serum"],
+            ans: 1,
+            exp: "Leukocytes (WBCs) and Platelets settle in the thin 'Buffy Coat' between the plasma and RBCs."
         },
         {
-            q: "A person with Type B blood has which antigens and antibodies?",
-            opts: ["B antigens; Anti-A antibodies", "A antigens; Anti-B antibodies", "B antigens; Anti-B antibodies", "No antigens; A and B antibodies"],
-            ans: 0,
-            exp: "You have the antigens of your type, but the antibodies for the type you *don't* have."
+            q: "A person with Type O blood has which antibodies in their plasma?",
+            opts: ["Anti-A only", "Anti-B only", "Both Anti-A and Anti-B", "Neither Anti-A nor Anti-B"],
+            ans: 2,
+            exp: "Type O has no surface antigens, so it naturally produces antibodies against both A and B types."
         }
     ]
 };
