@@ -1,60 +1,60 @@
 const CH13_DATA = {
     num: 13,
-    title: "Spinal Cord & Spinal Nerves",
-    accentColor: "#1abc9c", // Neural Teal
+    title: "Cardiovascular System",
+    accentColor: "#e67e22", // Heart Orange/Red
     sections: [
         {
-            label: "SPINAL CORD ANATOMY",
-            content: "The spinal cord is the primary communication link between the brain and the rest of the body.",
+            label: "INTERNAL ANATOMY & VALVES",
+            content: "The heart is a double pump with four chambers and four valves that ensure one-way blood flow.",
+            image: "img/ch13_heart_enlarged.JPG", 
             details: [
-                "**Conus Medullaris**: The tapered, cone-shaped end of the spinal cord (around L1-L2).",
-                "**Cauda Equina**: 'Horse's Tail'; the collection of nerve roots extending below the spinal cord.",
-                "**Gray Matter**: Shaped like an 'H' or butterfly. Contains **Horns** (Posterior = Sensory, Anterior = Motor).",
-                "**White Matter**: Divided into **Columns** (Funiculi) containing sensory/motor tracts."
+                "**Atria**: The receiving chambers (Right receives deoxygenated; Left receives oxygenated).",
+                "**Ventricles**: The pumping chambers; the **Left Ventricle** is the thickest because it pumps to the whole body.",
+                "**AV Valves**: Tricuspid (Right) and Mitral/Bicuspid (Left) prevent backflow into the atria.",
+                "**Semilunar Valves**: Pulmonary and Aortic valves prevent backflow into the ventricles."
             ]
         },
         {
-            label: "SPINAL NERVES & PLEXUSES",
-            content: "There are 31 pairs of spinal nerves. They emerge from the cord and often braid together into networks called plexuses.",
+            label: "PATHWAY OF BLOOD FLOW",
+            content: "Tracing a drop of blood through the pulmonary and systemic circuits.",
+            image: "img/ch15_heart_internal.PNG", 
             details: [
-                "**Cervical Plexus**: Supplies the neck and diaphragm (Phrenic Nerve).",
-                "**Brachial Plexus**: Supplies the upper limbs (Radial, Ulnar, Median nerves).",
-                "**Lumbar/Sacral Plexus**: Supplies the lower limbs (Femoral and Sciatic nerves).",
-                "**Clinical Note**: The Sciatic nerve is the longest and thickest nerve in the body."
+                "**Right Side (Pulmonary)**: Vena Cava → Right Atrium → Tricuspid → Right Ventricle → Pulmonary Valve → Lungs.",
+                "**Left Side (Systemic)**: Pulmonary Veins → Left Atrium → Mitral → Left Ventricle → Aortic Valve → Aorta.",
+                "**Clinical Note**: Most heart failure begins in the Left Ventricle, leading to fluid backup in the lungs (Pulmonary Edema)."
             ]
         },
         {
-            label: "THE REFLEX ARC",
-            content: "A fast, involuntary response to a stimulus. It bypasses the brain for speed.",
+            label: "CARDIAC CONDUCTION SYSTEM",
+            content: "The heart's 'electrical wiring' coordinates the contraction of the chambers.",
+            image: "img/ch15_conduction.JPG", 
             details: [
-                "**1. Receptor**: Detects the stimulus.",
-                "**2. Sensory Neuron**: Carries impulse to the spinal cord (via Dorsal Root).",
-                "**3. Integrating Center**: Gray matter in the cord (may include an Interneuron).",
-                "**4. Motor Neuron**: Carries impulse out of the cord (via Ventral Root).",
-                "**5. Effector**: The muscle or gland that responds."
+                "**SA Node**: The 'Pacemaker'; initiates the heartbeat in the right atrium.",
+                "**AV Node**: Delay point; allows the atria to finish contracting before the ventricles start.",
+                "**Bundle of His & Purkinje Fibers**: Rapidly conduct the signal to the apex to trigger ventricular contraction.",
+                "**EKG Components**: P-wave (Atrial Depolarization), QRS Complex (Ventricular Depolarization), T-wave (Ventricular Repolarization)."
             ]
         }
     ],
     vocab: [
-        {t: "Meninges", d: "Three protective layers around the cord: Dura Mater, Arachnoid Mater, Pia Mater."},
-        {t: "Dermatome", d: "An area of skin that provides sensory input to one specific pair of spinal nerves."},
-        {t: "Ganglion", d: "A cluster of neuronal cell bodies located outside the CNS."},
-        {t: "Epidural Space", d: "Space between the dura mater and the vertebral wall; site of anesthetic injection."},
-        {t: "Monosynaptic", d: "A reflex arc with only one synapse (no interneuron)."},
-        {t: "Phrenic Nerve", d: "Nerve that stimulates the diaphragm to allow breathing ('C3, 4, 5 keep the diaphragm alive')."}
+        {t: "Systole", d: "The phase of contraction when the heart pumps blood out."},
+        {t: "Diastole", d: "The phase of relaxation when the heart chambers fill with blood."},
+        {t: "Cardiac Output", d: "The volume of blood pumped by each ventricle per minute (Stroke Volume x Heart Rate)."},
+        {t: "Myocardium", d: "The thick middle layer of the heart wall composed of cardiac muscle tissue."},
+        {t: "Pericardium", d: "The protective sac surrounding the heart."}
     ],
     questions: [
         {
-            q: "Sensory information enters the spinal cord through which structure?",
-            opts: ["Anterior Root", "Posterior (Dorsal) Root", "Ventral Horn", "Central Canal"],
-            ans: 1,
-            exp: "The Dorsal Root is strictly for sensory (afferent) input. Think: 'SAD' (Sensory Afferent Dorsal)."
+            q: "Which valve prevents blood from flowing back into the Left Ventricle?",
+            opts: ["Tricuspid Valve", "Mitral Valve", "Aortic Valve", "Pulmonary Valve"],
+            ans: 2,
+            exp: "The Aortic Semilunar valve closes at the end of systole to keep blood in the aorta."
         },
         {
-            q: "Damage to the Phrenic Nerve would result in difficulty with:",
-            opts: ["Walking", "Swallowing", "Breathing", "Hearing"],
-            ans: 2,
-            exp: "The Phrenic nerve controls the diaphragm, the primary muscle for respiration."
+            q: "In the conduction system, what is considered the primary pacemaker of the heart?",
+            opts: ["AV Node", "SA Node", "Purkinje Fibers", "Bundle of His"],
+            ans: 1,
+            exp: "The Sinoatrial (SA) Node normally sets the heart rate at 60-100 beats per minute."
         }
     ]
 };
