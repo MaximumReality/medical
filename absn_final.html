@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABSN Final Comprehensive Exam</title>
+    
+    <script src="data/ch1.js"></script>
+    <script src="data/ch2.js"></script>
+    <script src="data/ch3.js"></script>
+    <script src="data/ch4.js"></script>
+    <script src="data/ch5.js"></script>
+    <script src="data/ch6.js"></script>
+    <script src="data/ch7.js"></script>
+    <script src="data/ch8.js"></script>
+    <script src="data/ch9.js"></script>
+    <script src="data/ch10.js"></script>
+    <script src="data/ch11.js"></script>
+    <script src="data/ch12.js"></script>
+    <script src="data/ch13.js"></script>
+
+    <style>
+        body { font-family: -apple-system, sans-serif; background:#f0f2f5; margin:0; padding:15px; color: #1a202c; }
+        .container { max-width: 700px; margin: auto; }
+        .back-btn { display: inline-block; margin-bottom: 15px; padding: 10px 20px; background: #2b6cb0; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; }
+        h1 { text-align: center; color: #2d3748; }
+        
+        #score-banner { position: sticky; top: 10px; z-index: 1000; text-align: center; padding: 20px; border-radius: 12px; display: none; margin-bottom: 20px; font-weight: bold; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .pass { background: #c6f6d5; color: #22543d; border: 2px solid #38a169; }
+        .fail { background: #fed7d7; color: #822727; border: 2px solid #e53e3e; }
+
+        .section-head { background: #4a5568; color: white; padding: 10px 15px; border-radius: 8px; margin: 30px 0 10px 0; font-size: 0.8rem; text-transform: uppercase; }
+        .question-block { background: white; padding: 20px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        
+        label { display: block; background: #edf2f7; margin: 10px 0; padding: 15px; border-radius: 10px; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        input[type="radio"] { margin-right: 15px; transform: scale(1.4); }
+        
+        .explanation { display: none; margin-top: 15px; padding: 15px; background: #e6fffa; border-left: 5px solid #38b2ac; border-radius: 4px; font-size: 0.9rem; }
+        .correct-label { background: #c6f6d5 !important; border-color: #38a169 !important; }
+        .wrong-label { background: #fed7d7 !important; border-color: #e53e3e !important; text-decoration: line-through; }
+        
+        .grade-btn { width: 100%; padding: 20px; font-size: 1.2rem; background: #2b6cb0; color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; margin: 40px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-btn">← EXIT EXAM</a>
+        <h1>A&P Comprehensive Final</h1>
+        <div id="score-banner"></div>
+        <form id="quizForm">
+            <div id="questions-container"></div>
+        </form>
+        <button type="button" class="grade-btn" onclick="gradeExam()">SUBMIT FINAL EXAM</button>
+    </div>
+
+<script>
+// 1. COMBINE DATA FROM ALL CHAPTERS
+const allChapters = [
+    CH1_DATA, CH2_DATA, CH3_DATA, CH4_DATA, CH5_DATA, 
+    CH6_DATA, CH7_DATA, CH8_DATA, CH9_DATA, CH10_DATA, 
+    CH11_DATA, CH12_DATA, CH13_DATA
+];
+
+let examData = [];
+
+// 2. EXTRACT QUESTIONS AND ATTACH CHAPTER NAMES
+allChapters.forEach(chapter => {
+    if(chapter && chapter.questions) {
+        chapter.questions.forEach(q => {
+            examData.push({
+                ...q,
+                category: `Chapter ${chapter.num}: ${chapter.title}`
+            });
+        });
+    }
+});
+
+// 3. RENDER THE QUESTIONS
+const container = document.getElementById('questions-container');
+let currentCat = "";
+
+examData.forEach((item, index) => {
+    if (item.category !== currentCat) {
+        currentCat = item.category;
+        const head = document.createElement('div');
+        head.className = 'section-head';
+        head.innerText = currentCat;
+        container.appendChild(head);
+    }
+
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    
+    let optsHtml = "";
+    item.opts.forEach((opt, i) => {
+        optsHtml += `
+            <label id="label-${index}-${i}">
+                <input type="radio" name="q${index}" value="${i}"> ${opt}
+            </label>`;
+    });
+
+    block.innerHTML = `
+        <h3>${index + 1}. ${item.q}</h3>
+        ${optsHtml}
+        <div class="explanation" id="exp-${index}">
+            <strong>Rationale:</strong> ${item.exp}
+        </div>
+    `;
+    container.appendChild(block);
+});
+
+// 4. GRADING LOGIC
+function gradeExam() {
+    let score = 0;
+    examData.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const expDiv = document.getElementById(`exp-${index}`);
+        expDiv.style.display = "block";
+        
+        // Highlight correct answer
+        document.getElementById(`label-${index}-${item.ans}`).classList.add('correct-label');
+        
+        if (selected) {
+            if (parseInt(selected.value) === item.ans) {
+                score++;
+            } else {
+                document.getElementById(`label-${index}-${selected.value}`).classList.add('wrong-label');
+            }
+        }
+    });
+
+    const banner = document.getElementById('score-banner');
+    const percent = (score / examData.length) * 100;
+    banner.style.display = "block";
+    banner.className = percent >= 75 ? "pass" : "fail";
+    banner.innerHTML = `FINAL SCORE: ${score} / ${examData.length} (${percent.toFixed(1)}%)<br>
+                        ${percent >= 75 ? "🎉 You're ready for the Boards!" : "📚 Review the rationales below and try again."}`;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
