@@ -150,43 +150,56 @@
     }
 
     function renderStudy() {
-        const body = document.getElementById('study-body');
-        
-        // 1. Map through the "In-Depth" sections from our JS files
-        const sectionsHTML = currentCH.sections.map(sec => {
-            // Check for Clinical Notes and style them differently
-            const detailItems = sec.details.map(detail => {
-                if(detail.includes("Clinical Note")) {
-                    return `<div class="clinical-note">${detail}</div>`;
-                }
-                return `<li>${detail}</li>`;
-            }).join('');
-
-            return `
-                <div class="study-section">
-                    <h3 style="margin-top:0;">${sec.label}</h3>
-                    <p>${sec.content}</p>
-                    <ul class="concept-list">${detailItems}</ul>
-                </div>
-            `;
+    const body = document.getElementById('study-body');
+    
+    // This loop creates the HTML for each section in the chapter
+    const sectionsHTML = currentCH.sections.map(sec => {
+        // 1. Process the bullet points (details)
+        const detailItems = sec.details.map(detail => {
+            if(detail.includes("Clinical Note")) {
+                return `<div class="clinical-note">${detail}</div>`;
+            }
+            return `<li>${detail}</li>`;
         }).join('');
 
-        // 2. Add the vocab at the end
-        const vocabHTML = `
+        // 2. NEW: Process the image from the .js file
+        // If 'image' exists in the JS, create an <img> tag. If not, leave it empty.
+        const imageHTML = sec.image ? 
+            `<div style="text-align:center; margin: 20px 0;">
+                <img src="${sec.image}" 
+                     style="max-width:100%; border-radius:8px; border: 1px solid var(--accent-dim); box-shadow: 0 0 15px rgba(0,207,255,0.1);"
+                     alt="${sec.label}">
+            </div>` 
+            : '';
+
+        // 3. Combine everything into the section block
+        return `
             <div class="study-section">
-                <h3>TERMINOLOGY DATABASE</h3>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    ${currentCH.vocab.map(v => `
-                        <div style="border-bottom: 1px solid #222; padding: 5px;">
-                            <b style="color:var(--accent)">${v.t}:</b> ${v.d}
-                        </div>
-                    `).join('')}
-                </div>
+                <h3 style="margin-top:0; color:var(--accent);">◈ ${sec.label}</h3>
+                <p style="font-size:0.95rem; line-height:1.5; color:#cfd8dc;">${sec.content}</p>
+                
+                ${imageHTML} <ul class="concept-list">${detailItems}</ul>
             </div>
         `;
+    }).join('');
 
-        body.innerHTML = sectionsHTML + vocabHTML;
-    }
+    // 4. Add the vocab section at the bottom
+    const vocabHTML = `
+        <div class="study-section" style="border-left-color: #607d8b;">
+            <h3 style="color:#90a4ae;">TERMINOLOGY DATABASE</h3>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                ${currentCH.vocab.map(v => `
+                    <div style="background: rgba(255,255,255,0.03); padding: 10px; border-radius: 4px;">
+                        <b style="color:var(--accent)">${v.t}:</b> 
+                        <span style="font-size: 0.9rem; opacity: 0.8;">${v.d}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    body.innerHTML = sectionsHTML + vocabHTML;
+}
 
     function closeOverlay() {
         document.getElementById('overlay').style.display = 'none';
