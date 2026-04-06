@@ -1,88 +1,71 @@
 const CH12_DATA = {
     num: 12,
-    title: "Nervous Tissue",
-    accentColor: "#34495e", // Deep Neural Blue
+    title: "Nervous Tissue & Physiology",
+    accentColor: "#34495e", 
     sections: [
         {
-            label: "NEURONS & NEUROGLIA",
-            content: "The nervous system has two main cell types: Neurons (the talkers) and Neuroglia (the helpers).",
+            label: "NEURONAL STRUCTURE & NEUROGLIA",
+            content: "The nervous system relies on neurons for signal transmission and neuroglia for physiological support.",
             details: [
-                "**Neurons**: Electrically excitable cells. Parts include the **Cell Body**, **Dendrites** (receivers), and **Axon** (sender).",
-                "**CNS Glia**: Astrocytes (blood-brain barrier), Oligodendrocytes (myelin), Microglia (immune), Ependymal (CSF).",
-                "**PNS Glia**: Schwann cells (myelin) and Satellite cells (support).",
-                "**Clinical Note**: Multiple Sclerosis (MS) is an autoimmune disease that destroys the myelin sheath in the CNS."
+                "**Neurons**: Composed of a **Cell Body (Soma)**, **Dendrites** (input), and a single **Axon** (output).",
+                "**CNS Glia**: **Astrocytes** (Blood-Brain Barrier), **Oligodendrocytes** (Myelin), **Microglia** (Phagocytosis), and **Ependymal Cells** (CSF production).",
+                "**PNS Glia**: **Schwann Cells** (Myelin) and **Satellite Cells** (Support).",
+                "**Clinical Note**: Multiple Sclerosis (MS) involves the immune-mediated destruction of CNS myelin, impairing saltatory conduction."
             ]
         },
-        
         {
-            label: "NERVE IMPULSE SPEED",
-            content: "Not all nerves send signals at the same speed. It depends on the 'wrapping'.",
-            details: [
-                "**Myelin Sheath**: A fatty 'insulation' that allows signals to jump instead of crawl.",
-                "**Nodes of Ranvier**: The gaps in the myelin where the actual 'jumping' happens.",
-                "**Saltatory Conduction**: The name for the 'jumping' signal. It's much faster than an unmyelinated signal.",
-                "**Clinical Note**: Multiple Sclerosis (MS) is a disease where the immune system attacks the Myelin, slowing down or stopping nerve signals."
-            ]
-        },
-         {
-            label: "ELECTRICAL SIGNALING: THE ACTION POTENTIAL",
-            content: "The electrical signal that travels down an axon. It follows an 'All-or-None' principle.",
+            label: "ELECTROPHYSIOLOGY: THE ACTION POTENTIAL",
+            content: "Action potentials are 'all-or-none' electrochemical events used for cellular communication.",
             image: "img/ch12_action_potential.JPG", 
             details: [
-                "**Resting State**: -70mV. High Sodium (Na+) outside, High Potassium (K+) inside.",
-                "**The Threshold (-55mV)**: The 'Point of No Return.' If the stimulus reaches this, the nerve MUST fire.",
-                "**Depolarization**:  Na+ channels open, Na+ rushes in, charge goes to +30mV.",
-                "**Repolarization**:  K+ channels open, K+ rushes out, charge returns toward negative.",
-                "**Hyperpolarization**: The 'undershoot' where the cell becomes briefly more negative than resting. (A brief 'time-out' where the cell goes below -70mV so it can't fire again too fast)."
+                "**Resting Membrane Potential**: -70mV. Maintained by the **Na+/K+ Pump** (3 Na+ out / 2 K+ in).",
+                "**Threshold (-55mV)**: The critical voltage required to open voltage-gated Sodium channels.",
+                "**Depolarization**: Rapid **Na+ Influx** causes the membrane potential to peak at approximately +30mV.",
+                "**Repolarization**: **K+ Efflux** restores the negative internal charge.",
+                "**Hyperpolarization**: A brief period where the potential drops below -70mV, creating the **Refractory Period**."
             ]
         },
         {
-            label: "SYNAPTIC TRANSMISSION",
-            content: "How a signal jumps from one neuron to the next.",
+            label: "IMPULSE PROPAGATION & SYNAPTIC FUNCTION",
+            content: "Signal velocity and transmission between cells depend on anatomical structures and chemical messengers.",
             details: [
-                "**Presynaptic Neuron**: Sends the signal via neurotransmitters in vesicles.",
-                "**Synaptic Cleft**: The tiny gap between neurons.",
-                "**Postsynaptic Neuron**: Receives the signal via chemical-gated receptors.",
-                "**EPSP vs IPSP**: Excitatory signals push the cell toward a fire; Inhibitory signals prevent it."
+                "**Saltatory Conduction**: The rapid 'jumping' of an impulse between **Nodes of Ranvier** in myelinated axons.",
+                "**Synaptic Transmission**: Release of neurotransmitters from the **Presynaptic Neuron** into the **Synaptic Cleft**.",
+                "**Neurotransmitters**: Bind to receptors on the **Postsynaptic** membrane to trigger EPSPs (excitatory) or IPSPs (inhibitory).",
+                "**Removal**: Neurotransmitters are removed via reuptake or enzymatic degradation (e.g., Acetylcholinesterase)."
             ]
         },
-        
-{
-    label: "THE AUTONOMIC NERVOUS SYSTEM",
-    content: "Controls involuntary functions via the Sympathetic and Parasympathetic branches.",
-    image: "img/ch12_autonomic.png", 
-    details: [
-        "**Sympathetic**: 'Fight or Flight' (dilates pupils, increases heart rate).",
-        "**Parasympathetic**: 'Rest and Digest' (constricts pupils, slows heart rate).",
-        "**Dual Innervation**: Most organs receive instructions from both branches."
-    ]
-}
-
+        {
+            label: "THE AUTONOMIC NERVOUS SYSTEM (ANS)",
+            content: "The ANS regulates homeostasis through involuntary control of smooth muscle, cardiac muscle, and glands.",
+            image: "img/ch12_autonomic.png", 
+            details: [
+                "**Sympathetic**: 'Fight or Flight'—Thoracolumbar origin; increases HR, BP, and bronchodilation.",
+                "**Parasympathetic**: 'Rest and Digest'—Craniosacral origin; stimulates digestion and lowers HR.",
+                "**Dual Innervation**: Most visceral organs receive antagonistic input from both branches to maintain balance."
+            ]
+        }
     ],
     vocab: [
-        {t: "Myelin Sheath", d: "Lipid/protein insulation that increases nerve impulse speed."},
-        {t: "Nodes of Ranvier", d: "Gaps in the myelin sheath where action potentials 'jump' (Saltatory Conduction)."},
-        {t: "Threshold", d: "The voltage (-55mV) required to trigger an action potential."},
-        {t: "Synapse", d: "The site of communication between two neurons."},
-        {t: "Grey Matter", d: "Contains neuronal cell bodies and unmyelinated axons."},
-        {t: "White Matter", d: "Contains myelinated axons; the 'highways' of the brain."},
-        {t: "Refractory Period", d: "The short time after a signal where a nerve cannot fire again."},
-        {t: "Synaptic Cleft", d: "The tiny physical gap between two neurons."},
-        {t: "Neurotransmitters", d: "Chemicals like Dopamine or Serotonin that jump the gap."},
-        {t: "Efferent Neurons", d: "Motor neurons that carry signals AWAY from the brain to muscles."}
+        {t: "Saltatory Conduction", d: "The rapid propagation of action potentials along myelinated axons."},
+        {t: "Threshold Stimulus", d: "Minimum voltage (-55mV) required to generate an action potential."},
+        {t: "Neuroglia", d: "Non-neuronal cells that maintain homeostasis and provide protection for neurons."},
+        {t: "Summation", d: "The additive effect of multiple electrical impulses on a single postsynaptic neuron."},
+        {t: "White Matter", d: "Regions of the brain and spinal cord containing dense collections of myelinated fibers."},
+        {t: "Grey Matter", d: "Regions containing mostly cell bodies and unmyelinated fibers."}
     ],
     questions: [
         {
-            q: "Which neuroglial cell is responsible for forming the Myelin Sheath in the CNS?",
-            opts: ["Schwann Cell", "Astrocyte", "Oligodendrocyte", "Microglia"],
+            q: "Which neuroglial cell is responsible for forming the Myelin Sheath in the Peripheral Nervous System (PNS)?",
+            opts: ["Oligodendrocyte", "Astrocyte", "Schwann Cell", "Ependymal Cell"],
             ans: 2,
-            exp: "Oligodendrocytes myelinating the CNS; Schwann cells do the PNS."
+            exp: "Schwann cells myelinate the PNS; Oligodendrocytes myelinate the CNS."
         },
         {
-            q: "What is the typical threshold voltage required to trigger an action potential?",
-            opts: ["-70mV", "-55mV", "+30mV", "0mV"],
+            q: "During which phase of the action potential do voltage-gated Potassium (K+) channels open?",
+            opts: ["Depolarization", "Repolarization", "Resting State", "Threshold"],
             ans: 1,
-            exp: "-55mV is the 'magic number' where voltage-gated Na+ channels pop open."
+            exp: "K+ efflux during repolarization brings the cell back toward its negative resting potential."
         }
     ]
 };
