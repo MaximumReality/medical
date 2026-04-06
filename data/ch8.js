@@ -23,15 +23,18 @@ const CH8_DATA = {
                 "**Patella**: The kneecap; a sesamoid bone that protects the knee joint."
             ]
         },
-        {
+               {
             label: "MALE VS. FEMALE PELVIS",
-            content: "The female pelvis is adapted for pregnancy and childbirth.",
+            content: "The female pelvis is adapted for pregnancy and childbirth, resulting in distinct structural differences.",
+            image: "img/ch8_pelvis.png", 
             details: [
-                "**Female Pelvis**: Wider, shallower, and has a larger pelvic inlet. The pubic arch is usually > 90°.",
-                "**Male Pelvis**: Narrower, deeper, and heavier. The pubic arch is usually < 90°.",
-                "**Clinical Note**: The 'Greater Sciatic Notch' is much wider in females to allow for a wider birth canal."
+                "**Female Pelvis**: Wider, shallower, and has a larger pelvic inlet. The pubic arch is usually greater than 90°.",
+                "**Male Pelvis**: Narrower, deeper, and heavier. The pubic arch is usually less than 90°.",
+                "**Greater Sciatic Notch**: Significantly wider in females to accommodate a wider birth canal.",
+                "**Clinical Note**: These structural differences are a primary method used in forensic anthropology to determine the biological sex of skeletal remains."
             ]
         }
+
     ],
     vocab: [
         {t: "Carpals", d: "The 8 bones of the wrist."},
