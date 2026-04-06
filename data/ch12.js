@@ -1,71 +1,69 @@
-const CH9_DATA = {
-    num: 9,
-    title: "Nervous Tissue & Physiology",
-    accentColor: "#34495e", 
+const CH12_DATA = {
+    num: 12,
+    title: "Blood",
+    accentColor: "#c0392b", // Deep Blood Red
     sections: [
         {
-            label: "NEURONAL STRUCTURE & NEUROGLIA",
-            content: "The nervous system relies on neurons for signal transmission and neuroglia for physiological support.",
+            label: "BLOOD COMPOSITION & HEMATOCRIT",
+            content: "Blood is a connective tissue consisting of formed elements suspended in a liquid plasma.",
             details: [
-                "**Neurons**: Composed of a **Cell Body (Soma)**, **Dendrites** (input), and a single **Axon** (output).",
-                "**CNS Glia**: **Astrocytes** (Blood-Brain Barrier), **Oligodendrocytes** (Myelin), **Microglia** (Phagocytosis), and **Ependymal Cells** (CSF production).",
-                "**PNS Glia**: **Schwann Cells** (Myelin) and **Satellite Cells** (Support).",
-                "**Clinical Note**: Multiple Sclerosis (MS) involves the immune-mediated destruction of CNS myelin, impairing saltatory conduction."
+                "**Plasma (55%)**: The liquid portion containing water, proteins (Albumin), and electrolytes.",
+                "**Formed Elements (45%)**: Red Blood Cells (RBCs), White Blood Cells (WBCs), and Platelets.",
+                "**Hematocrit (Hct)**: The percentage of RBCs in a blood sample; critical for diagnosing anemia or dehydration.",
+                "**Buffy Coat**: The thin layer of WBCs and platelets found between the plasma and RBCs after centrifuging."
             ]
         },
         {
-            label: "ELECTROPHYSIOLOGY: THE ACTION POTENTIAL",
-            content: "Action potentials are 'all-or-none' electrochemical events used for cellular communication.",
-            image: "img/ch12_action_potential.JPG", 
+            label: "FORMED ELEMENTS: RBCs, WBCs, & PLATELETS",
+            content: "Each cell type has a specialized clinical function.",
             details: [
-                "**Resting Membrane Potential**: -70mV. Maintained by the **Na+/K+ Pump** (3 Na+ out / 2 K+ in).",
-                "**Threshold (-55mV)**: The critical voltage required to open voltage-gated Sodium channels.",
-                "**Depolarization**: Rapid **Na+ Influx** causes the membrane potential to peak at approximately +30mV.",
-                "**Repolarization**: **K+ Efflux** restores the negative internal charge.",
-                "**Hyperpolarization**: A brief period where the potential drops below -70mV, creating the **Refractory Period**."
+                "**Erythrocytes (RBCs)**: Biconcave discs containing **Hemoglobin** for oxygen transport. They lack a nucleus to maximize space.",
+                "**Leukocytes (WBCs)**: Provide immunity. Divided into Granulocytes (Neutrophils, Eosinophils, Basophils) and Agranulocytes (Lymphocytes, Monocytes).",
+                "**Thrombocytes (Platelets)**: Cell fragments essential for blood clotting and repairing damaged vessels.",
+                "**Hematopoiesis**: The process of blood cell formation occurring in the **Red Bone Marrow**."
             ]
         },
         {
-            label: "IMPULSE PROPAGATION & SYNAPTIC FUNCTION",
-            content: "Signal velocity and transmission between cells depend on anatomical structures and chemical messengers.",
+            label: "HEMOSTASIS: THE CLOTTING PROCESS",
+            content: "The body's three-step mechanism to stop bleeding (Hemorrhage).",
             details: [
-                "**Saltatory Conduction**: The rapid 'jumping' of an impulse between **Nodes of Ranvier** in myelinated axons.",
-                "**Synaptic Transmission**: Release of neurotransmitters from the **Presynaptic Neuron** into the **Synaptic Cleft**.",
-                "**Neurotransmitters**: Bind to receptors on the **Postsynaptic** membrane to trigger EPSPs (excitatory) or IPSPs (inhibitory).",
-                "**Removal**: Neurotransmitters are removed via reuptake or enzymatic degradation (e.g., Acetylcholinesterase)."
+                "**1. Vascular Spasm**: Smooth muscle in the vessel wall contracts to reduce blood loss.",
+                "**2. Platelet Plug Formation**: Platelets adhere to exposed collagen and stick to each other.",
+                "**3. Blood Coagulation**: A complex cascade where **Fibrinogen** is converted into **Fibrin** threads to create a mesh-like clot.",
+                "**Vitamin K**: An essential cofactor for the synthesis of many clotting factors in the liver."
             ]
         },
         {
-            label: "THE AUTONOMIC NERVOUS SYSTEM (ANS)",
-            content: "The ANS regulates homeostasis through involuntary control of smooth muscle, cardiac muscle, and glands.",
-            image: "img/ch12_autonomic.png", 
+            label: "BLOOD TYPING & AGGLUTINATION",
+            content: "Blood types are determined by specific antigens on the surface of RBCs.",
             details: [
-                "**Sympathetic**: 'Fight or Flight'—Thoracolumbar origin; increases HR, BP, and bronchodilation.",
-                "**Parasympathetic**: 'Rest and Digest'—Craniosacral origin; stimulates digestion and lowers HR.",
-                "**Dual Innervation**: Most visceral organs receive antagonistic input from both branches to maintain balance."
+                "**Antigens**: Markers on the cell surface (A, B, or Rh).",
+                "**Antibodies**: Proteins in the plasma that attack foreign antigens.",
+                "**Type O-**: The **Universal Donor** because it lacks A, B, and Rh antigens.",
+                "**Type AB+**: The **Universal Recipient** because it lacks anti-A, anti-B, and anti-Rh antibodies.",
+                "**Agglutination**: The dangerous clumping of RBCs that occurs during a mismatched transfusion."
             ]
         }
     ],
     vocab: [
-        {t: "Saltatory Conduction", d: "The rapid propagation of action potentials along myelinated axons."},
-        {t: "Threshold Stimulus", d: "Minimum voltage (-55mV) required to generate an action potential."},
-        {t: "Neuroglia", d: "Non-neuronal cells that maintain homeostasis and provide protection for neurons."},
-        {t: "Summation", d: "The additive effect of multiple electrical impulses on a single postsynaptic neuron."},
-        {t: "White Matter", d: "Regions of the brain and spinal cord containing dense collections of myelinated fibers."},
-        {t: "Grey Matter", d: "Regions containing mostly cell bodies and unmyelinated fibers."}
+        {t: "Erythropoietin (EPO)", d: "A hormone from the kidneys that stimulates RBC production in response to low oxygen."},
+        {t: "Hemoglobin", d: "The iron-containing protein in RBCs that binds oxygen."},
+        {t: "Embolus", d: "A blood clot that breaks loose and travels through the bloodstream."},
+        {t: "Thrombus", d: "An abnormal blood clot that forms in a vessel."},
+        {t: "Anemia", d: "A condition characterized by a deficiency of RBCs or hemoglobin, reducing oxygen-carrying capacity."}
     ],
     questions: [
         {
-            q: "Which neuroglial cell is responsible for forming the Myelin Sheath in the Peripheral Nervous System (PNS)?",
-            opts: ["Oligodendrocyte", "Astrocyte", "Schwann Cell", "Ependymal Cell"],
-            ans: 2,
-            exp: "Schwann cells myelinate the PNS; Oligodendrocytes myelinate the CNS."
+            q: "Which blood type is considered the Universal Donor?",
+            opts: ["Type A+", "Type O-", "Type AB+", "Type B-"],
+            ans: 1,
+            exp: "Type O- lacks A, B, and Rh antigens, meaning it won't trigger an immune response in any recipient."
         },
         {
-            q: "During which phase of the action potential do voltage-gated Potassium (K+) channels open?",
-            opts: ["Depolarization", "Repolarization", "Resting State", "Threshold"],
-            ans: 1,
-            exp: "K+ efflux during repolarization brings the cell back toward its negative resting potential."
+            q: "What is the primary function of Albumin in the blood plasma?",
+            opts: ["Oxygen transport", "Blood clotting", "Maintaining osmotic pressure", "Immune defense"],
+            ans: 2,
+            exp: "Albumin is the most abundant plasma protein; it keeps water from leaking out of the capillaries."
         }
     ]
 };
