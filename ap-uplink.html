@@ -124,30 +124,46 @@
 <script src="data/ch13.js"></script>
 
 <script>
-    const CHAPTERS = [
+        const CHAPTERS = [
         CH1_DATA, CH2_DATA, CH3_DATA, CH4_DATA, CH5_DATA, 
         CH6_DATA, CH7_DATA, CH8_DATA, CH9_DATA, CH10_DATA, 
         CH11_DATA, CH12_DATA, CH13_DATA
     ];
 
-    let currentCH = null;
-
     function init() {
         const grid = document.getElementById('main-grid');
-        grid.innerHTML = CHAPTERS.map((ch, idx) => `
+        
+        // 1. Map existing data-driven chapters
+        let gridHTML = CHAPTERS.map((ch, idx) => `
             <div class="chapter-card" onclick="openChapter(${idx})">
                 <div style="font-size: 0.8rem; opacity: 0.6;">MODULE ${ch.num}</div>
                 <div style="font-weight: bold; margin: 10px 0;">${ch.title}</div>
             </div>
         `).join('');
+
+        // 2. Add the Manual "Module 14" Final Exam Card
+        gridHTML += `
+            <a href="https://maximumreality.github.io/medical/absn_final.html" style="text-decoration: none;">
+                <div class="chapter-card" style="border-color: #ff3e3e; background: rgba(255, 62, 62, 0.05);">
+                    <div style="font-size: 0.8rem; color: #ff3e3e; font-weight: bold;">MODULE 14</div>
+                    <div style="font-weight: bold; margin: 10px 0; color: #ff3e3e;">🔥 FINAL COMPREHENSIVE EXAM</div>
+                    <div style="font-size: 0.6rem; opacity: 0.7; color: #ff3e3e;">[ NEURAL EVALUATION ]</div>
+                </div>
+            </a>
+        `;
+
+        grid.innerHTML = gridHTML;
     }
 
     function openChapter(index) {
         currentCH = CHAPTERS[index];
-        document.getElementById('modal-title').innerText = currentCH.title;
+        // Ensure overlay is reset and title updated
+        document.getElementById('modal-title').innerText = `MOD ${currentCH.num}: ${currentCH.title}`;
         document.getElementById('overlay').style.display = 'flex';
         renderStudy();
     }
+    
+
 
     function renderStudy() {
     const body = document.getElementById('study-body');
