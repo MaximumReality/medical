@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A&P UPLINK | Anatomy & Physiology Study Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #04080f; --panel: #080f1a; --panel2: #0d1624;
+            --accent: #00cfff; --accent-dim: #003d4d; --accent-glow: rgba(0,207,255,0.15);
+            --gold: #ffcc00; --gold-dim: #3d3000;
+            --ok: #00e676; --alert: #ff1744; --amber: #ff9900;
+            --text: #e8f4ff; --text-dim: #4a6a8a;
+            --font-mono: 'Share Tech Mono', monospace;
+            --font-ui: 'Orbitron', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg); color: var(--text);
+            font-family: var(--font-mono); min-height: 100vh;
+            padding: 0; overflow-x: hidden;
+        }
+        body::before {
+            content:''; position:fixed; top:0; left:0; right:0; bottom:0;
+            background: radial-gradient(ellipse at 20% 0%, rgba(0,207,255,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 100%, rgba(0,100,180,0.04) 0%, transparent 60%);
+            pointer-events:none; z-index:0;
+        }
+        body::after {
+            content:''; position:fixed; top:0; left:0; width:100%; height:100%;
+            background: linear-gradient(rgba(4,8,15,0) 50%, rgba(0,0,0,0.06) 50%);
+            background-size: 100% 3px; pointer-events:none; z-index:1000;
+        }
+
+        .wrap { position:relative; z-index:1; max-width:700px; margin:0 auto; padding:16px; }
+
+        /* HEADER */
+        .header {
+            border-bottom: 1px solid var(--accent-dim);
+            padding-bottom: 14px; margin-bottom: 0;
+        }
+        .header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+        .header h1 { font-family:var(--font-ui); font-size:1.05rem; letter-spacing:4px; color:var(--accent); }
+        .header-sub { font-size:0.6rem; color:var(--text-dim); letter-spacing:1px; }
+        .header-dots { display:flex; gap:12px; font-size:0.58rem; color:var(--text-dim); margin-top:4px; flex-wrap:wrap; }
+        .dot-blue { color:var(--accent); } .dot-ok { color:var(--ok); } .dot-gold { color:var(--gold); }
+
+        /* PROGRESS BAR GLOBAL */
+        .global-progress { margin: 14px 0; }
+        .gp-label { font-size:0.6rem; color:var(--text-dim); letter-spacing:1px; display:flex; justify-content:space-between; margin-bottom:6px; }
+        .gp-label span { color:var(--accent); font-family:var(--font-ui); }
+        .gp-bar { height:3px; background:var(--accent-dim); position:relative; }
+        .gp-fill { height:100%; background:var(--accent); transition:width 0.6s ease; }
+
+        /* VIEWS */
+        .view { display:none; } .view.active { display:block; }
+
+        /* CHAPTER GRID */
+        .chapter-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+        .ch-card {
+            background:var(--panel); border:1px solid var(--accent-dim);
+            padding:14px; cursor:pointer; transition:0.25s; position:relative; overflow:hidden;
+        }
+        .ch-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--accent-dim); transition:0.25s; }
+        .ch-card:hover { border-color:var(--accent); background:var(--panel2); }
+        .ch-card:hover::before { background:var(--accent); }
+        .ch-card.complete::before { background:var(--ok); }
+        .ch-card.complete { border-color:rgba(0,230,118,0.3); }
+        .ch-num { font-family:var(--font-ui); font-size:0.55rem; color:var(--text-dim); letter-spacing:2px; margin-bottom:5px; }
+        .ch-name { font-size:0.72rem; color:var(--text); line-height:1.4; margin-bottom:8px; }
+        .ch-progress { height:2px; background:var(--accent-dim); }
+        .ch-progress-fill { height:100%; background:var(--accent); transition:width 0.4s; }
+        .ch-score { font-size:0.56rem; color:var(--text-dim); margin-top:5px; }
+        .ch-score.good { color:var(--ok); }
+
+        /* BACK BTN */
+        .back-btn { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-ui); font-size:0.58rem; letter-spacing:1.5px; color:var(--text-dim); cursor:pointer; padding:8px 0; margin-bottom:16px; transition:0.2s; border:none; background:none; }
+        .back-btn:hover { color:var(--accent); }
+
+        /* CHAPTER VIEW */
+        .ch-header { border-left:3px solid var(--accent); padding:12px 16px; background:var(--panel); margin-bottom:16px; }
+        .ch-header-num { font-size:0.58rem; color:var(--accent); letter-spacing:2px; margin-bottom:4px; font-family:var(--font-ui); }
+        .ch-header-title { font-family:var(--font-ui); font-size:1rem; color:var(--text); letter-spacing:1px; }
+
+        /* MODE TOGGLE */
+        .mode-toggle { display:flex; margin-bottom:16px; }
+        .mode-btn { flex:1; background:var(--panel); border:1px solid var(--accent-dim); color:var(--text-dim); padding:10px; font-family:var(--font-ui); font-size:0.56rem; letter-spacing:1px; cursor:pointer; transition:0.2s; text-align:center; }
+        .mode-btn.active { background:var(--accent); color:#000; border-color:var(--accent); }
+
+        /* STUDY CONTENT */
+        .study-section { background:var(--panel); border:1px solid var(--accent-dim); padding:18px; margin-bottom:12px; }
+        .study-section-title { font-family:var(--font-ui); font-size:0.65rem; letter-spacing:2px; color:var(--accent); margin-bottom:12px; }
+        .concept-list { list-style:none; }
+        .concept-list li { font-size:0.77rem; line-height:1.7; padding:6px 0; border-bottom:1px solid rgba(0,207,255,0.07); display:flex; gap:10px; }
+        .concept-list li::before { content:'◈'; color:var(--accent); flex-shrink:0; font-size:0.7rem; margin-top:2px; }
+        .concept-list li:last-child { border-bottom:none; }
+
+        .vocab-grid { display:grid; gap:8px; }
+        .vocab-item { background:var(--panel2); border-left:2px solid var(--accent-dim); padding:10px 12px; }
+        .vocab-term { font-size:0.72rem; color:var(--accent); margin-bottom:3px; font-family:var(--font-ui); font-size:0.62rem; letter-spacing:1px; }
+        .vocab-def { font-size:0.73rem; line-height:1.55; color:var(--text); opacity:0.85; }
+
+        /* QUIZ */
+        .quiz-score-bar { display:flex; justify-content:space-between; font-family:var(--font-ui); font-size:0.6rem; color:var(--text-dim); margin-bottom:14px; letter-spacing:1px; }
+        .quiz-score-bar span { color:var(--accent); }
+        .quiz-card { background:var(--panel); border:1px solid var(--accent-dim); padding:20px; margin-bottom:12px; animation:fadeUp 0.3s ease; }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+        .quiz-q { font-size:0.83rem; line-height:1.65; margin-bottom:16px; }
+        .quiz-q strong { color:var(--accent); }
+        .quiz-opts { display:flex; flex-direction:column; gap:8px; }
+        .quiz-opt { background:var(--panel2); border:1px solid var(--accent-dim); padding:12px 14px; cursor:pointer; font-size:0.76rem; text-align:left; color:var(--text); font-family:var(--font-mono); transition:0.18s; }
+        .quiz-opt:hover:not(:disabled) { border-color:var(--accent); color:var(--accent); }
+        .quiz-opt.correct { border-color:var(--ok); color:var(--ok); background:rgba(0,230,118,0.06); }
+        .quiz-opt.wrong { border-color:var(--alert); color:var(--alert); background:rgba(255,23,68,0.05); }
+        .quiz-opt:disabled { cursor:default; }
+        .quiz-feedback { font-size:0.74rem; padding:12px; margin-top:10px; line-height:1.6; border-left:3px solid var(--accent-dim); display:none; }
+        .quiz-feedback.correct { border-color:var(--ok); color:var(--ok); }
+        .quiz-feedback.wrong { border-color:var(--alert); color:var(--text); }
+        .quiz-actions { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+        .action-btn { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:9px 16px; font-family:var(--font-ui); font-size:0.57rem; letter-spacing:1.5px; cursor:pointer; transition:0.2s; }
+        .action-btn:hover { background:var(--accent); color:#000; }
+        .action-btn.secondary { border-color:var(--accent-dim); color:var(--text-dim); }
+        .action-btn.secondary:hover { border-color:var(--accent); color:var(--accent); background:transparent; }
+
+        /* CHAPTER COMPLETE BANNER */
+        .complete-banner { background:rgba(0,230,118,0.08); border:1px solid rgba(0,230,118,0.3); padding:16px; text-align:center; margin-top:12px; animation:fadeUp 0.4s ease; }
+        .complete-banner .big { font-family:var(--font-ui); font-size:1rem; color:var(--ok); margin-bottom:4px; }
+        .complete-banner .sub { font-size:0.7rem; color:var(--text-dim); }
+
+        /* RETURN */
+        .return-row { display:flex; gap:12px; align-items:center; margin-top:28px; flex-wrap:wrap; }
+        .return-btn { text-decoration:none; font-family:var(--font-ui); font-size:0.6rem; letter-spacing:1px; color:var(--accent); border:1px solid var(--accent-dim); padding:9px 18px; transition:0.2s; }
+        .return-btn:hover { border-color:var(--accent); background:var(--accent-glow); }
+        .reset-all-btn { background:transparent; border:1px solid var(--accent-dim); color:var(--text-dim); padding:9px 14px; font-family:var(--font-ui); font-size:0.56rem; letter-spacing:1px; cursor:pointer; transition:0.2s; }
+        .reset-all-btn:hover { border-color:var(--alert); color:var(--alert); }
+
+        .footnote { font-size:0.54rem; color:var(--text-dim); text-align:center; margin-top:16px; line-height:1.9; opacity:0.6; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <div class="header">
+        <div class="header-top">
+            <h1>A&P UPLINK</h1>
+            <div class="header-sub">HOLE'S ESSENTIALS · 14TH ED</div>
+        </div>
+        <div class="header-dots">
+            <span><span class="dot-blue">●</span> CHAPTERS 1–13</span>
+            <span><span class="dot-ok">●</span> NCLEX QUIZ ENGINE</span>
+            <span><span class="dot-gold">●</span> PROGRESS TRACKED</span>
+        </div>
+        <div class="global-progress">
+            <div class="gp-label"><span>OVERALL PROGRESS</span><span id="gp-pct">0%</span></div>
+            <div class="gp-bar"><div class="gp-fill" id="gp-fill" style="width:0%"></div></div>
+        </div>
+    </div>
+
+    <!-- VIEW: CHAPTER GRID -->
+    <div id="view-grid" class="view active">
+        <div class="chapter-grid" id="chapter-grid"></div>
+        <div class="return-row">
+            <a href="index.html" class="return-btn">⚕ MAIN TERMINAL</a>
+            <a href="pharma-uplink.html" class="return-btn">◈ PHARMA-UPLINK</a>
+            <button class="reset-all-btn" onclick="resetAll()">RESET ALL PROGRESS</button>
+        </div>
+        <div class="footnote">
+            BASED ON: HOLE'S ESSENTIALS OF HUMAN ANATOMY &amp; PHYSIOLOGY, 14TH EDITION · CHARLES WELSH<br>
+            FOR EDUCATIONAL USE ONLY · PROGRESS SAVED LOCALLY ON THIS DEVICE
+        </div>
+    </div>
+
+    <!-- VIEW: CHAPTER DETAIL -->
+    <div id="view-chapter" class="view">
+        <button class="back-btn" onclick="showGrid()">◂ ALL CHAPTERS</button>
+        <div class="ch-header">
+            <div class="ch-header-num" id="detail-num"></div>
+            <div class="ch-header-title" id="detail-title"></div>
+        </div>
+        <div class="mode-toggle">
+            <div class="mode-btn active" id="btn-study" onclick="setMode('study')">◈ STUDY</div>
+            <div class="mode-btn" id="btn-quiz" onclick="setMode('quiz')">◈ QUIZ</div>
+        </div>
+        <div id="study-content"></div>
+        <div id="quiz-content" style="display:none"></div>
+    </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// CHAPTER DATA — Hole's Essentials A&P 14e, Ch 1–13
+// ════════════════════════════════════════════════════════
+const CHAPTERS = [
+  {
+    num:1, title:'Introduction to Human Anatomy and Physiology',
+    concepts:[
+      'Anatomy is the study of body structure; physiology studies body function. The two are inseparable — structure determines function.',
+      'Levels of structural organization: chemical → cellular → tissue → organ → organ system → organism.',
+      'The 11 organ systems: integumentary, skeletal, muscular, nervous, endocrine, cardiovascular, lymphatic, digestive, respiratory, urinary, reproductive.',
+      'Homeostasis is the maintenance of a stable internal environment despite external changes. It is the central theme of physiology.',
+      'Negative feedback loops counteract a change and restore balance (e.g., body temperature regulation, blood glucose control). Most homeostatic mechanisms are negative feedback.',
+      'Positive feedback loops amplify a change and move away from the set point (e.g., childbirth contractions, blood clotting). These are self-amplifying and require an external stop.',
+      'Anatomical position: body erect, facing forward, arms at sides, palms forward. All directional terms are based on this position.',
+      'Directional terms: superior/inferior, anterior/posterior, medial/lateral, proximal/distal, superficial/deep.',
+      'Body planes: sagittal (left/right), frontal/coronal (front/back), transverse/horizontal (upper/lower).',
+      'Body cavities: dorsal (cranial + spinal), ventral (thoracic + abdominopelvic). The diaphragm separates thoracic from abdominopelvic.',
+      'The mediastinum is the central region of the thoracic cavity containing the heart, trachea, esophagus, and great vessels.',
+      'Serous membranes line closed body cavities: pleura (lungs), pericardium (heart), peritoneum (abdominopelvic organs).',
+    ],
+    vocab:[
+      {t:'Anatomy',d:'The scientific study of body structure and the relationships between body parts.'},
+      {t:'Physiology',d:'The study of the functions of body structures and how they work to maintain life.'},
+      {t:'Homeostasis',d:'The tendency of the body to maintain a stable, balanced internal environment despite external changes.'},
+      {t:'Negative Feedback',d:'A control mechanism where the response reduces or reverses the original stimulus, restoring the set point.'},
+      {t:'Positive Feedback',d:'A control mechanism where the response amplifies the original stimulus (e.g., uterine contractions during labor).'},
+      {t:'Sagittal Plane',d:'A vertical plane dividing the body into left and right portions; midsagittal divides it equally.'},
+      {t:'Homeostatic Mechanism',d:'A receptor, control center, and effector working together to detect and correct deviations from normal.'},
+      {t:'Mediastinum',d:'The central compartment of the thoracic cavity containing the heart, trachea, and esophagus.'},
+    ],
+    questions:[
+      {q:'Which feedback mechanism is responsible for regulating body temperature?',opts:['Positive feedback','Negative feedback','Feed-forward control','Reciprocal inhibition'],ans:1,exp:'Negative feedback counteracts the change. When body temperature rises, sweating is triggered to cool the body back to the set point.'},
+      {q:'What is the correct order of structural organization from simplest to most complex?',opts:['Organ → Tissue → Cell → Chemical','Chemical → Cell → Tissue → Organ → Organ system','Tissue → Cell → Organ → Chemical','Organ system → Organ → Chemical → Cell'],ans:1,exp:'The hierarchy from simple to complex: chemical → cellular → tissue → organ → organ system → organism.'},
+      {q:'A patient has a wound on their anterior left forearm. In anatomical position, "anterior" refers to:',opts:['The back surface','The front surface','The lateral surface','The inferior surface'],ans:1,exp:'Anterior (ventral) refers to the front of the body in anatomical position. The anterior forearm is the palm side.'},
+      {q:'Childbirth contractions intensify until delivery. This is an example of:',opts:['Negative feedback','Homeostatic balance','Positive feedback','Set point regulation'],ans:2,exp:'Positive feedback amplifies the stimulus. Contractions stimulate more oxytocin release, intensifying contractions until birth ends the cycle.'},
+      {q:'Which plane divides the body into superior and inferior sections?',opts:['Sagittal','Frontal','Transverse','Oblique'],ans:2,exp:'The transverse (horizontal) plane divides the body into superior (upper) and inferior (lower) portions.'},
+      {q:'The serous membrane surrounding the lungs is called the:',opts:['Pericardium','Peritoneum','Pleura','Meninges'],ans:2,exp:'The pleura is the double-layered serous membrane enclosing the lungs. The pericardium surrounds the heart; peritoneum lines the abdominopelvic cavity.'},
+      {q:'Which body cavity contains the brain and spinal cord?',opts:['Ventral cavity','Dorsal cavity','Thoracic cavity','Abdominopelvic cavity'],ans:1,exp:'The dorsal cavity contains the cranial cavity (brain) and vertebral/spinal cavity (spinal cord).'},
+      {q:'A structure described as "proximal" is:',opts:['Closer to the body surface','Farther from the point of origin','Closer to the point of origin or attachment','On the back of the body'],ans:2,exp:'Proximal means closer to the point of origin or attachment (e.g., the shoulder is proximal to the elbow).'},
+    ]
+  },
+  {
+    num:2, title:'Chemical Basis of Life',
+    concepts:[
+      'Matter is anything with mass and volume, made of elements. The four major elements in the body are oxygen (O), carbon (C), hydrogen (H), and nitrogen (N) — making up ~96% of body mass.',
+      'Atoms consist of protons (+), neutrons (neutral) in the nucleus, and electrons (-) in shells. Atomic number = number of protons.',
+      'Chemical bonds: ionic bonds (electron transfer, e.g., NaCl), covalent bonds (electron sharing, strongest in biology), hydrogen bonds (weak, important for water and DNA structure).',
+      'An acid releases H⁺ ions in solution (pH < 7); a base accepts H⁺ (pH > 7). pH 7 is neutral. The physiological pH of blood is 7.35–7.45.',
+      'Buffers resist changes in pH by neutralizing excess acids or bases — critical for maintaining blood pH homeostasis.',
+      'Water is the most abundant compound in the body. Properties: excellent solvent (universal solvent), high heat capacity, participates in chemical reactions, lubricant.',
+      'Organic molecules contain carbon. The four major organic molecules: carbohydrates (energy), lipids (energy storage, membranes), proteins (structure, enzymes, transport), nucleic acids (DNA, RNA — genetic information).',
+      'Carbohydrates: monosaccharides (glucose), disaccharides (sucrose), polysaccharides (glycogen — body\'s glucose storage form).',
+      'Lipids include triglycerides (energy storage), phospholipids (cell membranes — bilayer), and steroids (cholesterol, hormones like estrogen/testosterone).',
+      'Proteins are polymers of amino acids. Structure levels: primary (amino acid sequence), secondary (alpha helix, beta sheet), tertiary (3D folding), quaternary (multiple subunits). Function determined by shape.',
+      'Enzymes are biological catalysts (proteins) that speed up chemical reactions without being consumed. They lower activation energy. "Lock and key" or induced fit model.',
+      'DNA (deoxyribonucleic acid) carries genetic information in the nucleus. RNA (ribonucleic acid) carries instructions from DNA to ribosomes for protein synthesis.',
+      'ATP (adenosine triphosphate) is the cell\'s primary energy currency. Energy is released when the terminal phosphate bond is hydrolyzed.',
+    ],
+    vocab:[
+      {t:'Atom',d:'The smallest unit of an element that retains the chemical properties of that element.'},
+      {t:'Covalent Bond',d:'A chemical bond formed by the sharing of electron pairs between atoms; the strongest type of bond in biological molecules.'},
+      {t:'pH Scale',d:'A measure of hydrogen ion concentration; ranges 0–14. pH < 7 is acidic, pH 7 is neutral, pH > 7 is basic/alkaline.'},
+      {t:'Buffer',d:'A chemical system that resists changes in pH by neutralizing added acids or bases.'},
+      {t:'Enzyme',d:'A protein catalyst that speeds up chemical reactions in the body without being consumed or permanently altered.'},
+      {t:'Phospholipid',d:'A lipid molecule with a hydrophilic phosphate head and two hydrophobic fatty acid tails; the primary component of cell membranes.'},
+      {t:'ATP',d:'Adenosine triphosphate; the primary energy currency of the cell, releasing energy when its terminal phosphate bond is broken.'},
+      {t:'Nucleic Acid',d:'DNA and RNA; polymers of nucleotides that store and transmit genetic information and direct protein synthesis.'},
+    ],
+    questions:[
+      {q:'What is the pH of normal arterial blood?',opts:['6.8–7.0','7.0–7.2','7.35–7.45','7.5–7.8'],ans:2,exp:'Normal arterial blood pH is 7.35–7.45. Values below 7.35 = acidosis; above 7.45 = alkalosis. This narrow range is critical for enzyme function.'},
+      {q:'Which bond is formed when electrons are SHARED between atoms?',opts:['Ionic bond','Hydrogen bond','Covalent bond','Van der Waals bond'],ans:2,exp:'Covalent bonds involve sharing of electron pairs. They are the strongest chemical bonds found in biological molecules.'},
+      {q:'Glycogen is the storage form of glucose in the body. It is classified as a:',opts:['Monosaccharide','Disaccharide','Polysaccharide','Lipid'],ans:2,exp:'Glycogen is a polysaccharide (many sugar units linked together). It is stored primarily in the liver and skeletal muscle.'},
+      {q:'Which organic molecule makes up the bilayer of cell membranes?',opts:['Triglycerides','Steroids','Phospholipids','Glycoproteins'],ans:2,exp:'Phospholipids form the bilayer with hydrophilic heads facing outward (toward water) and hydrophobic tails facing inward.'},
+      {q:'An enzyme speeds up a reaction by:',opts:['Increasing the temperature of the reaction','Lowering the activation energy required','Adding more reactants','Changing the final products formed'],ans:1,exp:'Enzymes are catalysts that lower activation energy, making reactions proceed faster without being consumed. They do not change the products.'},
+      {q:'Which element is the backbone of ALL organic molecules?',opts:['Oxygen','Hydrogen','Nitrogen','Carbon'],ans:3,exp:'Carbon is the backbone of all organic molecules due to its ability to form 4 stable covalent bonds and create diverse molecular shapes.'},
+      {q:'A patient\'s blood pH drops to 7.25. This indicates:',opts:['Alkalosis','Normal range','Acidosis','Neutral balance'],ans:2,exp:'pH below 7.35 is acidosis. At pH 7.25, the patient has metabolic or respiratory acidosis and requires intervention.'},
+      {q:'DNA differs from RNA in that DNA:',opts:['Contains uracil instead of thymine','Is single-stranded','Contains deoxyribose sugar and is double-stranded','Is found only in the cytoplasm'],ans:2,exp:'DNA contains deoxyribose sugar, is double-stranded, and contains thymine. RNA contains ribose, is single-stranded, and contains uracil instead of thymine.'},
+    ]
+  },
+  {
+    num:3, title:'Cells',
+    concepts:[
+      'The cell is the basic structural and functional unit of life. Cell theory: all living things are made of cells; cells come from pre-existing cells.',
+      'Plasma membrane: phospholipid bilayer with embedded proteins (fluid mosaic model). Functions: selectively permeable barrier, cell communication, transport.',
+      'Membrane proteins: channel proteins (water/ion transport), carrier proteins (facilitated diffusion), receptor proteins (signal recognition), enzymes.',
+      'Passive transport requires NO energy: simple diffusion (high → low concentration), osmosis (water movement), facilitated diffusion (with carrier/channel).',
+      'Active transport requires ATP: sodium-potassium pump (Na⁺ out, K⁺ in — 3:2 ratio), endocytosis (phagocytosis, pinocytosis), exocytosis.',
+      'Osmosis: water moves from low solute (hypotonic) to high solute (hypertonic) concentration across a semipermeable membrane. Isotonic = no net movement.',
+      'RBCs in hypotonic solution → swell/lyse (hemolysis). RBCs in hypertonic solution → shrink (crenation). Isotonic (0.9% NaCl) = normal saline.',
+      'Nucleus: control center of the cell, contains DNA (chromosomes), surrounded by nuclear envelope with pores. Nucleolus makes rRNA.',
+      'Endoplasmic reticulum (ER): Rough ER has ribosomes — synthesizes proteins. Smooth ER — synthesizes lipids, detoxifies drugs.',
+      'Golgi apparatus: packages and ships proteins (the cell\'s "post office"). Modifies, sorts, and exports proteins.',
+      'Mitochondria: powerhouse of the cell — site of cellular respiration and ATP production. Has its own DNA (maternal inheritance).',
+      'Lysosomes: contain digestive enzymes to break down worn-out organelles, pathogens, and debris (cellular garbage collectors).',
+      'Cytoskeleton: microfilaments (actin — movement), intermediate filaments (stability), microtubules (structure, mitotic spindle).',
+      'Cilia: move substances along cell surface (respiratory tract). Flagella: propel sperm.',
+    ],
+    vocab:[
+      {t:'Plasma Membrane',d:'The selectively permeable phospholipid bilayer that forms the outer boundary of the cell and controls what enters and exits.'},
+      {t:'Osmosis',d:'The passive movement of water across a semipermeable membrane from an area of low solute concentration to high solute concentration.'},
+      {t:'Isotonic Solution',d:'A solution with the same solute concentration as the cell; no net movement of water occurs (e.g., 0.9% NaCl = normal saline).'},
+      {t:'Active Transport',d:'Movement of substances against their concentration gradient, requiring ATP energy (e.g., sodium-potassium pump).'},
+      {t:'Mitochondria',d:'Organelle that produces ATP through cellular respiration; called the "powerhouse of the cell." Has its own DNA.'},
+      {t:'Lysosome',d:'Organelle containing digestive enzymes that break down cellular debris, pathogens, and worn-out organelles.'},
+      {t:'Endocytosis',d:'Process by which cells engulf substances by forming vesicles from the plasma membrane (phagocytosis = solids; pinocytosis = fluids).'},
+      {t:'Sodium-Potassium Pump',d:'An active transport protein that moves 3 Na⁺ out and 2 K⁺ into the cell, using ATP. Maintains resting membrane potential.'},
+    ],
+    questions:[
+      {q:'A patient receives a hypotonic IV solution. What happens to their red blood cells?',opts:['They shrink (crenation)','They remain unchanged','They swell and may lyse (hemolysis)','They become more concentrated'],ans:2,exp:'In a hypotonic solution, water moves INTO the cell by osmosis (low solute outside → water rushes in). RBCs swell and can rupture (hemolysis).'},
+      {q:'Which organelle is responsible for packaging and shipping proteins out of the cell?',opts:['Rough ER','Mitochondria','Lysosome','Golgi apparatus'],ans:3,exp:'The Golgi apparatus modifies proteins from the rough ER and packages them into vesicles for secretion or internal use — the cell\'s "post office."'},
+      {q:'The sodium-potassium pump moves:',opts:['3 K⁺ out and 2 Na⁺ in','3 Na⁺ out and 2 K⁺ in','2 Na⁺ out and 3 K⁺ in','Equal amounts of both ions'],ans:1,exp:'The Na⁺/K⁺ ATPase pump moves 3 sodium ions OUT and 2 potassium ions IN per cycle, using 1 ATP. This maintains the cell\'s electrical potential.'},
+      {q:'Normal saline (0.9% NaCl) is given to patients because it is:',opts:['Hypertonic to blood','Hypotonic to blood','Isotonic to blood','Acidic to blood'],ans:2,exp:'0.9% NaCl is isotonic — the same concentration as blood. No net osmosis occurs, so cells neither swell nor shrink.'},
+      {q:'Which organelle contains its own DNA and is responsible for ATP production?',opts:['Nucleus','Ribosome','Golgi apparatus','Mitochondria'],ans:3,exp:'Mitochondria have their own circular DNA (maternally inherited) and produce ATP through cellular respiration. They are the "powerhouse of the cell."'},
+      {q:'Simple diffusion is considered passive transport because:',opts:['It moves substances with a carrier protein','It requires ATP energy','It moves substances from high to low concentration without energy','It only moves water molecules'],ans:2,exp:'Simple diffusion moves substances from high to low concentration (down the gradient) using no energy. It is passive — driven entirely by concentration differences.'},
+      {q:'Which cell structure regulates what enters and exits the cell?',opts:['Nucleus','Cytoskeleton','Plasma membrane','Endoplasmic reticulum'],ans:2,exp:'The plasma membrane is selectively permeable — it controls which substances can enter or exit through its proteins, channels, and lipid bilayer.'},
+      {q:'Phagocytosis is a type of:',opts:['Exocytosis','Simple diffusion','Active transport','Endocytosis'],ans:3,exp:'Phagocytosis ("cell eating") is a form of endocytosis where the cell engulfs solid particles (like bacteria) by wrapping its membrane around them.'},
+    ]
+  },
+  {
+    num:4, title:'Cellular Metabolism',
+    concepts:[
+      'Metabolism = all chemical reactions in the body. Anabolism (building up, uses energy) + Catabolism (breaking down, releases energy).',
+      'Cellular respiration: glucose + O₂ → CO₂ + H₂O + ATP. Three stages: glycolysis (cytoplasm), Krebs cycle (mitochondrial matrix), electron transport chain/ETC (inner mitochondrial membrane).',
+      'Glycolysis: 1 glucose → 2 pyruvate + 2 ATP (net). Occurs in cytoplasm. Does NOT require oxygen.',
+      'Krebs cycle (citric acid cycle): pyruvate → acetyl-CoA → enters cycle → produces CO₂, NADH, FADH₂, 2 ATP per glucose. In mitochondrial matrix.',
+      'Electron transport chain: NADH and FADH₂ donate electrons → H⁺ gradient drives ATP synthase → ~32–34 ATP produced. Requires oxygen as final electron acceptor. Produces most ATP.',
+      'Total ATP yield from aerobic respiration: approximately 36–38 ATP per glucose molecule.',
+      'Anaerobic respiration (fermentation): without oxygen, pyruvate → lactic acid (in muscle cells). Produces only 2 ATP. Causes muscle fatigue.',
+      'Enzymes control metabolism: they are specific (lock-and-key), reusable, affected by temperature and pH. Optimal pH for most enzymes = 7.4.',
+      'Oxidation: loss of electrons (releases energy). Reduction: gain of electrons. Reactions are always paired (redox reactions). NAD⁺ and FAD are key electron carriers.',
+      'Anabolic reactions include: protein synthesis, glycogenesis (glucose → glycogen), lipogenesis (fatty acids → triglycerides).',
+      'Catabolic reactions include: glycogenolysis (glycogen → glucose), lipolysis (triglycerides → fatty acids), proteolysis (protein → amino acids).',
+    ],
+    vocab:[
+      {t:'Metabolism',d:'The sum of all chemical reactions occurring in the body; includes anabolism (synthesis) and catabolism (breakdown).'},
+      {t:'Glycolysis',d:'The first stage of cellular respiration; breaks down glucose into 2 pyruvate molecules in the cytoplasm; produces 2 ATP net; does not require oxygen.'},
+      {t:'Krebs Cycle',d:'Second stage of cellular respiration occurring in the mitochondrial matrix; produces CO₂, NADH, FADH₂, and 2 ATP per glucose.'},
+      {t:'Electron Transport Chain',d:'Third stage of cellular respiration on the inner mitochondrial membrane; uses NADH and FADH₂ to produce ~32–34 ATP; requires oxygen.'},
+      {t:'ATP Synthase',d:'An enzyme that synthesizes ATP using the proton gradient created by the electron transport chain.'},
+      {t:'Anabolism',d:'Metabolic reactions that build complex molecules from simpler ones, consuming energy (e.g., protein synthesis, glycogenesis).'},
+      {t:'Catabolism',d:'Metabolic reactions that break down complex molecules, releasing energy (e.g., glycolysis, lipolysis).'},
+      {t:'Lactic Acid Fermentation',d:'Anaerobic process in muscle cells: pyruvate is converted to lactic acid, regenerating NAD⁺ so glycolysis can continue; produces only 2 ATP.'},
+    ],
+    questions:[
+      {q:'Where does glycolysis occur in the cell?',opts:['Mitochondrial matrix','Inner mitochondrial membrane','Nucleus','Cytoplasm'],ans:3,exp:'Glycolysis occurs in the cytoplasm (cytosol). It does not require mitochondria or oxygen, making it common to both aerobic and anaerobic respiration.'},
+      {q:'Which stage of cellular respiration produces the MOST ATP?',opts:['Glycolysis','Krebs cycle','Electron transport chain','Fermentation'],ans:2,exp:'The electron transport chain produces approximately 32–34 ATP per glucose — the largest yield of the three stages of aerobic respiration.'},
+      {q:'During intense exercise, muscle cells produce lactic acid because:',opts:['They have excess oxygen','They switch to anaerobic respiration','The Krebs cycle speeds up','Glycolysis stops'],ans:1,exp:'During intense exercise, oxygen delivery cannot meet demand. Cells switch to anaerobic fermentation, converting pyruvate to lactic acid to regenerate NAD⁺.'},
+      {q:'Glycogenolysis refers to:',opts:['Building glycogen from glucose','Breaking down glycogen to release glucose','Converting fat to glucose','Breaking down proteins to amino acids'],ans:1,exp:'Glycogenolysis (glycogen + lysis = splitting) is the catabolic breakdown of glycogen stores into glucose, occurring mainly in the liver when blood glucose drops.'},
+      {q:'What is the approximate total ATP yield from one glucose molecule in aerobic respiration?',opts:['2 ATP','8 ATP','18 ATP','36–38 ATP'],ans:3,exp:'Aerobic respiration of one glucose yields approximately 36–38 ATP total: 2 from glycolysis, 2 from the Krebs cycle, and 32–34 from the ETC.'},
+      {q:'NAD⁺ functions in cellular metabolism as:',opts:['An energy storage molecule','A structural protein','An electron carrier','A membrane lipid'],ans:2,exp:'NAD⁺ (nicotinamide adenine dinucleotide) is an electron carrier. When it accepts electrons it becomes NADH, which delivers them to the ETC for ATP production.'},
+      {q:'Which process converts fatty acids into triglycerides?',opts:['Lipolysis','Glycogenolysis','Lipogenesis','Proteolysis'],ans:2,exp:'Lipogenesis is the anabolic (building) process of synthesizing triglycerides from fatty acids and glycerol. Lipolysis is the reverse (breakdown).'},
+      {q:'Oxygen serves as the final electron acceptor in:',opts:['Glycolysis','Fermentation','The Krebs cycle','The electron transport chain'],ans:3,exp:'At the end of the ETC, electrons are passed to oxygen (O₂), which combines with H⁺ to form water (H₂O). Without O₂, the ETC halts.'},
+    ]
+  },
+  {
+    num:5, title:'Tissues',
+    concepts:[
+      'A tissue is a group of similar cells performing a common function. The four primary tissue types: epithelial, connective, muscle, and nervous.',
+      'Epithelial tissue: covers body surfaces, lines cavities and organs, forms glands. Characteristics: avascular (no blood vessels), cells tightly packed, sits on basement membrane, high regeneration rate.',
+      'Classification of epithelium: by layers (simple = 1 layer, stratified = multiple layers, pseudostratified = appears layered but is not) and by cell shape (squamous = flat, cuboidal = cube, columnar = tall).',
+      'Simple squamous: found in alveoli (gas exchange) and capillaries (filtration). Stratified squamous: skin, mouth, esophagus (protection from abrasion).',
+      'Connective tissue: most abundant and widely distributed tissue type. Characteristics: cells scattered in extracellular matrix (ground substance + fibers), usually vascular, many cell types.',
+      'Types of connective tissue: loose (areolar — fills spaces, adipose — fat storage), dense (tendons, ligaments), cartilage (hyaline, fibrocartilage, elastic), bone, blood.',
+      'Cartilage is avascular — heals slowly. Hyaline cartilage covers joint surfaces (articular cartilage). Fibrocartilage: intervertebral discs, pubic symphysis. Elastic: ear, epiglottis.',
+      'Muscle tissue types: skeletal (voluntary, striated, multi-nucleated), cardiac (involuntary, striated, intercalated discs, branched, single nucleus), smooth (involuntary, non-striated, single nucleus, found in hollow organs).',
+      'Nervous tissue: neurons (conduct impulses — dendrites receive, axon transmits) and neuroglia/glial cells (support and protect neurons — Schwann cells, astrocytes, microglia).',
+      'Membranes: epithelial membranes (mucous, serous, cutaneous) and connective tissue membranes (synovial — in joints).',
+      'Mucous membranes line passages open to the exterior (respiratory, digestive, urinary tracts). Serous membranes line closed body cavities (pleura, pericardium, peritoneum).',
+    ],
+    vocab:[
+      {t:'Epithelial Tissue',d:'Tissue that covers body surfaces, lines cavities, and forms glands. It is avascular and sits on a basement membrane.'},
+      {t:'Connective Tissue',d:'Most abundant tissue type; characterized by cells embedded in an extracellular matrix of ground substance and protein fibers.'},
+      {t:'Stratified Squamous',d:'Multiple layers of flat cells; found where protection from abrasion is needed (skin, oral cavity, esophagus, vagina).'},
+      {t:'Hyaline Cartilage',d:'Most common cartilage type; covers articular (joint) surfaces; also forms costal cartilages and fetal skeleton. Avascular — heals slowly.'},
+      {t:'Intercalated Discs',d:'Specialized junctions between cardiac muscle cells that allow electrical impulses to spread rapidly through the heart.'},
+      {t:'Neuron',d:'The functional unit of nervous tissue; consists of a cell body, dendrites (receive signals), and an axon (transmits signals).'},
+      {t:'Synovial Membrane',d:'A connective tissue membrane lining freely movable joints; secretes synovial fluid for lubrication.'},
+      {t:'Basement Membrane',d:'A thin, supportive layer of extracellular matrix that anchors epithelial tissue to underlying connective tissue.'},
+    ],
+    questions:[
+      {q:'Which tissue type is avascular and sits on a basement membrane?',opts:['Connective tissue','Muscle tissue','Epithelial tissue','Nervous tissue'],ans:2,exp:'Epithelial tissue is avascular (has no blood vessels) and is anchored by a basement membrane. It receives nutrients by diffusion from underlying connective tissue.'},
+      {q:'Tendons connect muscle to bone. Tendons are composed of:',opts:['Hyaline cartilage','Dense regular connective tissue','Loose areolar tissue','Fibrocartilage'],ans:1,exp:'Tendons are made of dense regular connective tissue (tightly packed collagen fibers in parallel arrangement). Ligaments (bone to bone) have the same composition.'},
+      {q:'Which type of muscle tissue is involuntary, striated, and contains intercalated discs?',opts:['Skeletal muscle','Smooth muscle','Cardiac muscle','Visceral muscle'],ans:2,exp:'Cardiac muscle is involuntary, striated, branched, and connected by intercalated discs that allow synchronized contraction throughout the heart.'},
+      {q:'Simple squamous epithelium is found in the alveoli because it:',opts:['Provides protection from abrasion','Allows rapid gas exchange due to its thinness','Secretes mucus','Absorbs nutrients'],ans:1,exp:'Simple squamous (one layer of flat cells) allows rapid diffusion of O₂ and CO₂ between alveolar air and blood. Its extreme thinness minimizes diffusion distance.'},
+      {q:'Fibrocartilage is found in the intervertebral discs because it:',opts:['Is highly vascular and heals quickly','Provides flexibility without strength','Withstands compression and absorbs shock','Allows gas exchange'],ans:2,exp:'Fibrocartilage contains dense collagen fibers that give it extreme strength and shock-absorbing ability — ideal for intervertebral discs and the pubic symphysis.'},
+      {q:'A patient with pleurisy has inflammation of the:',opts:['Synovial membrane','Mucous membrane','Serous membrane around the lungs','Cutaneous membrane'],ans:2,exp:'The pleura is the serous membrane surrounding the lungs. Pleurisy (pleuritis) is inflammation of the pleura, causing sharp chest pain with breathing.'},
+      {q:'Neuroglia (glial cells) differ from neurons in that they:',opts:['Conduct electrical impulses','Support and protect neurons but do not conduct impulses','Are only found in the brain','Form the myelin sheath exclusively'],ans:1,exp:'Neuroglia (Schwann cells, astrocytes, microglia, oligodendrocytes) support, protect, and nourish neurons but do not generate or conduct action potentials.'},
+      {q:'Which membrane lines freely movable joints and secretes lubricating fluid?',opts:['Pleura','Mucous membrane','Peritoneum','Synovial membrane'],ans:3,exp:'Synovial membranes line joint cavities and secrete synovial fluid, which lubricates and nourishes articular cartilage. They are connective tissue membranes (not epithelial).'},
+    ]
+  },
+  {
+    num:6, title:'Integumentary System',
+    concepts:[
+      'The skin is the largest organ of the body. Functions: protection (physical barrier against pathogens, UV, chemicals), temperature regulation, sensation, vitamin D synthesis, excretion.',
+      'Skin layers: epidermis (superficial, epithelial, avascular) and dermis (deep, connective tissue, vascular). Hypodermis (subcutaneous layer) is deep to the skin — NOT part of the skin.',
+      'Epidermis layers (deep to superficial): Stratum Basale (deepest, mitosis occurs here), Stratum Spinosum, Stratum Granulosum, Stratum Lucidum (only in thick skin), Stratum Corneum (outermost — dead, keratinized cells).',
+      'Melanocytes in the stratum basale produce melanin (brown/black pigment). Melanin protects DNA from UV radiation. Skin color determined by amount and type of melanin, not melanocyte number.',
+      'The dermis contains: collagen and elastic fibers, blood vessels, nerve endings (touch receptors — Meissner\'s and Pacinian corpuscles), sweat glands, sebaceous glands, hair follicles.',
+      'Eccrine sweat glands: most numerous, found all over body, secrete watery sweat for thermoregulation. Apocrine sweat glands: in axillary/groin areas, active at puberty, associated with emotional stress.',
+      'Sebaceous (oil) glands: attached to hair follicles, secrete sebum (oil) that lubricates skin and hair, has antibacterial properties. Blocked sebaceous glands → acne.',
+      'Hair: dead, keratinized cells. Hair follicle produces hair. Arrector pili muscle: smooth muscle attached to follicle — "goosebumps." Hair provides some protection and sensation.',
+      'Nails: hard keratin protecting distal phalanges. Nail matrix (under proximal end) = active growth area.',
+      'Burns classified by depth: superficial (1st degree) — epidermis only, red, painful; partial thickness (2nd degree) — epidermis + part of dermis, blisters; full thickness (3rd degree) — all layers, no pain (nerves destroyed), requires grafting.',
+      'Rule of Nines: used to estimate body surface area of burns. Head/neck = 9%, each arm = 9%, each leg = 18%, anterior trunk = 18%, posterior trunk = 18%, perineum = 1%.',
+      'Skin color changes as clinical signs: cyanosis (blue — low O₂), jaundice (yellow — excess bilirubin), erythema (red — increased blood flow), pallor (pale — anemia/shock).',
+    ],
+    vocab:[
+      {t:'Epidermis',d:'The superficial avascular layer of the skin composed of stratified squamous epithelium; renewed every 25–45 days from the stratum basale.'},
+      {t:'Stratum Basale',d:'The deepest layer of the epidermis where cell division (mitosis) occurs; contains melanocytes that produce melanin.'},
+      {t:'Stratum Corneum',d:'The outermost layer of the epidermis; composed of dead, flattened, keratinized cells that form a protective, waterproof barrier.'},
+      {t:'Melanin',d:'A brown-black pigment produced by melanocytes in the stratum basale that protects DNA from UV radiation damage.'},
+      {t:'Sebaceous Gland',d:'An oil gland in the dermis associated with a hair follicle; produces sebum to lubricate and protect skin and hair.'},
+      {t:'Eccrine Sweat Gland',d:'The most numerous sweat gland; distributed over the entire body surface; secretes watery sweat primarily for thermoregulation.'},
+      {t:'Rule of Nines',d:'A method to estimate the percentage of body surface area burned; divides the body into regions each representing 9% or multiples thereof.'},
+      {t:'Cyanosis',d:'Bluish discoloration of skin and mucous membranes due to inadequate oxygenation of hemoglobin; a sign of hypoxia.'},
+    ],
+    questions:[
+      {q:'A patient has a burn with blisters, involving the epidermis and part of the dermis. This is classified as:',opts:['Superficial (1st degree)','Partial thickness (2nd degree)','Full thickness (3rd degree)','4th degree'],ans:1,exp:'Partial thickness (2nd degree) burns involve the epidermis and part of the dermis. They are characterized by blisters, pain, and a wet appearance.'},
+      {q:'Which layer of the epidermis is responsible for cell division and skin renewal?',opts:['Stratum corneum','Stratum granulosum','Stratum basale','Stratum lucidum'],ans:2,exp:'The stratum basale (basal layer) is where mitosis occurs. New cells push older cells upward and they eventually become the dead, keratinized stratum corneum.'},
+      {q:'Using the Rule of Nines, a patient with burns to both arms has what percentage of BSA burned?',opts:['9%','18%','27%','36%'],ans:1,exp:'Each arm = 9%. Two arms = 18% BSA. The Rule of Nines: head/neck = 9%, each arm = 9%, each leg = 18%, anterior trunk = 18%, posterior trunk = 18%.'},
+      {q:'A 3rd degree (full thickness) burn patient reports no pain at the burn site. This is because:',opts:['They have a high pain threshold','Nerve endings in the skin are destroyed','The epidermis is intact','Endorphins are released'],ans:1,exp:'Full thickness burns destroy all skin layers including nerve endings, resulting in no pain at the burn site. Surrounding partial-thickness areas may still be painful.'},
+      {q:'Cyanosis of the skin indicates:',opts:['Excess bilirubin in the blood','Decreased oxygen saturation of hemoglobin','Increased blood flow to the area','Anemia'],ans:1,exp:'Cyanosis (blue discoloration) occurs when hemoglobin is poorly oxygenated. SpO₂ usually < 85% before cyanosis is visible. It is a sign of hypoxia.'},
+      {q:'Sebum produced by sebaceous glands functions to:',opts:['Regulate body temperature through evaporation','Lubricate skin and hair and inhibit bacterial growth','Produce vitamin D from UV light','Detect pressure and touch'],ans:1,exp:'Sebum is an oily secretion that lubricates the skin and hair, prevents drying, and has mild antibacterial/antifungal properties.'},
+      {q:'Melanin is produced by melanocytes located in the:',opts:['Stratum corneum','Dermis','Stratum basale','Hypodermis'],ans:2,exp:'Melanocytes are located in the stratum basale (deepest epidermal layer). They produce melanin and transfer it to keratinocytes via melanosomes.'},
+      {q:'Which sweat gland is responsible for thermoregulation and is distributed over the entire body?',opts:['Apocrine gland','Sebaceous gland','Eccrine gland','Ceruminous gland'],ans:2,exp:'Eccrine (merocrine) sweat glands are widely distributed and produce watery sweat. Evaporation of sweat from the skin surface is the primary thermoregulatory mechanism.'},
+    ]
+  },
+  {
+    num:7, title:'Skeletal System',
+    concepts:[
+      'Functions of the skeletal system: support, protection of organs, movement (leverage for muscles), blood cell production (hematopoiesis in red bone marrow), mineral storage (calcium and phosphorus).',
+      'Bone tissue types: compact bone (dense outer layer, osteons/Haversian systems) and spongy/cancellous bone (inner, trabeculae, contains red bone marrow).',
+      'Bone cells: osteoblasts (build/deposit bone), osteoclasts (break down/resorb bone), osteocytes (mature bone cells in lacunae, maintain bone matrix).',
+      'Long bone anatomy: diaphysis (shaft — compact bone), epiphysis (ends — spongy bone), medullary cavity (yellow marrow — fat storage in adults), periosteum (outer covering), endosteum (inner lining), articular cartilage (hyaline, covers joint surfaces).',
+      'Hematopoiesis (blood cell production) occurs in red bone marrow — found in flat bones (skull, sternum, ribs, ileum) and ends of long bones in adults.',
+      'Bone remodeling: continuous process of osteoblast deposition and osteoclast resorption. Regulated by hormones (parathyroid hormone raises Ca²⁺; calcitonin lowers Ca²⁺) and mechanical stress (Wolff\'s law).',
+      'Fracture types: closed (simple — skin intact), open (compound — bone breaks skin), greenstick (incomplete — children), comminuted (shattered fragments), stress (repeated forces), Colles (wrist), Pott\'s (ankle).',
+      'Bone healing stages: hematoma formation → fibrocartilaginous callus → bony callus → remodeling. Takes weeks to months.',
+      'The axial skeleton (80 bones): skull (22), vertebral column (26), thoracic cage (ribs + sternum). The appendicular skeleton (126 bones): shoulder girdle, upper limbs, pelvic girdle, lower limbs.',
+      'Vertebral column regions: 7 cervical (C1-7, lordosis), 12 thoracic (T1-12, kyphosis), 5 lumbar (L1-5, lordosis), 1 sacrum, 1 coccyx.',
+      'Joint classifications: synarthrosis (immovable — sutures of skull), amphiarthrosis (slightly movable — intervertebral discs), diarthrosis/synovial (freely movable — knee, hip, shoulder).',
+      'Synovial joint components: articular cartilage, joint cavity with synovial fluid, synovial membrane, joint capsule, ligaments.',
+      'Types of synovial joints: hinge (elbow, knee), ball-and-socket (hip, shoulder — widest ROM), pivot (atlas-axis, C1-C2 — rotation), saddle (thumb), gliding (carpals), condyloid (wrist).',
+      'Osteoporosis: decreased bone density due to osteoclast activity exceeding osteoblast activity. Risk factors: postmenopausal women (estrogen loss), aging, low calcium/vitamin D. Risk of fractures.',
+    ],
+    vocab:[
+      {t:'Osteoblast',d:'Bone-forming cell that synthesizes and deposits bone matrix (collagen and minerals). Becomes an osteocyte when surrounded by matrix.'},
+      {t:'Osteoclast',d:'Large multinucleated cell that breaks down (resorbs) bone matrix, releasing calcium and phosphate into the blood.'},
+      {t:'Hematopoiesis',d:'The production of blood cells, occurring in the red bone marrow of flat bones and epiphyses of long bones.'},
+      {t:'Periosteum',d:'A dense fibrous membrane covering the outer surface of bone (except articular cartilage); contains osteoblasts, nerve fibers, and blood vessels.'},
+      {t:'Diarthrosis',d:'A freely movable synovial joint (e.g., knee, hip, shoulder); characterized by a joint cavity, articular cartilage, and synovial fluid.'},
+      {t:'Wolff\'s Law',d:'Bone remodels in response to mechanical stress; bone is deposited where stress is applied and resorbed where stress is absent.'},
+      {t:'Osteoporosis',d:'A metabolic bone disease characterized by decreased bone density and increased fracture risk; most common in postmenopausal women.'},
+      {t:'Epiphyseal Plate',d:'The cartilaginous growth plate at each end of a long bone in children; site of longitudinal bone growth; closes (ossifies) in adulthood.'},
+    ],
+    questions:[
+      {q:'A patient has decreased bone density on DEXA scan. Which cells are most likely overactive?',opts:['Osteoblasts','Osteocytes','Osteoclasts','Chondrocytes'],ans:2,exp:'Osteoclasts break down bone matrix. In osteoporosis, osteoclast activity exceeds osteoblast (bone-building) activity, resulting in decreased bone density.'},
+      {q:'Hematopoiesis (blood cell formation) primarily occurs in the:',opts:['Yellow bone marrow','Periosteum','Articular cartilage','Red bone marrow'],ans:3,exp:'Red bone marrow in flat bones (sternum, pelvis, ribs) and epiphyses of long bones is the site of hematopoiesis (formation of all blood cells).'},
+      {q:'A child falls and sustains an incomplete fracture on one side of the bone. This is called a:',opts:['Comminuted fracture','Stress fracture','Greenstick fracture','Colles fracture'],ans:2,exp:'Greenstick fractures are incomplete breaks where one side of the bone breaks and the other bends — like breaking a green stick. Common in children due to more flexible bones.'},
+      {q:'The knee joint is classified as which type of synovial joint?',opts:['Ball-and-socket','Pivot','Saddle','Hinge'],ans:3,exp:'The knee is a hinge joint, allowing flexion and extension. Ball-and-socket joints (hip, shoulder) have the widest range of motion.'},
+      {q:'Calcitonin (from the thyroid) affects bone by:',opts:['Stimulating osteoclasts to release calcium','Inhibiting osteoclasts to lower blood calcium','Activating osteoblasts to break down bone','Increasing calcium absorption from the gut'],ans:1,exp:'Calcitonin inhibits osteoclast activity, reducing bone resorption and lowering blood calcium levels. Parathyroid hormone (PTH) has the opposite effect.'},
+      {q:'Which part of a long bone is responsible for longitudinal growth in children?',opts:['Periosteum','Articular cartilage','Medullary cavity','Epiphyseal plate (growth plate)'],ans:3,exp:'The epiphyseal (growth) plate is a cartilaginous disc at each epiphysis that allows bones to lengthen. It ossifies at puberty when growth hormone levels decline.'},
+      {q:'The vertebral column has how many cervical vertebrae?',opts:['5','7','12','4'],ans:1,exp:'There are 7 cervical vertebrae (C1-C7). Mnemonic: you can move your head 7 days a week (like breakfast options — 7). 12 thoracic, 5 lumbar, 1 sacrum, 1 coccyx.'},
+      {q:'A patient tears a ligament in their knee. Ligaments connect:',opts:['Muscle to bone','Bone to bone','Muscle to muscle','Cartilage to muscle'],ans:1,exp:'Ligaments connect bone to bone, stabilizing joints. Tendons connect muscle to bone. Both are composed of dense regular connective tissue.'},
+    ]
+  },
+  {
+    num:8, title:'Muscular System',
+    concepts:[
+      'Properties of muscle tissue: excitability (responds to stimuli), contractility (shortens), extensibility (stretches), elasticity (returns to resting length).',
+      'Skeletal muscle structure: muscle → fascicles (bundles of fibers) → muscle fibers (cells) → myofibrils → sarcomeres (functional units).',
+      'Sarcomere: unit between two Z-lines. Contains: thick filaments (myosin — dark A band), thin filaments (actin — light I band), Z-lines (borders), H zone (myosin only), M line (center).',
+      'Sliding filament theory: during contraction, actin slides over myosin (filaments don\'t shorten, overlap increases). Sarcomere shortens → muscle shortens.',
+      'Neuromuscular junction (NMJ): synapse between motor neuron and muscle fiber. ACh (acetylcholine) released → binds nicotinic receptors → action potential → muscle contraction.',
+      'Steps of contraction: action potential → T-tubules → SR releases Ca²⁺ → Ca²⁺ binds troponin → tropomyosin moves → myosin binding sites on actin exposed → cross-bridge cycle → contraction.',
+      'ATP is required for: power stroke (myosin head movement), detachment (myosin releases actin), and calcium pumping back into SR (relaxation).',
+      'Motor unit: one motor neuron + all muscle fibers it innervates. Small motor units (eye muscles) = fine control. Large motor units (quadriceps) = powerful, less precise.',
+      'Muscle twitch: single contraction-relaxation cycle from one stimulus. Summation: repeated stimuli → stronger contraction. Tetanus: sustained, complete contraction from rapid stimulation.',
+      'Muscle tone: sustained partial contraction of muscles at rest — maintains posture, keeps muscles ready. Maintained by alternating motor unit activation.',
+      'Types of contractions: isotonic (muscle changes length — concentric shortens, eccentric lengthens) and isometric (muscle generates tension without changing length — holding position).',
+      'Oxygen debt (excess post-exercise oxygen consumption/EPOC): extra O₂ needed after exercise to restore muscle to pre-exercise state (replenish ATP, PCr, remove lactic acid).',
+      'Muscle fatigue: inability to maintain force due to: lactic acid buildup, ATP depletion, neurotransmitter depletion, ion imbalances.',
+      'Major muscle groups: deltoid (shoulder abduction), biceps brachii (forearm flexion), triceps brachii (forearm extension), quadriceps (knee extension), hamstrings (knee flexion), gastrocnemius/soleus (plantarflexion).',
+    ],
+    vocab:[
+      {t:'Sarcomere',d:'The functional contractile unit of a myofibril, extending from one Z-line to the next; contains overlapping actin and myosin filaments.'},
+      {t:'Sliding Filament Theory',d:'The mechanism of muscle contraction in which actin (thin) filaments slide over myosin (thick) filaments, shortening the sarcomere without changing filament length.'},
+      {t:'Neuromuscular Junction',d:'The synapse between a motor neuron and a skeletal muscle fiber; acetylcholine (ACh) is released to trigger muscle contraction.'},
+      {t:'Motor Unit',d:'A single motor neuron and all the muscle fibers it innervates; the basic functional unit of muscle control.'},
+      {t:'Tetanus',d:'A sustained, maximal muscle contraction resulting from high-frequency stimulation that prevents relaxation between stimuli.'},
+      {t:'Acetylcholine (ACh)',d:'The neurotransmitter released at the neuromuscular junction that binds nicotinic receptors on the motor end plate, triggering an action potential.'},
+      {t:'Isometric Contraction',d:'A muscle contraction in which tension increases but muscle length does not change (e.g., holding a position against gravity).'},
+      {t:'Isotonic Contraction',d:'A muscle contraction in which the muscle changes length while maintaining relatively constant tension; includes concentric (shortening) and eccentric (lengthening).'},
+    ],
+    questions:[
+      {q:'During muscle contraction, calcium ions bind to which protein to expose myosin binding sites on actin?',opts:['Myosin','Tropomyosin','Troponin','Titin'],ans:2,exp:'Calcium (released from the SR) binds to troponin, causing tropomyosin to shift and expose the myosin-binding sites on actin, allowing cross-bridge formation.'},
+      {q:'A patient performs a plank exercise holding still. The abdominal muscles are performing:',opts:['Concentric isotonic contraction','Eccentric isotonic contraction','Isometric contraction','Tetanic twitch'],ans:2,exp:'Isometric contraction: the muscle generates force (tension) but does not change length. Holding a static position against gravity (e.g., plank, wall sit) is isometric.'},
+      {q:'The functional unit of a muscle fiber (between two Z-lines) is called the:',opts:['Myofibril','Fascicle','Sarcomere','Motor unit'],ans:2,exp:'The sarcomere is the functional contractile unit, running from Z-line to Z-line. When sarcomeres shorten, the entire muscle shortens via the sliding filament mechanism.'},
+      {q:'Acetylcholine is released at the neuromuscular junction and binds to:',opts:['Voltage-gated Na⁺ channels','Nicotinic receptors on the motor end plate','Calcium channels in the SR','Myosin heads directly'],ans:1,exp:'ACh binds to nicotinic (cholinergic) receptors on the motor end plate, causing Na⁺ influx → depolarization → action potential → muscle contraction.'},
+      {q:'Which type of muscle contraction produces movement (like lifting a weight)?',opts:['Isometric','Isotonic','Tetanic','Twitch'],ans:1,exp:'Isotonic contractions change muscle length. Concentric isotonic = muscle shortens (lifting). Eccentric = muscle lengthens under load (lowering). Isometric = no length change.'},
+      {q:'Oxygen debt after exercise is needed to:',opts:['Store extra glycogen','Replenish ATP and PCr stores and convert lactic acid','Increase muscle fiber size','Cool down body temperature only'],ans:1,exp:'EPOC (excess post-exercise oxygen consumption) replenishes phosphocreatine stores, converts lactic acid to glucose or CO₂, restores O₂ in myoglobin, and covers the cost of elevated metabolism.'},
+      {q:'Fine motor control (like writing) requires:',opts:['Large motor units with many fibers','Small motor units with few fibers','Maximum tetanic stimulation','Type II fast-twitch fibers only'],ans:1,exp:'Small motor units (one neuron innervating few fibers) allow precise, fine control (eye muscles, finger muscles). Large motor units produce power but less precision.'},
+      {q:'The H zone of a sarcomere contains:',opts:['Actin only','Both actin and myosin','Myosin only, no actin overlap','Z-lines only'],ans:2,exp:'The H zone is the central region of the A band containing only myosin thick filaments (no overlapping actin). During contraction, the H zone narrows as actin slides inward.'},
+    ]
+  },
+  {
+    num:9, title:'Nervous System',
+    concepts:[
+      'The nervous system has two structural divisions: CNS (brain + spinal cord) and PNS (all nerves outside the CNS). Functional divisions: somatic (voluntary) and autonomic (involuntary — sympathetic + parasympathetic).',
+      'Neurons: cell body (soma), dendrites (receive signals), axon (transmits signals to next cell). Classified by function: sensory/afferent (toward CNS), motor/efferent (away from CNS), interneurons (within CNS).',
+      'Glial cells (neuroglia): Astrocytes (blood-brain barrier, support), Oligodendrocytes (myelin in CNS), Schwann cells (myelin in PNS), Microglia (immune), Ependymal cells (CSF production).',
+      'Resting membrane potential: -70 mV inside relative to outside. Maintained by Na⁺/K⁺ pump (3 Na⁺ out, 2 K⁺ in) and selective permeability.',
+      'Action potential steps: depolarization (Na⁺ rushes in, membrane becomes +), repolarization (K⁺ rushes out, returns to -), hyperpolarization (brief overshoot below -70), refractory period (cannot fire again briefly).',
+      'All-or-none principle: a neuron either fires completely (threshold reached, usually -55 mV) or not at all. Stimulus intensity coded by frequency of action potentials, not size.',
+      'Myelin sheath speeds up nerve conduction by saltatory conduction (action potential jumps between Nodes of Ranvier). Myelinated fibers = faster conduction. Multiple sclerosis = demyelination.',
+      'Synapse: chemical junction between neurons. Presynaptic neuron releases neurotransmitter → diffuses across synaptic cleft → binds postsynaptic receptors → EPSP (excitatory) or IPSP (inhibitory).',
+      'Major neurotransmitters: ACh (NMJ, parasympathetic), norepinephrine (sympathetic, SNS), dopamine (reward, movement), serotonin (mood), GABA (inhibitory — most common CNS inhibitor), glutamate (excitatory — most common CNS excitatory).',
+      'Reflex arc: sensory receptor → afferent neuron → integration center (spinal cord) → efferent neuron → effector. Reflexes bypass conscious control.',
+      'Brain regions: cerebrum (conscious thought, voluntary movement, sensation), cerebellum (coordination, balance, fine motor), brainstem (vital functions: breathing, HR, BP — medulla oblongata), thalamus (relay station for sensory info), hypothalamus (homeostasis, hunger, thirst, temperature, links nervous and endocrine systems).',
+      'Autonomic nervous system: sympathetic (fight-or-flight — increases HR, dilates pupils, inhibits digestion) vs. parasympathetic (rest-and-digest — decreases HR, constricts pupils, stimulates digestion).',
+      'Spinal cord: 31 pairs of spinal nerves. Ascending tracts carry sensory info to brain. Descending tracts carry motor commands from brain to body.',
+    ],
+    vocab:[
+      {t:'Action Potential',d:'A brief electrical impulse generated when a neuron\'s membrane potential rapidly depolarizes and repolarizes; follows the all-or-none principle.'},
+      {t:'Myelin Sheath',d:'An insulating lipid layer formed by Schwann cells (PNS) or oligodendrocytes (CNS) that speeds nerve impulse conduction via saltatory conduction.'},
+      {t:'Synapse',d:'The junction between two neurons or a neuron and effector cell; neurotransmitters are released from the presynaptic terminal into the synaptic cleft.'},
+      {t:'Reflex Arc',d:'The neural pathway for a reflex: receptor → afferent neuron → integration center (spinal cord) → efferent neuron → effector.'},
+      {t:'Hypothalamus',d:'Brain structure that maintains homeostasis by regulating temperature, hunger, thirst, sleep, and the endocrine system via the pituitary gland.'},
+      {t:'Sympathetic NS',d:'"Fight-or-flight" division of the ANS; increases HR, dilates airways, redirects blood to muscles, inhibits digestion. Uses norepinephrine.'},
+      {t:'GABA',d:'Gamma-aminobutyric acid; the primary inhibitory neurotransmitter in the CNS; reduces neuronal excitability. Target of benzodiazepines and barbiturates.'},
+      {t:'Blood-Brain Barrier',d:'A selective permeability barrier formed by astrocytes and tight junctions in CNS capillaries; protects the brain from pathogens and most toxins.'},
+    ],
+    questions:[
+      {q:'During the action potential, the rapid influx of which ion causes depolarization?',opts:['K⁺','Ca²⁺','Cl⁻','Na⁺'],ans:3,exp:'Depolarization occurs when voltage-gated Na⁺ channels open and sodium rushes INTO the cell, making the inside more positive (from -70 to approximately +30 mV).'},
+      {q:'A patient with multiple sclerosis has slowed nerve conduction. MS destroys the:',opts:['Synaptic vesicles','Axon terminals','Myelin sheath','Dendrites'],ans:2,exp:'MS is an autoimmune disease that destroys the myelin sheath (oligodendrocytes in CNS). Loss of myelin slows or blocks saltatory conduction of action potentials.'},
+      {q:'The "fight-or-flight" response is controlled by which division of the ANS?',opts:['Parasympathetic','Somatic','Sympathetic','Enteric'],ans:2,exp:'The sympathetic nervous system mediates fight-or-flight: increases HR, dilates pupils, redirects blood to muscles, inhibits digestion. Uses norepinephrine (adrenergic).'},
+      {q:'Which brain region is responsible for coordinating balance and smooth voluntary movement?',opts:['Cerebrum','Hypothalamus','Cerebellum','Medulla oblongata'],ans:2,exp:'The cerebellum coordinates voluntary movements, maintains balance and posture, and ensures smooth motor activity. Damage causes ataxia (uncoordinated movement).'},
+      {q:'A reflex arc differs from voluntary movement because it:',opts:['Requires conscious brain processing','Bypasses the spinal cord','Occurs without conscious control — integrated in the spinal cord','Only involves motor neurons'],ans:2,exp:'Reflexes are integrated in the spinal cord (or brainstem), bypassing conscious cerebral processing. This makes them rapid protective responses.'},
+      {q:'GABA is classified as an inhibitory neurotransmitter because it:',opts:['Depolarizes the postsynaptic membrane','Hyperpolarizes the postsynaptic membrane, reducing firing','Blocks the reuptake of norepinephrine','Stimulates the sympathetic nervous system'],ans:1,exp:'GABA causes Cl⁻ influx → hyperpolarization (membrane becomes more negative) → IPSP → harder to reach threshold → inhibits neuron firing. Benzodiazepines enhance GABA.'},
+      {q:'Sensory neurons are classified as:',opts:['Efferent — carry signals away from the CNS','Interneurons — connect neurons within the CNS','Afferent — carry signals toward the CNS','Motor neurons — stimulate muscle contraction'],ans:2,exp:'Afferent (sensory) neurons carry impulses FROM receptors TOWARD the CNS. Efferent (motor) neurons carry impulses FROM the CNS to effectors (muscles/glands).'},
+      {q:'Which structure maintains the blood-brain barrier?',opts:['Microglia','Schwann cells','Ependymal cells','Astrocytes'],ans:3,exp:'Astrocyte foot processes surround CNS capillaries and induce tight junctions between endothelial cells, forming the blood-brain barrier (BBB).'},
+    ]
+  },
+  {
+    num:10, title:'The Senses',
+    concepts:[
+      'Sensory receptors detect stimuli and convert them to nerve impulses (transduction). Types by stimulus: mechanoreceptors (touch, pressure, hearing, balance), thermoreceptors (temperature), photoreceptors (light), chemoreceptors (taste, smell), nociceptors (pain).',
+      'General senses: touch (Meissner\'s corpuscles — light touch; Pacinian — deep pressure/vibration), temperature, pain, proprioception (body position).',
+      'Special senses: vision, hearing, equilibrium, taste (gustation), smell (olfaction).',
+      'The eye: sclera (white, protection), cornea (transparent, refracts light), choroid (vascular, pigmented), iris (colored, controls pupil size), lens (focuses light — accommodation), retina (photoreceptors), fovea centralis (sharpest vision — densely packed cones), optic disc (blind spot — no photoreceptors, where optic nerve exits).',
+      'Photoreceptors: Rods (dim light, peripheral, black/white, night vision — one type of photopigment rhodopsin) and Cones (bright light, color vision, central/fovea — 3 types for red, green, blue).',
+      'Visual pathway: retina → optic nerve → optic chiasm (nasal fibers cross) → optic tract → thalamus (lateral geniculate) → primary visual cortex (occipital lobe).',
+      'Accommodation: the ability of the lens to change shape (ciliary muscles contract → lens rounds/thickens) to focus on near objects. Decreases with age (presbyopia).',
+      'Vision defects: myopia (nearsighted — eyeball too long, corrected with concave/diverging lens), hyperopia (farsighted — eyeball too short, convex/converging lens), astigmatism (irregular cornea curvature), glaucoma (increased intraocular pressure damages optic nerve).',
+      'The ear: outer ear (pinna + auditory canal → tympanic membrane), middle ear (ossicles: malleus → incus → stapes → oval window), inner ear (cochlea for hearing, vestibular apparatus for balance — semicircular canals, utricle, saccule).',
+      'Hearing: sound waves → tympanic membrane vibrates → ossicles amplify → oval window → fluid waves in cochlea → hair cells (organ of Corti) bend → nerve impulses → auditory nerve → temporal lobe.',
+      'Equilibrium: semicircular canals detect rotational acceleration (dynamic). Utricle/saccule (maculae with otoliths) detect linear acceleration and head position relative to gravity (static).',
+      'Taste (gustation): 5 primary tastes: sweet, sour, salty, bitter, umami. Taste receptors in taste buds on tongue papillae → facial and glossopharyngeal nerves → gustatory cortex.',
+      'Smell (olfaction): olfactory receptors in nasal epithelium → olfactory nerve (CN I) → olfactory bulb → olfactory cortex (directly to limbic system — strongest link to memory/emotion of all senses).',
+    ],
+    vocab:[
+      {t:'Transduction',d:'The process by which sensory receptors convert a stimulus (mechanical, chemical, light, temperature) into an electrical nerve impulse.'},
+      {t:'Rods',d:'Photoreceptors in the peripheral retina sensitive to dim light; responsible for night/peripheral vision and detecting movement; contain rhodopsin.'},
+      {t:'Cones',d:'Photoreceptors concentrated in the fovea centralis; responsible for color vision and visual acuity; require bright light; three types (R, G, B).'},
+      {t:'Accommodation',d:'The ability of the eye to focus on near objects by contracting ciliary muscles, which allows the lens to round (increase curvature/refractive power).'},
+      {t:'Ossicles',d:'The three smallest bones in the body (malleus, incus, stapes) in the middle ear that amplify and transmit sound vibrations from the tympanic membrane to the oval window.'},
+      {t:'Organ of Corti',d:'The hearing organ within the cochlea containing hair cells that convert fluid vibrations into electrical nerve impulses sent to the temporal lobe via CN VIII.'},
+      {t:'Glaucoma',d:'A condition of increased intraocular pressure that damages the optic nerve, leading to progressive peripheral vision loss if untreated.'},
+      {t:'Myopia',d:'Nearsightedness; the eyeball is too long so light focuses in front of the retina; corrected with concave (diverging) lenses.'},
+    ],
+    questions:[
+      {q:'A patient is diagnosed with glaucoma. The primary concern is damage to the:',opts:['Lens','Cornea','Retina (photoreceptors)','Optic nerve'],ans:3,exp:'Glaucoma involves increased intraocular pressure that compresses and damages the optic nerve. It causes progressive peripheral vision loss and is a leading cause of blindness.'},
+      {q:'Which photoreceptors are responsible for color vision and are concentrated in the fovea?',opts:['Rods','Bipolar cells','Cones','Ganglion cells'],ans:2,exp:'Cones are concentrated in the fovea centralis and are responsible for color vision and visual acuity. Three cone types detect red, green, and blue wavelengths.'},
+      {q:'Sound is transduced into nerve impulses by hair cells in the:',opts:['Tympanic membrane','Semicircular canals','Organ of Corti','Ossicles'],ans:2,exp:'The Organ of Corti (within the cochlea) contains hair cells that bend in response to fluid waves, converting mechanical energy to electrical nerve impulses (transduction).'},
+      {q:'The semicircular canals of the inner ear detect:',opts:['Linear acceleration and gravity','Sound vibration frequency','Rotational (angular) acceleration','Air pressure changes'],ans:2,exp:'The three semicircular canals detect rotational (angular) acceleration in three planes. The utricle and saccule detect linear acceleration and gravitational pull.'},
+      {q:'A patient has myopia. Which type of corrective lens is needed?',opts:['Convex (converging) lens','Concave (diverging) lens','Bifocal lens only','No lens — surgery only'],ans:1,exp:'Myopia (nearsightedness): eyeball too long → light focuses in front of retina. Concave (diverging) lenses spread light rays before entering the eye to shift the focal point back to the retina.'},
+      {q:'The correct order of sound transmission through the middle ear ossicles is:',opts:['Incus → Malleus → Stapes','Stapes → Malleus → Incus','Malleus → Incus → Stapes','Malleus → Stapes → Incus'],ans:2,exp:'Sound vibrates the tympanic membrane → malleus → incus → stapes → oval window → inner ear. Mnemonic: MIS (sounds like "miss") or think alphabetically: M-I-S.'},
+      {q:'Which sensory system has the most direct connection to the limbic (emotional) system?',opts:['Vision','Hearing','Smell (olfaction)','Touch'],ans:2,exp:'Olfactory signals travel directly to the limbic system (amygdala, hippocampus) without first relaying through the thalamus — explaining why smells trigger strong memories and emotions.'},
+      {q:'Accommodation of the lens for near vision involves:',opts:['Ciliary muscles relaxing and the lens flattening','Ciliary muscles contracting and the lens rounding','The pupil dilating to allow more light','The cornea changing curvature'],ans:1,exp:'For near vision: ciliary muscles CONTRACT → suspensory ligaments loosen → lens ROUNDS (becomes more convex/thicker) → increased refractive power to focus on nearby objects.'},
+    ]
+  },
+  {
+    num:11, title:'Endocrine System',
+    concepts:[
+      'The endocrine system communicates via hormones (chemical messengers) secreted into the blood. Compared to the nervous system: slower, longer-lasting effects, widespread targets.',
+      'Hormone types: peptide/protein (water-soluble, cannot enter cell — bind surface receptors, use second messenger e.g., cAMP) and steroid (lipid-soluble, enter cell and nucleus — bind intracellular receptors, alter gene expression directly).',
+      'Negative feedback controls most hormone secretion: rising hormone levels inhibit further secretion (e.g., thyroid hormone inhibits TRH and TSH).',
+      'Hypothalamus-pituitary axis: hypothalamus releases releasing hormones → anterior pituitary → tropic hormones → target glands. The hypothalamus is the master regulator linking nervous and endocrine systems.',
+      'Anterior pituitary (adenohypophysis) hormones: GH (growth — stimulates IGF-1), TSH (thyroid-stimulating), ACTH (adrenal cortex), FSH and LH (gonads), prolactin (milk production), MSH.',
+      'Posterior pituitary (neurohypophysis): stores and releases ADH (antidiuretic hormone/vasopressin — water reabsorption in kidneys) and oxytocin (uterine contractions, milk let-down). These are made in the hypothalamus.',
+      'Thyroid hormones (T3/T4): require iodine, increase metabolic rate, promote growth, normal development of nervous system. Calcitonin (thyroid): lowers blood calcium by inhibiting osteoclasts.',
+      'Parathyroid glands (4 tiny glands on posterior thyroid): secrete PTH (parathyroid hormone) when Ca²⁺ is low → stimulates osteoclasts → raises blood Ca²⁺. PTH is the MOST important regulator of blood calcium.',
+      'Adrenal cortex (outer): Zona glomerulosa → aldosterone (mineralocorticoid — raises blood pressure by increasing Na⁺/H₂O reabsorption, K⁺ excretion). Zona fasciculata → cortisol (glucocorticoid — stress response, anti-inflammatory, raises blood glucose). Zona reticularis → androgens.',
+      'Adrenal medulla (inner): releases epinephrine (80%) and norepinephrine (20%) — fight-or-flight, same effects as sympathetic activation.',
+      'Pancreatic islets (of Langerhans): Beta cells → insulin (lowers blood glucose, promotes glucose uptake). Alpha cells → glucagon (raises blood glucose, stimulates glycogenolysis/gluconeogenesis). Insulin and glucagon antagonistic.',
+      'Diabetes mellitus: Type 1 — autoimmune destruction of beta cells, no insulin production, requires insulin injections. Type 2 — insulin resistance, cells don\'t respond to insulin, managed with diet, exercise, oral medications.',
+      'Thyroid disorders: hypothyroidism (low T3/T4 — weight gain, fatigue, cold intolerance, bradycardia, myxedema, cretinism in children). Hyperthyroidism (high T3/T4 — weight loss, tachycardia, heat intolerance, exophthalmos in Graves\'). Goiter = enlarged thyroid (can be either).',
+    ],
+    vocab:[
+      {t:'Hormone',d:'A chemical messenger secreted by an endocrine gland into the blood that regulates the activity of target cells or organs.'},
+      {t:'Negative Feedback',d:'The primary mechanism controlling hormone secretion; rising hormone levels inhibit further release, maintaining homeostasis.'},
+      {t:'Anterior Pituitary',d:'The glandular (adeno-) portion of the pituitary gland; produces GH, TSH, ACTH, FSH, LH, prolactin. Controlled by hypothalamic releasing hormones.'},
+      {t:'ADH (Vasopressin)',d:'Antidiuretic hormone produced in the hypothalamus, released by the posterior pituitary; promotes water reabsorption in kidney collecting ducts.'},
+      {t:'Cortisol',d:'A glucocorticoid from the adrenal cortex zona fasciculata; raises blood glucose, suppresses inflammation/immune response, released in response to stress (via ACTH).'},
+      {t:'Insulin',d:'A peptide hormone from pancreatic beta cells; lowers blood glucose by promoting cellular uptake of glucose; the only hormone that lowers blood sugar.'},
+      {t:'PTH (Parathyroid Hormone)',d:'Hormone from parathyroid glands; raises blood calcium by stimulating osteoclasts (bone resorption), renal calcium reabsorption, and vitamin D activation.'},
+      {t:'Aldosterone',d:'A mineralocorticoid from the adrenal cortex zona glomerulosa; promotes Na⁺ and water reabsorption, K⁺ excretion in the kidney → raises blood pressure.'},
+    ],
+    questions:[
+      {q:'A patient with Type 1 diabetes has no insulin production because:',opts:['Their cells are resistant to insulin','Their beta cells are destroyed by autoimmune attack','They have excess glucagon only','Their pancreas produces too much cortisol'],ans:1,exp:'Type 1 DM is an autoimmune disease where T-cells destroy pancreatic beta cells. Without beta cells, no insulin is produced. Patients require exogenous insulin to survive.'},
+      {q:'ADH (antidiuretic hormone) acts on the kidneys to:',opts:['Increase urine production (diuresis)','Promote sodium excretion','Promote water reabsorption, concentrating urine','Stimulate aldosterone release'],ans:2,exp:'ADH increases the permeability of kidney collecting ducts to water → more water is reabsorbed → urine is concentrated and volume decreases. Without ADH → diabetes insipidus.'},
+      {q:'Which hormone RAISES blood calcium levels?',opts:['Calcitonin','Insulin','Cortisol','PTH (parathyroid hormone)'],ans:3,exp:'PTH raises blood Ca²⁺ by stimulating osteoclasts (bone resorption releases Ca²⁺), increasing renal Ca²⁺ reabsorption, and activating vitamin D (increases GI Ca²⁺ absorption). Calcitonin LOWERS Ca²⁺.'},
+      {q:'A patient with hypothyroidism would likely exhibit:',opts:['Weight loss, tachycardia, heat intolerance','Weight gain, fatigue, cold intolerance, bradycardia','Exophthalmos and goiter only','Increased metabolic rate'],ans:1,exp:'Hypothyroidism (low T3/T4): decreased metabolic rate → weight gain, fatigue, cold intolerance, constipation, bradycardia, dry skin, myxedema. Opposite of hyperthyroidism.'},
+      {q:'Cortisol is released from the adrenal cortex in response to stress. Its primary metabolic effect is to:',opts:['Lower blood glucose','Increase blood glucose (gluconeogenesis)','Decrease protein synthesis only','Stimulate insulin secretion'],ans:1,exp:'Cortisol raises blood glucose by promoting gluconeogenesis (liver), protein catabolism, and lipolysis. It also suppresses the immune/inflammatory response. Released via ACTH (anterior pituitary).'},
+      {q:'Aldosterone causes the kidneys to:',opts:['Excrete Na⁺ and retain K⁺','Retain Na⁺ and H₂O; excrete K⁺','Increase urine volume','Decrease blood pressure'],ans:1,exp:'Aldosterone (from adrenal cortex zona glomerulosa) stimulates Na⁺/K⁺ ATPase in renal tubules → Na⁺ and water retained (raising BP), K⁺ excreted. Important in renin-angiotensin-aldosterone system (RAAS).'},
+      {q:'The posterior pituitary releases ADH and oxytocin, but these hormones are actually PRODUCED in the:',opts:['Anterior pituitary','Thyroid gland','Hypothalamus','Adrenal cortex'],ans:2,exp:'ADH and oxytocin are synthesized in the hypothalamus (supraoptic and paraventricular nuclei) and transported down axons to the posterior pituitary for storage and release.'},
+      {q:'Glucagon is secreted by alpha cells of the pancreas when blood glucose is:',opts:['High, to further raise glucose','Low, to raise blood glucose back to normal','Normal, to maintain homeostasis','High, to stimulate insulin'],ans:1,exp:'Glucagon is released when blood glucose falls. It stimulates glycogenolysis (glycogen → glucose) and gluconeogenesis in the liver, raising blood glucose. Antagonist of insulin.'},
+    ]
+  },
+  {
+    num:12, title:'Blood',
+    concepts:[
+      'Blood is a connective tissue. Composition: plasma (~55%) + formed elements (~45%). Hematocrit = % of blood volume that is RBCs (normal: 42–52% men, 37–48% women).',
+      'Plasma (liquid matrix): 90% water. Contains plasma proteins: albumin (osmotic pressure, transport), globulins (antibodies, transport), fibrinogen (clotting). Also electrolytes, nutrients, hormones, waste.',
+      'Red blood cells (erythrocytes): biconcave disc (increases surface area for gas exchange), anucleate (no nucleus — more room for hemoglobin), 120-day lifespan, produced in red bone marrow (hematopoiesis). Contain hemoglobin.',
+      'Hemoglobin: each RBC contains ~280 million hemoglobin molecules. Each hemoglobin has 4 heme groups, each binding 1 O₂. Oxyhemoglobin (with O₂) = red. Deoxyhemoglobin = dark red/purple.',
+      'White blood cells (leukocytes): protect against infection and disease. Five types: neutrophils (most numerous, first responders — phagocytose bacteria), lymphocytes (B cells/antibodies, T cells/cellular immunity), monocytes (become macrophages), eosinophils (parasites, allergies), basophils (histamine — allergic reactions, fewest).',
+      'Mnemonic for WBC differential (most to least): "Never Let Monkeys Eat Bananas" — Neutrophils, Lymphocytes, Monocytes, Eosinophils, Basophils.',
+      'Platelets (thrombocytes): cell fragments from megakaryocytes. Function: hemostasis (stopping bleeding). Lifespan 7–10 days. Normal: 150,000–400,000/μL.',
+      'Hemostasis (stopping bleeding): 1) Vascular spasm (immediate vasoconstriction), 2) Platelet plug formation (platelets aggregate at injury site), 3) Coagulation cascade (fibrin clot formation — intrinsic + extrinsic pathways → common pathway → prothrombin → thrombin → fibrinogen → fibrin).',
+      'Clotting factors require: Vitamin K (factors II, VII, IX, X — warfarin blocks), Ca²⁺ (required for multiple steps), intact liver function.',
+      'ABO blood typing: Type A (A antigens, anti-B antibodies), Type B (B antigens, anti-A antibodies), Type AB (both antigens, no antibodies — universal recipient), Type O (no antigens, both antibodies — universal donor).',
+      'Rh factor: Rh+ (Rh antigen present), Rh- (no Rh antigen). Hemolytic disease of the newborn (HDN): Rh- mother + Rh+ baby → maternal anti-Rh antibodies cross placenta in subsequent pregnancy → attack fetal RBCs. Prevented by RhoGAM.',
+      'Common blood disorders: anemia (low RBCs/hemoglobin — O₂ deficiency), polycythemia (excess RBCs — increased viscosity/clot risk), leukemia (malignant WBC proliferation), thrombocytopenia (low platelets — bleeding risk).',
+    ],
+    vocab:[
+      {t:'Hematocrit',d:'The percentage of blood volume occupied by red blood cells; normal range is 42–52% for males, 37–48% for females.'},
+      {t:'Hemoglobin',d:'The iron-containing protein in RBCs that carries O₂ (4 O₂ per molecule); gives blood its red color when oxygenated.'},
+      {t:'Neutrophil',d:'The most abundant WBC; the primary first responder to bacterial infection; phagocytoses bacteria; has a multi-lobed nucleus.'},
+      {t:'Hemostasis',d:'The process of stopping bleeding; involves vascular spasm, platelet plug formation, and the coagulation cascade forming a fibrin clot.'},
+      {t:'Fibrin',d:'Insoluble protein threads formed from fibrinogen (by thrombin) that form the meshwork of a blood clot.'},
+      {t:'Universal Donor',d:'Type O negative blood; has no ABO antigens and no Rh antigen — can be given to any ABO/Rh type in emergencies.'},
+      {t:'RhoGAM',d:'Rh immunoglobulin given to Rh-negative mothers to prevent formation of anti-Rh antibodies that could cause hemolytic disease of the newborn.'},
+      {t:'Thrombocytopenia',d:'A platelet count below 150,000/μL, increasing risk of excessive bleeding and bruising.'},
+    ],
+    questions:[
+      {q:'A patient has a hematocrit of 28%. This indicates:',opts:['Polycythemia (too many RBCs)','Normal hematocrit','Anemia (too few RBCs)','Thrombocytopenia'],ans:2,exp:'Normal hematocrit is 37–52%. At 28%, the patient has significantly fewer RBCs than normal, indicating anemia — reduced oxygen-carrying capacity of the blood.'},
+      {q:'Type O negative blood is the universal donor because:',opts:['It has the most antibodies','It has no A, B, or Rh antigens that could trigger a reaction','It has both A and B antigens','It clots faster than other types'],ans:1,exp:'Type O- blood has no A antigens, no B antigens, and no Rh antigen. Recipients of any blood type cannot mount an immune reaction against it — making it safe for emergency transfusions.'},
+      {q:'Which WBC is MOST numerous in a normal differential count?',opts:['Lymphocytes','Eosinophils','Basophils','Neutrophils'],ans:3,exp:'Neutrophils make up 60–70% of all WBCs (the most numerous). They are the first responders to bacterial infection and phagocytose pathogens. Mnemonic: "Never Let Monkeys Eat Bananas."'},
+      {q:'A patient on warfarin therapy has prolonged bleeding. Warfarin works by inhibiting:',opts:['Platelet aggregation','Vitamin K-dependent clotting factors','Calcium utilization','Fibrinogen production'],ans:1,exp:'Warfarin inhibits vitamin K epoxide reductase, blocking synthesis of clotting factors II, VII, IX, and X. Without these factors, the coagulation cascade cannot form a stable fibrin clot.'},
+      {q:'An Rh-negative mother is pregnant with her second Rh-positive baby. The risk is:',opts:['No risk — blood types don\'t mix','The mother\'s anti-Rh antibodies from the first pregnancy may attack fetal RBCs','The baby will be Rh-negative','The mother will develop polycythemia'],ans:1,exp:'After the first Rh+ pregnancy, the mother develops anti-Rh antibodies. In subsequent Rh+ pregnancies, these IgG antibodies cross the placenta and destroy fetal RBCs (hemolytic disease of the newborn). RhoGAM prevents sensitization.'},
+      {q:'Platelets are formed from fragmentation of large cells called:',opts:['Monocytes','Lymphoblasts','Megakaryocytes','Erythroblasts'],ans:2,exp:'Megakaryocytes are giant bone marrow cells that fragment their cytoplasm to produce thousands of platelets (thrombocytes). Platelets are not true cells — they have no nucleus.'},
+      {q:'The final step of the coagulation cascade converts fibrinogen to:',opts:['Thrombin','Prothrombin','Fibrin','Plasmin'],ans:2,exp:'Thrombin (converted from prothrombin) cleaves fibrinogen → fibrin monomers → polymerize into fibrin threads → stabilized by factor XIII → forms the clot mesh.'},
+      {q:'Which plasma protein is MOST responsible for maintaining colloid osmotic (oncotic) pressure?',opts:['Fibrinogen','Globulin','Albumin','Transferrin'],ans:2,exp:'Albumin is the most abundant plasma protein and is primarily responsible for oncotic pressure — pulling water back into capillaries. Low albumin (liver disease, malnutrition) → edema.'},
+    ]
+  },
+  {
+    num:13, title:'Cardiovascular System',
+    concepts:[
+      'The heart is a double pump: right heart (pulmonary circuit — deoxygenated blood → lungs) and left heart (systemic circuit — oxygenated blood → body). The left ventricle is thicker (works against higher systemic resistance).',
+      'Heart layers: epicardium (outer — visceral pericardium), myocardium (middle — cardiac muscle, does the work), endocardium (inner — smooth lining). Pericardium = double sac surrounding heart.',
+      'Heart chambers: 2 atria (receiving) + 2 ventricles (pumping). Septum separates left and right sides.',
+      'Heart valves: AV valves (atrioventricular): tricuspid (right) and bicuspid/mitral (left) — prevent backflow from ventricles to atria. Semilunar valves: pulmonary (right) and aortic (left) — prevent backflow from arteries to ventricles.',
+      'Cardiac conduction system: SA node (pacemaker, right atrium, 60–100 bpm) → AV node (delays impulse — ventricles fill) → Bundle of His → Bundle branches → Purkinje fibers → ventricular myocardium.',
+      'ECG (electrocardiogram): P wave (atrial depolarization), QRS complex (ventricular depolarization — largest), T wave (ventricular repolarization). PR interval = AV node delay. ST segment elevation = myocardial infarction.',
+      'Cardiac cycle: systole (contraction) and diastole (relaxation). Heart sounds: S1 ("lub") = AV valves closing. S2 ("dub") = semilunar valves closing.',
+      'Cardiac output (CO) = Stroke Volume (SV) × Heart Rate (HR). Normal CO at rest ≈ 5 L/min. SV ≈ 70 mL. HR ≈ 72 bpm.',
+      'Factors affecting cardiac output: preload (venous return/filling volume), afterload (resistance against which heart pumps — systemic BP), contractility (force of contraction).',
+      'Frank-Starling Law: the more the ventricle fills (preload), the stronger the contraction — within physiological limits. More stretch → more force.',
+      'Blood pressure = Cardiac Output × Peripheral Resistance. Systolic (ventricular contraction) / Diastolic (ventricular relaxation). Normal: 120/80 mmHg. Hypertension: ≥130/80 mmHg.',
+      'Blood vessel types: arteries (away from heart, thick walls, high pressure), capillaries (site of gas/nutrient/waste exchange, one cell thick), veins (toward heart, thinner walls, valves, low pressure, contain ~64% of blood volume).',
+      'Coronary arteries (left and right) supply blood to the myocardium. Left anterior descending (LAD) = "widow maker." Coronary artery disease (CAD) → atherosclerosis → angina → MI.',
+      'Coronary artery disease (atherosclerosis): fatty plaques in arterial walls → narrowing → decreased blood flow. Risk factors: hypertension, smoking, diabetes, high LDL, obesity, inactivity.',
+    ],
+    vocab:[
+      {t:'Cardiac Output',d:'The volume of blood pumped by each ventricle per minute; CO = Heart Rate × Stroke Volume. Normal resting CO ≈ 5 L/min.'},
+      {t:'SA Node',d:'The sinoatrial node; the heart\'s natural pacemaker located in the right atrium wall; initiates impulses at 60–100 bpm.'},
+      {t:'Stroke Volume',d:'The volume of blood ejected by one ventricle per contraction; normally ~70 mL at rest. Affected by preload, afterload, and contractility.'},
+      {t:'Frank-Starling Law',d:'The principle that the more the cardiac muscle is stretched (greater preload/filling), the more forceful the subsequent contraction.'},
+      {t:'Systole',d:'The phase of the cardiac cycle during which the ventricles contract and eject blood into the pulmonary artery and aorta.'},
+      {t:'Atherosclerosis',d:'Buildup of fatty plaques (atheromas) within arterial walls, narrowing the lumen and reducing blood flow; the leading cause of CAD and MI.'},
+      {t:'AV Node',d:'The atrioventricular node; located at the junction of atria and ventricles; delays the impulse ~0.1 sec to allow ventricular filling before contraction.'},
+      {t:'Preload',d:'The degree of ventricular stretch at the end of diastole (end-diastolic volume); determined by venous return; increased preload → increased stroke volume (Frank-Starling).'},
+    ],
+    questions:[
+      {q:'Cardiac output equals:',opts:['Blood pressure ÷ peripheral resistance','Heart rate + stroke volume','Heart rate × stroke volume','Stroke volume ÷ heart rate'],ans:2,exp:'Cardiac Output (CO) = Heart Rate (HR) × Stroke Volume (SV). If HR = 72 bpm and SV = 70 mL, then CO = 72 × 70 = 5,040 mL/min ≈ 5 L/min.'},
+      {q:'The "lub" sound of the heart (S1) is caused by:',opts:['Semilunar valves closing at the start of systole','AV valves closing at the start of systole','Blood flowing through the aorta','Ventricular filling during diastole'],ans:1,exp:'S1 ("lub") = closure of the mitral (bicuspid) and tricuspid valves at the START of ventricular systole. S2 ("dub") = closure of aortic and pulmonary semilunar valves at the END of systole.'},
+      {q:'Which structure is the heart\'s natural pacemaker?',opts:['AV node','Bundle of His','SA node','Purkinje fibers'],ans:2,exp:'The SA (sinoatrial) node in the right atrium wall initiates each heartbeat at 60–100 bpm. It fires spontaneously and sets the heart rate — hence "pacemaker."'},
+      {q:'A patient has ST elevation on their ECG. This is associated with:',opts:['Atrial fibrillation','Normal sinus rhythm','Ventricular repolarization','Myocardial infarction (STEMI)'],ans:3,exp:'ST segment elevation (in 2+ contiguous leads) indicates myocardial infarction (STEMI — ST-elevation MI) due to complete coronary artery occlusion. Requires immediate reperfusion.'},
+      {q:'The left ventricle has a thicker wall than the right ventricle because:',opts:['It pumps blood to the lungs only','It must overcome greater systemic vascular resistance','It receives blood from both lungs','It contains more Purkinje fibers'],ans:1,exp:'The left ventricle pumps blood through the entire systemic circulation (high resistance). The right ventricle only pumps to the lungs (low resistance). Greater workload = thicker myocardium.'},
+      {q:'According to the Frank-Starling Law, increased venous return (preload) leads to:',opts:['Decreased stroke volume','Increased stroke volume and stronger contraction','Decreased heart rate','Increased afterload'],ans:1,exp:'Frank-Starling: greater ventricular filling (stretch) → stronger contraction → increased stroke volume. This ensures the heart pumps out what it receives, balancing left and right output.'},
+      {q:'Blood flows from the right ventricle to the lungs via the:',opts:['Aorta','Pulmonary veins','Pulmonary artery','Coronary arteries'],ans:2,exp:'The pulmonary artery (the only artery carrying deoxygenated blood) carries blood from the right ventricle to the lungs for oxygenation. Pulmonary veins return oxygenated blood to the left atrium.'},
+      {q:'Which valve prevents backflow of blood from the aorta into the left ventricle?',opts:['Tricuspid valve','Mitral (bicuspid) valve','Pulmonary semilunar valve','Aortic semilunar valve'],ans:3,exp:'The aortic semilunar valve closes after ventricular systole to prevent blood from flowing back from the aorta into the left ventricle. Aortic regurgitation = failure of this valve.'},
+    ]
+  },
+];
+
+// ════════════════════════════════════════════════════════
+// PROGRESS — localStorage
+// ════════════════════════════════════════════════════════
+const STORE_KEY = 'apuplink_progress';
+
+function loadProgress() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveProgress(data) {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+function getChapterProgress(chNum) {
+    const p = loadProgress();
+    return p[chNum] || { quizTotal:0, quizCorrect:0, studied:false };
+}
+function setChapterProgress(chNum, data) {
+    const p = loadProgress();
+    p[chNum] = { ...(p[chNum]||{}), ...data };
+    saveProgress(p);
+}
+
+function updateGlobalProgress() {
+    const p = loadProgress();
+    let totalQ=0, correctQ=0, studied=0;
+    CHAPTERS.forEach(ch => {
+        const cp = p[ch.num] || {};
+        totalQ += cp.quizTotal || 0;
+        correctQ += cp.quizCorrect || 0;
+        if (cp.studied) studied++;
+    });
+    const pct = CHAPTERS.length > 0 ? Math.round((studied / CHAPTERS.length) * 100) : 0;
+    document.getElementById('gp-pct').textContent = pct + '%';
+    document.getElementById('gp-fill').style.width = pct + '%';
+}
+
+// ════════════════════════════════════════════════════════
+// CHAPTER GRID
+// ════════════════════════════════════════════════════════
+function renderGrid() {
+    const grid = document.getElementById('chapter-grid');
+    const p = loadProgress();
+    grid.innerHTML = CHAPTERS.map(ch => {
+        const cp = p[ch.num] || {};
+        const total = cp.quizTotal || 0;
+        const correct = cp.quizCorrect || 0;
+        const pct = total > 0 ? Math.round((correct/total)*100) : 0;
+        const isComplete = cp.studied && total >= ch.questions.length;
+        const scoreClass = pct >= 80 ? 'good' : '';
+        return `
+            <div class="ch-card ${isComplete?'complete':''}" onclick="openChapter(${ch.num})">
+                <div class="ch-num">CH ${String(ch.num).padStart(2,'0')} ${isComplete?'✓':''}</div>
+                <div class="ch-name">${ch.title}</div>
+                <div class="ch-progress"><div class="ch-progress-fill" style="width:${pct}%"></div></div>
+                <div class="ch-score ${scoreClass}">${total > 0 ? `QUIZ: ${correct}/${total} (${pct}%)` : 'NOT STARTED'}</div>
+            </div>`;
+    }).join('');
+    updateGlobalProgress();
+}
+
+function showGrid() {
+    document.getElementById('view-grid').classList.add('active');
+    document.getElementById('view-chapter').classList.remove('active');
+    renderGrid();
+}
+
+// ════════════════════════════════════════════════════════
+// CHAPTER DETAIL
+// ════════════════════════════════════════════════════════
+let currentChapter = null;
+let currentMode = 'study';
+
+function openChapter(num) {
+    currentChapter = CHAPTERS.find(c => c.num === num);
+    currentMode = 'study';
+    document.getElementById('view-grid').classList.remove('active');
+    document.getElementById('view-chapter').classList.add('active');
+    document.getElementById('detail-num').textContent = `CHAPTER ${String(num).padStart(2,'0')} · ${currentChapter.concepts.length} KEY CONCEPTS · ${currentChapter.questions.length} QUIZ QUESTIONS`;
+    document.getElementById('detail-title').textContent = currentChapter.title.toUpperCase();
+    document.getElementById('btn-study').classList.add('active');
+    document.getElementById('btn-quiz').classList.remove('active');
+    renderStudy();
+    setChapterProgress(num, { studied:true });
+    document.querySelector('.wrap').scrollTop = 0;
+    window.scrollTo(0,0);
+}
+
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('btn-study').classList.toggle('active', mode==='study');
+    document.getElementById('btn-quiz').classList.toggle('active', mode==='quiz');
+    document.getElementById('study-content').style.display = mode==='study' ? 'block' : 'none';
+    document.getElementById('quiz-content').style.display  = mode==='quiz'  ? 'block' : 'none';
+    if (mode==='quiz') initQuiz();
+}
+
+// ════════════════════════════════════════════════════════
+// STUDY MODE
+// ════════════════════════════════════════════════════════
+function renderStudy() {
+    const ch = currentChapter;
+    const conceptsHTML = ch.concepts.map(c=>`<li>${c}</li>`).join('');
+    const vocabHTML = ch.vocab.map(v=>`
+        <div class="vocab-item">
+            <div class="vocab-term">${v.t}</div>
+            <div class="vocab-def">${v.d}</div>
+        </div>`).join('');
+    document.getElementById('study-content').innerHTML = `
+        <div class="study-section">
+            <div class="study-section-title">◈ KEY CONCEPTS</div>
+            <ul class="concept-list">${conceptsHTML}</ul>
+        </div>
+        <div class="study-section">
+            <div class="study-section-title">◈ VOCABULARY</div>
+            <div class="vocab-grid">${vocabHTML}</div>
+        </div>
+    `;
+    document.getElementById('study-content').style.display='block';
+    document.getElementById('quiz-content').style.display='none';
+}
+
+// ════════════════════════════════════════════════════════
+// QUIZ MODE
+// ════════════════════════════════════════════════════════
+let quizState = { questions:[], currentIdx:0, correct:0, total:0, answered:false };
+
+function initQuiz() {
+    const ch = currentChapter;
+    const cp = getChapterProgress(ch.num);
+    quizState = {
+        questions: [...ch.questions].sort(()=>Math.random()-0.5),
+        currentIdx:0, correct: cp.quizCorrect||0, total: cp.quizTotal||0, answered:false
+    };
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const ch = currentChapter;
+    const qs = quizState.questions;
+    const qc = document.getElementById('quiz-content');
+
+    if (quizState.currentIdx >= qs.length) {
+        const pct = Math.round((quizState.correct/quizState.total)*100);
+        qc.innerHTML = `
+            <div class="complete-banner">
+                <div class="big">◈ CHAPTER COMPLETE</div>
+                <div class="sub" style="margin:8px 0">${ch.title}</div>
+                <div class="sub" style="color:var(--accent);font-family:var(--font-ui);font-size:0.9rem">${quizState.correct} / ${qs.length} CORRECT (${pct}%)</div>
+            </div>
+            <div class="quiz-actions" style="margin-top:14px">
+                <button class="action-btn" onclick="initQuiz()">RETRY CHAPTER</button>
+                <button class="action-btn secondary" onclick="setMode('study')">BACK TO STUDY</button>
+                <button class="action-btn secondary" onclick="showGrid()">ALL CHAPTERS</button>
+            </div>`;
+        return;
+    }
+
+    const q = qs[quizState.currentIdx];
+    const cp = getChapterProgress(ch.num);
+    const total = cp.quizTotal||0;
+    const correct = cp.quizCorrect||0;
+    const pct = total>0 ? Math.round((correct/total)*100) : 0;
+
+    quizState.answered = false;
+    qc.innerHTML = `
+        <div class="quiz-score-bar">
+            <span>QUESTION ${quizState.currentIdx+1} / ${qs.length}</span>
+            <span>SESSION SCORE: <span>${quizState.correct}</span> / ${quizState.currentIdx}</span>
+            <span>ALL-TIME: ${correct}/${total}${total>0?' ('+pct+'%)':''}</span>
+        </div>
+        <div class="quiz-card">
+            <div class="quiz-q">${q.q}</div>
+            <div class="quiz-opts">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQ(${i})">${o}</button>`).join('')}</div>
+            <div class="quiz-feedback" id="qfb"></div>
+        </div>
+        <div class="quiz-actions">
+            <button class="action-btn" onclick="nextQ()" id="next-q-btn" style="display:none">NEXT QUESTION ▸</button>
+            <button class="action-btn secondary" onclick="initQuiz()">RESTART</button>
+        </div>`;
+}
+
+function answerQ(idx) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const q = quizState.questions[quizState.currentIdx];
+    const isCorrect = idx === q.ans;
+    quizState.currentIdx++;
+    quizState.total++;
+    if (isCorrect) quizState.correct++;
+
+    // Update persistent progress
+    const cp = getChapterProgress(currentChapter.num);
+    const newTotal   = (cp.quizTotal||0)+1;
+    const newCorrect = (cp.quizCorrect||0)+(isCorrect?1:0);
+    setChapterProgress(currentChapter.num, { quizTotal:newTotal, quizCorrect:newCorrect });
+
+    document.querySelectorAll('.quiz-opt').forEach((btn,i)=>{
+        btn.disabled=true;
+        if (i===q.ans) btn.classList.add('correct');
+        else if (i===idx && !isCorrect) btn.classList.add('wrong');
+    });
+    const fb=document.getElementById('qfb');
+    fb.style.display='block';
+    fb.className='quiz-feedback '+(isCorrect?'correct':'wrong');
+    fb.innerHTML = isCorrect
+        ? `✓ CORRECT — ${q.exp}`
+        : `✗ INCORRECT — Correct answer: <strong>${q.opts[q.ans]}</strong><br><br>${q.exp}`;
+    document.getElementById('next-q-btn').style.display='inline-block';
+}
+
+function nextQ() { renderQuestion(); }
+
+function resetAll() {
+    if (confirm('Reset ALL chapter progress? This cannot be undone.')) {
+        try { localStorage.removeItem(STORE_KEY); } catch(e) {}
+        renderGrid();
+    }
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+renderGrid();
+</script>
+</body>
+</html>
