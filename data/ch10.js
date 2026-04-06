@@ -23,6 +23,18 @@ const CH10_DATA = {
                 "**Rigor Mortis**: After death, lack of ATP means myosin heads cannot detach from actin, leaving muscles stiff."
             ]
         },
+        
+{
+    label: "THE SARCOMERE & CONTRACTION",
+    content: "The sarcomere is the functional unit of skeletal muscle contraction.",
+    image: "img/ch10_sarcomere.PNG", 
+    details: [
+        "**Z-Line**: The boundaries of a single sarcomere.",
+        "**Myosin**: The thick filament that pulls on actin.",
+        "**Actin**: The thin filament that slides toward the center (M-line)."
+    ]
+},
+
         {
             label: "MUSCLE METABOLISM",
             content: "How muscles get the energy (ATP) to move.",
