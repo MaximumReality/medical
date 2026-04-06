@@ -4,57 +4,57 @@ const CH12_DATA = {
     accentColor: "#c0392b", 
     sections: [
         {
-            label: "MECHANICAL SEPARATION (CENTRIFUGATION)",
-            content: "When blood is spun in a centrifuge, its components separate by density, providing a snapshot of a patient's health.",
+            label: "CENTRIFUGATION & BLOOD LAYERS",
+            content: "Blood separation by density is a primary diagnostic tool in clinical settings.",
             image: "img/ch12_blood_centerfuge.PNG", 
             details: [
-                "**Plasma (Top Layer)**: Approximately 55% of the volume; contains water, electrolytes, and proteins.",
-                "**Buffy Coat (Middle Layer)**: Less than 1% of the volume; consists of White Blood Cells and Platelets.",
-                "**Red Blood Cells (Bottom Layer)**: Approximately 45% of the volume; also known as the Hematocrit.",
-                "**Clinical Application**: Dehydration often results in a higher hematocrit percentage because the plasma volume (water) decreases."
+                "**Plasma (Top)**: ~55% volume. The liquid matrix containing water, proteins (Albumin), and nutrients.",
+                "**Buffy Coat (Middle)**: <1% volume. Contains White Blood Cells (Leukocytes) and Platelets (Thrombocytes).",
+                "**Hematocrit (Bottom)**: ~45% volume. The packed Red Blood Cell (Erythrocyte) portion.",
+                "**Clinical Note**: Dehydration causes plasma volume to drop, which artificially raises the hematocrit percentage."
             ]
         },
         {
-            label: "BLOOD STRUCTURE & FORMED ELEMENTS",
-            content: "Blood consists of cells and cell fragments known as 'formed elements' suspended in plasma.",
+            label: "FORMED ELEMENTS: STRUCTURE & FUNCTION",
+            content: "The cellular components of blood are specialized for transport, defense, and repair.",
             image: "img/ch14_blood.PNG", 
             details: [
-                "**Erythrocytes (RBCs)**: Biconcave discs specialized for carrying oxygen via Hemoglobin.",
-                "**Leukocytes (WBCs)**: The body's defense system, including Neutrophils (bacteria) and Lymphocytes (viruses).",
-                "**Thrombocytes (Platelets)**: Crucial fragments for the initiation of hemostasis (clotting).",
-                "**Hematopoiesis**: The continuous production of these cells within the Red Bone Marrow."
+                "**Erythrocytes (RBCs)**: Biconcave discs with no nucleus; contain Hemoglobin for $O_2$ transport.",
+                "**Leukocytes (WBCs)**: Provide immunity; divided into Granulocytes (NEB) and Agranulocytes (ML).",
+                "**Thrombocytes (Platelets)**: Cell fragments from megakaryocytes; essential for initiating hemostasis.",
+                "**Hematopoiesis**: The production of all blood cells within the red bone marrow."
             ]
         },
         {
-            label: "TRANSFUSION MEDICINE: ABO & Rh",
-            content: "Blood typing is based on the presence or absence of specific antigens on the erythrocyte surface.",
+            label: "ABO & Rh BLOOD TYPING",
+            content: "Transfusion compatibility is determined by surface antigens and plasma antibodies.",
             image: "img/ch12_blood.PNG", 
             details: [
-                "**Antigens vs. Antibodies**: You possess antigens for your blood type and antibodies against types you lack.",
-                "**The Universal Rules**: Type O- is the Universal Donor; Type AB+ is the Universal Recipient.",
-                "**Rh Factor**: Differentiating between 'Positive' and 'Negative' blood; critical for preventing hemolytic disease of the newborn.",
-                "**Agglutination**: The life-threatening clumping reaction when incompatible blood types are mixed."
+                "**Antigens**: Surface markers (A, B, Rh) that identify the cell as 'self' or 'foreign'.",
+                "**Antibodies**: Proteins in the plasma that attack mismatched antigens (Agglutination).",
+                "**Universal Rules**: Type O- is the Universal Donor; Type AB+ is the Universal Recipient.",
+                "**Rh Factor**: An additional D-antigen; critical to monitor in pregnancy (Rh incompatibility)."
             ]
         }
     ],
     vocab: [
-        {t: "Albumin", d: "The most abundant plasma protein; maintains osmotic pressure to prevent edema."},
-        {t: "Fibrin", d: "The thread-like protein that forms the structural basis of a blood clot."},
-        {t: "Erythropoietin (EPO)", d: "A kidney hormone that triggers the production of new Red Blood Cells."},
-        {t: "Hemostasis", d: "The multi-step process of stopping bleeding (Vascular spasm, Plug, Coagulation)."}
+        {t: "Hemostasis", d: "The three-step process to stop bleeding: Vascular Spasm, Platelet Plug, Coagulation."},
+        {t: "Albumin", d: "Plasma protein responsible for maintaining colloid osmotic pressure."},
+        {t: "Erythropoietin (EPO)", d: "Kidney hormone that stimulates red bone marrow to produce RBCs."},
+        {t: "Agglutination", d: "The clumping of red blood cells during an incompatible transfusion."}
     ],
     questions: [
         {
-            q: "Which layer of a centrifuged blood sample contains the leukocytes?",
-            opts: ["The Plasma", "The Buffy Coat", "The Hematocrit", "The Serum"],
-            ans: 1,
-            exp: "Leukocytes (WBCs) and Platelets settle in the thin 'Buffy Coat' between the plasma and RBCs."
+            q: "Which specific component of blood is found within the 'Buffy Coat'?",
+            opts: ["Plasma Proteins", "Red Blood Cells", "Platelets and White Blood Cells", "Glucose and Electrolytes"],
+            ans: 2,
+            exp: "The Buffy Coat is the thin layer containing the immune cells and the clotting fragments."
         },
         {
-            q: "A person with Type O blood has which antibodies in their plasma?",
-            opts: ["Anti-A only", "Anti-B only", "Both Anti-A and Anti-B", "Neither Anti-A nor Anti-B"],
-            ans: 2,
-            exp: "Type O has no surface antigens, so it naturally produces antibodies against both A and B types."
+            q: "A patient with Type O blood has which antibodies in their plasma?",
+            opts: ["Anti-A only", "Anti-B only", "Neither Anti-A nor Anti-B", "Both Anti-A and Anti-B"],
+            ans: 3,
+            exp: "Type O lacks A and B antigens, so it naturally carries antibodies against both."
         }
     ]
 };
