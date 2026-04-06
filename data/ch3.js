@@ -4,55 +4,57 @@ const CH3_DATA = {
     accentColor: "#00ff88",
     sections: [
         {
-            label: "THE PLASMA MEMBRANE",
-            content: "The 'gatekeeper' of the cell. It is a phospholipid bilayer that is selectively permeable.",
+            label: "THE PLASMA MEMBRANE: THE GATEKEEPER",
+            content: "The boundary between the intracellular and extracellular fluid. It is a dynamic 'Fluid Mosaic' that controls what enters and exits.",
+            image: "img/ch3_membranes.PNG", 
             details: [
-                "**Phospholipids**: Have hydrophilic heads (water-loving) and hydrophobic tails (water-fearing).",
-                "**Proteins**: Act as channels, carriers, and receptors for cell signaling.",
-                "**Cholesterol**: Stabilizes the membrane, keeping it fluid but firm."
+                "**Phospholipid Bilayer**: Hydrophilic (water-loving) heads face out; Hydrophobic (water-fearing) tails hide inside.",
+                "**Integral Proteins**: Span the entire membrane to act as **Channels** (for ions) or **Carriers** (for glucose).",
+                "**Peripheral Proteins**: Sit on the surface; often act as enzymes or structural anchors.",
+                "**Cholesterol**: Tucked between tails to keep the membrane fluid—preventing it from becoming too brittle or too liquid."
             ]
         },
         {
-            label: "TRANSPORT MECHANISMS",
-            content: "Movement of substances across the membrane is either Passive (no energy) or Active (requires ATP).",
+            label: "TRANSPORT: PASSIVE VS. ACTIVE",
+            content: "Cells must move nutrients in and waste out. This is either 'free' (Passive) or 'paid for' (Active).",
             details: [
-                "**Diffusion**: Movement from High to Low concentration.",
-                "**Osmosis**: The diffusion of water. Vital for maintaining red blood cell shape.",
-                "**Active Transport**: Moving 'uphill' from Low to High concentration using ATP.",
-                "**Clinical Note**: Cystic Fibrosis is caused by a faulty chloride ion channel in the membrane."
+                "**Simple Diffusion**: Small, nonpolar molecules (like $O_2$ and $CO_2$) passing directly through the lipids.",
+                "**Facilitated Diffusion**: Requires a protein 'doorway' but no energy (e.g., Glucose moving into a cell).",
+                "**Osmosis**: The movement of water. **Clinical Note**: If a patient is dehydrated, we give Isotonic IV fluids to keep their RBCs from shrinking or bursting.",
+                "**Active Transport**: Uses **ATP** to pump ions (like the $Na^+/K^+$ pump) against their concentration gradient."
             ]
         },
         {
-            label: "ORGANELLES: THE CELL MACHINERY",
-            content: "Specialized structures inside the cell that perform specific functions.",
+            label: "ORGANELLES: THE CELLULAR MACHINERY",
+            content: "The 'organs' of the cell, each with a specific metabolic job.",
             details: [
-                "**Mitochondria**: The 'Powerhouse.' Site of ATP production (Aerobic Respiration).",
-                "**Ribosomes**: Sites of protein synthesis.",
-                "**Rough ER**: Processes proteins; **Smooth ER**: Synthesizes lipids and detoxifies.",
-                "**Lysosomes**: The 'trash collectors' that digest waste."
+                "**Nucleus**: The vault containing DNA; the blueprint for all proteins.",
+                "**Mitochondria**: The 'Powerhouse.' Site of **Aerobic Respiration** where oxygen is used to make ATP.",
+                "**Rough ER**: Studded with **Ribosomes**; the factory floor for protein production.",
+                "**Golgi Apparatus**: The 'Post Office'—refines, packages, and ships proteins to their destination.",
+                "**Lysosomes**: Contain digestive enzymes to break down old organelles and bacteria."
             ]
         }
     ],
     vocab: [
-        {t: "Cytosol", d: "The fluid portion of the cytoplasm."},
-        {t: "Nucleus", d: "The control center containing the cell's DNA."},
-        {t: "Organelle", d: "Specialized structure within a cell."},
-        {t: "Phagocytosis", d: "Cell eating; a type of endocytosis."},
-        {t: "Mitosis", d: "The process of cell division resulting in two identical daughter cells."},
-        {t: "Apoptosis", d: "Programmed cell death."}
+        {t: "Cytosol", d: "The jelly-like fluid where organelles are suspended."},
+        {t: "Selectively Permeable", d: "Allowing only certain substances to pass through while blocking others."},
+        {t: "Phagocytosis", d: "The process of a cell (like a WBC) 'eating' a bacterium."},
+        {t: "Mitosis", d: "Somatic cell division for growth and repair."},
+        {t: "Apoptosis", d: "Programmed cell death; essential for removing damaged cells."}
     ],
     questions: [
         {
-            q: "Which organelle is responsible for generating most of the cell's ATP?",
-            opts: ["Golgi Complex", "Mitochondria", "Lysosome", "Ribosome"],
-            ans: 1,
-            exp: "Mitochondria use oxygen to produce ATP through cellular respiration."
+            q: "Which specific component of the plasma membrane is responsible for forming the primary barrier to water-soluble substances?",
+            opts: ["Proteins", "Cholesterol", "Phospholipid Bilayer", "Carbohydrate Chains"],
+            ans: 2,
+            exp: "The hydrophobic tails of the phospholipids create a fatty barrier that water-soluble items cannot easily cross."
         },
         {
-            q: "Water moves across a membrane from an area of low solute to high solute via:",
-            opts: ["Active Transport", "Facilitated Diffusion", "Osmosis", "Filtration"],
-            ans: 2,
-            exp: "Osmosis is specifically the passive movement of water."
+            q: "A cell that requires a massive amount of energy (like a heart muscle cell) would have a high concentration of which organelle?",
+            opts: ["Lysosomes", "Mitochondria", "Smooth ER", "Nuclei"],
+            ans: 1,
+            exp: "Mitochondria produce ATP, so high-energy cells are packed with them."
         }
     ]
 };
