@@ -13,6 +13,18 @@ const CH1_DATA = {
                 "**Clinical Note**: Type 1 Diabetes is a failure of the pancreatic effectors in this loop."
             ]
         },
+
+{
+    label: "BODY CAVITIES & ORGANS",
+    content: "The body is divided into axial and appendicular portions with specific internal cavities.",
+    image: "img/ch1_organs.JPG", 
+    details: [
+        "**Viscera**: The organs found within a body cavity.",
+        "**Thoracic Cavity**: Contains the lungs and the mediastinum (heart, esophagus, trachea).",
+        "**Abdominopelvic Cavity**: Contains upper abdominal organs and lower pelvic organs."
+    ]
+},
+
         {
             label: "ANATOMICAL POSITION & PLANES",
             content: "All directional terms are based on a standard position: standing erect, facing forward, arms at sides, palms facing forward.",
