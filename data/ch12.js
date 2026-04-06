@@ -32,7 +32,19 @@ const CH12_DATA = {
                 "**Postsynaptic Neuron**: Receives the signal via chemical-gated receptors.",
                 "**EPSP vs IPSP**: Excitatory signals push the cell toward a fire; Inhibitory signals prevent it."
             ]
-        }
+        },
+        
+{
+    label: "THE AUTONOMIC NERVOUS SYSTEM",
+    content: "Controls involuntary functions via the Sympathetic and Parasympathetic branches.",
+    image: "img/ch12_autonomic.png", 
+    details: [
+        "**Sympathetic**: 'Fight or Flight' (dilates pupils, increases heart rate).",
+        "**Parasympathetic**: 'Rest and Digest' (constricts pupils, slows heart rate).",
+        "**Dual Innervation**: Most organs receive instructions from both branches."
+    ]
+}
+
     ],
     vocab: [
         {t: "Myelin Sheath", d: "Lipid/protein insulation that increases nerve impulse speed."},
