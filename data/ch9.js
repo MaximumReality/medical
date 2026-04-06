@@ -1,59 +1,70 @@
 const CH9_DATA = {
     num: 9,
-    title: "Joints (Articulations)",
-    accentColor: "#9b59b6", // Amethyst Purple
+    title: "Nervous System",
+    accentColor: "#34495e", // Deep Neural Blue
     sections: [
         {
-            label: "CLASSIFICATION OF JOINTS",
-            content: "Joints are grouped by how they are held together (Structural) and how much they move (Functional).",
+            label: "NEURON PHYSIOLOGY & ACTION POTENTIALS",
+            content: "Neurons communicate via rapid electrochemical changes called action potentials.",
+            image: "img/ch12_action_potential.JPG", 
             details: [
-                "**Synarthrosis**: Immovable (e.g., Sutures in the skull).",
-                "**Amphiarthrosis**: Slightly movable (e.g., Pubic symphysis).",
-                "**Diarthrosis**: Freely movable (All synovial joints).",
-                "**Fibrous/Cartilaginous**: Held by dense CT or cartilage; usually have limited movement."
+                "**Resting Membrane Potential**: -70mV, maintained by the Na+/K+ Pump (3 Na+ out / 2 K+ in).",
+                "**Threshold (-55mV)**: The 'All-or-None' trigger point for sodium channel activation.",
+                "**Depolarization**: Rapid **Na+ Influx** causes a positive spike to approximately +30mV.",
+                "**Repolarization**: **K+ Efflux** restores the negative charge.",
+                "**Saltatory Conduction**: Impulse 'jumping' between **Nodes of Ranvier** in myelinated axons for high-speed transmission."
             ]
         },
         {
-            label: "SYNOVIAL JOINTS",
-            content: "These are the 'classic' joints of the limbs, featuring a fluid-filled cavity.",
+            label: "SPINAL CORD & REFLEX ARCS",
+            content: "The spinal cord serves as a conduction pathway and a center for rapid, involuntary reflexes.",
             details: [
-                "**Articular Cartilage**: Hyaline cartilage that reduces friction at bone ends.",
-                "**Synovial Fluid**: Lubricates the joint and nourishes the cartilage.",
-                "**Bursae**: Fluid-filled sacs that cushion movement between tendons and bones.",
-                "**Types**: Ball-and-socket (Shoulder), Hinge (Elbow), Pivot (Neck C1/C2)."
+                "**Gray Matter**: The butterfly-shaped center; **Posterior Horns** receive sensory input, **Anterior Horns** send motor output.",
+                "**Dorsal Root Ganglion**: Contains cell bodies of sensory neurons entering the cord.",
+                "**The Reflex Arc**: Receptor → Sensory Neuron → CNS Integration → Motor Neuron → Effector.",
+                "**Phrenic Nerve**: Arises from the cervical plexus (C3-C5) to stimulate the diaphragm for respiration."
             ]
         },
         {
-            label: "BODY MOVEMENTS",
-            content: "Standardized terms for describing how limbs move in space.",
+            label: "AUTONOMIC NERVOUS SYSTEM (ANS)",
+            content: "The ANS regulates involuntary visceral activities to maintain internal homeostasis.",
+            image: "img/ch12_autonomic.png", 
             details: [
-                "**Flexion**: Decreasing the angle of a joint; **Extension**: Increasing it.",
-                "**Abduction**: Moving away from the midline; **Adduction**: Moving toward it.",
-                "**Circumduction**: Moving the distal end of a limb in a circle.",
-                "**Supination**: Turning palm up (holding 'Soup'); **Pronation**: Turning palm down."
+                "**Sympathetic**: 'Fight or Flight' response; increases heart rate and bronchodilation.",
+                "**Parasympathetic**: 'Rest and Digest' response; stimulates digestion and slows heart rate.",
+                "**Dual Innervation**: Most organs receive antagonistic input from both branches to stay balanced."
+            ]
+        },
+        {
+            label: "PROTECTION & NERVE PLEXUSES",
+            content: "The CNS is shielded by bone and membranes, while the PNS organizes into complex networks.",
+            details: [
+                "**Meninges**: Three layers—Dura Mater (outer), Arachnoid Mater (middle), and Pia Mater (inner).",
+                "**Epidural Space**: The clinical site for anesthetic injection located outside the dura mater.",
+                "**Dermatomes**: Map of skin areas supplied by specific spinal nerves, used for sensory testing.",
+                "**Sciatic Nerve**: The body's longest nerve; damage can cause radiating pain down the lower limb."
             ]
         }
     ],
     vocab: [
-        {t: "Articulation", d: "A point of contact between two bones."},
-        {t: "Ligament", d: "Dense connective tissue connecting bone to bone."},
-        {t: "Tendon", d: "Dense connective tissue connecting muscle to bone."},
-        {t: "Meniscus", d: "Fibrocartilage pad that improves fit between bones (e.g., in the knee)."},
-        {t: "Arthritis", d: "Inflammation of the joints."},
-        {t: "Gomphosis", d: "A peg-in-socket fibrous joint (e.g., teeth in the jaw)."}
+        {t: "Afferent", d: "Sensory neurons carrying impulses TOWARD the CNS."},
+        {t: "Efferent", d: "Motor neurons carrying impulses AWAY from the CNS to effectors."},
+        {t: "Synaptic Cleft", d: "The narrow gap between two neurons where neurotransmitters are released."},
+        {t: "Neuroglia", d: "Support cells including Astrocytes (BBB), Oligodendrocytes (CNS Myelin), and Schwann Cells (PNS Myelin)."},
+        {t: "Cauda Equina", d: "The 'horse's tail' collection of nerve roots extending below the end of the spinal cord."}
     ],
     questions: [
         {
-            q: "Which type of joint allows for the most range of motion?",
-            opts: ["Suture", "Synarthrosis", "Diarthrosis", "Amphiarthrosis"],
-            ans: 2,
-            exp: "Diarthroses are freely movable joints, typical of the limbs."
+            q: "Which specific structure carries strictly sensory (afferent) information into the spinal cord?",
+            opts: ["Anterior Root", "Posterior (Dorsal) Root", "Ventral Horn", "Gray Commissure"],
+            ans: 1,
+            exp: "The Dorsal Root is the sensory entry point. Remember: Sensory/Afferent/Dorsal (SAD)."
         },
         {
-            q: "Moving your arm away from the midline of your body is called:",
-            opts: ["Adduction", "Abduction", "Flexion", "Pronation"],
+            q: "A drug that inhibits Acetylcholinesterase at the synapse would result in:",
+            opts: ["Immediate relaxation", "Prolonged stimulation", "No effect", "Instant repolarization"],
             ans: 1,
-            exp: "Abduction is 'abducting' or taking the limb away from the center."
+            exp: "Inhibiting the enzyme that breaks down the neurotransmitter leaves it in the cleft longer, causing over-stimulation."
         }
     ]
 };
