@@ -1,59 +1,57 @@
 const CH11_DATA = {
     num: 11,
     title: "Endocrine System",
-    accentColor: "#8e44ad", // Hormone Purple
+    accentColor: "#8e44ad", 
     sections: [
         {
-            label: "MECHANISMS OF HORMONE ACTION",
-            content: "The endocrine system uses chemical messengers (hormones) to communicate with target cells via the bloodstream.",
+            label: "GLAND LOCATIONS & HORMONES",
+            content: "The endocrine system consists of glands that secrete hormones directly into the blood to regulate metabolism and homeostasis.",
+            image: "img/ch11_endocrine_system.PNG", 
             details: [
-                "**Endocrine vs. Exocrine**: Endocrine glands are ductless and secrete into the blood; Exocrine glands secrete into ducts (e.g., sweat).",
-                "**Steroid Hormones**: Lipid-soluble; can cross the cell membrane to bind receptors inside the nucleus.",
-                "**Non-Steroid Hormones**: Water-soluble; bind to receptors on the cell membrane and use 'Second Messengers' (like cAMP).",
-                "**Negative Feedback**: The primary mechanism for regulating hormone levels; once a desired effect is achieved, secretion is inhibited."
+                "**Hypothalamus & Pituitary**: The 'Command Center' located in the brain; regulates growth, water balance (ADH), and reproduction.",
+                "**Thyroid & Parathyroid**: Located in the neck; controls metabolic rate ($T_3$/$T_4$) and blood calcium levels (Calcitonin/PTH).",
+                "**Adrenal Glands**: Sit atop the kidneys; manage stress (Cortisol/Epinephrine) and salt balance (Aldosterone).",
+                "**Pancreas**: Located behind the stomach; regulates blood glucose via **Insulin** and **Glucagon**.",
+                "**Pineal Gland**: Located in the brain; secretes Melatonin to regulate sleep-wake cycles."
             ]
         },
         {
-            label: "THE MASTER GLANDS: HYPOTHALAMUS & PITUITARY",
-            content: "The hypothalamus controls the pituitary gland, which in turn regulates many other endocrine glands.",
+            label: "HORMONE CLASSIFICATION",
+            content: "Hormones are grouped by their chemical structure, which determines how they interact with target cells.",
             details: [
-                "**Hypothalamus**: The link between the nervous and endocrine systems; controls the 'Master Gland.'",
-                "**Anterior Pituitary**: Secretes GH (Growth), PRL (Prolactin), TSH (Thyroid-stimulating), ACTH, FSH, and LH.",
-                "**Posterior Pituitary**: Stores and releases **Antidiuretic Hormone (ADH)** for water retention and **Oxytocin** for labor/milk let-down.",
-                "**Clinical Note**: ADH is crucial in nursing for managing fluid balance and blood pressure."
+                "**Steroid Hormones**: Derived from cholesterol (e.g., Estrogen, Testosterone, Cortisol); they are lipid-soluble and can enter the cell nucleus directly.",
+                "**Non-Steroid Hormones**: Derived from amino acids (e.g., Insulin, GH); they bind to receptors on the cell membrane and use 'second messengers' like cAMP.",
+                "**Prostaglandins**: Lipids that act as 'local hormones' to trigger inflammation or uterine contractions."
             ]
         },
         {
-            label: "PERIPHERAL ENDOCRINE GLANDS",
-            content: "Major glands that regulate metabolism, stress, and blood glucose.",
+            label: "CLINICAL GLUCOSE REGULATION",
+            content: "A critical nursing concept: the antagonistic relationship between pancreatic hormones.",
             details: [
-                "**Thyroid Gland**: Produces T3 and T4 (metabolism) and Calcitonin (lowers blood calcium).",
-                "**Parathyroid Glands**: Produce PTH, which increases blood calcium by stimulating osteoclasts.",
-                "**Adrenal Cortex**: Secretes Cortisol (stress) and Aldosterone (sodium/water balance).",
-                "**Adrenal Medulla**: Secretes Epinephrine and Norepinephrine (Fight or Flight).",
-                "**Pancreas**: Dual-function gland; **Insulin** (Beta cells) lowers blood glucose, while **Glucagon** (Alpha cells) raises it."
+                "**Insulin (Beta Cells)**: Lowers blood glucose by moving sugar into the cells for energy. Deficiency leads to Diabetes Mellitus.",
+                "**Glucagon (Alpha Cells)**: Raises blood glucose by stimulating the liver to break down glycogen into glucose.",
+                "**Negative Feedback**: Once blood sugar stabilizes, the pancreas stops secreting the respective hormone to prevent dangerous fluctuations."
             ]
         }
     ],
     vocab: [
-        {t: "Target Cells", d: "Cells with specific receptors for a particular hormone."},
-        {t: "Prostaglandins", d: "Lipids that act as 'local hormones' affecting only neighboring cells."},
-        {t: "Diabetes Mellitus", d: "A metabolic disorder caused by insulin deficiency or resistance."},
-        {t: "Goiter", d: "Enlargement of the thyroid gland, often due to iodine deficiency."},
-        {t: "Circadian Rhythms", d: "Patterns of activity associated with the 24-hour cycle of day and night."}
+        {t: "Negative Feedback", d: "The primary mechanism for maintaining hormone homeostasis."},
+        {t: "Target Cells", d: "Cells with specific receptors that allow them to respond to a particular hormone."},
+        {t: "ADH (Antidiuretic Hormone)", d: "Causes kidneys to conserve water; crucial for maintaining blood pressure."},
+        {t: "Oxytocin", d: "Stimulates uterine contractions during labor and milk 'let-down' during nursing."}
     ],
     questions: [
         {
-            q: "Which hormone is responsible for lowering blood glucose levels by facilitating glucose uptake into cells?",
-            opts: ["Glucagon", "Cortisol", "Insulin", "Aldosterone"],
+            q: "Which gland is responsible for secreting hormones that increase the basal metabolic rate?",
+            opts: ["Parathyroid", "Adrenal", "Thyroid", "Pineal"],
             ans: 2,
-            exp: "Insulin, secreted by Beta cells in the pancreas, is the primary hormone that lowers blood sugar."
+            exp: "The Thyroid gland secretes T3 and T4, which are the primary regulators of cellular metabolism."
         },
         {
-            q: "The 'fight-or-flight' response is mediated by hormones secreted from which specific area?",
-            opts: ["Adrenal Cortex", "Adrenal Medulla", "Thyroid Gland", "Anterior Pituitary"],
+            q: "A patient with high blood calcium levels would likely see an increase in which hormone to bring it back to normal?",
+            opts: ["PTH", "Calcitonin", "Aldosterone", "Glucagon"],
             ans: 1,
-            exp: "The Adrenal Medulla secretes catecholamines (Epinephrine/Norepinephrine) during acute stress."
+            exp: "Calcitonin (from the thyroid) 'tones' down blood calcium by depositing it into the bones."
         }
     ]
 };
