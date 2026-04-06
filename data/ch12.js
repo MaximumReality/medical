@@ -1,57 +1,60 @@
-const CH12_DATA = {
-    num: 12,
+const CH14_DATA = {
+    num: 14,
     title: "Blood",
     accentColor: "#c0392b", 
     sections: [
         {
-            label: "BLOOD STRUCTURE & LAYERS",
-            content: "Blood is a specialized connective tissue. When centrifuged, it separates into distinct layers based on density.",
-            image: "img/ch14_blood.PNG", 
+            label: "BLOOD STRUCTURE & COMPOSITION",
+            content: "Blood is a liquid connective tissue. The proportions of its components are essential for clinical diagnosis.",
+            image: "img/ch12_blood.PNG", // The 55/1/45 split diagram
             details: [
-                "**Plasma (55%)**: The straw-colored liquid containing water, proteins (Albumin), and nutrients.",
-                "**Red Blood Cells (approx. 45%)**: Also called Erythrocytes; responsible for carrying oxygen via hemoglobin.",
-                "**The Buffy Coat (<1%)**: A thin middle layer containing **White Blood Cells** and **Platelets**.",
-                "**Hematocrit**: The measurement of the RBC percentage—vital for identifying anemia or polycythemia."
+                "**Plasma (55%)**: Contains 92% water, plus proteins (Albumin), glucose, and electrolytes.",
+                "**Buffy Coat (<1%)**: The thin layer containing **White Blood Cells** and **Platelets**.",
+                "**Red Blood Cells (45%)**: Also called the **Hematocrit**; these transport $O_2$ and $CO_2$.",
+                "**Plasma vs. Serum**: Serum is plasma with the clotting factors (like fibrinogen) removed."
             ]
         },
         {
-            label: "HEMOSTASIS & COAGULATION",
-            content: "The process of stopping bleeding involves a rapid, localized cascade of events.",
+            label: "FORMED ELEMENTS: CLINICAL ROLES",
+            content: "The specific cells within the blood have distinct life cycles and functions.",
+            image: "img/ch14_blood.PNG", // The second blood structure image
             details: [
-                "**Vascular Spasm**: Immediate contraction of the vessel to reduce blood flow.",
-                "**Platelet Plug**: Platelets stick to exposed collagen to form a temporary seal.",
-                "**Coagulation**: The conversion of soluble **Fibrinogen** into insoluble **Fibrin** threads to form a stable clot.",
-                "**Vitamin K**: Required by the liver to synthesize many of these clotting factors."
+                "**Erythrocytes (RBCs)**: Biconcave discs with no nucleus; live about 120 days.",
+                "**Leukocytes (WBCs)**: Divided into Granulocytes (Neutrophils, Eosinophils, Basophils) and Agranulocytes (Monocytes, Lymphocytes).",
+                "**Thrombocytes (Platelets)**: Fragments of megakaryocytes that initiate the clotting process.",
+                "**Hematopoiesis**: Blood cell formation occurring in the **Red Bone Marrow**."
             ]
         },
         {
             label: "ABO & RH BLOOD TYPING",
-            content: "Blood compatibility is determined by antigens on the RBC surface and antibodies in the plasma.",
+            content: "Compatibility is determined by the interaction between donor antigens and recipient antibodies.",
             details: [
-                "**Type O-**: The Universal Donor; lacks A, B, and Rh antigens.",
-                "**Type AB+**: The Universal Recipient; lacks anti-A, anti-B, and anti-Rh antibodies.",
-                "**Agglutination**: The dangerous 'clumping' that occurs if a patient receives the wrong blood type."
+                "**Antigens (Agglutinogens)**: Proteins found on the surface of the Red Blood Cell.",
+                "**Antibodies (Agglutinins)**: Proteins in the plasma that attack foreign blood types.",
+                "**Type O-**: Universal Donor (no antigens).",
+                "**Type AB+**: Universal Recipient (no antibodies).",
+                "**Rh Incompatibility**: Crucial in pregnancy (Erythroblastosis Fetalis) if an Rh- mother carries an Rh+ fetus."
             ]
         }
     ],
     vocab: [
-        {t: "Erythropoietin (EPO)", d: "Kidney hormone that triggers RBC production when oxygen is low."},
-        {t: "Hemoglobin", d: "Iron-rich protein that binds oxygen molecules."},
-        {t: "Leukocytes", d: "White blood cells (Neutrophils, Lymphocytes, etc.) used for defense."},
-        {t: "Thrombocytes", d: "Platelets; cell fragments essential for clotting."}
+        {t: "Hemostasis", d: "The process that stops bleeding (Vascular spasm, Platelet plug, Coagulation)."},
+        {t: "Fibrinogen", d: "A soluble plasma protein converted to insoluble Fibrin during clotting."},
+        {t: "Anemia", d: "A condition where the blood has an abnormally low oxygen-carrying capacity."},
+        {t: "Agglutination", d: "The clumping of RBCs when antigens meet their corresponding antibodies."}
     ],
     questions: [
         {
-            q: "Which plasma protein is most important for maintaining osmotic pressure?",
-            opts: ["Fibrinogen", "Albumin", "Globulin", "Hemoglobin"],
-            ans: 1,
-            exp: "Albumin keeps water in the bloodstream; without it, patients develop severe edema (swelling)."
+            q: "Which blood component is responsible for the 'Buffy Coat' seen after centrifugation?",
+            opts: ["Plasma", "Red Blood Cells", "White Blood Cells and Platelets", "Albumin"],
+            ans: 2,
+            exp: "The Buffy Coat is the thin middle layer containing the immune cells and clotting fragments."
         },
         {
-            q: "A high count of Neutrophils on a blood lab typically indicates:",
-            opts: ["An allergic reaction", "A viral infection", "A bacterial infection", "A parasitic infection"],
-            ans: 2,
-            exp: "Neutrophils are the 'first responders' to bacterial invasions."
+            q: "A person with Type B blood has which antigens and antibodies?",
+            opts: ["B antigens; Anti-A antibodies", "A antigens; Anti-B antibodies", "B antigens; Anti-B antibodies", "No antigens; A and B antibodies"],
+            ans: 0,
+            exp: "You have the antigens of your type, but the antibodies for the type you *don't* have."
         }
     ]
 };
