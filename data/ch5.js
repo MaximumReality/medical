@@ -1,61 +1,59 @@
 const CH5_DATA = {
     num: 5,
-    title: "The Integumentary System",
-    accentColor: "#ff4d4d", // Skin/Blood Red
+    title: "Integumentary System",
+    accentColor: "#e67e22", 
     sections: [
         {
+            label: "MACROSCOPIC SKIN STRUCTURE",
+            content: "The skin is the largest organ, divided into three main regions with distinct physiological roles.",
+            image: "img/ch5_human-skin-layers.JPG", 
+            details: [
+                "**Epidermis**: The thin, outermost protective layer (stratified squamous).",
+                "**Dermis**: The 'True Skin' containing **Blood Vessels**, **Nerves**, and **Hair Follicles**.",
+                "**Hypodermis (Subcutaneous)**: Composed of **Adipocytes** (fat) for insulation and energy storage.",
+                "**Accessory Organs**: Includes **Sebaceous Glands** (oil) and **Sweat Glands** for thermoregulation."
+            ]
+        },
+        {
             label: "LAYERS OF THE EPIDERMIS",
-            content: "The epidermis is keratinized stratified squamous epithelium. It has 4-5 distinct layers.",
+            content: "The epidermis itself is composed of five specialized sub-layers (in thick skin).",
+            image: "img/ch5_skin_layers.PNG", 
             details: [
-                "**Stratum Corneum**: Top layer; dead, flat keratinocytes.",
-                "**Stratum Lucidum**: Found ONLY in thick skin (palms/soles).",
-                "**Stratum Granulosum**: Cells start to die and fill with keratin.",
-                "**Stratum Spinosum**: Provides strength and flexibility.",
-                "**Stratum Basale**: Deepest layer; where mitosis (cell division) occurs.",
-                "**Mnemonic**: **C**ome **L**et's **G**et **S**un **B**urned (Corneum, Lucidum, Granulosum, Spinosum, Basale)."
+                "**Stratum Corneum**: The outermost layer of dead, keratinized cells (Desquamation occurs here).",
+                "**Stratum Lucidum**: Found only in thick skin (palms/soles).",
+                "**Stratum Granulosum**: Where cells begin to lose nuclei and flatten.",
+                "**Stratum Spinosum**: Providing strength and flexibility to the skin.",
+                "**Stratum Basale**: The deepest 'mitotic' layer where new cells are born and melanocytes reside."
             ]
         },
         {
-            label: "DERMIS & HYPODERMIS",
-            content: "The 'true' skin and the underlying fat layer.",
+            label: "THERMOREGULATION & PROTECTION",
+            content: "How the skin maintains homeostasis and protects the body from external threats.",
             details: [
-                "**Papillary Region**: Top 20% of dermis; contains dermal papillae (fingerprints).",
-                "**Reticular Region**: Bottom 80%; contains collagen, elastic fibers, hair follicles, and nerves.",
-                "**Hypodermis (Subcutaneous)**: Not technically part of the skin; stores fat and anchors skin to muscle.",
-                "**Clinical Note**: 3rd-degree burns destroy both the epidermis and dermis, reaching the hypodermis."
-            ]
-        },
-        {
-            label: "SKIN GLANDS",
-            content: "Exocrine glands that help with thermoregulation and protection.",
-            details: [
-                "**Sebaceous (Oil)**: Connected to hair follicles; secretes sebum to prevent drying.",
-                "**Eccrine (Sweat)**: Found all over; cools the body via evaporation.",
-                "**Apocrine (Sweat)**: Found in armpits/groin; stimulated during emotional stress (body odor).",
-                "**Ceruminous**: Modified sweat glands in the ear that produce wax (cerumen)."
+                "**Vasodilation**: Blood vessels in the dermis expand to release heat.",
+                "**Melanin**: Produced by melanocytes in the Basale layer to protect DNA from UV radiation.",
+                "**Keratinization**: The process of cells hardening as they move toward the surface to create a waterproof barrier."
             ]
         }
     ],
     vocab: [
-        {t: "Keratin", d: "Tough, fibrous protein that protects skin and hair."},
-        {t: "Melanin", d: "Pigment produced by melanocytes to protect against UV radiation."},
-        {t: "Albinism", d: "Inability to produce melanin."},
-        {t: "Cyanosis", d: "Bluish skin tint due to lack of oxygen."},
-        {t: "Arrector Pili", d: "Small muscle that causes goosebumps."},
-        {t: "Hemoglobin", d: "Red pigment in blood that gives skin a pinkish hue."}
+        {t: "Desquamation", d: "The natural process of shedding the outermost layer of the epidermis."},
+        {t: "Adipocytes", d: "Fat cells located in the hypodermis that provide cushioning and insulation."},
+        {t: "Sebaceous Gland", d: "Gland that secretes sebum (oil) to keep hair and skin soft."},
+        {t: "Arrector Pili", d: "Smooth muscle that causes 'goosebumps' by pulling hair follicles upright."}
     ],
     questions: [
         {
-            q: "Which layer of the epidermis is found only in the thick skin of the palms and soles?",
-            opts: ["Stratum Corneum", "Stratum Lucidum", "Stratum Basale", "Stratum Spinosum"],
+            q: "Which layer of the skin contains the blood vessels and sensory receptors?",
+            opts: ["Epidermis", "Dermis", "Stratum Corneum", "Stratum Basale"],
             ans: 1,
-            exp: "The Stratum Lucidum is the 'clear' layer unique to thick skin."
+            exp: "The Dermis is highly vascularized and contains the majority of the skin's accessory structures."
         },
         {
-            q: "Which gland is responsible for cooling the body during exercise?",
-            opts: ["Sebaceous", "Apocrine", "Eccrine", "Ceruminous"],
-            ans: 2,
-            exp: "Eccrine sweat glands are the primary thermoregulators of the body."
+            q: "New skin cells are produced in which specific layer of the epidermis?",
+            opts: ["Stratum Corneum", "Stratum Granulosum", "Stratum Spinosum", "Stratum Basale"],
+            ans: 3,
+            exp: "The Stratum Basale is the deepest layer where continuous cell division (mitosis) occurs."
         }
     ]
 };
