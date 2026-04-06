@@ -1,69 +1,57 @@
 const CH12_DATA = {
     num: 12,
     title: "Blood",
-    accentColor: "#c0392b", // Deep Blood Red
+    accentColor: "#c0392b", 
     sections: [
         {
-            label: "BLOOD COMPOSITION & HEMATOCRIT",
-            content: "Blood is a connective tissue consisting of formed elements suspended in a liquid plasma.",
+            label: "BLOOD STRUCTURE & LAYERS",
+            content: "Blood is a specialized connective tissue. When centrifuged, it separates into distinct layers based on density.",
+            image: "img/ch14_blood.PNG", 
             details: [
-                "**Plasma (55%)**: The liquid portion containing water, proteins (Albumin), and electrolytes.",
-                "**Formed Elements (45%)**: Red Blood Cells (RBCs), White Blood Cells (WBCs), and Platelets.",
-                "**Hematocrit (Hct)**: The percentage of RBCs in a blood sample; critical for diagnosing anemia or dehydration.",
-                "**Buffy Coat**: The thin layer of WBCs and platelets found between the plasma and RBCs after centrifuging."
+                "**Plasma (55%)**: The straw-colored liquid containing water, proteins (Albumin), and nutrients.",
+                "**Red Blood Cells (approx. 45%)**: Also called Erythrocytes; responsible for carrying oxygen via hemoglobin.",
+                "**The Buffy Coat (<1%)**: A thin middle layer containing **White Blood Cells** and **Platelets**.",
+                "**Hematocrit**: The measurement of the RBC percentage—vital for identifying anemia or polycythemia."
             ]
         },
         {
-            label: "FORMED ELEMENTS: RBCs, WBCs, & PLATELETS",
-            content: "Each cell type has a specialized clinical function.",
+            label: "HEMOSTASIS & COAGULATION",
+            content: "The process of stopping bleeding involves a rapid, localized cascade of events.",
             details: [
-                "**Erythrocytes (RBCs)**: Biconcave discs containing **Hemoglobin** for oxygen transport. They lack a nucleus to maximize space.",
-                "**Leukocytes (WBCs)**: Provide immunity. Divided into Granulocytes (Neutrophils, Eosinophils, Basophils) and Agranulocytes (Lymphocytes, Monocytes).",
-                "**Thrombocytes (Platelets)**: Cell fragments essential for blood clotting and repairing damaged vessels.",
-                "**Hematopoiesis**: The process of blood cell formation occurring in the **Red Bone Marrow**."
+                "**Vascular Spasm**: Immediate contraction of the vessel to reduce blood flow.",
+                "**Platelet Plug**: Platelets stick to exposed collagen to form a temporary seal.",
+                "**Coagulation**: The conversion of soluble **Fibrinogen** into insoluble **Fibrin** threads to form a stable clot.",
+                "**Vitamin K**: Required by the liver to synthesize many of these clotting factors."
             ]
         },
         {
-            label: "HEMOSTASIS: THE CLOTTING PROCESS",
-            content: "The body's three-step mechanism to stop bleeding (Hemorrhage).",
+            label: "ABO & RH BLOOD TYPING",
+            content: "Blood compatibility is determined by antigens on the RBC surface and antibodies in the plasma.",
             details: [
-                "**1. Vascular Spasm**: Smooth muscle in the vessel wall contracts to reduce blood loss.",
-                "**2. Platelet Plug Formation**: Platelets adhere to exposed collagen and stick to each other.",
-                "**3. Blood Coagulation**: A complex cascade where **Fibrinogen** is converted into **Fibrin** threads to create a mesh-like clot.",
-                "**Vitamin K**: An essential cofactor for the synthesis of many clotting factors in the liver."
-            ]
-        },
-        {
-            label: "BLOOD TYPING & AGGLUTINATION",
-            content: "Blood types are determined by specific antigens on the surface of RBCs.",
-            details: [
-                "**Antigens**: Markers on the cell surface (A, B, or Rh).",
-                "**Antibodies**: Proteins in the plasma that attack foreign antigens.",
-                "**Type O-**: The **Universal Donor** because it lacks A, B, and Rh antigens.",
-                "**Type AB+**: The **Universal Recipient** because it lacks anti-A, anti-B, and anti-Rh antibodies.",
-                "**Agglutination**: The dangerous clumping of RBCs that occurs during a mismatched transfusion."
+                "**Type O-**: The Universal Donor; lacks A, B, and Rh antigens.",
+                "**Type AB+**: The Universal Recipient; lacks anti-A, anti-B, and anti-Rh antibodies.",
+                "**Agglutination**: The dangerous 'clumping' that occurs if a patient receives the wrong blood type."
             ]
         }
     ],
     vocab: [
-        {t: "Erythropoietin (EPO)", d: "A hormone from the kidneys that stimulates RBC production in response to low oxygen."},
-        {t: "Hemoglobin", d: "The iron-containing protein in RBCs that binds oxygen."},
-        {t: "Embolus", d: "A blood clot that breaks loose and travels through the bloodstream."},
-        {t: "Thrombus", d: "An abnormal blood clot that forms in a vessel."},
-        {t: "Anemia", d: "A condition characterized by a deficiency of RBCs or hemoglobin, reducing oxygen-carrying capacity."}
+        {t: "Erythropoietin (EPO)", d: "Kidney hormone that triggers RBC production when oxygen is low."},
+        {t: "Hemoglobin", d: "Iron-rich protein that binds oxygen molecules."},
+        {t: "Leukocytes", d: "White blood cells (Neutrophils, Lymphocytes, etc.) used for defense."},
+        {t: "Thrombocytes", d: "Platelets; cell fragments essential for clotting."}
     ],
     questions: [
         {
-            q: "Which blood type is considered the Universal Donor?",
-            opts: ["Type A+", "Type O-", "Type AB+", "Type B-"],
+            q: "Which plasma protein is most important for maintaining osmotic pressure?",
+            opts: ["Fibrinogen", "Albumin", "Globulin", "Hemoglobin"],
             ans: 1,
-            exp: "Type O- lacks A, B, and Rh antigens, meaning it won't trigger an immune response in any recipient."
+            exp: "Albumin keeps water in the bloodstream; without it, patients develop severe edema (swelling)."
         },
         {
-            q: "What is the primary function of Albumin in the blood plasma?",
-            opts: ["Oxygen transport", "Blood clotting", "Maintaining osmotic pressure", "Immune defense"],
+            q: "A high count of Neutrophils on a blood lab typically indicates:",
+            opts: ["An allergic reaction", "A viral infection", "A bacterial infection", "A parasitic infection"],
             ans: 2,
-            exp: "Albumin is the most abundant plasma protein; it keeps water from leaking out of the capillaries."
+            exp: "Neutrophils are the 'first responders' to bacterial invasions."
         }
     ]
 };
