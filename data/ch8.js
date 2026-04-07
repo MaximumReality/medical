@@ -9,7 +9,7 @@ const CH8_DATA = {
             details: [
                 "**Neuromuscular Junction (NMJ)**: The synapse where Acetylcholine (ACh) is released to trigger a contraction.",
                 "**Acetylcholinesterase (AChE)**: The enzyme that breaks down ACh to allow the muscle to relax.",
-                "**Sarcoplasmic Reticulum**: The specialized ER that stores and releases Calcium ($Ca^{2+}$).",
+                "**Sarcoplasmic Reticulum**: The specialized ER that stores and releases Calcium (Ca2+).",
                 "**Muscle Metabolism**: Creatine Phosphate (15s energy), Anaerobic Glycolysis (Lactic acid), and Aerobic Respiration (Efficiency)."
             ]
         },
