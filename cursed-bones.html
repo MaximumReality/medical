@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TITANIUM BONES</title>
+    <title>SKELETON RELOADED</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,55 +12,58 @@
             --bg: #0a0a0a;
         }
 
-        html, body {
-            height: 100%;
-            overflow: hidden; 
-            position: fixed;
-            width: 100%;
+        body {
             background-color: var(--bg);
             margin: 0;
-            display: flex;
-            flex-direction: column;
+            padding: 0;
             color: white;
             font-family: 'Courier New', monospace;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
         }
 
         #game-header {
-            height: 50px;
-            border-bottom: 2px solid var(--retro-red);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 40px;
             background: #111;
-            flex-shrink: 0;
+            border-bottom: 2px solid var(--retro-red);
+            text-align: center;
+            line-height: 40px;
         }
 
+        /* Fixed height for the skeleton area to ensure feet stay visible */
         #skeleton-container {
             position: relative;
-            width: 100vw;
+            width: 100%;
             max-width: 420px;
+            height: 60vh; /* Takes up 60% of the screen height */
             margin: 0 auto;
-            flex-shrink: 0;
+            background: #050505;
         }
 
         #skeleton-image {
-            width: 100%;
+            height: 100%; /* Scale based on height so feet stay in view */
+            width: auto;
             display: block;
+            margin: 0 auto;
             pointer-events: none;
         }
 
-        /* The Word Bank area at the bottom */
+        /* Fixed height for the word bank */
         #sticker-bank {
-            flex-grow: 1;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35vh; /* Takes up bottom 35% */
             background: #111;
             border-top: 2px solid #333;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            padding: 20px;
+            padding: 15px;
             justify-content: center;
-            align-content: flex-start;
             overflow-y: auto;
+            box-sizing: border-box;
         }
 
         .label-sticker {
@@ -71,45 +74,42 @@
             font-size: 11px;
             border-radius: 4px;
             touch-action: none;
-            z-index: 3000;
-            white-space: nowrap;
+            z-index: 1000;
             text-transform: uppercase;
-            box-shadow: 0 4px 0 #005f73;
         }
 
-        /* When dragging or locked, they need centering */
-        .active-label {
-            position: absolute;
+        /* Specific styles for when it leaves the bank */
+        .dragging {
+            position: absolute !important;
             transform: translate(-50%, -50%);
+            z-index: 5000;
         }
 
         .locked {
             background: var(--neon-green) !important;
             box-shadow: 0 0 15px var(--neon-green);
             pointer-events: none;
-        }
-
-        /* When sitting in the bank */
-        .static {
-            position: relative !important;
-            transform: none !important;
+            position: absolute !important;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
 <body>
 
     <div id="game-header">
-        <div style="color: var(--neon-green);">REANIMATED: <span id="count">0</span>/17</div>
+        REANIMATED: <span id="count">0</span>/17
     </div>
 
     <div id="skeleton-container">
-        <img src="skeleton.JPG" id="skeleton-image">
+        <img src="skeleton.JPG" id="skeleton-image" id="skel-img">
     </div>
 
-    <div id="sticker-bank">
-        </div>
+    <div id="sticker-bank"></div>
 
 <script>
+    // I'm putting the labels in an array to make sure the loop is clean
+    const bones = ["cervical", "patella", "femur", "coccyx", "radius", "coxal", "lumbar", "thoracic", "ribs", "ulna", "humerus", "clavicle", "scapula", "sternum", "mandible", "acromion", "cranium"];
+    
     const config = {
         "cervical": { top: "26.9%", left: "33.9%" },
         "patella": { top: "79.1%", left: "52.1%" },
@@ -132,56 +132,58 @@
 
     const bank = document.getElementById('sticker-bank');
     const container = document.getElementById('skeleton-container');
-    const counter = document.getElementById('count');
     let solvedCount = 0;
 
-    // Initialization
-    window.onload = () => {
-        Object.keys(config).forEach(id => {
-            const div = document.createElement('div');
-            div.className = 'label-sticker static';
-            div.innerText = id.toUpperCase();
-            bank.appendChild(div);
+    // Create labels immediately
+    bones.forEach(bone => {
+        const div = document.createElement('div');
+        div.className = 'label-sticker';
+        div.innerText = bone.toUpperCase();
+        div.id = bone;
+        bank.appendChild(div);
 
-            div.addEventListener('touchstart', (e) => {
-                div.classList.remove('static');
-                div.classList.add('active-label');
-                container.appendChild(div);
-            }, {passive: true});
-
-            div.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const touch = e.targetTouches[0];
-                const rect = container.getBoundingClientRect();
-                
-                let x = ((touch.pageX - rect.left) / rect.width * 100);
-                let y = ((touch.pageY - rect.top) / rect.height * 100);
-                
-                div.style.left = x + '%';
-                div.style.top = y + '%';
-            }, {passive: false});
-
-            div.addEventListener('touchend', (e) => {
-                const touch = e.changedTouches[0];
-                const rect = container.getBoundingClientRect();
-                let fx = ((touch.pageX - rect.left) / rect.width * 100);
-                let fy = ((touch.pageY - rect.top) / rect.height * 100);
-
-                const target = config[id];
-                if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
-                    div.style.left = target.left;
-                    div.style.top = target.top;
-                    div.classList.add('locked');
-                    solvedCount++;
-                    counter.innerText = solvedCount;
-                } else {
-                    div.classList.remove('active-label');
-                    div.classList.add('static');
-                    bank.appendChild(div);
-                }
-            });
+        div.addEventListener('touchstart', function(e) {
+            if (this.classList.contains('locked')) return;
+            this.classList.add('dragging');
+            container.appendChild(this);
         });
-    };
+
+        div.addEventListener('touchmove', function(e) {
+            if (this.classList.contains('locked')) return;
+            e.preventDefault();
+            const touch = e.targetTouches[0];
+            const rect = container.getBoundingClientRect();
+            
+            let x = ((touch.pageX - rect.left) / rect.width * 100);
+            let y = ((touch.pageY - rect.top) / rect.height * 100);
+            
+            this.style.left = x + '%';
+            this.style.top = y + '%';
+        }, {passive: false});
+
+        div.addEventListener('touchend', function(e) {
+            if (this.classList.contains('locked')) return;
+            const touch = e.changedTouches[0];
+            const rect = container.getBoundingClientRect();
+            let fx = ((touch.pageX - rect.left) / rect.width * 100);
+            let fy = ((touch.pageY - rect.top) / rect.height * 100);
+
+            const target = config[this.id];
+            if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
+                this.style.left = target.left;
+                this.style.top = target.top;
+                this.classList.add('locked');
+                this.classList.remove('dragging');
+                solvedCount++;
+                document.getElementById('count').innerText = solvedCount;
+            } else {
+                this.classList.remove('dragging');
+                this.style.left = 'auto';
+                this.style.top = 'auto';
+                bank.appendChild(this);
+            }
+        });
+    });
 </script>
 </body>
 </html>
