@@ -43,7 +43,27 @@ const CH12_DATA = {
         {t: "Erythropoietin (EPO)", d: "Kidney hormone that stimulates red bone marrow to produce RBCs."},
         {t: "Agglutination", d: "The clumping of red blood cells during an incompatible transfusion."}
     ],
-    questions: [
+        questions: [
+        {
+            q: "Blood traveling from the Right Ventricle goes through which valve next?",
+            opts: ["Bicuspid (Mitral)", "Aortic", "Pulmonary", "Tricuspid"],
+            ans: 2,
+            exp: "The Pulmonary valve leads to the lungs from the right side of the heart."
+        },
+        {
+            q: "The natural pacemaker of the heart is the:",
+            opts: ["AV Node", "Bundle of His", "SA Node", "Purkinje Fibers"],
+            ans: 2,
+            exp: "The SA Node (Sinoatrial) initiates the electrical heartbeat."
+        },
+        {
+            q: "Which chamber of the heart has the thickest muscular wall?",
+            opts: ["Right Atrium", "Left Atrium", "Right Ventricle", "Left Ventricle"],
+            ans: 3,
+            exp: "The Left Ventricle must pump blood to the entire body, requiring more force."
+        },
+    
+
         {
             q: "Which specific component of blood is found within the 'Buffy Coat'?",
             opts: ["Plasma Proteins", "Red Blood Cells", "Platelets and White Blood Cells", "Glucose and Electrolytes"],
