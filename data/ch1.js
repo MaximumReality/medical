@@ -51,6 +51,19 @@ const CH1_DATA = {
             ans: 1,
             exp: "Supine means face up (think: 'on your Spine'). Prone is face down."
         },
+                {
+            q: "The wrist is ________ to the elbow.",
+            opts: ["Proximal", "Distal", "Superior", "Medial"],
+            ans: 1,
+            exp: "Distal means further from the point of attachment (the shoulder/trunk)."
+        },
+        {
+            q: "Which body cavity contains the brain?",
+            opts: ["Thoracic", "Abdominal", "Cranial", "Pelvic"],
+            ans: 2,
+            exp: "The Cranial cavity protects the brain within the skull."
+        },
+
         {
             q: "Which plane divides the heart into right and left sides?",
             opts: ["Frontal", "Transverse", "Sagittal", "Coronal"],
