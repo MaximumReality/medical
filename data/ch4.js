@@ -27,6 +27,7 @@ const CH4_DATA = {
         {
             label: "MUSCLE & NERVOUS TISSUE",
             content: "Excitable tissues that respond to stimuli.",
+            image: "img/ch4_types-of-tissues.JPG"
             details: [
                 "**Skeletal Muscle**: Striated, voluntary, multinucleated.",
                 "**Cardiac Muscle**: Striated, involuntary, contains Intercalated Discs.",
