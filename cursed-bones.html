@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CURSED BONES: ARCADE EDITION</title>
+    <title>CURSED BONES: FULL SCREEN</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -26,7 +26,7 @@
 
         #game-header {
             width: 100%;
-            height: 60px;
+            height: 50px;
             background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
@@ -35,38 +35,20 @@
             z-index: 2000;
         }
 
-        #main-stage {
-            display: flex;
-            width: 100vw;
-            height: calc(100vh - 60px);
-        }
-
-        .side-bank {
-            width: 22%;
-            background: #111;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 10px 5px;
-            overflow-y: auto;
-            border: 1px solid #333;
-            z-index: 10; /* Lower than the skeleton area */
-        }
-
         #game-container {
             position: relative;
-            width: 56%;
+            width: 100vw;
+            height: calc(100vh - 50px);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            background: #050505;
-            z-index: 20; /* Higher than banks */
+            overflow: hidden;
         }
 
         #skeleton-wrapper {
             position: relative;
             width: 100%;
-            max-width: 420px;
+            max-width: 420px; /* Keeps him from getting too stretched on wide phones */
+            height: 100%;
         }
 
         #skeleton-image {
@@ -75,15 +57,33 @@
             pointer-events: none;
         }
 
+        /* SIDE DOCKS: They float OVER the image instead of pushing it */
+        .side-dock {
+            position: absolute;
+            top: 0;
+            width: 80px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* See-through so he stays big */
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 4px;
+            overflow-y: auto;
+            z-index: 50;
+        }
+
+        #dock-left { left: 0; border-right: 1px solid rgba(255,255,255,0.1); }
+        #dock-right { right: 0; border-left: 1px solid rgba(255,255,255,0.1); }
+
         .label-sticker {
-            padding: 6px;
+            padding: 6px 4px;
             background: var(--neon-blue);
             color: black;
             font-weight: bold;
-            font-size: 9px;
+            font-size: 8px;
             border-radius: 3px;
             touch-action: none;
-            z-index: 1000 !important; /* Force to the very top */
+            z-index: 1000;
             text-align: center;
             text-transform: uppercase;
             box-shadow: 2px 2px 0px #005f73;
@@ -112,20 +112,17 @@
 <body>
 
     <div id="game-header">
-        <div style="color: var(--neon-blue); font-size: 12px;">SYSTEM: ACTIVE</div>
-        <div id="progress">Bones: <span id="count">0</span>/17</div>
+        <div id="progress">REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
-    <div id="main-stage">
-        <div id="bank-left" class="side-bank"></div>
+    <div id="game-container">
+        <div id="dock-left" class="side-dock"></div>
 
-        <div id="game-container">
-            <div id="skeleton-wrapper">
-                <img src="skeleton.JPG" id="skeleton-image">
-                </div>
+        <div id="skeleton-wrapper">
+            <img src="skeleton.JPG" id="skeleton-image">
         </div>
 
-        <div id="bank-right" class="side-bank"></div>
+        <div id="dock-right" class="side-dock"></div>
     </div>
 
     <div id="win-overlay">
@@ -154,8 +151,8 @@
         "cranium": { top: "15.3%", left: "43.1%", side: "left" }
     };
 
-    const leftBank = document.getElementById('bank-left');
-    const rightBank = document.getElementById('bank-right');
+    const leftDock = document.getElementById('dock-left');
+    const rightDock = document.getElementById('dock-right');
     const wrapper = document.getElementById('skeleton-wrapper');
     let solvedCount = 0;
 
@@ -165,11 +162,10 @@
         div.className = 'label-sticker static';
         div.innerText = id.replace('_', ' ');
         
-        if(config[id].side === "left") leftBank.appendChild(div);
-        else rightBank.appendChild(div);
+        if(config[id].side === "left") leftDock.appendChild(div);
+        else rightDock.appendChild(div);
 
         div.addEventListener('touchstart', (e) => {
-            // PORTAL: Move the element to the skeleton-wrapper so it's on top
             div.classList.remove('static');
             div.style.position = 'absolute';
             wrapper.appendChild(div); 
@@ -179,10 +175,8 @@
             e.preventDefault();
             const touch = e.targetTouches[0];
             const rect = wrapper.getBoundingClientRect();
-            
             let x = ((touch.pageX - rect.left) / rect.width * 100);
             let y = ((touch.pageY - rect.top) / rect.height * 100);
-            
             div.style.left = x + '%';
             div.style.top = y + '%';
         }, {passive: false});
@@ -194,11 +188,8 @@
             let finalY = ((touch.pageY - rect.top) / rect.height * 100);
 
             const target = config[div.id];
-            const tX = parseFloat(target.left);
-            const tY = parseFloat(target.top);
-
-            // Precision check
-            if (Math.abs(finalX - tX) < 6 && Math.abs(finalY - tY) < 6) {
+            if (Math.abs(finalX - parseFloat(target.left)) < 6 && 
+                Math.abs(finalY - parseFloat(target.top)) < 6) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
@@ -206,10 +197,9 @@
                 document.getElementById('count').innerText = solvedCount;
                 if (solvedCount === 17) document.getElementById('win-overlay').style.display = 'flex';
             } else {
-                // RETURN: Move it back to its original bank
                 div.classList.add('static');
-                if(config[div.id].side === "left") leftBank.appendChild(div);
-                else rightBank.appendChild(div);
+                if(config[div.id].side === "left") leftDock.appendChild(div);
+                else rightDock.appendChild(div);
             }
         });
     });
