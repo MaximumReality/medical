@@ -18,6 +18,7 @@ const CH9_DATA = {
         {
             label: "SPINAL CORD & REFLEX ARCS",
             content: "The spinal cord serves as a conduction pathway and a center for rapid, involuntary reflexes.",
+            image: "img/ch9_cns.JPG",
             details: [
                 "**Gray Matter**: The butterfly-shaped center; **Posterior Horns** receive sensory input, **Anterior Horns** send motor output.",
                 "**Dorsal Root Ganglion**: Contains cell bodies of sensory neurons entering the cord.",
