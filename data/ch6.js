@@ -17,7 +17,7 @@ const CH6_DATA = {
         {
             label: "COMPACT VS. SPONGY BONE",
             content: "Bones are not solid blocks; they have specific internal architectures.",
-            image: "img/ch6_compact-vs-spongy.JPG",
+            image: "img/ch6_compact_vs_spongy.JPG",
             details: [
                 "**Compact Bone**: The hard outer layer. Organized into **Osteons** (Haversian systems).",
                 "**Spongy (Cancellous) Bone**: Found at the ends of long bones. Organized into **Trabeculae** (struts) that house red bone marrow.",
