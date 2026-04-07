@@ -49,12 +49,13 @@
 
 
 
-
-/* Correct answer feedback */
-.label-box.correct {
-    border-color: #2ecc71;
-    background: rgba(46, 204, 113, 0.15);
+.label-box {
+    touch-action: none;      /* Stops the browser from taking over the touch */
+    user-select: none;       /* Prevents highlighting text while dragging */
+    cursor: move;
+    -webkit-user-select: none; 
 }
+
 
 /* Incorrect answer feedback */
 .label-box.incorrect {
@@ -326,6 +327,13 @@ labels.forEach(label => {
     });
 });
 
+   // Loading screen fade-out
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loading-screen").classList.add("hidden");
+    }, 2000);
+});
+  </script>
 
 </body>
   <a href="index.html" id="terminal-link">
