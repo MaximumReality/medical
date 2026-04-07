@@ -76,40 +76,38 @@ allChapters.forEach(chapter => {
     }
 });
 
-// 3. RENDER THE QUESTIONS
+// 3. SHUFFLE ONCE, THEN RENDER
 const container = document.getElementById('questions-container');
-let currentCat = "";
+
+// Shuffle the array ONE time before we start printing questions
+examData.sort(() => Math.random() - 0.5);
 
 examData.forEach((item, index) => {
-    examData.sort(() => Math.random() - 0.5);
-    if (item.category !== currentCat) {
-        currentCat = item.category;
-        const head = document.createElement('div');
-        head.className = 'section-head';
-        head.innerText = currentCat;
-        container.appendChild(head);
-    }
-
+    // We removed the chapter headers here because a random exam 
+    // mixes chapters up (which is better for testing her brain!)
+    
     const block = document.createElement('div');
     block.className = 'question-block';
     
     let optsHtml = "";
-    item.opts.forEach((opt, i) => {
+    item.opts.forEach((iOpt, i) => {
         optsHtml += `
             <label id="label-${index}-${i}">
-                <input type="radio" name="q${index}" value="${i}"> ${opt}
+                <input type="radio" name="q${index}" value="${i}"> ${iOpt}
             </label>`;
     });
 
     block.innerHTML = `
+        <div style="color:#718096; font-size:0.8rem; margin-bottom:5px;">${item.category}</div>
         <h3>${index + 1}. ${item.q}</h3>
         ${optsHtml}
-        <div class="explanation" id="exp-${index}">
+        <div class="explanation" id="exp-${index}" style="display:none; margin-top:15px; padding:15px; background:#e6fffa; border-left:5px solid #38b2ac; border-radius:4px;">
             <strong>Rationale:</strong> ${item.exp}
         </div>
     `;
     container.appendChild(block);
 });
+
 
 // 4. GRADING LOGIC
 function gradeExam() {
