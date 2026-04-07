@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: RESTORED</title>
+    <title>CURSED BONES: REPAIRED</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,7 +12,7 @@
             --bg: #0a0a0a;
         }
 
-        /* 1. RESTORE SCROLL LOCK */
+        /* Prevent scrolling and stretching */
         html, body {
             height: 100%;
             overflow: hidden; 
@@ -22,37 +22,33 @@
             color: white;
             font-family: 'Courier New', monospace;
             margin: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         #game-header {
-            height: 60px;
+            height: 50px;
             background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            flex-shrink: 0;
         }
 
-        /* 2. RESTORE YOUR EXACT CALIBRATION SIZE */
+        /* Match your 420px calibration exactly */
         #skeleton-container {
             position: relative;
             width: 100vw;
             max-width: 420px;
-            /* 80px margin matches your calibration exactly */
-            margin: 20px auto 0; 
+            margin: 10px auto;
             border: 1px solid #333;
-            background: #050505;
+            flex-grow: 0; /* Don't let it stretch */
         }
 
-        #skeleton-image { 
-            width: 100%; 
-            display: block; 
-            pointer-events: none; 
-            opacity: 0.9; 
-        }
+        #skeleton-image { width: 100%; display: block; pointer-events: none; }
 
-        /* 3. RESTORE LABEL STYLES */
+        /* FIXED: Labels will no longer stretch into skyscrapers */
         .label-sticker {
             position: absolute;
             padding: 4px 8px;
@@ -65,39 +61,38 @@
             z-index: 1000;
             white-space: nowrap;
             text-transform: uppercase;
-            /* Added this to fix the "Center" drop point */
             transform: translate(-50%, -50%);
+            /* Prevents the 'skyscraper' look */
+            height: auto !important; 
+            width: auto !important;
         }
 
         .label-sticker.locked {
             background: var(--neon-green) !important;
             box-shadow: 0 0 10px var(--neon-green);
             pointer-events: none;
-            z-index: 500;
         }
 
-        /* 4. RESTORE WORD BANK AT BOTTOM */
+        /* Clean Word Bank */
         #sticker-bank {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 180px;
+            flex-grow: 1; /* Fills the bottom room */
+            background: #111;
+            border-top: 2px solid #333;
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             justify-content: center;
+            align-content: flex-start;
             padding: 15px;
-            background: #111;
-            border-top: 2px solid #333;
             overflow-y: auto;
-            box-sizing: border-box;
         }
 
+        /* Stickers in the bank don't use absolute positioning */
         .static { 
             position: relative !important; 
+            transform: none !important; 
             top: auto !important; 
             left: auto !important; 
-            transform: none !important; 
         }
 
         #win-overlay {
@@ -120,7 +115,7 @@
 
     <div id="skeleton-container">
         <img src="skeleton.JPG" id="skeleton-image">
-        </div>
+    </div>
 
     <div id="sticker-bank"></div>
 
@@ -156,7 +151,6 @@
 
     Object.keys(config).forEach(id => {
         const div = document.createElement('div');
-        div.id = id;
         div.className = 'label-sticker static';
         div.innerText = id.toUpperCase();
         bank.appendChild(div);
@@ -183,8 +177,8 @@
             let fx = ((touch.pageX - rect.left) / rect.width * 100);
             let fy = ((touch.pageY - rect.top) / rect.height * 100);
 
-            const target = config[div.id];
-            // Snap check (7% buffer)
+            const target = config[id];
+            // Snap check
             if (Math.abs(fx - parseFloat(target.left)) < 7 && Math.abs(fy - parseFloat(target.top)) < 7) {
                 div.style.left = target.left;
                 div.style.top = target.top;
