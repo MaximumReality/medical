@@ -60,6 +60,19 @@ const CH2_DATA = {
             ans: 2,
             exp: "Iodine is required by the thyroid; a deficiency can lead to a goiter."
         },
+                {
+            q: "A patient has a blood pH of 7.25. This condition is clinically defined as:",
+            opts: ["Alkalosis", "Acidosis", "Neutrality", "Homeostatic"],
+            ans: 1,
+            exp: "Normal blood pH is 7.35–7.45. Anything below 7.35 is Acidosis."
+        },
+        {
+            q: "Which organic molecule is the 'primary' energy source for cells to make ATP?",
+            opts: ["Proteins", "Glucose (Carbohydrate)", "Triglycerides", "Steroids"],
+            ans: 1,
+            exp: "Glucose is the preferred fuel for cellular respiration."
+        },
+
         {
             q: "What is the strongest type of chemical bond found in organic molecules like DNA?",
             opts: ["Ionic", "Hydrogen", "Covalent", "Electrostatic"],
