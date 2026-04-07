@@ -1,4 +1,4 @@
-Const CH5_DATA = {
+const CH5_DATA = {
     num: 5,
     title: "The Tissue Level",
     accentColor: "#ff9500", // "Histology Orange"
