@@ -254,8 +254,17 @@
 </head>
 <body>
 
+<!-- ── CURSED SKELETEN INTRO ── -->
+
+<div id="loading-screen">
+    <img src="cursed_skeleten.JPG" id="skeleten-img" alt="Cursed Skeleten">
+    <div id="skeleten-title">SKELETEN</div>
+    <div id="skeleten-sub">by Grok AI &mdash; a masterpiece</div>
+    <div id="skeleten-caption">fixing skeleten's labels...</div>
+</div>
+
 <div id="game-header">
-    Skeleton: <span id="count">0</span>/17d
+    Skeleton Bones: <span id="count">0</span>/17
 </div>
 
 <div id="skeleton-container">
@@ -404,6 +413,19 @@ function moveDraggingEl(el, cx, cy) {
     el.style.left = cx + 'px';
     el.style.top  = cy + 'px';
 }
+
+// ─────────────────────────────────────────────
+// Cursed Skeleten intro — fade out after 2.5s
+// ─────────────────────────────────────────────
+// Always show for 2.5s regardless of image load state
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const screen = document.getElementById('loading-screen');
+        screen.classList.add('hidden');
+        // fully remove from layout after fade completes
+        setTimeout(() => screen.style.display = 'none', 800);
+    }, 2500);
+});
 
 // ─────────────────────────────────────────────
 // Reset
