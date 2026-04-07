@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,164 +13,338 @@
             --bg: #0a0a0a;
         }
 
-        body {
-            background-color: var(--bg);
-            margin: 0;
-            color: white;
-            font-family: 'Courier New', monospace;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+```
+    * { box-sizing: border-box; }
 
-        #game-header {
-            height: 50px;
-            background: #111;
-            border-bottom: 2px solid var(--retro-red);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-        }
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
 
-        #skeleton-container {
-            position: relative;
-            width: 100vw;
-            max-width: 420px;
-            margin: 0 auto;
-            flex-shrink: 0;
-            line-height: 0; /* Kills the tiny gap under the image */
-        }
+    body {
+        background-color: var(--bg);
+        color: white;
+        font-family: 'Courier New', monospace;
+        display: flex;
+        flex-direction: column;
+        height: 100dvh; /* dynamic viewport height — critical on iPhone */
+    }
 
-        #skeleton-image {
-            width: 100%;
-            display: block;
-            pointer-events: none;
-        }
+    /* ── HEADER ── */
+    #game-header {
+        height: 50px;
+        background: #111;
+        border-bottom: 2px solid var(--retro-red);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
 
-        #sticker-bank {
-            flex-grow: 1;
-            background: #111;
-            border-top: 2px solid #333;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 20px;
-            justify-content: center;
-            overflow-y: auto;
-        }
+    /* ── SKELETON STAGE ── */
+    #skeleton-container {
+        position: relative;
+        flex-shrink: 0;
+        /* Fill whatever height is left after header + bank */
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        overflow: hidden;
+    }
 
-        .label-sticker {
-            padding: 8px 12px;
-            background: var(--neon-blue);
-            color: black;
-            font-weight: bold;
-            font-size: 11px;
-            border-radius: 4px;
-            touch-action: none;
-            z-index: 1000;
-            text-transform: uppercase;
-        }
+    #skeleton-image {
+        display: block;
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+        pointer-events: none;
+        user-select: none;
+    }
 
-        /* Essential for alignment */
-        .dragging, .locked {
-            position: absolute !important;
-            transform: translate(-50%, -50%);
-        }
+    /* The invisible overlay that exactly covers the rendered image */
+    #hit-layer {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        height: 100%;
+        /* width is set by JS once image loads */
+    }
 
-        .locked {
-            background: var(--neon-green) !important;
-            box-shadow: 0 0 15px var(--neon-green);
-            pointer-events: none;
-        }
-    </style>
+    /* ── STICKER BANK ── */
+    #sticker-bank {
+        height: 120px;
+        min-height: 100px;
+        flex-shrink: 0;
+        background: #111;
+        border-top: 2px solid #333;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 12px 16px;
+        justify-content: center;
+        align-content: flex-start;
+        overflow-y: auto;
+    }
+
+    /* ── STICKER STYLE ── */
+    .label-sticker {
+        padding: 7px 11px;
+        background: var(--neon-blue);
+        color: #000;
+        font-weight: bold;
+        font-size: 11px;
+        border-radius: 4px;
+        touch-action: none;
+        user-select: none;
+        white-space: nowrap;
+        cursor: grab;
+        transition: box-shadow 0.1s;
+    }
+
+    /* While dragging: pulled out of flow, centered on finger */
+    .dragging {
+        position: fixed !important;
+        transform: translate(-50%, -50%) scale(1.1) !important;
+        z-index: 9999;
+        box-shadow: 0 0 20px var(--neon-blue);
+        pointer-events: none;
+    }
+
+    /* Locked onto skeleton */
+    .locked {
+        position: absolute !important;
+        transform: translate(-50%, -50%) !important;
+        background: var(--neon-green) !important;
+        box-shadow: 0 0 12px var(--neon-green);
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    /* ── WIN SCREEN ── */
+    #win-screen {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.88);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        gap: 20px;
+    }
+    #win-screen.show { display: flex; }
+    #win-screen h1 {
+        color: var(--neon-green);
+        font-size: 2rem;
+        letter-spacing: 4px;
+        text-shadow: 0 0 30px var(--neon-green);
+        margin: 0;
+        animation: pulse 1s infinite alternate;
+    }
+    #win-screen p {
+        color: #aaa;
+        font-size: 12px;
+        letter-spacing: 2px;
+        margin: 0;
+    }
+    #reset-btn {
+        padding: 14px 32px;
+        background: var(--retro-red);
+        color: white;
+        border: none;
+        font-family: 'Courier New', monospace;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+    @keyframes pulse {
+        from { text-shadow: 0 0 20px var(--neon-green); }
+        to   { text-shadow: 0 0 50px var(--neon-green), 0 0 80px var(--neon-green); }
+    }
+</style>
+```
+
 </head>
 <body>
 
-    <div id="game-header">
-        REANIMATED: <span id="count">0</span>/17
-    </div>
+<div id="game-header">
+    REANIMATED: <span id="count">0</span>/17
+</div>
 
-    <div id="skeleton-container">
-        <img src="skeleton.JPG" id="skeleton-image">
-    </div>
+<div id="skeleton-container">
+    <img src="skeleton.JPG" id="skeleton-image" alt="skeleton">
+    <!-- locked stickers go here, positioned relative to #hit-layer -->
+    <div id="hit-layer"></div>
+</div>
 
-    <div id="sticker-bank"></div>
+<div id="sticker-bank"></div>
+
+<div id="win-screen">
+    <h1>FULLY REANIMATED</h1>
+    <p>ALL 17 BONES IDENTIFIED</p>
+    <button id="reset-btn">PLAY AGAIN</button>
+</div>
 
 <script>
-    const config = {
-        "cervical": { top: "26.9%", left: "33.9%" },
-        "patella": { top: "79.1%", left: "52.1%" },
-        "femur": { top: "68.1%", left: "34.6%" },
-        "coccyx": { top: "56.6%", left: "43.4%" },
-        "radius": { top: "53.3%", left: "71.6%" },
-        "coxal": { top: "53.5%", left: "53.3%" },
-        "lumbar": { top: "50.2%", left: "37.7%" },
-        "thoracic": { top: "43.1%", left: "35.1%" },
-        "ribs": { top: "39.5%", left: "54.5%" },
-        "ulna": { top: "54.3%", left: "27.7%" },
-        "humerus": { top: "38.7%", left: "25.6%" },
-        "clavicle": { top: "28.8%", left: "53.8%" },
-        "scapula": { top: "31.9%", left: "55.0%" },
-        "sternum": { top: "33.0%", left: "43.1%" },
-        "mandible": { top: "21.0%", left: "31.5%" },
-        "acromion": { top: "29.2%", left: "27.7%" },
-        "cranium": { top: "15.3%", left: "43.1%" }
-    };
+// ─────────────────────────────────────────────
+// CONFIG: % positions relative to the skeleton image
+// ─────────────────────────────────────────────
+const config = {
+    "cranium":   { top: "10.5%", left: "50.0%" },
+    "mandible":  { top: "16.8%", left: "50.0%" },
+    "clavicle":  { top: "22.5%", left: "58.5%" },
+    "acromion":  { top: "22.5%", left: "34.0%" },
+    "scapula":   { top: "27.0%", left: "63.0%" },
+    "sternum":   { top: "28.5%", left: "50.0%" },
+    "humerus":   { top: "33.5%", left: "25.0%" },
+    "ribs":      { top: "32.0%", left: "55.0%" },
+    "thoracic":  { top: "35.0%", left: "50.0%" },
+    "lumbar":    { top: "44.5%", left: "50.0%" },
+    "ulna":      { top: "47.5%", left: "24.0%" },
+    "radius":    { top: "47.0%", left: "73.0%" },
+    "coxal":     { top: "51.5%", left: "50.0%" },
+    "coccyx":    { top: "55.0%", left: "50.0%" },
+    "femur":     { top: "66.0%", left: "40.0%" },
+    "patella":   { top: "77.0%", left: "59.0%" },
+    "cervical":  { top: "19.5%", left: "50.0%" }
+};
 
-    const bank = document.getElementById('sticker-bank');
-    const container = document.getElementById('skeleton-container');
-    let solvedCount = 0;
+const SNAP_THRESHOLD = 8; // % — how close you need to get
 
-    Object.keys(config).forEach(id => {
-        const div = document.createElement('div');
-        div.className = 'label-sticker';
-        div.innerText = id.toUpperCase();
-        div.id = id;
-        bank.appendChild(div);
+const bank       = document.getElementById('sticker-bank');
+const container  = document.getElementById('skeleton-container');
+const hitLayer   = document.getElementById('hit-layer');
+const img        = document.getElementById('skeleton-image');
+const countEl    = document.getElementById('count');
+const winScreen  = document.getElementById('win-screen');
+let solvedCount  = 0;
 
-        div.addEventListener('touchstart', function(e) {
-            this.classList.add('dragging');
-            container.appendChild(this);
-        });
+// ─────────────────────────────────────────────
+// After image loads, size the hit-layer to match
+// the rendered image exactly (it may be pillarboxed)
+// ─────────────────────────────────────────────
+function syncHitLayer() {
+    const ir = img.getBoundingClientRect();
+    hitLayer.style.width  = ir.width  + 'px';
+    hitLayer.style.height = ir.height + 'px';
+    // re-centre relative to container
+    const cr = container.getBoundingClientRect();
+    hitLayer.style.left = (ir.left - cr.left) + 'px';
+    hitLayer.style.top  = (ir.top  - cr.top)  + 'px';
+    hitLayer.style.transform = 'none';
+}
 
-        div.addEventListener('touchmove', function(e) {
-            e.preventDefault();
-            const touch = e.targetTouches[0];
-            const rect = container.getBoundingClientRect();
-            
-            // MATH CHECK: pageX minus the actual left-edge of the skeleton
-            let x = ((touch.pageX - rect.left) / rect.width * 100);
-            let y = ((touch.pageY - rect.top) / rect.height * 100);
-            
-            this.style.left = x + '%';
-            this.style.top = y + '%';
-        }, {passive: false});
+img.addEventListener('load', syncHitLayer);
+window.addEventListener('resize', syncHitLayer);
+// belt-and-suspenders: run after a frame in case browser hasn't painted yet
+requestAnimationFrame(syncHitLayer);
 
-        div.addEventListener('touchend', function(e) {
-            const touch = e.changedTouches[0];
-            const rect = container.getBoundingClientRect();
-            let fx = ((touch.pageX - rect.left) / rect.width * 100);
-            let fy = ((touch.pageY - rect.top) / rect.height * 100);
+// ─────────────────────────────────────────────
+// Convert a viewport-space touch point → % inside the skeleton image
+// ─────────────────────────────────────────────
+function touchToPercent(clientX, clientY) {
+    const ir = img.getBoundingClientRect();
+    const px = ((clientX - ir.left) / ir.width)  * 100;
+    const py = ((clientY - ir.top)  / ir.height) * 100;
+    return { px, py };
+}
 
-            const target = config[this.id];
-            // If Cranium is landing at the nose, we need to nudge these targets!
-            if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
-                this.style.left = target.left;
-                this.style.top = target.top;
-                this.classList.add('locked');
-                this.classList.remove('dragging');
-                solvedCount++;
-                document.getElementById('count').innerText = solvedCount;
-            } else {
-                this.classList.remove('dragging');
-                this.style.left = 'auto';
-                this.style.top = 'auto';
-                bank.appendChild(this);
-            }
-        });
+// ─────────────────────────────────────────────
+// Build stickers
+// ─────────────────────────────────────────────
+Object.keys(config).forEach(id => {
+    const div = document.createElement('div');
+    div.className = 'label-sticker';
+    div.textContent = id.toUpperCase();
+    div.dataset.id  = id;
+    bank.appendChild(div);
+
+    div.addEventListener('touchstart', onTouchStart, { passive: true });
+    div.addEventListener('touchmove',  onTouchMove,  { passive: false });
+    div.addEventListener('touchend',   onTouchEnd,   { passive: true  });
+});
+
+// ─────────────────────────────────────────────
+// Touch handlers — use clientX/Y throughout (viewport coords)
+// ─────────────────────────────────────────────
+function onTouchStart(e) {
+    const touch = e.touches[0];
+    this.classList.add('dragging');
+    // Move to body so it isn't clipped by the bank's overflow
+    document.body.appendChild(this);
+    moveDraggingEl(this, touch.clientX, touch.clientY);
+}
+
+function onTouchMove(e) {
+    e.preventDefault();
+    const touch = e.targetTouches[0];
+    moveDraggingEl(this, touch.clientX, touch.clientY);
+}
+
+function onTouchEnd(e) {
+    const touch = e.changedTouches[0];
+    this.classList.remove('dragging');
+
+    const { px, py } = touchToPercent(touch.clientX, touch.clientY);
+    const target = config[this.dataset.id];
+    const tx = parseFloat(target.left);
+    const ty = parseFloat(target.top);
+
+    if (Math.abs(px - tx) < SNAP_THRESHOLD && Math.abs(py - ty) < SNAP_THRESHOLD) {
+        // SNAP: place inside hit-layer (which is sized to the image)
+        this.style.left = target.left;
+        this.style.top  = target.top;
+        this.style.transform = '';
+        this.classList.add('locked');
+        hitLayer.appendChild(this);
+
+        solvedCount++;
+        countEl.textContent = solvedCount;
+
+        if (solvedCount === Object.keys(config).length) {
+            setTimeout(() => winScreen.classList.add('show'), 400);
+        }
+    } else {
+        // Return to bank
+        this.style.left = '';
+        this.style.top  = '';
+        this.style.transform = '';
+        bank.appendChild(this);
+    }
+}
+
+function moveDraggingEl(el, cx, cy) {
+    el.style.left = cx + 'px';
+    el.style.top  = cy + 'px';
+}
+
+// ─────────────────────────────────────────────
+// Reset
+// ─────────────────────────────────────────────
+document.getElementById('reset-btn').addEventListener('click', () => {
+    solvedCount = 0;
+    countEl.textContent = 0;
+    winScreen.classList.remove('show');
+
+    // Pull all locked stickers back into bank
+    document.querySelectorAll('.label-sticker').forEach(el => {
+        el.classList.remove('locked', 'dragging');
+        el.style.left = el.style.top = el.style.transform = '';
+        bank.appendChild(el);
     });
+});
 </script>
+
 </body>
 </html>
