@@ -18,10 +18,10 @@ const CH3_DATA = {
             label: "TRANSPORT: PASSIVE VS. ACTIVE",
             content: "Cells must move nutrients in and waste out. This is either 'free' (Passive) or 'paid for' (Active).",
             details: [
-                "**Simple Diffusion**: Small, nonpolar molecules (like $O_2$ and $CO_2$) passing directly through the lipids.",
+                "**Simple Diffusion**: Small, nonpolar molecules (like O2 and CO2) passing directly through the lipids.",
                 "**Facilitated Diffusion**: Requires a protein 'doorway' but no energy (e.g., Glucose moving into a cell).",
                 "**Osmosis**: The movement of water. **Clinical Note**: If a patient is dehydrated, we give Isotonic IV fluids to keep their RBCs from shrinking or bursting.",
-                "**Active Transport**: Uses **ATP** to pump ions (like the $Na^+/K^+$ pump) against their concentration gradient."
+                "**Active Transport**: Uses **ATP** to pump ions (like the Na+/K+ pump) against their concentration gradient."
             ]
         },
         {
