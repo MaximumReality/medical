@@ -12,7 +12,6 @@
             --bg: #0a0a0a;
         }
 
-        /* Essential Scroll Lock */
         html, body {
             height: 100%;
             overflow: hidden; 
@@ -22,6 +21,8 @@
             margin: 0;
             display: flex;
             flex-direction: column;
+            color: white;
+            font-family: 'Courier New', monospace;
         }
 
         #game-header {
@@ -31,17 +32,14 @@
             justify-content: center;
             align-items: center;
             background: #111;
-            z-index: 2000;
+            flex-shrink: 0;
         }
 
-        /* The Box of Truth */
         #skeleton-container {
             position: relative;
             width: 100vw;
             max-width: 420px;
             margin: 0 auto;
-            /* Changed to visible so labels don't get 'eaten' at the edges */
-            overflow: visible; 
             flex-shrink: 0;
         }
 
@@ -51,30 +49,7 @@
             pointer-events: none;
         }
 
-        .label-sticker {
-            position: absolute;
-            padding: 6px 10px;
-            background: var(--neon-blue);
-            color: black;
-            font-weight: bold;
-            font-size: 11px;
-            border-radius: 4px;
-            touch-action: none;
-            /* High Z-Index ensures they stay on top of the skeleton */
-            z-index: 3000 !important; 
-            white-space: nowrap;
-            text-transform: uppercase;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 4px 0 #005f73;
-        }
-
-        .label-sticker.locked {
-            background: var(--neon-green) !important;
-            box-shadow: 0 0 15px var(--neon-green);
-            pointer-events: none;
-        }
-
-        /* The Bank */
+        /* The Word Bank area at the bottom */
         #sticker-bank {
             flex-grow: 1;
             background: #111;
@@ -84,29 +59,55 @@
             gap: 10px;
             padding: 20px;
             justify-content: center;
+            align-content: flex-start;
             overflow-y: auto;
         }
 
-        .static { 
-            position: relative !important; 
-            transform: none !important; 
-            top: auto !important; 
-            left: auto !important; 
-            z-index: 10;
+        .label-sticker {
+            padding: 8px 12px;
+            background: var(--neon-blue);
+            color: black;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 4px;
+            touch-action: none;
+            z-index: 3000;
+            white-space: nowrap;
+            text-transform: uppercase;
+            box-shadow: 0 4px 0 #005f73;
+        }
+
+        /* When dragging or locked, they need centering */
+        .active-label {
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        .locked {
+            background: var(--neon-green) !important;
+            box-shadow: 0 0 15px var(--neon-green);
+            pointer-events: none;
+        }
+
+        /* When sitting in the bank */
+        .static {
+            position: relative !important;
+            transform: none !important;
         }
     </style>
 </head>
 <body>
 
     <div id="game-header">
-        <div style="font-family: monospace; color: var(--neon-green);">REANIMATED: <span id="count">0</span>/17</div>
+        <div style="color: var(--neon-green);">REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
     <div id="skeleton-container">
         <img src="skeleton.JPG" id="skeleton-image">
     </div>
 
-    <div id="sticker-bank"></div>
+    <div id="sticker-bank">
+        </div>
 
 <script>
     const config = {
@@ -131,55 +132,56 @@
 
     const bank = document.getElementById('sticker-bank');
     const container = document.getElementById('skeleton-container');
+    const counter = document.getElementById('count');
     let solvedCount = 0;
 
-    Object.keys(config).forEach(id => {
-        const div = document.createElement('div');
-        div.className = 'label-sticker static';
-        div.innerText = id.toUpperCase();
-        bank.appendChild(div);
+    // Initialization
+    window.onload = () => {
+        Object.keys(config).forEach(id => {
+            const div = document.createElement('div');
+            div.className = 'label-sticker static';
+            div.innerText = id.toUpperCase();
+            bank.appendChild(div);
 
-        div.addEventListener('touchstart', (e) => {
-            // Remove from bank and put on the skeleton stage
-            div.classList.remove('static');
-            div.style.position = 'absolute';
-            container.appendChild(div);
-        }, {passive: true});
+            div.addEventListener('touchstart', (e) => {
+                div.classList.remove('static');
+                div.classList.add('active-label');
+                container.appendChild(div);
+            }, {passive: true});
 
-        div.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.targetTouches[0];
-            const rect = container.getBoundingClientRect();
-            
-            // Calculate coords relative to the skeleton box
-            let x = ((touch.pageX - rect.left) / rect.width * 100);
-            let y = ((touch.pageY - rect.top) / rect.height * 100);
-            
-            div.style.left = x + '%';
-            div.style.top = y + '%';
-        }, {passive: false});
+            div.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.targetTouches[0];
+                const rect = container.getBoundingClientRect();
+                
+                let x = ((touch.pageX - rect.left) / rect.width * 100);
+                let y = ((touch.pageY - rect.top) / rect.height * 100);
+                
+                div.style.left = x + '%';
+                div.style.top = y + '%';
+            }, {passive: false});
 
-        div.addEventListener('touchend', (e) => {
-            const touch = e.changedTouches[0];
-            const rect = container.getBoundingClientRect();
-            let fx = ((touch.pageX - rect.left) / rect.width * 100);
-            let fy = ((touch.pageY - rect.top) / rect.height * 100);
+            div.addEventListener('touchend', (e) => {
+                const touch = e.changedTouches[0];
+                const rect = container.getBoundingClientRect();
+                let fx = ((touch.pageX - rect.left) / rect.width * 100);
+                let fy = ((touch.pageY - rect.top) / rect.height * 100);
 
-            const target = config[id];
-            // If it lands near the target, lock it
-            if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
-                div.style.left = target.left;
-                div.style.top = target.top;
-                div.classList.add('locked');
-                solvedCount++;
-                document.getElementById('count').innerText = solvedCount;
-            } else {
-                // Otherwise, send it back to the bank
-                div.classList.add('static');
-                bank.appendChild(div);
-            }
+                const target = config[id];
+                if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
+                    div.style.left = target.left;
+                    div.style.top = target.top;
+                    div.classList.add('locked');
+                    solvedCount++;
+                    counter.innerText = solvedCount;
+                } else {
+                    div.classList.remove('active-label');
+                    div.classList.add('static');
+                    bank.appendChild(div);
+                }
+            });
         });
-    });
+    };
 </script>
 </body>
 </html>
