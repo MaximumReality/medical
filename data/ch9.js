@@ -38,6 +38,7 @@ const CH9_DATA = {
         {
             label: "PROTECTION & NERVE PLEXUSES",
             content: "The CNS is shielded by bone and membranes, while the PNS organizes into complex networks.",
+            image: "img/ch9_central_nervous.JPG",
             details: [
                 "**Meninges**: Three layers—Dura Mater (outer), Arachnoid Mater (middle), and Pia Mater (inner).",
                 "**Epidural Space**: The clinical site for anesthetic injection located outside the dura mater.",
