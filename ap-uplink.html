@@ -184,10 +184,12 @@
     const sectionsHTML = currentCH.sections.map(sec => {
         // 1. Process the bullet points (details)
         const detailItems = sec.details.map(detail => {
-            if(detail.includes("Clinical Note")) {
-                return `<div class="clinical-note">${md(detail)}</div>`;
-return `<li>${md(detail)}</li>`;
-        }).join('');
+    if(detail.includes("Clinical Note")) {
+        return `<div class="clinical-note">${md(detail)}</div>`;
+    }
+    return `<li>${md(detail)}</li>`;
+}).join('');
+
 
         // 2. NEW: Process the image from the .js file
         // If 'image' exists in the JS, create an <img> tag. If not, leave it empty.
