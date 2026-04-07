@@ -27,6 +27,7 @@ const CH4_DATA = {
         {
             label: "DNA & PROTEIN SYNTHESIS",
             content: "DNA holds the instructions for building proteins, which determine cell function.",
+            image: "img/ch4_synthesis.JPG",
             details: [
                 "**Transcription**: Copying DNA into mRNA (occurs in the Nucleus).",
                 "**Translation**: mRNA is read by Ribosomes to build a protein (occurs in Cytoplasm).",
