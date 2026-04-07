@@ -3,192 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: MOBILE REANIMATION</title>
+    <title>CURSED BONES: THE ALIGNMENT</title>
     <style>
-        :root {
-            --neon-blue: #00d4ff;
-            --neon-green: #39ff14;
-            --retro-red: #ff0055;
-            --terminal-bg: #0a0a0a;
-        }
-
-        body {
-            background-color: var(--terminal-bg);
-            color: white;
-            font-family: 'Courier New', monospace;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        #game-header {
-            text-align: center;
-            padding: 15px;
-            background: #111;
-            width: 100%;
-            border-bottom: 2px solid var(--retro-red);
-        }
-
-        #game-container {
+        body { background: #0a0a0a; color: white; font-family: sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
+        
+        #skeleton-container {
             position: relative;
-            width: 100vw;
-            max-width: 420px;
-            margin-top: 10px;
+            width: 90vw;
+            max-width: 400px;
+            margin: 20px auto;
+            border: 2px solid #444;
         }
 
-        #skeleton-wrapper {
-            position: relative;
-            width: 100%;
+        #skeleton-image { width: 100%; display: block; pointer-events: none; }
+
+        /* DEBUG MODE: These red boxes show you WHERE to drag the stickers */
+        .drop-zone {
+            position: absolute;
+            width: 60px;
+            height: 25px;
+            border: 2px solid red; /* Change to 'none' when finished! */
+            background: rgba(255, 0, 0, 0.2);
+            z-index: 50;
+            pointer-events: none; /* Let the touch go THROUGH to the sticker */
         }
 
-        #skeleton-image {
-            width: 100%;
-            display: block;
-            /* This filter helps hide the 'baked-in' white boxes on your current image */
-            filter: contrast(110%) brightness(90%);
-        }
-
-        /* The blue stickers the user grabs */
         .label-sticker {
             position: absolute;
-            padding: 5px 8px;
-            background: var(--neon-blue);
+            padding: 8px;
+            background: #00d4ff;
             color: black;
             font-weight: bold;
             font-size: 11px;
-            border-radius: 3px;
-            cursor: grab;
+            border-radius: 4px;
             touch-action: none;
             z-index: 100;
-            box-shadow: 2px 2px 0px #005f73;
-            text-transform: uppercase;
-        }
-
-        /* The transparent 'snap' targets */
-        .drop-zone {
-            position: absolute;
-            width: 70px;
-            height: 22px;
-            border: 1px dashed rgba(255, 255, 255, 0.4);
-            border-radius: 3px;
-            z-index: 50;
-        }
-
-        .drop-zone.correct {
-            border: 1px solid var(--neon-green);
-            background: rgba(57, 255, 20, 0.1);
+            white-space: nowrap;
         }
 
         #sticker-bank {
-            width: 90%;
-            min-height: 120px;
-            background: #1a1a1a;
-            margin: 20px 0;
-            padding: 15px;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
-            border: 1px solid #333;
-            border-radius: 8px;
+            padding: 20px;
+            background: #222;
         }
 
-        .sticker-static {
-            position: relative !important;
-            top: auto !important;
-            left: auto !important;
-            transform: none !important;
-        }
-
-        .hidden { display: none !important; }
+        .static { position: relative !important; top: auto !important; left: auto !important; }
     </style>
 </head>
 <body>
 
-    <div id="game-header">
-        <h1 style="margin:0; font-size: 20px; color: var(--retro-red);">CURSED BONES</h1>
-        <div id="score">Bones Reanimated: <span id="count">0</span>/5</div>
-    </div>
+    <h2>ALIGN THE BONES</h2>
+    <p>Drag blue boxes into red boxes.</p>
 
-    <div id="game-container">
-        <div id="skeleton-wrapper">
-            <img src="skeleton.JPG" id="skeleton-image" alt="Skeleton Body">
+    <div id="skeleton-container">
+        <img src="skeleton.JPG" id="skeleton-image">
 
-            <div class="drop-zone" style="top: 52px; left: 63%;" data-bone="cranium"></div>
-            <div class="drop-zone" style="top: 118px; left: 18%;" data-bone="mandible"></div>
-            <div class="drop-zone" style="top: 395px; left: 75%;" data-bone="humerus"></div>
-            <div class="drop-zone" style="top: 715px; left: 5%;" data-bone="femur"></div>
-            <div class="drop-zone" style="top: 890px; left: 65%;" data-bone="patella"></div>
-        </div>
+        <div class="drop-zone" style="top: 52px; left: 63%;" id="zone-cranium"></div>
+        <div class="drop-zone" style="top: 118px; left: 18%;" id="zone-mandible"></div>
+        <div class="drop-zone" style="top: 395px; left: 75%;" id="zone-humerus"></div>
     </div>
 
     <div id="sticker-bank">
-        <div id="cranium" class="label-sticker sticker-static">Cranium</div>
-        <div id="mandible" class="label-sticker sticker-static">Mandible</div>
-        <div id="humerus" class="label-sticker sticker-static">Humerus</div>
-        <div id="femur" class="label-sticker sticker-static">Femur</div>
-        <div id="patella" class="label-sticker sticker-static">Patella</div>
+        <div id="cranium" class="label-sticker static">CRANIUM</div>
+        <div id="mandible" class="label-sticker static">MANDIBLE</div>
+        <div id="humerus" class="label-sticker static">HUMERUS</div>
     </div>
 
-    <script>
-        const stickers = document.querySelectorAll('.label-sticker');
-        const zones = document.querySelectorAll('.drop-zone');
-        let score = 0;
+<script>
+    const stickers = document.querySelectorAll('.label-sticker');
+    const container = document.getElementById('skeleton-container');
 
-        stickers.forEach(sticker => {
-            sticker.addEventListener('touchstart', (e) => {
-                if(sticker.classList.contains('locked')) return;
-                sticker.classList.remove('sticker-static');
-                sticker.style.position = 'absolute';
-                sticker.style.zIndex = "1000";
-            });
-
-            sticker.addEventListener('touchmove', (e) => {
-                if(sticker.classList.contains('locked')) return;
-                e.preventDefault();
-                const touch = e.targetTouches[0];
-                const container = document.getElementById('skeleton-wrapper').getBoundingClientRect();
-
-                let x = touch.pageX - container.left - (sticker.offsetWidth / 2);
-                let y = touch.pageY - container.top - (sticker.offsetHeight / 2);
-
-                sticker.style.left = x + 'px';
-                sticker.style.top = y + 'px';
-            }, {passive: false});
-
-            sticker.addEventListener('touchend', (e) => {
-                if(sticker.classList.contains('locked')) return;
-                const touch = e.changedTouches[0];
-                let snapped = false;
-
-                zones.forEach(zone => {
-                    const rect = zone.getBoundingClientRect();
-                    if (touch.pageX > rect.left && touch.pageX < rect.right &&
-                        touch.pageY > rect.top && touch.pageY < rect.bottom) {
-                        
-                        if (zone.dataset.bone === sticker.id) {
-                            // Snap to target
-                            sticker.style.left = zone.style.left;
-                            sticker.style.top = zone.style.top;
-                            sticker.style.background = "var(--neon-green)";
-                            sticker.classList.add('locked');
-                            zone.classList.add('correct');
-                            snapped = true;
-                            score++;
-                            document.getElementById('count').innerText = score;
-                        }
-                    }
-                });
-
-                if (!snapped) {
-                    sticker.classList.add('sticker-static');
-                    sticker.style.zIndex = "100";
-                }
-            });
+    stickers.forEach(sticker => {
+        sticker.addEventListener('touchstart', (e) => {
+            sticker.classList.remove('static');
+            sticker.style.position = 'absolute';
         });
-    </script>
+
+        sticker.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.targetTouches[0];
+            const rect = container.getBoundingClientRect();
+
+            // Movement logic
+            sticker.style.left = (touch.pageX - rect.left - 30) + 'px';
+            sticker.style.top = (touch.pageY - rect.top - 12) + 'px';
+        }, {passive: false});
+
+        sticker.addEventListener('touchend', (e) => {
+            const stickerRect = sticker.getBoundingClientRect();
+            const targetZone = document.getElementById('zone-' + sticker.id);
+            const zoneRect = targetZone.getBoundingClientRect();
+
+            // Check if center of sticker is inside the red box
+            const buffer = 40; // Makes it easier to 'hit' the target
+            if (Math.abs(stickerRect.left - zoneRect.left) < buffer && 
+                Math.abs(stickerRect.top - zoneRect.top) < buffer) {
+                
+                // SNAP!
+                sticker.style.left = targetZone.style.left;
+                sticker.style.top = targetZone.style.top;
+                sticker.style.background = "#39ff14";
+                targetZone.style.borderColor = "#39ff14";
+            } else {
+                // MISS - Send back to bank
+                sticker.classList.add('static');
+            }
+        });
+    });
+</script>
 </body>
 </html>
