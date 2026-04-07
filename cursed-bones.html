@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: REPAIRED</title>
+    <title>TITANIUM BONES</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,15 +12,13 @@
             --bg: #0a0a0a;
         }
 
-        /* Prevent scrolling and stretching */
+        /* Essential Scroll Lock */
         html, body {
             height: 100%;
             overflow: hidden; 
             position: fixed;
             width: 100%;
             background-color: var(--bg);
-            color: white;
-            font-family: 'Courier New', monospace;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -28,89 +26,80 @@
 
         #game-header {
             height: 50px;
-            background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0;
+            background: #111;
+            z-index: 2000;
         }
 
-        /* Match your 420px calibration exactly */
+        /* The Box of Truth */
         #skeleton-container {
             position: relative;
             width: 100vw;
             max-width: 420px;
-            margin: 10px auto;
-            border: 1px solid #333;
-            flex-grow: 0; /* Don't let it stretch */
+            margin: 0 auto;
+            /* Changed to visible so labels don't get 'eaten' at the edges */
+            overflow: visible; 
+            flex-shrink: 0;
         }
 
-        #skeleton-image { width: 100%; display: block; pointer-events: none; }
+        #skeleton-image {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
 
-        /* FIXED: Labels will no longer stretch into skyscrapers */
         .label-sticker {
             position: absolute;
-            padding: 4px 8px;
+            padding: 6px 10px;
             background: var(--neon-blue);
             color: black;
             font-weight: bold;
-            font-size: 10px;
-            border-radius: 3px;
+            font-size: 11px;
+            border-radius: 4px;
             touch-action: none;
-            z-index: 1000;
+            /* High Z-Index ensures they stay on top of the skeleton */
+            z-index: 3000 !important; 
             white-space: nowrap;
             text-transform: uppercase;
             transform: translate(-50%, -50%);
-            /* Prevents the 'skyscraper' look */
-            height: auto !important; 
-            width: auto !important;
+            box-shadow: 0 4px 0 #005f73;
         }
 
         .label-sticker.locked {
             background: var(--neon-green) !important;
-            box-shadow: 0 0 10px var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
             pointer-events: none;
         }
 
-        /* Clean Word Bank */
+        /* The Bank */
         #sticker-bank {
-            flex-grow: 1; /* Fills the bottom room */
+            flex-grow: 1;
             background: #111;
             border-top: 2px solid #333;
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
+            padding: 20px;
             justify-content: center;
-            align-content: flex-start;
-            padding: 15px;
             overflow-y: auto;
         }
 
-        /* Stickers in the bank don't use absolute positioning */
         .static { 
             position: relative !important; 
             transform: none !important; 
             top: auto !important; 
             left: auto !important; 
-        }
-
-        #win-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 5000;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
     <div id="game-header">
-        <div>REANIMATED: <span id="count">0</span>/17</div>
+        <div style="font-family: monospace; color: var(--neon-green);">REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
     <div id="skeleton-container">
@@ -118,11 +107,6 @@
     </div>
 
     <div id="sticker-bank"></div>
-
-    <div id="win-overlay">
-        <h1 style="color: var(--neon-green); font-size: 40px;">COMPLETE</h1>
-        <button onclick="location.reload()" style="padding: 15px; background: black; color: white; border: 1px solid white;">RESTART</button>
-    </div>
 
 <script>
     const config = {
@@ -156,17 +140,21 @@
         bank.appendChild(div);
 
         div.addEventListener('touchstart', (e) => {
+            // Remove from bank and put on the skeleton stage
             div.classList.remove('static');
             div.style.position = 'absolute';
-            container.appendChild(div); 
-        });
+            container.appendChild(div);
+        }, {passive: true});
 
         div.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.targetTouches[0];
             const rect = container.getBoundingClientRect();
+            
+            // Calculate coords relative to the skeleton box
             let x = ((touch.pageX - rect.left) / rect.width * 100);
             let y = ((touch.pageY - rect.top) / rect.height * 100);
+            
             div.style.left = x + '%';
             div.style.top = y + '%';
         }, {passive: false});
@@ -178,15 +166,15 @@
             let fy = ((touch.pageY - rect.top) / rect.height * 100);
 
             const target = config[id];
-            // Snap check
-            if (Math.abs(fx - parseFloat(target.left)) < 7 && Math.abs(fy - parseFloat(target.top)) < 7) {
+            // If it lands near the target, lock it
+            if (Math.abs(fx - parseFloat(target.left)) < 8 && Math.abs(fy - parseFloat(target.top)) < 8) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
                 solvedCount++;
                 document.getElementById('count').innerText = solvedCount;
-                if (solvedCount === 17) document.getElementById('win-overlay').style.display = 'flex';
             } else {
+                // Otherwise, send it back to the bank
                 div.classList.add('static');
                 bank.appendChild(div);
             }
