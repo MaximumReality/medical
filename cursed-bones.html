@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: TRUE WIDTH ARCADE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CURSED BONES: ARCADE EDITION</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,7 +12,6 @@
             --bg: #0a0a0a;
         }
 
-        /* 1. LOCK THE SCREEN (Arcade Cabinet feel) */
         html, body {
             height: 100%;
             overflow: hidden; 
@@ -23,7 +22,6 @@
             font-family: 'Courier New', monospace;
             margin: 0;
             padding: 0;
-            user-select: none;
         }
 
         #game-header {
@@ -37,118 +35,105 @@
             z-index: 2000;
         }
 
-        /* 2. THE MAIN STAGE: Now a Layered Container */
         #main-stage {
-            position: relative;
+            display: flex;
             width: 100vw;
             height: calc(100vh - 60px);
+        }
+
+        .side-bank {
+            width: 22%;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 5px;
+            overflow-y: auto;
+            border: 1px solid #333;
+            z-index: 10; /* Lower than the skeleton area */
+        }
+
+        #game-container {
+            position: relative;
+            width: 56%;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            background: #050505;
+            z-index: 20; /* Higher than banks */
         }
 
-        /* THE SKELETON (Now full width, floating behind) */
         #skeleton-wrapper {
             position: relative;
             width: 100%;
             max-width: 420px;
-            height: 100%;
-            z-index: 10; /* Lower than sidebars */
         }
 
         #skeleton-image {
             width: 100%;
-            height: auto;
             display: block;
             pointer-events: none;
         }
 
-        /* 3. THE SIDEBARS (Floating OVER Layer 1) */
-        .side-bank {
-            position: absolute;
-            top: 0;
-            width: 25%; /* Slightly wider for easier grabbing */
-            height: 100%;
-            background: transparent; /* Invisible so background shows */
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 20px 5px;
-            z-index: 100; /* Floating above the skeleton layer */
-            overflow-y: auto; /* Just in case list gets too long */
-        }
-
-        #bank-left { left: 0; }
-        #bank-right { right: 0; }
-
-        /* LABEL STYLING */
         .label-sticker {
-            padding: 8px 10px;
+            padding: 6px;
             background: var(--neon-blue);
             color: black;
             font-weight: bold;
-            font-size: 10px;
-            border-radius: 4px;
+            font-size: 9px;
+            border-radius: 3px;
             touch-action: none;
-            z-index: 200;
+            z-index: 1000 !important; /* Force to the very top */
             text-align: center;
             text-transform: uppercase;
-            white-space: nowrap;
-            cursor: grab;
+            box-shadow: 2px 2px 0px #005f73;
         }
 
         .label-sticker.locked {
             background: var(--neon-green) !important;
-            box-shadow: 0 0 15px var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
             pointer-events: none;
         }
 
-        /* THE STATIC CLASS FOR SIDEBAR LISTING */
-        .static { 
-            position: relative !important; 
-            top: auto !important; 
-            left: auto !important; 
-            width: 90%; 
-            margin: 0 auto; 
-            cursor: pointer;
-        }
+        .static { position: relative !important; width: 90%; margin: 0 auto; }
 
-        /* WIN SCREEN (unchanged) */
         #win-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 3000;
+            z-index: 5000;
         }
     </style>
 </head>
 <body>
 
     <div id="game-header">
-        <div style="color: var(--neon-blue);">REANIMATION IN PROGRESS</div>
+        <div style="color: var(--neon-blue); font-size: 12px;">SYSTEM: ACTIVE</div>
         <div id="progress">Bones: <span id="count">0</span>/17</div>
     </div>
 
     <div id="main-stage">
-        <div id="skeleton-wrapper">
-            <img src="skeleton.JPG" id="skeleton-image">
+        <div id="bank-left" class="side-bank"></div>
+
+        <div id="game-container">
+            <div id="skeleton-wrapper">
+                <img src="skeleton.JPG" id="skeleton-image">
+                </div>
         </div>
 
-        <div id="bank-left" class="side-bank"></div>
         <div id="bank-right" class="side-bank"></div>
     </div>
 
     <div id="win-overlay">
-        <h1 style="color: var(--neon-green); font-size: 40px; text-align: center;">LEVEL<br>COMPLETE</h1>
-        <button onclick="location.reload()" style="padding: 10px 20px; background: black; color: white; border: 1px solid white; font-family: inherit; font-size: 16px;">RESTART</button>
+        <h1 style="color: var(--neon-green); font-size: 40px; text-align:center;">LEVEL<br>COMPLETE</h1>
+        <button onclick="location.reload()" style="padding: 15px; background: black; color: white; border: 2px solid var(--retro-red); font-family: inherit;">RESTART</button>
     </div>
 
 <script>
-    // Your exact coordinates remain perfect!
     const config = {
         "cervical": { top: "26.9%", left: "33.9%", side: "left" },
         "patella": { top: "79.1%", left: "52.1%", side: "right" },
@@ -171,8 +156,7 @@
 
     const leftBank = document.getElementById('bank-left');
     const rightBank = document.getElementById('bank-right');
-    const container = document.getElementById('skeleton-wrapper');
-    const countDisplay = document.getElementById('count');
+    const wrapper = document.getElementById('skeleton-wrapper');
     let solvedCount = 0;
 
     Object.keys(config).forEach(id => {
@@ -181,31 +165,31 @@
         div.className = 'label-sticker static';
         div.innerText = id.replace('_', ' ');
         
-        // Initial sorting into banks
         if(config[id].side === "left") leftBank.appendChild(div);
         else rightBank.appendChild(div);
 
-        // TOUCH HANDLING (Optimized for floating layers)
         div.addEventListener('touchstart', (e) => {
+            // PORTAL: Move the element to the skeleton-wrapper so it's on top
             div.classList.remove('static');
             div.style.position = 'absolute';
-            div.style.zIndex = "1000";
+            wrapper.appendChild(div); 
         });
 
         div.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.targetTouches[0];
-            const rect = container.getBoundingClientRect();
-            // Critical calculation relative to the skeleton container, not the sidebar
+            const rect = wrapper.getBoundingClientRect();
+            
             let x = ((touch.pageX - rect.left) / rect.width * 100);
             let y = ((touch.pageY - rect.top) / rect.height * 100);
+            
             div.style.left = x + '%';
             div.style.top = y + '%';
         }, {passive: false});
 
         div.addEventListener('touchend', (e) => {
             const touch = e.changedTouches[0];
-            const rect = container.getBoundingClientRect();
+            const rect = wrapper.getBoundingClientRect();
             let finalX = ((touch.pageX - rect.left) / rect.width * 100);
             let finalY = ((touch.pageY - rect.top) / rect.height * 100);
 
@@ -213,17 +197,16 @@
             const tX = parseFloat(target.left);
             const tY = parseFloat(target.top);
 
-            // Buffer zone for snapping
-            if (Math.abs(finalX - tX) < 5 && Math.abs(finalY - tY) < 5) {
-                // SNAP SUCCESS!
+            // Precision check
+            if (Math.abs(finalX - tX) < 6 && Math.abs(finalY - tY) < 6) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
                 solvedCount++;
-                countDisplay.innerText = solvedCount;
+                document.getElementById('count').innerText = solvedCount;
                 if (solvedCount === 17) document.getElementById('win-overlay').style.display = 'flex';
             } else {
-                // DROP MISS - Return to correct sidebar bank
+                // RETURN: Move it back to its original bank
                 div.classList.add('static');
                 if(config[div.id].side === "left") leftBank.appendChild(div);
                 else rightBank.appendChild(div);
