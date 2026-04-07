@@ -6,6 +6,7 @@ const CH7_DATA = {
         {
             label: "THE AXIAL SKELETON: SKULL & TRUNK",
             content: "The axial skeleton forms the central axis of the body, protecting the brain, spinal cord, and thoracic organs.",
+            image: "img/ch7_axial.JPG",
             details: [
                 "**The Skull**: 22 bones joined by **Sutures** (immovable joints). Notable landmarks include the **Foramen Magnum** and the **Sella Turcica** (houses the pituitary gland).",
                 "**Vertebral Column**: 26 adult bones. Cervical (7), Thoracic (12), Lumbar (5), plus the fused Sacrum and Coccyx.",
@@ -16,6 +17,8 @@ const CH7_DATA = {
         {
             label: "APPENDICULAR: PECTORAL GIRDLE & UPPER LIMB",
             content: "The upper appendicular skeleton is specialized for a wide range of motion and manipulation.",
+            image: "img/ch7_pec_girdle.JPG",
+            image: "img/ch7_pec_girdle_limb.PNG",
             details: [
                 "**Pectoral Girdle**: Consists of the **Clavicle** (collarbone) and **Scapula** (shoulder blade).",
                 "**Upper Limb**: Humerus (arm), Radius (lateral forearm), and Ulna (medial forearm).",
@@ -36,6 +39,8 @@ const CH7_DATA = {
         {
             label: "APPENDICULAR: PELVIC GIRDLE & LOWER LIMB",
             content: "The lower appendicular skeleton is engineered for weight-bearing, stability, and locomotion.",
+            image: "img/ch7_pelvic_girdle.JPG",
+            image: "img/ch7_lower_limb.JPG",
             details: [
                 "**Pelvic Girdle**: Formed by two **Coxal bones**, each composed of the fused Ilium, Ischium, and Pubis.",
                 "**Lower Limb**: Femur (thigh), Tibia (weight-bearing shin), and Fibula (lateral support).",
