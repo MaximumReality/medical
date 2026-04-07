@@ -171,6 +171,11 @@
     }
     
 
+    function md(text) {
+    return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>');
+}
 
     function renderStudy() {
     const body = document.getElementById('study-body');
@@ -180,9 +185,8 @@
         // 1. Process the bullet points (details)
         const detailItems = sec.details.map(detail => {
             if(detail.includes("Clinical Note")) {
-                return `<div class="clinical-note">${detail}</div>`;
-            }
-            return `<li>${detail}</li>`;
+                return `<div class="clinical-note">${md(detail)}</div>`;
+return `<li>${md(detail)}</li>`;
         }).join('');
 
         // 2. NEW: Process the image from the .js file
@@ -199,7 +203,7 @@
         return `
             <div class="study-section">
                 <h3 style="margin-top:0; color:var(--accent);">◈ ${sec.label}</h3>
-                <p style="font-size:0.95rem; line-height:1.5; color:#cfd8dc;">${sec.content}</p>
+                <p style="font-size:0.95rem; line-height:1.5; color:#cfd8dc;">${md(sec.content)}</p>
                 
                 ${imageHTML} <ul class="concept-list">${detailItems}</ul>
             </div>
