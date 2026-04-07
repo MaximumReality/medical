@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CURSED BONES: PRECISION LOCK</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CURSED BONES: BOTTOM BANK</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,187 +12,139 @@
             --bg: #0a0a0a;
         }
 
-        html, body {
-            height: 100%;
-            overflow: hidden; 
-            position: fixed;
-            width: 100%;
+        body {
             background-color: var(--bg);
             color: white;
             font-family: 'Courier New', monospace;
             margin: 0;
-            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         #game-header {
-            width: 100%;
             height: 50px;
             background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            flex-shrink: 0;
         }
 
-       #game-container {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        width: 100vw;
-        height: calc(100vh - 60px);
-        background: var(--bg);
-        padding-top: 20px; /* Adjust this to move the whole unit up/down */
-        overflow: hidden;
-    }
-
-
-
-        /* PRECISION LOCK: This must match the width where you took coordinates */
-          #skeleton-wrapper {
-        position: relative;
-        width: 75vw;
-        max-width: 320px;
-        /* Line-height 0 and font-size 0 remove hidden "text space" at the top */
-        line-height: 0;
-        font-size: 0;
-        display: inline-block; 
-    }
-
-           #skeleton-image {
-        width: 100%;
-        display: block;
-        padding: 0;
-        margin: 0;
-        pointer-events: none;
-    }
-
-        /* SIDE DOCKS: Floating and non-intrusive */
-        .side-dock {
-            position: absolute;
-            top: 0;
-            width: 75px;
-            height: 100%;
+        /* MAIN AREA: Skeleton sits here */
+        #game-container {
+            flex-grow: 1;
+            position: relative;
+            width: 100vw;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 10px 2px;
-            overflow-y: auto;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.05);
+            justify-content: center;
+            align-items: flex-start; /* Keeps him near the top */
+            padding-top: 10px;
         }
 
-        #dock-left { left: 0; }
-        #dock-right { right: 0; }
+        #skeleton-wrapper {
+            position: relative;
+            width: 85vw; /* Fills the screen width better */
+            max-width: 400px;
+            line-height: 0;
+        }
+
+        #skeleton-image {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* STICKER BANK: Back at the bottom */
+        #sticker-bank {
+            height: 180px; /* Space for your future additions! */
+            background: #111;
+            border-top: 2px solid #333;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 15px;
+            justify-content: center;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
 
         .label-sticker {
-    /* Tighten the padding to prevent "height creep" */
-    padding: 4px 6px;
-    background: var(--neon-blue);
-    color: black;
-    font-weight: bold;
-    font-size: 9px;
-    border-radius: 3px;
-    touch-action: none;
-    z-index: 1000;
-    text-align: center;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0px #005f73;
-    
-    /* CRITICAL FIX: This ensures the coordinate (top/left) 
-       points to the CENTER of the label, not the top-left corner. */
-    transform: translate(-50%, -50%);
-    
-    /* Force line-height so the box doesn't grow taller than needed */
-    line-height: 1;
-    white-space: nowrap;
-}
+            padding: 6px 10px;
+            background: var(--neon-blue);
+            color: black;
+            font-weight: bold;
+            font-size: 10px;
+            border-radius: 3px;
+            touch-action: none;
+            z-index: 1000;
+            text-transform: uppercase;
+            /* Critical for alignment */
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
 
-.label-sticker.locked {
-    background: var(--neon-green) !important;
-    box-shadow: 0 0 12px var(--neon-green);
-    color: black;
-    pointer-events: none;
-    /* Keep the centering transform active after locking */
-    transform: translate(-50%, -50%); 
-}
+        .static { position: relative !important; transform: none !important; top: auto !important; left: auto !important; }
 
-
-        .static { position: relative !important; width: 90%; margin: 0 auto; }
-
-        #win-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 5000;
+        .label-sticker.locked {
+            background: var(--neon-green) !important;
+            box-shadow: 0 0 12px var(--neon-green);
+            pointer-events: none;
+            transform: translate(-50%, -50%) !important;
         }
     </style>
 </head>
 <body>
 
     <div id="game-header">
-        <div style="font-size: 14px;">REANIMATED: <span id="count">0</span>/17</div>
+        <div>REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
     <div id="game-container">
-        <div id="dock-left" class="side-dock"></div>
-
         <div id="skeleton-wrapper">
             <img src="skeleton.JPG" id="skeleton-image">
-            </div>
-
-        <div id="dock-right" class="side-dock"></div>
+        </div>
     </div>
 
-    <div id="win-overlay">
-        <h1 style="color: var(--neon-green); font-size: 40px; text-align:center;">COMPLETE</h1>
-        <button onclick="location.reload()" style="padding: 15px; background: black; color: white; border: 2px solid var(--retro-red); font-family: inherit;">RESTART</button>
-    </div>
+    <div id="sticker-bank"></div>
 
 <script>
-    // YOUR ORIGINAL COORDINATES
     const config = {
-        "cervical": { top: "26.9%", left: "33.9%", side: "left" },
-        "patella": { top: "79.1%", left: "52.1%", side: "right" },
-        "femur": { top: "68.1%", left: "34.6%", side: "left" },
-        "coccyx": { top: "56.6%", left: "43.4%", side: "right" },
-        "radius": { top: "53.3%", left: "71.6%", side: "left" },
-        "coxal": { top: "53.5%", left: "53.3%", side: "right" },
-        "lumbar": { top: "50.2%", left: "37.7%", side: "left" },
-        "thoracic": { top: "43.1%", left: "35.1%", side: "right" },
-        "ribs": { top: "39.5%", left: "54.5%", side: "left" },
-        "ulna": { top: "54.3%", left: "27.7%", side: "right" },
-        "humerus": { top: "38.7%", left: "25.6%", side: "left" },
-        "clavicle": { top: "28.8%", left: "53.8%", side: "right" },
-        "scapula": { top: "31.9%", left: "55.0%", side: "left" },
-        "sternum": { top: "33.0%", left: "43.1%", side: "right" },
-        "mandible": { top: "21.0%", left: "31.5%", side: "left" },
-        "acromion": { top: "29.2%", left: "27.7%", side: "right" },
-        "cranium": { top: "15.3%", left: "43.1%", side: "left" }
+        "cervical": { top: "26.9%", left: "33.9%" },
+        "patella": { top: "79.1%", left: "52.1%" },
+        "femur": { top: "68.1%", left: "34.6%" },
+        "coccyx": { top: "56.6%", left: "43.4%" },
+        "radius": { top: "53.3%", left: "71.6%" },
+        "coxal": { top: "53.5%", left: "53.3%" },
+        "lumbar": { top: "50.2%", left: "37.7%" },
+        "thoracic": { top: "43.1%", left: "35.1%" },
+        "ribs": { top: "39.5%", left: "54.5%" },
+        "ulna": { top: "54.3%", left: "27.7%" },
+        "humerus": { top: "38.7%", left: "25.6%" },
+        "clavicle": { top: "28.8%", left: "53.8%" },
+        "scapula": { top: "31.9%", left: "55.0%" },
+        "sternum": { top: "33.0%", left: "43.1%" },
+        "mandible": { top: "21.0%", left: "31.5%" },
+        "acromion": { top: "29.2%", left: "27.7%" },
+        "cranium": { top: "15.3%", left: "43.1%" }
     };
 
-    const leftDock = document.getElementById('dock-left');
-    const rightDock = document.getElementById('dock-right');
+    const bank = document.getElementById('sticker-bank');
     const wrapper = document.getElementById('skeleton-wrapper');
     let solvedCount = 0;
 
     Object.keys(config).forEach(id => {
         const div = document.createElement('div');
-        div.id = id;
         div.className = 'label-sticker static';
-        div.innerText = id.replace('_', ' ');
-        
-        if(config[id].side === "left") leftDock.appendChild(div);
-        else rightDock.appendChild(div);
+        div.innerText = id;
+        bank.appendChild(div);
 
         div.addEventListener('touchstart', (e) => {
             div.classList.remove('static');
             div.style.position = 'absolute';
-            wrapper.appendChild(div); 
+            wrapper.appendChild(div);
         });
 
         div.addEventListener('touchmove', (e) => {
@@ -208,23 +160,19 @@
         div.addEventListener('touchend', (e) => {
             const touch = e.changedTouches[0];
             const rect = wrapper.getBoundingClientRect();
-            let finalX = ((touch.pageX - rect.left) / rect.width * 100);
-            let finalY = ((touch.pageY - rect.top) / rect.height * 100);
+            let fx = ((touch.pageX - rect.left) / rect.width * 100);
+            let fy = ((touch.pageY - rect.top) / rect.height * 100);
 
-            const target = config[div.id];
-            // SNAP THRESHOLD: Increased to 7% for easier mobile play
-            if (Math.abs(finalX - parseFloat(target.left)) < 7 && 
-                Math.abs(finalY - parseFloat(target.top)) < 7) {
+            const target = config[id];
+            if (Math.abs(fx - parseFloat(target.left)) < 6 && Math.abs(fy - parseFloat(target.top)) < 6) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
                 solvedCount++;
                 document.getElementById('count').innerText = solvedCount;
-                if (solvedCount === 17) document.getElementById('win-overlay').style.display = 'flex';
             } else {
                 div.classList.add('static');
-                if(config[div.id].side === "left") leftDock.appendChild(div);
-                else rightDock.appendChild(div);
+                bank.appendChild(div);
             }
         });
     });
