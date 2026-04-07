@@ -20,7 +20,6 @@ const CH4_DATA = {
             image: "img/ch4_contraction_cycle.PNG",
             image: "img/ch4_krebs.JPG",
             image: "img/ch4_enzyme_substrate.JPG",
-            image: "img/ch4_citric_acid_cycle.GIF",
             details: [
                 "**Glycolysis**: First step of breaking down glucose; occurs in the cytosol (Anaerobic).",
                 "**Aerobic Respiration**: Requires Oxygen; occurs in the **Mitochondria**. Produces the most ATP.",
