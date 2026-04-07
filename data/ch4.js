@@ -51,6 +51,19 @@ const CH4_DATA = {
             ans: 0,
             exp: "Simple squamous epithelium is thin, making it perfect for diffusion."
         },
+                {
+            q: "Which type of connective tissue serves as a shock absorber and energy reservoir in the hypodermis?",
+            opts: ["Hyaline Cartilage", "Areolar Tissue", "Adipose Tissue", "Dense Regular"],
+            ans: 2,
+            exp: "Adipose tissue (fat) stores energy, provides insulation, and cushions organs."
+        },
+        {
+            q: "Which cell in nervous tissue is responsible for sending electrical impulses?",
+            opts: ["Neuroglia", "Neuron", "Chondrocyte", "Fibroblast"],
+            ans: 1,
+            exp: "Neurons are the functional units of the nervous system that transmit signals."
+        },
+
         {
             q: "Which muscle tissue contains intercalated discs?",
             opts: ["Skeletal", "Smooth", "Cardiac", "Voluntary"],
