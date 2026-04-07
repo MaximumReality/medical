@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CURSED BONES: FULL SCREEN</title>
+    <title>CURSED BONES: PRECISION LOCK</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -30,7 +30,7 @@
             background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: center;
             z-index: 2000;
         }
@@ -41,42 +41,45 @@
             height: calc(100vh - 50px);
             display: flex;
             justify-content: center;
-            overflow: hidden;
+            background: var(--bg);
         }
 
+        /* PRECISION LOCK: This must match the width where you took coordinates */
         #skeleton-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 420px; /* Keeps him from getting too stretched on wide phones */
-            height: 100%;
+            width: 70vw; /* Adjust this percentage to make him 'bigger' or 'smaller' */
+            max-width: 320px; 
+            height: fit-content;
+            margin-top: 10px;
         }
 
         #skeleton-image {
             width: 100%;
             display: block;
             pointer-events: none;
+            filter: brightness(0.9);
         }
 
-        /* SIDE DOCKS: They float OVER the image instead of pushing it */
+        /* SIDE DOCKS: Floating and non-intrusive */
         .side-dock {
             position: absolute;
             top: 0;
-            width: 80px;
+            width: 75px;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* See-through so he stays big */
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding: 10px 4px;
+            gap: 6px;
+            padding: 10px 2px;
             overflow-y: auto;
-            z-index: 50;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        #dock-left { left: 0; border-right: 1px solid rgba(255,255,255,0.1); }
-        #dock-right { right: 0; border-left: 1px solid rgba(255,255,255,0.1); }
+        #dock-left { left: 0; }
+        #dock-right { right: 0; }
 
         .label-sticker {
-            padding: 6px 4px;
+            padding: 6px 2px;
             background: var(--neon-blue);
             color: black;
             font-weight: bold;
@@ -91,7 +94,8 @@
 
         .label-sticker.locked {
             background: var(--neon-green) !important;
-            box-shadow: 0 0 10px var(--neon-green);
+            box-shadow: 0 0 12px var(--neon-green);
+            color: black;
             pointer-events: none;
         }
 
@@ -112,7 +116,7 @@
 <body>
 
     <div id="game-header">
-        <div id="progress">REANIMATED: <span id="count">0</span>/17</div>
+        <div style="font-size: 14px;">REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
     <div id="game-container">
@@ -120,17 +124,18 @@
 
         <div id="skeleton-wrapper">
             <img src="skeleton.JPG" id="skeleton-image">
-        </div>
+            </div>
 
         <div id="dock-right" class="side-dock"></div>
     </div>
 
     <div id="win-overlay">
-        <h1 style="color: var(--neon-green); font-size: 40px; text-align:center;">LEVEL<br>COMPLETE</h1>
+        <h1 style="color: var(--neon-green); font-size: 40px; text-align:center;">COMPLETE</h1>
         <button onclick="location.reload()" style="padding: 15px; background: black; color: white; border: 2px solid var(--retro-red); font-family: inherit;">RESTART</button>
     </div>
 
 <script>
+    // YOUR ORIGINAL COORDINATES
     const config = {
         "cervical": { top: "26.9%", left: "33.9%", side: "left" },
         "patella": { top: "79.1%", left: "52.1%", side: "right" },
@@ -188,8 +193,9 @@
             let finalY = ((touch.pageY - rect.top) / rect.height * 100);
 
             const target = config[div.id];
-            if (Math.abs(finalX - parseFloat(target.left)) < 6 && 
-                Math.abs(finalY - parseFloat(target.top)) < 6) {
+            // SNAP THRESHOLD: Increased to 7% for easier mobile play
+            if (Math.abs(finalX - parseFloat(target.left)) < 7 && 
+                Math.abs(finalY - parseFloat(target.top)) < 7) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
