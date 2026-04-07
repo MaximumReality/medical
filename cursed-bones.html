@@ -273,49 +273,59 @@
   <script>
 // Accepted answers for each label box
 //const acceptedAnswers = {
-    "cranium": ["cranium", "skull"],
-    "mandible": ["mandible", "jaw", "jawbone"],
-    "acromion": ["acromion"],
-    "humerus": ["humerus"],
-    "clavicle": ["clavicle", "collarbone"],
-    "scapula": ["scapula", "shoulder blade"],
-    "radius": ["radius"],
-    "ulna": ["ulna"],
-    "ribs": ["ribs", "rib cage"],
-    "sternum": ["sternum", "breastbone"],
-    "cervical": ["cervical vertebrae", "cervical spine", "c spine"],
-    "thoracic": ["thoracic vertebrae", "thoracic spine", "t spine"],
-    "lumbar": ["lumbar vertebrae", "lumbar spine", "l spine"],
-    "coxal": ["coxal bone", "hip bone", "pelvic bone"],
-    "coccyx": ["coccyx", "tailbone"],
-    "femur": ["femur", "thigh bone"],
-    "patella": ["patella", "kneecap"]
+   // "cranium": ["cranium", "skull"],
+   // "mandible": ["mandible", "jaw", "jawbone"],
+   // "acromion": ["acromion"],
+   // "humerus": ["humerus"],
+   // "clavicle": ["clavicle", "collarbone"],
+   // "scapula": ["scapula", "shoulder blade"],
+   // "radius": ["radius"],
+    //"ulna": ["ulna"],
+   // "ribs": ["ribs", "rib cage"],
+   // "sternum": ["sternum", "breastbone"],
+   // "cervical": ["cervical vertebrae", "cervical spine", "c spine"],
+  //  "thoracic": ["thoracic vertebrae", "thoracic spine", "t spine"],
+   // "lumbar": ["lumbar vertebrae", "lumbar spine", "l spine"],
+   // "coxal": ["coxal bone", "hip bone", "pelvic bone"],
+   // "coccyx": ["coccyx", "tailbone"],
+  //  "femur": ["femur", "thigh bone"],
+  //  "patella": ["patella", "kneecap"]
 //};
 
-// Make elements draggable on mobile
 const labels = document.querySelectorAll('.label-box');
 
 labels.forEach(label => {
-    label.addEventListener('touchmove', function(e) {
-        // Grab the finger location
-        let touchLocation = e.targetTouches[0];
-        
-        // Move the box to the finger location
-        // We subtract half the width/height to center it under your finger
-        label.style.left = (touchLocation.pageX - 40) + 'px';
-        label.style.top = (touchLocation.pageY - 20) + 'px';
-        
-        // Prevent the whole screen from scrolling while dragging
-        e.preventDefault();
-    }, {passive: false});
-
-    label.addEventListener('touchend', function(e) {
-        // Log the final position to the console 
-        // You can use this to 'save' your layout later!
-        console.log(`${label.id}: top: ${label.style.top}, left: ${label.style.left}`);
+    // 1. Handle the Touch Start
+    label.addEventListener('touchstart', function(e) {
+        label.style.zIndex = "1000"; // Bring to front when touching
+        label.style.boxShadow = "0 0 15px #3498db"; 
     });
 
-</script>
+    // 2. Handle the Moving
+    label.addEventListener('touchmove', function(e) {
+        e.preventDefault(); // Stops the page from bouncing/scrolling
+        
+        let touch = e.targetTouches[0];
+        let container = document.getElementById('skeleton-container').getBoundingClientRect();
+
+        // Calculate position relative to the skeleton image
+        let x = touch.pageX - container.left - (label.offsetWidth / 2);
+        let y = touch.pageY - container.top - (label.offsetHeight / 2);
+
+        label.style.left = x + 'px';
+        label.style.top = y + 'px';
+    }, {passive: false});
+
+    // 3. Handle the Drop
+    label.addEventListener('touchend', function() {
+        label.style.zIndex = "10";
+        label.style.boxShadow = "none";
+        
+        // This helps you find the coordinates:
+        console.log(`ID: ${label.id} | Top: ${label.style.top} | Left: ${label.style.left}`);
+    });
+});
+
 
 </body>
   <a href="index.html" id="terminal-link">
