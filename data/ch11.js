@@ -40,8 +40,27 @@ const CH11_DATA = {
         {t: "ADH (Antidiuretic Hormone)", d: "Causes kidneys to conserve water; crucial for maintaining blood pressure."},
         {t: "Oxytocin", d: "Stimulates uterine contractions during labor and milk 'let-down' during nursing."}
     ],
-    questions: [
+        questions: [
         {
+            q: "Which 'Master Gland' controls other endocrine glands and is attached to the hypothalamus?",
+            opts: ["Thyroid", "Adrenal", "Pituitary", "Pancreas"],
+            ans: 2,
+            exp: "The Pituitary gland (Hypophysis) regulates many other glands in the body."
+        },
+        {
+            q: "Which hormone is released by the Pancreas to LOWER blood glucose levels?",
+            opts: ["Glucagon", "Insulin", "Cortisol", "Epinephrine"],
+            ans: 1,
+            exp: "Insulin helps cells take in glucose, lowering the level in the blood."
+        },
+        {
+            q: "The 'Fight or Flight' hormone, Adrenaline, is produced by which gland?",
+            opts: ["Thyroid", "Adrenal Medulla", "Thymus", "Pineal"],
+            ans: 1,
+            exp: "The Adrenal Medulla releases Epinephrine (Adrenaline) during stress."
+        },
+    
+    {
             q: "Which gland is responsible for secreting hormones that increase the basal metabolic rate?",
             opts: ["Parathyroid", "Adrenal", "Thyroid", "Pineal"],
             ans: 2,
