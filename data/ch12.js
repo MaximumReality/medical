@@ -19,7 +19,7 @@ const CH12_DATA = {
             content: "The cellular components of blood are specialized for transport, defense, and repair.",
             image: "img/ch14_blood.PNG", 
             details: [
-                "**Erythrocytes (RBCs)**: Biconcave discs with no nucleus; contain Hemoglobin for $O_2$ transport.",
+                "**Erythrocytes (RBCs)**: Biconcave discs with no nucleus; contain Hemoglobin for O2 transport.",
                 "**Leukocytes (WBCs)**: Provide immunity; divided into Granulocytes (NEB) and Agranulocytes (ML).",
                 "**Thrombocytes (Platelets)**: Cell fragments from megakaryocytes; essential for initiating hemostasis.",
                 "**Hematopoiesis**: The production of all blood cells within the red bone marrow."
