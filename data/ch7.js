@@ -76,6 +76,10 @@ const CH7_DATA = {
         {t: "Malleolus", d: "The distal 'ankle' projections of the Tibia (Medial) and Fibula (Lateral)."}
     ],
     questions: [
+    { q: "What is the name of the structural unit of compact bone?", opts: ["Osteon", "Trabeculae", "Lacunae", "Canaliculus"], ans: 0, exp: "The Osteon (Haversian system) is the weight-bearing cylinder of compact bone." },
+    { q: "Which hormone is released when blood calcium is LOW to stimulate osteoclast activity?", opts: ["Calcitonin", "Parathyroid Hormone (PTH)", "Insulin", "Thyroxine"], ans: 1, exp: "PTH 'pulls' calcium from the bones into the blood by activating osteoclasts." }
+,
+
         {
             q: "Which bone in the forearm is located on the lateral (thumb) side?",
             opts: ["Ulna", "Radius", "Tibia", "Fibula"],
