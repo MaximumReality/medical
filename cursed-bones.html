@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: BOTTOM BANK</title>
+    <title>CURSED BONES: RESTORED</title>
     <style>
         :root {
             --neon-blue: #00d4ff;
@@ -12,67 +12,50 @@
             --bg: #0a0a0a;
         }
 
-        body {
+        /* 1. RESTORE SCROLL LOCK */
+        html, body {
+            height: 100%;
+            overflow: hidden; 
+            position: fixed;
+            width: 100%;
             background-color: var(--bg);
             color: white;
             font-family: 'Courier New', monospace;
             margin: 0;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
         }
 
         #game-header {
-            height: 50px;
+            height: 60px;
             background: #111;
             border-bottom: 2px solid var(--retro-red);
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0;
+            z-index: 2000;
         }
 
-        /* MAIN AREA: Skeleton sits here */
-        #game-container {
-            flex-grow: 1;
+        /* 2. RESTORE YOUR EXACT CALIBRATION SIZE */
+        #skeleton-container {
             position: relative;
             width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Keeps him near the top */
-            padding-top: 10px;
+            max-width: 420px;
+            /* 80px margin matches your calibration exactly */
+            margin: 20px auto 0; 
+            border: 1px solid #333;
+            background: #050505;
         }
 
-        #skeleton-wrapper {
-            position: relative;
-            width: 85vw; /* Fills the screen width better */
-            max-width: 400px;
-            line-height: 0;
+        #skeleton-image { 
+            width: 100%; 
+            display: block; 
+            pointer-events: none; 
+            opacity: 0.9; 
         }
 
-        #skeleton-image {
-            width: 100%;
-            display: block;
-            pointer-events: none;
-        }
-
-        /* STICKER BANK: Back at the bottom */
-        #sticker-bank {
-            height: 180px; /* Space for your future additions! */
-            background: #111;
-            border-top: 2px solid #333;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 15px;
-            justify-content: center;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
+        /* 3. RESTORE LABEL STYLES */
         .label-sticker {
-            padding: 6px 10px;
+            position: absolute;
+            padding: 4px 8px;
             background: var(--neon-blue);
             color: black;
             font-weight: bold;
@@ -80,19 +63,52 @@
             border-radius: 3px;
             touch-action: none;
             z-index: 1000;
-            text-transform: uppercase;
-            /* Critical for alignment */
-            transform: translate(-50%, -50%);
             white-space: nowrap;
+            text-transform: uppercase;
+            /* Added this to fix the "Center" drop point */
+            transform: translate(-50%, -50%);
         }
-
-        .static { position: relative !important; transform: none !important; top: auto !important; left: auto !important; }
 
         .label-sticker.locked {
             background: var(--neon-green) !important;
-            box-shadow: 0 0 12px var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
             pointer-events: none;
-            transform: translate(-50%, -50%) !important;
+            z-index: 500;
+        }
+
+        /* 4. RESTORE WORD BANK AT BOTTOM */
+        #sticker-bank {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 15px;
+            background: #111;
+            border-top: 2px solid #333;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        .static { 
+            position: relative !important; 
+            top: auto !important; 
+            left: auto !important; 
+            transform: none !important; 
+        }
+
+        #win-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5000;
         }
     </style>
 </head>
@@ -102,13 +118,16 @@
         <div>REANIMATED: <span id="count">0</span>/17</div>
     </div>
 
-    <div id="game-container">
-        <div id="skeleton-wrapper">
-            <img src="skeleton.JPG" id="skeleton-image">
+    <div id="skeleton-container">
+        <img src="skeleton.JPG" id="skeleton-image">
         </div>
-    </div>
 
     <div id="sticker-bank"></div>
+
+    <div id="win-overlay">
+        <h1 style="color: var(--neon-green); font-size: 40px;">COMPLETE</h1>
+        <button onclick="location.reload()" style="padding: 15px; background: black; color: white; border: 1px solid white;">RESTART</button>
+    </div>
 
 <script>
     const config = {
@@ -132,25 +151,26 @@
     };
 
     const bank = document.getElementById('sticker-bank');
-    const wrapper = document.getElementById('skeleton-wrapper');
+    const container = document.getElementById('skeleton-container');
     let solvedCount = 0;
 
     Object.keys(config).forEach(id => {
         const div = document.createElement('div');
+        div.id = id;
         div.className = 'label-sticker static';
-        div.innerText = id;
+        div.innerText = id.toUpperCase();
         bank.appendChild(div);
 
         div.addEventListener('touchstart', (e) => {
             div.classList.remove('static');
             div.style.position = 'absolute';
-            wrapper.appendChild(div);
+            container.appendChild(div); 
         });
 
         div.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.targetTouches[0];
-            const rect = wrapper.getBoundingClientRect();
+            const rect = container.getBoundingClientRect();
             let x = ((touch.pageX - rect.left) / rect.width * 100);
             let y = ((touch.pageY - rect.top) / rect.height * 100);
             div.style.left = x + '%';
@@ -159,17 +179,19 @@
 
         div.addEventListener('touchend', (e) => {
             const touch = e.changedTouches[0];
-            const rect = wrapper.getBoundingClientRect();
+            const rect = container.getBoundingClientRect();
             let fx = ((touch.pageX - rect.left) / rect.width * 100);
             let fy = ((touch.pageY - rect.top) / rect.height * 100);
 
-            const target = config[id];
-            if (Math.abs(fx - parseFloat(target.left)) < 6 && Math.abs(fy - parseFloat(target.top)) < 6) {
+            const target = config[div.id];
+            // Snap check (7% buffer)
+            if (Math.abs(fx - parseFloat(target.left)) < 7 && Math.abs(fy - parseFloat(target.top)) < 7) {
                 div.style.left = target.left;
                 div.style.top = target.top;
                 div.classList.add('locked');
                 solvedCount++;
                 document.getElementById('count').innerText = solvedCount;
+                if (solvedCount === 17) document.getElementById('win-overlay').style.display = 'flex';
             } else {
                 div.classList.add('static');
                 bank.appendChild(div);
