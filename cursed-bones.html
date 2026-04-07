@@ -3,127 +3,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: Mobile Lab</title>
+    <title>CURSED BONES: MOBILE REANIMATION</title>
     <style>
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-green: #39ff14;
+            --retro-red: #ff0055;
+            --terminal-bg: #0a0a0a;
+        }
+
         body {
-            background-color: #1a1a1a;
+            background-color: var(--terminal-bg);
             color: white;
             font-family: 'Courier New', monospace;
             margin: 0;
-            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        #skeleton-container {
+        #game-header {
+            text-align: center;
+            padding: 15px;
+            background: #111;
+            width: 100%;
+            border-bottom: 2px solid var(--retro-red);
+        }
+
+        #game-container {
             position: relative;
-            width: 420px;
-            margin-top: 20px;
-            border: 2px solid #333;
-            overflow: hidden;
+            width: 100vw;
+            max-width: 420px;
+            margin-top: 10px;
+        }
+
+        #skeleton-wrapper {
+            position: relative;
+            width: 100%;
         }
 
         #skeleton-image {
             width: 100%;
             display: block;
-            pointer-events: none; /* Prevents long-press save image on mobile */
+            /* This filter helps hide the 'baked-in' white boxes on your current image */
+            filter: contrast(110%) brightness(90%);
         }
 
-        /* The labels you will drag */
-        .label-box {
+        /* The blue stickers the user grabs */
+        .label-sticker {
             position: absolute;
-            padding: 8px 12px;
-            background: #3498db;
-            color: white;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 5px 8px;
+            background: var(--neon-blue);
+            color: black;
             font-weight: bold;
+            font-size: 11px;
+            border-radius: 3px;
+            cursor: grab;
+            touch-action: none;
             z-index: 100;
-            touch-action: none; /* Crucial for mobile drag */
-            user-select: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            white-space: nowrap;
+            box-shadow: 2px 2px 0px #005f73;
+            text-transform: uppercase;
         }
 
-        /* These are the 'Target Blanks' on the photo */
-        /* Use these to visually align. Change border to 'none' when done. */
-        .target-blank {
+        /* The transparent 'snap' targets */
+        .drop-zone {
             position: absolute;
-            border: 2px dashed rgba(255, 0, 0, 0.5); 
-            pointer-events: none;
-            width: 80px;
-            height: 25px;
+            width: 70px;
+            height: 22px;
+            border: 1px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 3px;
+            z-index: 50;
         }
 
-        #controls {
-            padding: 20px;
-            text-align: center;
+        .drop-zone.correct {
+            border: 1px solid var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
         }
 
-        .terminal-button {
-            padding: 15px 30px;
-            background: black;
-            color: #00ff66;
-            border: 2px solid #00ff66;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
+        #sticker-bank {
+            width: 90%;
+            min-height: 120px;
+            background: #1a1a1a;
+            margin: 20px 0;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            border: 1px solid #333;
+            border-radius: 8px;
         }
+
+        .sticker-static {
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            transform: none !important;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="controls">
-        <h2>DRAG BONES TO ALIGN</h2>
-        <p style="font-size: 10px;">Drag labels onto the skeleton blanks.</p>
+    <div id="game-header">
+        <h1 style="margin:0; font-size: 20px; color: var(--retro-red);">CURSED BONES</h1>
+        <div id="score">Bones Reanimated: <span id="count">0</span>/5</div>
     </div>
 
-    <div id="skeleton-container">
-        <img src="skeleton.JPG" id="skeleton-image" alt="Skeleton">
+    <div id="game-container">
+        <div id="skeleton-wrapper">
+            <img src="skeleton.JPG" id="skeleton-image" alt="Skeleton Body">
 
-        <div class="target-blank" style="top: 48px; left: 258px;" id="target-cranium"></div>
-        <div class="target-blank" style="top: 125px; left: 75px;" id="target-mandible"></div>
-
-        <div id="cranium" class="label-box" style="top: 10px; left: 10px;">CRANIUM</div>
-        <div id="mandible" class="label-box" style="top: 10px; left: 110px;">MANDIBLE</div>
-        <div id="humerus" class="label-box" style="top: 10px; left: 210px;">HUMERUS</div>
-        <div id="femur" class="label-box" style="top: 50px; left: 10px;">FEMUR</div>
-        <div id="patella" class="label-box" style="top: 50px; left: 110px;">PATELLA</div>
+            <div class="drop-zone" style="top: 52px; left: 63%;" data-bone="cranium"></div>
+            <div class="drop-zone" style="top: 118px; left: 18%;" data-bone="mandible"></div>
+            <div class="drop-zone" style="top: 395px; left: 75%;" data-bone="humerus"></div>
+            <div class="drop-zone" style="top: 715px; left: 5%;" data-bone="femur"></div>
+            <div class="drop-zone" style="top: 890px; left: 65%;" data-bone="patella"></div>
+        </div>
     </div>
 
-    <div id="controls">
-        <button class="terminal-button" onclick="location.href='index.html'">RESET LEVEL</button>
+    <div id="sticker-bank">
+        <div id="cranium" class="label-sticker sticker-static">Cranium</div>
+        <div id="mandible" class="label-sticker sticker-static">Mandible</div>
+        <div id="humerus" class="label-sticker sticker-static">Humerus</div>
+        <div id="femur" class="label-sticker sticker-static">Femur</div>
+        <div id="patella" class="label-sticker sticker-static">Patella</div>
     </div>
 
     <script>
-        const labels = document.querySelectorAll('.label-box');
+        const stickers = document.querySelectorAll('.label-sticker');
+        const zones = document.querySelectorAll('.drop-zone');
+        let score = 0;
 
-        labels.forEach(label => {
-            label.addEventListener('touchstart', (e) => {
-                label.style.zIndex = "1000";
-                label.style.background = "#e74c3c"; // Change color while dragging
+        stickers.forEach(sticker => {
+            sticker.addEventListener('touchstart', (e) => {
+                if(sticker.classList.contains('locked')) return;
+                sticker.classList.remove('sticker-static');
+                sticker.style.position = 'absolute';
+                sticker.style.zIndex = "1000";
             });
 
-            label.addEventListener('touchmove', (e) => {
+            sticker.addEventListener('touchmove', (e) => {
+                if(sticker.classList.contains('locked')) return;
                 e.preventDefault();
                 const touch = e.targetTouches[0];
-                const container = document.getElementById('skeleton-container').getBoundingClientRect();
+                const container = document.getElementById('skeleton-wrapper').getBoundingClientRect();
 
-                // Calculate relative position
-                let x = touch.pageX - container.left - (label.offsetWidth / 2);
-                let y = touch.pageY - container.top - (label.offsetHeight / 2);
+                let x = touch.pageX - container.left - (sticker.offsetWidth / 2);
+                let y = touch.pageY - container.top - (sticker.offsetHeight / 2);
 
-                // Keep within container boundaries
-                label.style.left = x + 'px';
-                label.style.top = y + 'px';
+                sticker.style.left = x + 'px';
+                sticker.style.top = y + 'px';
             }, {passive: false});
 
-            label.addEventListener('touchend', () => {
-                label.style.zIndex = "100";
-                label.style.background = "#3498db";
-                
-                // Alert the coordinates so you can save them in your CSS later!
-                console.log(`${label.innerText} set at: Top ${label.style.top}, Left ${label.style.left}`);
+            sticker.addEventListener('touchend', (e) => {
+                if(sticker.classList.contains('locked')) return;
+                const touch = e.changedTouches[0];
+                let snapped = false;
+
+                zones.forEach(zone => {
+                    const rect = zone.getBoundingClientRect();
+                    if (touch.pageX > rect.left && touch.pageX < rect.right &&
+                        touch.pageY > rect.top && touch.pageY < rect.bottom) {
+                        
+                        if (zone.dataset.bone === sticker.id) {
+                            // Snap to target
+                            sticker.style.left = zone.style.left;
+                            sticker.style.top = zone.style.top;
+                            sticker.style.background = "var(--neon-green)";
+                            sticker.classList.add('locked');
+                            zone.classList.add('correct');
+                            snapped = true;
+                            score++;
+                            document.getElementById('count').innerText = score;
+                        }
+                    }
+                });
+
+                if (!snapped) {
+                    sticker.classList.add('sticker-static');
+                    sticker.style.zIndex = "100";
+                }
             });
         });
     </script>
