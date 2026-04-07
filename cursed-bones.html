@@ -1,343 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>CURSED SKELETEN: Skeleton</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CURSED BONES: Mobile Lab</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-<style>
+        #skeleton-container {
+            position: relative;
+            width: 420px;
+            margin-top: 20px;
+            border: 2px solid #333;
+            overflow: hidden;
+        }
 
- /* Container for the skeleton + labels */
-#skeleton-container {
-    position: relative;
-    width: 420px; 
-    margin: 0 auto;
-    background-color: #1a1a1a; /* Dark background to match the image */
-}
+        #skeleton-image {
+            width: 100%;
+            display: block;
+            pointer-events: none; /* Prevents long-press save image on mobile */
+        }
 
-#skeleton-image {
-    width: 100%;
-    display: block;
-}
+        /* The labels you will drag */
+        .label-box {
+            position: absolute;
+            padding: 8px 12px;
+            background: #3498db;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 100;
+            touch-action: none; /* Crucial for mobile drag */
+            user-select: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
 
-/* All label boxes share these styles */
-/* The 'Sticker' style for labels */
-.label-box {
-    position: absolute;
-    width: auto;
-    min-width: 80px;
-    padding: 8px;
-    background: #3498db;
-    color: white;
-    border-radius: 4px;
-    cursor: move;
-    touch-action: none; /* Critical for mobile dragging */
-    user-select: none;
-    text-align: center;
-    font-weight: bold;
-    font-size: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
+        /* These are the 'Target Blanks' on the photo */
+        /* Use these to visually align. Change border to 'none' when done. */
+        .target-blank {
+            position: absolute;
+            border: 2px dashed rgba(255, 0, 0, 0.5); 
+            pointer-events: none;
+            width: 80px;
+            height: 25px;
+        }
 
-/* When a box is correctly placed */
-.label-box.correct {
-    background: #2ecc71;
-    box-shadow: 0 0 10px #2ecc71;
-}
+        #controls {
+            padding: 20px;
+            text-align: center;
+        }
 
-
-
-.label-box {
-    touch-action: none;      /* Stops the browser from taking over the touch */
-    user-select: none;       /* Prevents highlighting text while dragging */
-    cursor: move;
-    -webkit-user-select: none; 
-}
-
-
-/* Incorrect answer feedback */
-.label-box.incorrect {
-    border-color: #e74c3c;
-    background: rgba(231, 76, 60, 0.15);
-}
-  #check-all {
-    display: block;
-    margin: 20px auto;
-    padding: 10px 16px;
-    font-size: 16px;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-#check-all:hover {
-    background: #2980b9;
-}
-
-
-/* Optional word bank styling */
-#word-bank {
-    margin-top: 20px;
-    padding: 10px;
-    background: #f7f7f7;
-    border-radius: 8px;
-    width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#word-bank h3 {
-    margin: 0 0 8px 0;
-    font-size: 18px;
-}
-
-#word-bank ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    columns: 2; /* nice two-column layout */
-}
-
-#word-bank li {
-    padding: 4px 0;
-    font-size: 14px;
-}
-
- /* HEAD & NECK */
-#cranium    { top: 52px;  left: 258px; width: 65px; } /* Higher & Right */
-#mandible   { top: 125px; left: 75px;  width: 75px; }
-#cervical   { top: 195px; left: 295px; width: 110px; }
-
-/* SHOULDERS & THORAX */
-#acromion   { top: 290px; left: 5px;   width: 85px; }
-#clavicle   { top: 285px; left: 295px; width: 85px; } /* Added Clavicle */
-#scapula    { top: 310px; left: 315px; width: 85px; }
-#sternum    { top: 395px; left: 100px; width: 80px; }
-#ribs       { top: 590px; left: 100px; width: 80px; }
-
-/* ARMS */
-#humerus    { top: 395px; left: 315px; width: 85px; }
-#radius     { top: 495px; left: 315px; width: 85px; }
-#ulna       { top: 525px; left: 315px; width: 85px; }
-
-/* PELVIS & LEGS */
-#coxal      { top: 615px; left: 305px; width: 75px; }
-#lumbar     { top: 630px; left: 75px;  width: 105px; }
-#femur      { top: 715px; left: 5px;   width: 85px; }
-#patella    { top: 890px; left: 275px; width: 85px; }
-
- 
-  /* Fullscreen loading overlay */
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.8s ease;
-}
-
-/* Cursed image styling */
-#loading-image {
-    width: 300px;
-    max-width: 80%;
-    border: 3px solid #e74c3c;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-/* Loading text */
-#loading-text {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Hidden state after fade-out */
-#loading-screen.hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-
-  #terminal-link {
-    text-decoration: none;
-}
-
-#terminal-button {
-    display: block;
-    margin: 40px auto;
-    padding: 14px 24px;
-    font-size: 20px;
-    font-family: "Courier New", monospace;
-    color: #00ff66;
-    background: #000000;
-    border: 2px solid #00ff66;
-    border-radius: 6px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
-}
-
-#terminal-button:hover {
-    background: #003300;
-    box-shadow: 0 0 12px #00ff66;
-}
-
-#terminal-button:active {
-    transform: scale(0.96);
-    background: #001a00;
-}
-
-
-
-</style>
+        .terminal-button {
+            padding: 15px 30px;
+            background: black;
+            color: #00ff66;
+            border: 2px solid #00ff66;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div id="loading-screen">
-    <img src="cursed_skeleten.JPG" alt="Cursed Skeleten" id="loading-image">
-    <p id="loading-text">Fixing Skeleten’s labels…</p>
-</div>
 
-<div id="skeleton-container">
-    <img src="skeleton.JPG" alt="Skeleton Diagram" id="skeleton-image">
-  <button id="check-all">Check All Answers</button>
+    <div id="controls">
+        <h2>DRAG BONES TO ALIGN</h2>
+        <p style="font-size: 10px;">Drag labels onto the skeleton blanks.</p>
+    </div>
 
+    <div id="skeleton-container">
+        <img src="skeleton.JPG" id="skeleton-image" alt="Skeleton">
 
-    <!-- HEAD -->
-    <input type="text" id="cranium" class="label-box" placeholder="Cranium">
-    <input type="text" id="mandible" class="label-box" placeholder="Mandible">
+        <div class="target-blank" style="top: 48px; left: 258px;" id="target-cranium"></div>
+        <div class="target-blank" style="top: 125px; left: 75px;" id="target-mandible"></div>
 
-    <!-- SHOULDER GIRDLE -->
-    <input type="text" id="acromion" class="label-box" placeholder="Acromion">
-    <input type="text" id="clavicle" class="label-box" placeholder="Clavicle">
-    <input type="text" id="scapula" class="label-box" placeholder="Scapula">
+        <div id="cranium" class="label-box" style="top: 10px; left: 10px;">CRANIUM</div>
+        <div id="mandible" class="label-box" style="top: 10px; left: 110px;">MANDIBLE</div>
+        <div id="humerus" class="label-box" style="top: 10px; left: 210px;">HUMERUS</div>
+        <div id="femur" class="label-box" style="top: 50px; left: 10px;">FEMUR</div>
+        <div id="patella" class="label-box" style="top: 50px; left: 110px;">PATELLA</div>
+    </div>
 
-    <!-- UPPER EXTREMITY -->
-    <input type="text" id="humerus" class="label-box" placeholder="Humerus">
-    <input type="text" id="radius" class="label-box" placeholder="Radius">
-    <input type="text" id="ulna" class="label-box" placeholder="Ulna">
+    <div id="controls">
+        <button class="terminal-button" onclick="location.href='index.html'">RESET LEVEL</button>
+    </div>
 
-    <!-- THORAX -->
-    <input type="text" id="ribs" class="label-box" placeholder="Ribs">
-    <input type="text" id="sternum" class="label-box" placeholder="Sternum">
+    <script>
+        const labels = document.querySelectorAll('.label-box');
 
-    <!-- VERTEBRAL COLUMN -->
-    <input type="text" id="cervical" class="label-box" placeholder="Cervical Vertebrae">
-    <input type="text" id="thoracic" class="label-box" placeholder="Thoracic Vertebrae">
-    <input type="text" id="lumbar" class="label-box" placeholder="Lumbar Vertebrae">
+        labels.forEach(label => {
+            label.addEventListener('touchstart', (e) => {
+                label.style.zIndex = "1000";
+                label.style.background = "#e74c3c"; // Change color while dragging
+            });
 
-    <!-- PELVIS -->
-    <input type="text" id="coxal" class="label-box" placeholder="Coxal Bone">
-    <input type="text" id="coccyx" class="label-box" placeholder="Coccyx">
+            label.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.targetTouches[0];
+                const container = document.getElementById('skeleton-container').getBoundingClientRect();
 
-    <!-- LOWER EXTREMITY -->
-    <input type="text" id="femur" class="label-box" placeholder="Femur">
-    <input type="text" id="patella" class="label-box" placeholder="Patella">
-</div>
+                // Calculate relative position
+                let x = touch.pageX - container.left - (label.offsetWidth / 2);
+                let y = touch.pageY - container.top - (label.offsetHeight / 2);
 
-<!-- OPTIONAL WORD BANK -->
-<div id="word-bank">
-    <h3>Word Bank</h3>
-    <ul>
-        <li>Cranium</li>
-        <li>Mandible</li>
-        <li>Acromion</li>
-        <li>Humerus</li>
-        <li>Clavicle</li>
-        <li>Scapula</li>
-        <li>Radius</li>
-        <li>Ulna</li>
-        <li>Ribs</li>
-        <li>Sternum</li>
-        <li>Cervical vertebrae</li>
-        <li>Thoracic vertebrae</li>
-        <li>Lumbar vertebrae</li>
-        <li>Coxal Bone</li>
-        <li>Coccyx</li>
-        <li>Femur</li>
-        <li>Patella</li>
-    </ul>
-</div>
-  <script>
-// Accepted answers for each label box
-//const acceptedAnswers = {
-   // "cranium": ["cranium", "skull"],
-   // "mandible": ["mandible", "jaw", "jawbone"],
-   // "acromion": ["acromion"],
-   // "humerus": ["humerus"],
-   // "clavicle": ["clavicle", "collarbone"],
-   // "scapula": ["scapula", "shoulder blade"],
-   // "radius": ["radius"],
-    //"ulna": ["ulna"],
-   // "ribs": ["ribs", "rib cage"],
-   // "sternum": ["sternum", "breastbone"],
-   // "cervical": ["cervical vertebrae", "cervical spine", "c spine"],
-  //  "thoracic": ["thoracic vertebrae", "thoracic spine", "t spine"],
-   // "lumbar": ["lumbar vertebrae", "lumbar spine", "l spine"],
-   // "coxal": ["coxal bone", "hip bone", "pelvic bone"],
-   // "coccyx": ["coccyx", "tailbone"],
-  //  "femur": ["femur", "thigh bone"],
-  //  "patella": ["patella", "kneecap"]
-//};
+                // Keep within container boundaries
+                label.style.left = x + 'px';
+                label.style.top = y + 'px';
+            }, {passive: false});
 
-const labels = document.querySelectorAll('.label-box');
-
-labels.forEach(label => {
-    // 1. Handle the Touch Start
-    label.addEventListener('touchstart', function(e) {
-        label.style.zIndex = "1000"; // Bring to front when touching
-        label.style.boxShadow = "0 0 15px #3498db"; 
-    });
-
-    // 2. Handle the Moving
-    label.addEventListener('touchmove', function(e) {
-        e.preventDefault(); // Stops the page from bouncing/scrolling
-        
-        let touch = e.targetTouches[0];
-        let container = document.getElementById('skeleton-container').getBoundingClientRect();
-
-        // Calculate position relative to the skeleton image
-        let x = touch.pageX - container.left - (label.offsetWidth / 2);
-        let y = touch.pageY - container.top - (label.offsetHeight / 2);
-
-        label.style.left = x + 'px';
-        label.style.top = y + 'px';
-    }, {passive: false});
-
-    // 3. Handle the Drop
-    label.addEventListener('touchend', function() {
-        label.style.zIndex = "10";
-        label.style.boxShadow = "none";
-        
-        // This helps you find the coordinates:
-        console.log(`ID: ${label.id} | Top: ${label.style.top} | Left: ${label.style.left}`);
-    });
-});
-
-   // Loading screen fade-out
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        document.getElementById("loading-screen").classList.add("hidden");
-    }, 2000);
-});
-  </script>
-
+            label.addEventListener('touchend', () => {
+                label.style.zIndex = "100";
+                label.style.background = "#3498db";
+                
+                // Alert the coordinates so you can save them in your CSS later!
+                console.log(`${label.innerText} set at: Top ${label.style.top}, Left ${label.style.left}`);
+            });
+        });
+    </script>
 </body>
-  <a href="index.html" id="terminal-link">
-    <button id="terminal-button">TERMINAL</button>
-</a>
-
 </html>
