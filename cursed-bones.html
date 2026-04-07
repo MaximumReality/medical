@@ -3,130 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: FULL CALIBRATION</title>
+    <title>CURSED BONES: THE FINAL REANIMATION</title>
     <style>
-        body { background: #0a0a0a; color: #00ff66; font-family: 'Courier New', monospace; text-align: center; margin: 0; padding-bottom: 50px;}
-        
-        #coord-display {
-            position: fixed;
-            top: 0; width: 100%;
-            background: rgba(0,0,0,0.9);
-            padding: 5px;
-            font-size: 11px;
-            z-index: 2000;
-            border-bottom: 1px solid #00ff66;
+        :root {
+            --neon-blue: #00d4ff;
+            --neon-green: #39ff14;
+            --retro-red: #ff0055;
+            --bg: #0a0a0a;
         }
 
-        #skeleton-container {
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        #game-container {
             position: relative;
             width: 100vw;
             max-width: 420px;
-            margin: 80px auto 20px;
-            border: 1px solid #333;
+            margin-top: 10px;
         }
 
-        #skeleton-image { width: 100%; display: block; pointer-events: none; opacity: 0.8; }
+        #skeleton-wrapper { position: relative; width: 100%; }
+
+        #skeleton-image {
+            width: 100%;
+            display: block;
+            filter: brightness(0.8);
+            pointer-events: none;
+        }
 
         .label-sticker {
             position: absolute;
-            padding: 4px 8px;
-            background: #00d4ff;
+            padding: 5px 8px;
+            background: var(--neon-blue);
             color: black;
             font-weight: bold;
             font-size: 10px;
             border-radius: 3px;
             touch-action: none;
             z-index: 100;
-            white-space: nowrap;
+            box-shadow: 2px 2px 0px #005f73;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+
+        .label-sticker.locked {
+            background: var(--neon-green) !important;
+            box-shadow: 0 0 10px var(--neon-green);
+            pointer-events: none;
         }
 
         #sticker-bank {
+            width: 90%;
+            min-height: 150px;
+            background: #111;
+            margin: 20px 0;
+            padding: 15px;
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 8px;
             justify-content: center;
-            padding: 15px;
-            background: #111;
+            border: 2px solid #333;
+            border-radius: 8px;
         }
+
         .static { position: relative !important; top: auto !important; left: auto !important; }
-        
-        #save-btn {
-            background: #00ff66;
-            color: black;
-            border: none;
-            padding: 10px;
-            font-weight: bold;
-            margin: 10px;
-            border-radius: 5px;
+
+        /* WIN SCREEN (CRT Style) */
+        #win-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            text-align: center;
+        }
+
+        #win-overlay h2 {
+            color: var(--neon-green);
+            font-size: 40px;
+            text-shadow: 0 0 20px var(--neon-green);
+            margin-bottom: 20px;
+        }
+
+        .restart-btn {
+            padding: 15px 30px;
+            background: black;
+            color: var(--retro-red);
+            border: 2px solid var(--retro-red);
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
 
-    <div id="coord-display">
-        <div id="live-coord">Drag a bone...</div>
-        <button id="save-btn">LOG ALL COORDINATES</button>
-    </div>
-
-    <div id="skeleton-container">
-        <img src="skeleton.JPG" id="skeleton-image">
+    <div id="game-container">
+        <div id="skeleton-wrapper">
+            <img src="skeleton.JPG" id="skeleton-image">
+        </div>
     </div>
 
     <div id="sticker-bank">
-        <div id="cranium" class="label-sticker static">CRANIUM</div>
-        <div id="mandible" class="label-sticker static">MANDIBLE</div>
-        <div id="acromion" class="label-sticker static">ACROMION</div>
-        <div id="clavicle" class="label-sticker static">CLAVICLE</div>
-        <div id="scapula" class="label-sticker static">SCAPULA</div>
-        <div id="humerus" class="label-sticker static">HUMERUS</div>
-        <div id="radius" class="label-sticker static">RADIUS</div>
-        <div id="ulna" class="label-sticker static">ULNA</div>
-        <div id="ribs" class="label-sticker static">RIBS</div>
-        <div id="sternum" class="label-sticker static">STERNUM</div>
-        <div id="cervical" class="label-sticker static">CERVICAL VERTEBRAE</div>
-        <div id="thoracic" class="label-sticker static">THORACIC VERTEBRAE</div>
-        <div id="lumbar" class="label-sticker static">LUMBAR VERTEBRAE</div>
-        <div id="coxal" class="label-sticker static">COXAL BONE</div>
-        <div id="coccyx" class="label-sticker static">COCCYX</div>
-        <div id="femur" class="label-sticker static">FEMUR</div>
-        <div id="patella" class="label-sticker static">PATELLA</div>
+        </div>
+
+    <div id="win-overlay">
+        <h2>LEVEL<br>COMPLETE</h2>
+        <button class="restart-btn" onclick="location.reload()">REANIMATE AGAIN?</button>
     </div>
 
 <script>
-    const stickers = document.querySelectorAll('.label-sticker');
-    const container = document.getElementById('skeleton-container');
-    const liveDisplay = document.getElementById('live-coord');
-    const saveBtn = document.getElementById('save-btn');
+    // THE COORDINATES YOU CREATED
+    const config = {
+        "cranium": { top: "15.3%", left: "43.1%" },
+        "mandible": { top: "21.0%", left: "31.5%" },
+        "acromion": { top: "29.2%", left: "27.7%" },
+        "clavicle": { top: "28.8%", left: "53.8%" },
+        "scapula": { top: "31.9%", left: "55.0%" },
+        "humerus": { top: "38.7%", left: "25.6%" },
+        "radius": { top: "53.3%", left: "71.6%" },
+        "ulna": { top: "54.3%", left: "27.7%" },
+        "ribs": { top: "39.5%", left: "54.5%" },
+        "sternum": { top: "33.0%", left: "43.1%" },
+        "cervical": { top: "26.9%", left: "33.9%" },
+        "thoracic": { top: "43.1%", left: "35.1%" },
+        "lumbar": { top: "50.2%", left: "37.7%" },
+        "coxal": { top: "53.5%", left: "53.3%" },
+        "coccyx": { top: "56.6%", left: "43.4%" },
+        "femur": { top: "68.1%", left: "34.6%" },
+        "patella": { top: "79.1%", left: "52.1%" }
+    };
 
-    stickers.forEach(sticker => {
-        sticker.addEventListener('touchstart', (e) => {
-            sticker.classList.remove('static');
-            sticker.style.position = 'absolute';
-            sticker.style.zIndex = "1000";
+    const bank = document.getElementById('sticker-bank');
+    const container = document.getElementById('skeleton-wrapper');
+    const winOverlay = document.getElementById('win-overlay');
+    let solvedCount = 0;
+    const totalBones = Object.keys(config).length;
+
+    // Create stickers in the bank
+    Object.keys(config).forEach(id => {
+        const div = document.createElement('div');
+        div.id = id;
+        div.className = 'label-sticker static';
+        div.innerText = id.replace('_', ' ');
+        bank.appendChild(div);
+
+        div.addEventListener('touchstart', (e) => {
+            div.classList.remove('static');
+            div.style.position = 'absolute';
+            div.style.zIndex = "1000";
         });
 
-        sticker.addEventListener('touchmove', (e) => {
+        div.addEventListener('touchmove', (e) => {
             e.preventDefault();
             const touch = e.targetTouches[0];
             const rect = container.getBoundingClientRect();
-
-            let x = ((touch.pageX - rect.left) / rect.width * 100).toFixed(1);
-            let y = ((touch.pageY - rect.top) / rect.height * 100).toFixed(1);
-
-            sticker.style.left = x + '%';
-            sticker.style.top = y + '%';
-
-            liveDisplay.innerHTML = `${sticker.id}: top: ${y}%, left: ${x}%`;
+            let x = ((touch.pageX - rect.left) / rect.width * 100);
+            let y = ((touch.pageY - rect.top) / rect.height * 100);
+            div.style.left = x + '%';
+            div.style.top = y + '%';
         }, {passive: false});
-    });
 
-    saveBtn.addEventListener('click', () => {
-        let results = "";
-        document.querySelectorAll('.label-sticker:not(.static)').forEach(s => {
-            results += `"${s.id}": { top: "${s.style.top}", left: "${s.style.left}" },\n`;
+        div.addEventListener('touchend', (e) => {
+            const touch = e.changedTouches[0];
+            const rect = container.getBoundingClientRect();
+            let finalX = ((touch.pageX - rect.left) / rect.width * 100);
+            let finalY = ((touch.pageY - rect.top) / rect.height * 100);
+
+            const target = config[div.id];
+            const targetX = parseFloat(target.left);
+            const targetY = parseFloat(target.top);
+
+            // SNAP LOGIC: If within 5% of target
+            if (Math.abs(finalX - targetX) < 5 && Math.abs(finalY - targetY) < 5) {
+                div.style.left = target.left;
+                div.style.top = target.top;
+                div.classList.add('locked');
+                solvedCount++;
+                if (solvedCount === totalBones) {
+                    winOverlay.style.display = 'flex';
+                }
+            } else {
+                div.classList.add('static');
+            }
         });
-        console.log(results);
-        alert("Coordinates logged to Console! Or just take a screenshot of your screen now.");
     });
 </script>
 </body>
