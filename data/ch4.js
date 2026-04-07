@@ -1,74 +1,45 @@
 const CH4_DATA = {
     num: 4,
-    title: "The Tissue Level",
-    accentColor: "#ff9500", // "Histology Orange"
+    title: "Cellular Metabolism",
+    accentColor: "#f1c40f", // Gold/Energy color
     sections: [
         {
-            label: "EPITHELIAL TISSUE",
-            content: "Covers body surfaces and lines hollow organs. It is characterized by closely packed cells with very little extracellular matrix.",
+            label: "ENZYMES: THE CATALYSTS",
+            content: "Metabolism relies on enzymes to speed up chemical reactions without being consumed.",
             details: [
-                "**Simple Squamous**: Single layer of flat cells. Ideal for filtration (lungs, kidneys).",
-                "**Stratified Squamous**: Multiple layers. Protection against abrasion (skin, esophagus).",
-                "**Simple Columnar**: Tall cells. Often have microvilli for absorption (intestines).",
-                "**Avascularity**: Epithelium has no blood vessels; it relies on diffusion from connective tissue below."
+                "**Activation Energy**: The 'push' needed to start a reaction; enzymes lower this.",
+                "**Substrate**: The specific molecule an enzyme works on.",
+                "**Active Site**: The 'lock' where the substrate (key) fits perfectly.",
+                "**Denaturation**: When heat or pH changes destroy an enzyme's shape (and function)."
             ]
         },
         {
-            label: "CONNECTIVE TISSUE (CT)",
-            content: "The most abundant and widely distributed tissue. It supports, strengthens, and insulates.",
+            label: "ATP & CELLULAR RESPIRATION",
+            content: "How cells break down glucose to create the 'energy currency' of life.",
             details: [
-                "**Components**: Cells + Extracellular Matrix (Fibers and Ground Substance).",
-                "**Loose CT (Areolar)**: The 'packing material' of the body.",
-                "**Dense CT**: Found in tendons and ligaments; high in collagen fibers.",
-                "**Specialized CT**: Includes Cartilage, Bone, and Blood.",
-                "**Clinical Note**: Scurvy is a Vitamin C deficiency that prevents collagen formation, weakening CT."
-            ]
-        },
-        {
-            label: "MUSCLE & NERVOUS TISSUE",
-            content: "Excitable tissues that respond to stimuli.",
-            image: "img/ch4_types-of-tissues.JPG",
-            details: [
-                "**Skeletal Muscle**: Striated, voluntary, multinucleated.",
-                "**Cardiac Muscle**: Striated, involuntary, contains Intercalated Discs.",
-                "**Smooth Muscle**: Non-striated, involuntary (walls of hollow organs).",
-                "**Neurons**: Cells that convert stimuli into electrical signals."
+                "**Glycolysis**: Occurs in the cytosol; breaks glucose into pyruvic acid.",
+                "**Aerobic Respiration**: Occurs in the **Mitochondria**; requires Oxygen to make 30+ ATP.",
+                "**Anaerobic Respiration**: Occurs without Oxygen; produces Lactic Acid and very little ATP."
             ]
         }
     ],
     vocab: [
-        {t: "Histology", d: "The microscopic study of tissues."},
-        {t: "Avascular", d: "Lacking a blood supply."},
-        {t: "Goblet Cell", d: "A columnar cell that secretes mucus."},
-        {t: "Matrix", d: "The extracellular material in connective tissue."},
-        {t: "Striations", d: "Alternating light and dark bands seen in muscle tissue."},
-        {t: "Lumen", d: "The interior space of a hollow structure or organ."}
+        {t: "Anabolism", d: "Building large molecules from small ones (requires energy)."},
+        {t: "Catabolism", d: "Breaking down large molecules (releases energy)."},
+        {t: "Metabolism", d: "The sum of all chemical reactions in the body."}
     ],
     questions: [
         {
-            q: "Which type of tissue is found in the air sacs of the lungs to allow for rapid gas exchange?",
-            opts: ["Simple Squamous", "Stratified Cuboidal", "Simple Columnar", "Transitional"],
-            ans: 0,
-            exp: "Simple squamous epithelium is thin, making it perfect for diffusion."
-        },
-                {
-            q: "Which type of connective tissue serves as a shock absorber and energy reservoir in the hypodermis?",
-            opts: ["Hyaline Cartilage", "Areolar Tissue", "Adipose Tissue", "Dense Regular"],
+            q: "Which organelle is the primary site for aerobic respiration and ATP production?",
+            opts: ["Nucleus", "Ribosome", "Mitochondrion", "Lysosome"],
             ans: 2,
-            exp: "Adipose tissue (fat) stores energy, provides insulation, and cushions organs."
+            exp: "The mitochondria are the powerhouses where oxygen is used to make energy."
         },
         {
-            q: "Which cell in nervous tissue is responsible for sending electrical impulses?",
-            opts: ["Neuroglia", "Neuron", "Chondrocyte", "Fibroblast"],
+            q: "An enzyme speeds up a reaction by:",
+            opts: ["Increasing temperature", "Lowering activation energy", "Changing pH", "Adding more substrate"],
             ans: 1,
-            exp: "Neurons are the functional units of the nervous system that transmit signals."
-        },
-
-        {
-            q: "Which muscle tissue contains intercalated discs?",
-            opts: ["Skeletal", "Smooth", "Cardiac", "Voluntary"],
-            ans: 2,
-            exp: "Intercalated discs are unique to cardiac muscle and help synchronize contractions."
+            exp: "Enzymes make it 'cheaper' (energy-wise) for a reaction to happen."
         }
     ]
 };
