@@ -27,7 +27,7 @@ const CH6_DATA = {
         {
             label: "OSSIFICATION (BONE GROWTH)",
             content: "How the skeleton forms from a fetus into adulthood.",
-            image: "ch6_ossification.JPG",
+            image: "img/ch6_ossification.JPG",
             details: [
                 "**Intramembranous**: Bone develops from fibrous membranes (e.g., flat bones of the skull).",
                 "**Endochondral**: Bone replaces a hyaline cartilage model (e.g., long bones like the femur).",
