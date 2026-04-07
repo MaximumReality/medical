@@ -17,8 +17,8 @@ const CH7_DATA = {
         {
             label: "APPENDICULAR: PECTORAL GIRDLE & UPPER LIMB",
             content: "The upper appendicular skeleton is specialized for a wide range of motion and manipulation.",
-            image1: "img/ch7_pec_girdle.JPG",
-            image2: "img/ch7_pec_girdle_limb.PNG",
+            image 1: "img/ch7_pec_girdle.JPG",
+            image 2: "img/ch7_pec_girdle_limb.PNG",
             details: [
                 "**Pectoral Girdle**: Consists of the **Clavicle** (collarbone) and **Scapula** (shoulder blade).",
                 "**Upper Limb**: Humerus (arm), Radius (lateral forearm), and Ulna (medial forearm).",
@@ -39,8 +39,8 @@ const CH7_DATA = {
         {
             label: "APPENDICULAR: PELVIC GIRDLE & LOWER LIMB",
             content: "The lower appendicular skeleton is engineered for weight-bearing, stability, and locomotion.",
-            image1: "img/ch7_pelvic_girdle.JPG",
-            image2: "img/ch7_lower_limb.JPG",
+            image 1: "img/ch7_pelvic_girdle.JPG",
+            image 2: "img/ch7_lower_limb.JPG",
             details: [
                 "**Pelvic Girdle**: Formed by two **Coxal bones**, each composed of the fused Ilium, Ischium, and Pubis.",
                 "**Lower Limb**: Femur (thigh), Tibia (weight-bearing shin), and Fibula (lateral support).",
