@@ -6,7 +6,7 @@ const CH2_DATA = {
         {
             label: "LEVELS OF BIOLOGICAL ORGANIZATION",
             content: "From atoms to organisms—understanding how small parts build the complex human machine.",
-            image: "img/Ch2_levels_of_organization.JPG", 
+            image: "img/ch2_levels_of_organization.JPG", 
             details: [
                 "**Chemical Level**: Atoms (C, H, O, N) combine to form molecules (DNA, Glucose).",
                 "**Cellular Level**: Molecules associate to form organelles and functional cells.",
