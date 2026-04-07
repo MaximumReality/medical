@@ -44,17 +44,12 @@ const CH6_DATA = {
     ],
     questions: [
     { q: "Which cells in the Stratum Basale produce the pigment that protects DNA from UV radiation?", opts: ["Keratinocytes", "Melanocytes", "Adipocytes", "Fibroblasts"], ans: 1, exp: "Melanocytes produce melanin, which absorbs harmful UV rays." },
-    { q: "Which type of sweat gland is primarily responsible for body temperature regulation?", opts: ["Apocrine", "Sebaceous", "Eccrine", "Ceruminous"], ans: 2, exp: "Eccrine glands (merocrine) secrete watery sweat to cool the body via evaporation." }
-,
-
-        {
-            q: "Which layer of the skin contains the blood vessels and sensory receptors?",
+    { q: "Which type of sweat gland is primarily responsible for body temperature regulation?", opts: ["Apocrine", "Sebaceous", "Eccrine", "Ceruminous"], ans: 2, exp: "Eccrine glands (merocrine) secrete watery sweat to cool the body via evaporation." },
+    { q: "Which layer of the skin contains the blood vessels and sensory receptors?",
             opts: ["Epidermis", "Dermis", "Stratum Corneum", "Stratum Basale"],
             ans: 1,
-            exp: "The Dermis is highly vascularized and contains the majority of the skin's accessory structures."
-        },
-        {
-            q: "New skin cells are produced in which specific layer of the epidermis?",
+            exp: "The Dermis is highly vascularized and contains the majority of the skin's accessory structures." },
+    { q: "New skin cells are produced in which specific layer of the epidermis?",
             opts: ["Stratum Corneum", "Stratum Granulosum", "Stratum Spinosum", "Stratum Basale"],
             ans: 3,
             exp: "The Stratum Basale is the deepest layer where continuous cell division (mitosis) occurs."
