@@ -6,6 +6,8 @@ const CH4_DATA = {
         {
             label: "ENZYMES & METABOLISM",
             content: "Metabolism is the sum of all chemical reactions. Enzymes make these reactions possible at body temperature.",
+            image 1: "img/ch4_enzyme_lock_key.JPG",
+            image 2: "img/ch4_basic_overview.JPG",
             details: [
                 "**Anabolism**: Small molecules built into larger ones (Requires energy).",
                 "**Catabolism**: Larger molecules broken down (Releases energy).",
@@ -16,6 +18,10 @@ const CH4_DATA = {
         {
             label: "ATP & ENERGY RECOVERY",
             content: "Cells 'burn' glucose to create ATP (Adenosine Triphosphate), the universal energy currency.",
+            image 1: "img/ch4_contraction_cycle.PNG",
+            image 2: "img/ch4_citric_acid_cycle.GIF",
+            image 3: "img/ch4_krebs.JPG",
+            image 4: "img/ch4_enzyme_substrate.JPG",
             details: [
                 "**Glycolysis**: First step of breaking down glucose; occurs in the cytosol (Anaerobic).",
                 "**Aerobic Respiration**: Requires Oxygen; occurs in the **Mitochondria**. Produces the most ATP.",
