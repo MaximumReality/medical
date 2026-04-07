@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CURSED BONES: THE ALIGNMENT</title>
+    <title>CURSED BONES: FULL CALIBRATION</title>
     <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; text-align: center; margin: 0; overflow-x: hidden; }
+        body { background: #0a0a0a; color: #00ff66; font-family: 'Courier New', monospace; text-align: center; margin: 0; padding-bottom: 50px;}
         
+        #coord-display {
+            position: fixed;
+            top: 0; width: 100%;
+            background: rgba(0,0,0,0.9);
+            padding: 5px;
+            font-size: 11px;
+            z-index: 2000;
+            border-bottom: 1px solid #00ff66;
+        }
+
         #skeleton-container {
             position: relative;
-            width: 90vw;
-            max-width: 400px;
-            margin: 20px auto;
-            border: 2px solid #444;
+            width: 100vw;
+            max-width: 420px;
+            margin: 80px auto 20px;
+            border: 1px solid #333;
         }
 
-        #skeleton-image { width: 100%; display: block; pointer-events: none; }
-
-        /* DEBUG MODE: These red boxes show you WHERE to drag the stickers */
-        .drop-zone {
-            position: absolute;
-            width: 60px;
-            height: 25px;
-            border: 2px solid red; /* Change to 'none' when finished! */
-            background: rgba(255, 0, 0, 0.2);
-            z-index: 50;
-            pointer-events: none; /* Let the touch go THROUGH to the sticker */
-        }
+        #skeleton-image { width: 100%; display: block; pointer-events: none; opacity: 0.8; }
 
         .label-sticker {
             position: absolute;
-            padding: 8px;
+            padding: 4px 8px;
             background: #00d4ff;
             color: black;
             font-weight: bold;
-            font-size: 11px;
-            border-radius: 4px;
+            font-size: 10px;
+            border-radius: 3px;
             touch-action: none;
             z-index: 100;
             white-space: nowrap;
@@ -44,42 +43,66 @@
         #sticker-bank {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 5px;
             justify-content: center;
-            padding: 20px;
-            background: #222;
+            padding: 15px;
+            background: #111;
         }
-
         .static { position: relative !important; top: auto !important; left: auto !important; }
+        
+        #save-btn {
+            background: #00ff66;
+            color: black;
+            border: none;
+            padding: 10px;
+            font-weight: bold;
+            margin: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
 
-    <h2>ALIGN THE BONES</h2>
-    <p>Drag blue boxes into red boxes.</p>
+    <div id="coord-display">
+        <div id="live-coord">Drag a bone...</div>
+        <button id="save-btn">LOG ALL COORDINATES</button>
+    </div>
 
     <div id="skeleton-container">
         <img src="skeleton.JPG" id="skeleton-image">
-
-        <div class="drop-zone" style="top: 52px; left: 63%;" id="zone-cranium"></div>
-        <div class="drop-zone" style="top: 118px; left: 18%;" id="zone-mandible"></div>
-        <div class="drop-zone" style="top: 395px; left: 75%;" id="zone-humerus"></div>
     </div>
 
     <div id="sticker-bank">
         <div id="cranium" class="label-sticker static">CRANIUM</div>
         <div id="mandible" class="label-sticker static">MANDIBLE</div>
+        <div id="acromion" class="label-sticker static">ACROMION</div>
+        <div id="clavicle" class="label-sticker static">CLAVICLE</div>
+        <div id="scapula" class="label-sticker static">SCAPULA</div>
         <div id="humerus" class="label-sticker static">HUMERUS</div>
+        <div id="radius" class="label-sticker static">RADIUS</div>
+        <div id="ulna" class="label-sticker static">ULNA</div>
+        <div id="ribs" class="label-sticker static">RIBS</div>
+        <div id="sternum" class="label-sticker static">STERNUM</div>
+        <div id="cervical" class="label-sticker static">CERVICAL VERTEBRAE</div>
+        <div id="thoracic" class="label-sticker static">THORACIC VERTEBRAE</div>
+        <div id="lumbar" class="label-sticker static">LUMBAR VERTEBRAE</div>
+        <div id="coxal" class="label-sticker static">COXAL BONE</div>
+        <div id="coccyx" class="label-sticker static">COCCYX</div>
+        <div id="femur" class="label-sticker static">FEMUR</div>
+        <div id="patella" class="label-sticker static">PATELLA</div>
     </div>
 
 <script>
     const stickers = document.querySelectorAll('.label-sticker');
     const container = document.getElementById('skeleton-container');
+    const liveDisplay = document.getElementById('live-coord');
+    const saveBtn = document.getElementById('save-btn');
 
     stickers.forEach(sticker => {
         sticker.addEventListener('touchstart', (e) => {
             sticker.classList.remove('static');
             sticker.style.position = 'absolute';
+            sticker.style.zIndex = "1000";
         });
 
         sticker.addEventListener('touchmove', (e) => {
@@ -87,31 +110,23 @@
             const touch = e.targetTouches[0];
             const rect = container.getBoundingClientRect();
 
-            // Movement logic
-            sticker.style.left = (touch.pageX - rect.left - 30) + 'px';
-            sticker.style.top = (touch.pageY - rect.top - 12) + 'px';
+            let x = ((touch.pageX - rect.left) / rect.width * 100).toFixed(1);
+            let y = ((touch.pageY - rect.top) / rect.height * 100).toFixed(1);
+
+            sticker.style.left = x + '%';
+            sticker.style.top = y + '%';
+
+            liveDisplay.innerHTML = `${sticker.id}: top: ${y}%, left: ${x}%`;
         }, {passive: false});
+    });
 
-        sticker.addEventListener('touchend', (e) => {
-            const stickerRect = sticker.getBoundingClientRect();
-            const targetZone = document.getElementById('zone-' + sticker.id);
-            const zoneRect = targetZone.getBoundingClientRect();
-
-            // Check if center of sticker is inside the red box
-            const buffer = 40; // Makes it easier to 'hit' the target
-            if (Math.abs(stickerRect.left - zoneRect.left) < buffer && 
-                Math.abs(stickerRect.top - zoneRect.top) < buffer) {
-                
-                // SNAP!
-                sticker.style.left = targetZone.style.left;
-                sticker.style.top = targetZone.style.top;
-                sticker.style.background = "#39ff14";
-                targetZone.style.borderColor = "#39ff14";
-            } else {
-                // MISS - Send back to bank
-                sticker.classList.add('static');
-            }
+    saveBtn.addEventListener('click', () => {
+        let results = "";
+        document.querySelectorAll('.label-sticker:not(.static)').forEach(s => {
+            results += `"${s.id}": { top: "${s.style.top}", left: "${s.style.left}" },\n`;
         });
+        console.log(results);
+        alert("Coordinates logged to Console! Or just take a screenshot of your screen now.");
     });
 </script>
 </body>
