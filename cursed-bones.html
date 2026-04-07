@@ -35,30 +35,33 @@
             z-index: 2000;
         }
 
-        #game-container {
-            position: relative;
-            width: 100vw;
-            height: calc(100vh - 50px);
-            display: flex;
-            justify-content: center;
-            background: var(--bg);
-        }
+       #game-container {
+        position: relative;
+        width: 100vw;
+        height: calc(100vh - 50px);
+        display: flex;
+        justify-content: center;
+        /* This pushes the whole skeleton AND the labels down together */
+        padding-top: 80px; 
+        background: var(--bg);
+        overflow-y: auto; /* Allows scrolling if he's too tall */
+    }
 
         /* PRECISION LOCK: This must match the width where you took coordinates */
-        #skeleton-wrapper {
-            position: relative;
-            width: 70vw; /* Adjust this percentage to make him 'bigger' or 'smaller' */
-            max-width: 320px; 
-            height: fit-content;
-            margin-top: 90px;
-        }
+         #skeleton-wrapper {
+        position: relative;
+        /* Width is locked so coordinates stay precise */
+        width: 70vw; 
+        max-width: 320px; 
+        /* height: auto ensures the wrapper is EXACTLY the height of the JPG */
+        height: auto; 
+    }
 
-        #skeleton-image {
-            width: 100%;
-            display: block;
-            pointer-events: none;
-            filter: brightness(0.9);
-        }
+          #skeleton-image {
+        width: 100%;
+        display: block;
+        pointer-events: none;
+    }
 
         /* SIDE DOCKS: Floating and non-intrusive */
         .side-dock {
