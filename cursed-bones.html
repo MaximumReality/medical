@@ -23,16 +23,30 @@
 }
 
 /* All label boxes share these styles */
+/* The 'Sticker' style for labels */
 .label-box {
     position: absolute;
-    /* We remove the background and borders so they 'hover' over the image blanks */
-    background: transparent; 
-    border: 1px dashed rgba(0, 255, 0, 0.3); /* Temporary visible border for alignment */
-    color: #333; /* Dark text to show up on the white blanks */
-    font-weight: bold;
+    width: auto;
+    min-width: 80px;
+    padding: 8px;
+    background: #3498db;
+    color: white;
+    border-radius: 4px;
+    cursor: move;
+    touch-action: none; /* Critical for mobile dragging */
+    user-select: none;
     text-align: center;
-    outline: none;
+    font-weight: bold;
+    font-size: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
+
+/* When a box is correctly placed */
+.label-box.correct {
+    background: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71;
+}
+
 
 
 
@@ -258,7 +272,7 @@
 </div>
   <script>
 // Accepted answers for each label box
-const acceptedAnswers = {
+//const acceptedAnswers = {
     "cranium": ["cranium", "skull"],
     "mandible": ["mandible", "jaw", "jawbone"],
     "acromion": ["acromion"],
@@ -276,47 +290,31 @@ const acceptedAnswers = {
     "coccyx": ["coccyx", "tailbone"],
     "femur": ["femur", "thigh bone"],
     "patella": ["patella", "kneecap"]
-};
+//};
 
-// Function to check a single input box
-function checkAnswer(inputElement) {
-    const id = inputElement.id;
-    const userInput = inputElement.value.trim().toLowerCase();
+// Make elements draggable on mobile
+const labels = document.querySelectorAll('.label-box');
 
-    // Clear previous feedback
-    inputElement.classList.remove("correct", "incorrect");
+labels.forEach(label => {
+    label.addEventListener('touchmove', function(e) {
+        // Grab the finger location
+        let touchLocation = e.targetTouches[0];
+        
+        // Move the box to the finger location
+        // We subtract half the width/height to center it under your finger
+        label.style.left = (touchLocation.pageX - 40) + 'px';
+        label.style.top = (touchLocation.pageY - 20) + 'px';
+        
+        // Prevent the whole screen from scrolling while dragging
+        e.preventDefault();
+    }, {passive: false});
 
-    if (!acceptedAnswers[id]) return;
-
-    // Check if the input matches any accepted answer
-    const isCorrect = acceptedAnswers[id].some(
-        answer => answer.toLowerCase() === userInput
-    );
-
-    if (isCorrect) {
-        inputElement.classList.add("correct");
-        inputElement.disabled = true; // lock correct answers
-    } else {
-        inputElement.classList.add("incorrect");
-    }
-}
-
-// Check all answers at once
-function checkAllAnswers() {
-    document.querySelectorAll(".label-box").forEach(box => {
-        checkAnswer(box);
+    label.addEventListener('touchend', function(e) {
+        // Log the final position to the console 
+        // You can use this to 'save' your layout later!
+        console.log(`${label.id}: top: ${label.style.top}, left: ${label.style.left}`);
     });
-}
 
-// Button listener
-document.getElementById("check-all").addEventListener("click", checkAllAnswers);
-
-// Loading screen fade-out
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        document.getElementById("loading-screen").classList.add("hidden");
-    }, 2000);
-});
 </script>
 
 </body>
