@@ -50,6 +50,19 @@ const CH3_DATA = {
             ans: 2,
             exp: "The hydrophobic tails of the phospholipids create a fatty barrier that water-soluble items cannot easily cross."
         },
+                {
+            q: "In a Hypertonic solution, a red blood cell will lose water and shrink. This process is called:",
+            opts: ["Hemolysis", "Crenation", "Filtration", "Pinocytosis"],
+            ans: 1,
+            exp: "Crenation is the shrinking of a cell in a high-solute (hypertonic) environment."
+        },
+        {
+            q: "Which organelle is the site of 'Translation' where amino acids are assembled into proteins?",
+            opts: ["Nucleus", "Ribosome", "Golgi Apparatus", "Peroxisome"],
+            ans: 1,
+            exp: "Ribosomes (often found on the Rough ER) are the protein 'factories' of the cell."
+        },
+
         {
             q: "A cell that requires a massive amount of energy (like a heart muscle cell) would have a high concentration of which organelle?",
             opts: ["Lysosomes", "Mitochondria", "Smooth ER", "Nuclei"],
