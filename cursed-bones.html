@@ -42,25 +42,28 @@
         width: 100vw;
         height: calc(100vh - 60px);
         background: var(--bg);
-        /* This pushes the whole 'World' down so he isn't under the header */
-        padding-top: 40px; 
+        padding-top: 20px; /* Adjust this to move the whole unit up/down */
         overflow: hidden;
     }
+
 
 
         /* PRECISION LOCK: This must match the width where you took coordinates */
           #skeleton-wrapper {
         position: relative;
-        /* Lock this to the width you used for calibration */
         width: 75vw;
         max-width: 320px;
-        /* This is the key: it makes the container shrink-wrap the image */
+        /* Line-height 0 and font-size 0 remove hidden "text space" at the top */
+        line-height: 0;
+        font-size: 0;
         display: inline-block; 
     }
 
-          #skeleton-image {
+           #skeleton-image {
         width: 100%;
         display: block;
+        padding: 0;
+        margin: 0;
         pointer-events: none;
     }
 
@@ -83,25 +86,37 @@
         #dock-right { right: 0; }
 
         .label-sticker {
-            padding: 6px 2px;
-            background: var(--neon-blue);
-            color: black;
-            font-weight: bold;
-            font-size: 8px;
-            border-radius: 3px;
-            touch-action: none;
-            z-index: 1000;
-            text-align: center;
-            text-transform: uppercase;
-            box-shadow: 2px 2px 0px #005f73;
-        }
+    /* Tighten the padding to prevent "height creep" */
+    padding: 4px 6px;
+    background: var(--neon-blue);
+    color: black;
+    font-weight: bold;
+    font-size: 9px;
+    border-radius: 3px;
+    touch-action: none;
+    z-index: 1000;
+    text-align: center;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0px #005f73;
+    
+    /* CRITICAL FIX: This ensures the coordinate (top/left) 
+       points to the CENTER of the label, not the top-left corner. */
+    transform: translate(-50%, -50%);
+    
+    /* Force line-height so the box doesn't grow taller than needed */
+    line-height: 1;
+    white-space: nowrap;
+}
 
-        .label-sticker.locked {
-            background: var(--neon-green) !important;
-            box-shadow: 0 0 12px var(--neon-green);
-            color: black;
-            pointer-events: none;
-        }
+.label-sticker.locked {
+    background: var(--neon-green) !important;
+    box-shadow: 0 0 12px var(--neon-green);
+    color: black;
+    pointer-events: none;
+    /* Keep the centering transform active after locking */
+    transform: translate(-50%, -50%); 
+}
+
 
         .static { position: relative !important; width: 90%; margin: 0 auto; }
 
