@@ -43,6 +43,10 @@ const CH5_DATA = {
         {t: "Arrector Pili", d: "Smooth muscle that causes 'goosebumps' by pulling hair follicles upright."}
     ],
     questions: [
+    { q: "Which cells in the Stratum Basale produce the pigment that protects DNA from UV radiation?", opts: ["Keratinocytes", "Melanocytes", "Adipocytes", "Fibroblasts"], ans: 1, exp: "Melanocytes produce melanin, which absorbs harmful UV rays." },
+    { q: "Which type of sweat gland is primarily responsible for body temperature regulation?", opts: ["Apocrine", "Sebaceous", "Eccrine", "Ceruminous"], ans: 2, exp: "Eccrine glands (merocrine) secrete watery sweat to cool the body via evaporation." }
+,
+
         {
             q: "Which layer of the skin contains the blood vessels and sensory receptors?",
             opts: ["Epidermis", "Dermis", "Stratum Corneum", "Stratum Basale"],
