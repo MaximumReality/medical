@@ -43,7 +43,27 @@ const CH13_DATA = {
         {t: "Myocardium", d: "The thick middle layer of the heart wall composed of cardiac muscle tissue."},
         {t: "Pericardium", d: "The protective sac surrounding the heart."}
     ],
-    questions: [
+        questions: [
+        {
+            q: "Which blood component is responsible for carrying oxygen?",
+            opts: ["Leukocytes", "Platelets", "Erythrocytes", "Plasma"],
+            ans: 2,
+            exp: "Erythrocytes (Red Blood Cells) contain hemoglobin to transport oxygen."
+        },
+        {
+            q: "A person with Type O blood is considered the 'Universal Donor' because:",
+            opts: ["They have both A and B antigens", "They lack both A and B antigens", "They have Rh antibodies", "They have extra plasma"],
+            ans: 1,
+            exp: "Type O has no A or B antigens, so it won't trigger an immune response in others."
+        },
+        {
+            q: "Which vessels allow for the actual exchange of gases and nutrients with tissues?",
+            opts: ["Arteries", "Veins", "Arterioles", "Capillaries"],
+            ans: 3,
+            exp: "Capillaries are thin-walled (one cell thick) to allow for diffusion."
+        },
+    
+
         {
             q: "Which valve prevents blood from flowing back into the Left Ventricle?",
             opts: ["Tricuspid Valve", "Mitral Valve", "Aortic Valve", "Pulmonary Valve"],
