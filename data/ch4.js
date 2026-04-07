@@ -17,7 +17,7 @@ const CH4_DATA = {
         {
             label: "ATP & ENERGY RECOVERY",
             content: "Cells 'burn' glucose to create ATP (Adenosine Triphosphate), the universal energy currency.",
-            image: "img/ch4_citric_acid_cycle.JPG",
+            image: "img/ch4_krebs.JPG",
             details: [
                 "**Glycolysis**: First step of breaking down glucose; occurs in the cytosol (Anaerobic).",
                 "**Aerobic Respiration**: Requires Oxygen; occurs in the **Mitochondria**. Produces the most ATP.",
