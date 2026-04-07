@@ -36,25 +36,26 @@
         }
 
        #game-container {
-        position: relative;
-        width: 100vw;
-        height: calc(100vh - 50px);
         display: flex;
         justify-content: center;
-        /* This pushes the whole skeleton AND the labels down together */
-        padding-top: 80px; 
+        align-items: flex-start;
+        width: 100vw;
+        height: calc(100vh - 60px);
         background: var(--bg);
-        overflow-y: auto; /* Allows scrolling if he's too tall */
+        /* This pushes the whole 'World' down so he isn't under the header */
+        padding-top: 40px; 
+        overflow: hidden;
     }
 
+
         /* PRECISION LOCK: This must match the width where you took coordinates */
-         #skeleton-wrapper {
+          #skeleton-wrapper {
         position: relative;
-        /* Width is locked so coordinates stay precise */
-        width: 70vw; 
-        max-width: 320px; 
-        /* height: auto ensures the wrapper is EXACTLY the height of the JPG */
-        height: auto; 
+        /* Lock this to the width you used for calibration */
+        width: 75vw;
+        max-width: 320px;
+        /* This is the key: it makes the container shrink-wrap the image */
+        display: inline-block; 
     }
 
           #skeleton-image {
