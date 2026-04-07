@@ -1,4 +1,4 @@
-Const CH6_DATA = {
+const CH6_DATA = {
     num: 6,
     title: "Integumentary System",
     accentColor: "#e67e22", 
