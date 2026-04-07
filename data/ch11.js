@@ -6,7 +6,7 @@ const CH11_DATA = {
         {
             label: "GLAND LOCATIONS & HORMONES",
             content: "The endocrine system consists of glands that secrete hormones directly into the blood to regulate metabolism and homeostasis.",
-            image: "img/ch11_endocrine_system.PNG", 
+            image: "img/ch11_endoctine_system.PNG", 
             details: [
                 "**Hypothalamus & Pituitary**: The 'Command Center' located in the brain; regulates growth, water balance (ADH), and reproduction.",
                 "**Thyroid & Parathyroid**: Located in the neck; controls metabolic rate ($T_3$/$T_4$) and blood calcium levels (Calcitonin/PTH).",
