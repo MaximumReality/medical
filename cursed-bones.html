@@ -12,7 +12,7 @@
  /* Container for the skeleton + labels */
 #skeleton-container {
     position: relative;
-    width: 500px; /* Increased to fit the image scale better */
+    width: 420px; 
     margin: 0 auto;
     background-color: #1a1a1a; /* Dark background to match the image */
 }
@@ -25,14 +25,15 @@
 /* All label boxes share these styles */
 .label-box {
     position: absolute;
-    width: 90px; /* Slimmer boxes so they don't overlap */
-    padding: 2px 4px;
-    font-size: 11px; /* Smaller font for a cleaner look */
-    border: 1px solid #fff;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.9);
+    /* We remove the background and borders so they 'hover' over the image blanks */
+    background: transparent; 
+    border: 1px dashed rgba(0, 255, 0, 0.3); /* Temporary visible border for alignment */
+    color: #333; /* Dark text to show up on the white blanks */
+    font-weight: bold;
     text-align: center;
+    outline: none;
 }
+
 
 
 /* Correct answer feedback */
@@ -93,29 +94,27 @@
 }
 
   /* HEAD & NECK */
-#cranium    { top: 52px;  left: 630px; width: 110px; } /* Adjusting based on image layout */
-#mandible   { top: 110px; left: 185px; width: 110px; }
+#cranium { top: 48px; left: 258px; width: 65px; height: 22px; }
+#mandible { top: 125px; left: 75px; width: 75px; height: 22px; }
+#cervical { top: 195px; left: 295px; width: 110px; height: 22px; }
 
-/* SHOULDERS & ARMS */
-#acromion   { top: 195px; left: 15px;  width: 100px; }
-#clavicle   { top: 190px; left: 700px; width: 100px; }
-#scapula    { top: 220px; left: 15px;  width: 100px; }
-#humerus    { top: 260px; left: 860px; width: 100px; }
-#radius     { top: 320px; left: 860px; width: 100px; }
-#ulna       { top: 360px; left: 860px; width: 100px; }
+/* SHOULDERS & THORAX */
+#acromion { top: 290px; left: 5px; width: 85px; height: 22px; }
+#scapula { top: 310px; left: 315px; width: 85px; height: 22px; }
+#sternum { top: 395px; left: 100px; width: 80px; height: 22px; }
+#ribs { top: 590px; left: 100px; width: 80px; height: 22px; }
 
-/* TORSO */
-#cervical   { top: 280px; left: 185px; width: 130px; }
-#thoracic   { top: 325px; left: 185px; width: 130px; }
-#ribs       { top: 350px; left: 185px; width: 130px; }
-#sternum    { top: 375px; left: 185px; width: 130px; }
-#lumbar     { top: 400px; left: 185px; width: 130px; }
+/* ARMS */
+#humerus { top: 395px; left: 315px; width: 85px; height: 22px; }
+#radius { top: 495px; left: 315px; width: 85px; height: 22px; }
+#ulna { top: 525px; left: 315px; width: 85px; height: 22px; }
 
-/* LOWER BODY */
-#coxal      { top: 615px; left: 235px; width: 100px; }
-#coccyx     { top: 615px; left: 650px; width: 100px; }
-#femur      { top: 660px; left: 45px;  width: 100px; }
-#patella    { top: 510px; left: 335px; width: 110px; }
+/* PELVIS & LEGS */
+#coxal { top: 615px; left: 305px; width: 75px; height: 22px; }
+#lumbar { top: 630px; left: 75px; width: 105px; height: 22px; }
+#femur { top: 715px; left: 5px; width: 85px; height: 22px; }
+#patella { top: 900px; left: 275px; width: 85px; height: 22px; }
+
 
   /* Fullscreen loading overlay */
 #loading-screen {
