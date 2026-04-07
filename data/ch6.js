@@ -6,6 +6,7 @@ const CH6_DATA = {
         {
             label: "BONE CELLS: THE CREW",
             content: "Four types of cells maintain bone homeostasis. Knowing these is essential for understanding osteoporosis.",
+            image: "img/ch6_bone-remodeling-process.JPG",
             details: [
                 "**Osteogenic Cells**: Stem cells that divide to produce osteoblasts.",
                 "**Osteoblasts**: 'B' is for 'Builders.' They secrete the bone matrix (osteoid).",
@@ -16,6 +17,7 @@ const CH6_DATA = {
         {
             label: "COMPACT VS. SPONGY BONE",
             content: "Bones are not solid blocks; they have specific internal architectures.",
+            image: "img/ch6_compact-vs-spongy.JPG",
             details: [
                 "**Compact Bone**: The hard outer layer. Organized into **Osteons** (Haversian systems).",
                 "**Spongy (Cancellous) Bone**: Found at the ends of long bones. Organized into **Trabeculae** (struts) that house red bone marrow.",
@@ -25,6 +27,7 @@ const CH6_DATA = {
         {
             label: "OSSIFICATION (BONE GROWTH)",
             content: "How the skeleton forms from a fetus into adulthood.",
+            image: "ch6_ossification.JPG",
             details: [
                 "**Intramembranous**: Bone develops from fibrous membranes (e.g., flat bones of the skull).",
                 "**Endochondral**: Bone replaces a hyaline cartilage model (e.g., long bones like the femur).",
