@@ -5,21 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>PROFESSOR ISOTOPE | MEDICAL SUITE</title>
     <style>
-        /* ISOTOPE THEME: RADIO-GLOW GREEN & CLINICAL BLUE */
         :root {
             --isotope-green: #39FF14;
             --clinical-blue: #2196f3;
             --bg-black: #000000;
         }
 
-        /* Essential for full-screen height */
+        /* Force the body to be exactly the height of the device screen */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             background-color: var(--bg-black);
-            overflow: hidden; /* Stops double scrolling */
+            overflow: hidden; 
             display: flex;
             flex-direction: column;
         }
@@ -36,27 +35,30 @@
             letter-spacing: 1.5px;
             border-bottom: 1px solid #1a3311;
             text-transform: uppercase;
+            flex-shrink: 0; /* Prevents header from squishing */
         }
 
         .status-bar span {
             color: var(--clinical-blue);
         }
 
-        /* This is the fix: flex-grow ensures it takes all remaining space */
+        /* The container takes all remaining vertical space */
         #mcontext {
-            flex-grow: 1; 
+            flex-grow: 1;
             width: 100%;
-            height: 100%;
             position: relative;
+            background: var(--bg-black);
         }
 
-        /* This forces the Machaao script's generated iframe to stretch */
+        /* This targets the Machaao injected elements specifically */
         #mcontext iframe, 
         .machaao-embed-container, 
         #webchat {
             height: 100% !important;
             width: 100% !important;
-            min-height: 100% !important;
+            position: absolute !important;
+            top: 0;
+            left: 0;
             border: none !important;
         }
     </style>
