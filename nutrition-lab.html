@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nutrition Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        :root {
+            --bg: #0d0f14;
+            --surface: #161a24;
+            --surface2: #1e2330;
+            --border: #2a3040;
+            --green: #00e676;
+            --green-dim: #00c85a;
+            --red: #ff3d6b;
+            --orange: #ff9500;
+            --yellow: #ffd600;
+            --blue: #40c4ff;
+            --text: #e8eaf0;
+            --muted: #6b7280;
+            --mono: 'Space Mono', monospace;
+            --sans: 'DM Sans', sans-serif;
+        }
+
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: var(--sans);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .app-header {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 20px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .app-header .logo {
+        font-family: var(--mono);
+        font-size: 1.1rem;
+        color: var(--green);
+        letter-spacing: 0.05em;
+    }
+    .app-header .logo span { color: var(--muted); }
+
+    /* ── Tabs ── */
+    .tabs {
+        display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+        flex: 1;
+        min-width: 70px;
+        padding: 12px 8px;
+        text-align: center;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .tab-icon { font-size: 1.1rem; display: block; margin-bottom: 2px; }
+
+    /* ── Panels ── */
+    .panel { display: none; padding: 16px; }
+    .panel.active { display: block; }
+
+    /* ── Cards ── */
+    .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+    }
+    .card-title {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        margin-bottom: 12px;
+    }
+
+    /* ── Input / Button ── */
+    input[type="text"], select, textarea {
+        width: 100%;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 11px 14px;
+        color: var(--text);
+        font-family: var(--sans);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, select:focus { border-color: var(--green); }
+    select option { background: var(--surface2); }
+
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 8px;
+        font-family: var(--sans);
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-green { background: var(--green); color: #000; }
+    .btn-dark { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-scan {
+        background: linear-gradient(135deg, #1a2a1a, #0f2010);
+        border: 1px solid var(--green);
+        color: var(--green);
+        font-family: var(--mono);
+        font-size: 0.95rem;
+        letter-spacing: 0.05em;
+        padding: 18px;
+        margin-bottom: 16px;
+    }
+
+    /* ── Scanner ── */
+    #reader {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #000;
+        margin-bottom: 14px;
+        border: 1px solid var(--border);
+    }
+
+    /* ── Search row ── */
+    .search-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .search-row input { flex: 1; }
+    .search-row .btn { width: auto; padding: 11px 18px; font-size: 0.9rem; }
+
+    /* ── Result sections ── */
+    #resultCard { display: none; }
+
+    .alert-critical {
+        background: #1a0008;
+        border: 2px solid var(--red);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        animation: pulse-red 1.4s infinite;
+    }
+    @keyframes pulse-red {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(255,61,107,0.4); }
+        50% { box-shadow: 0 0 0 8px rgba(255,61,107,0); }
+    }
+    .alert-moderate {
+        background: #1a1000;
+        border: 2px solid var(--orange);
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+    }
+    .alert-safe {
+        background: #001a09;
+        border: 1px solid var(--green);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        color: var(--green);
+        font-weight: 600;
+    }
+    .alert-label {
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+    }
+
+    .product-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    .product-brand {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 14px;
+    }
+
+    /* Nutri-Score badge */
+    .nutri-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+    .grade-a { background: #1a4d2e; color: #00e676; border: 1px solid #00e676; }
+    .grade-b { background: #2d4a1a; color: #8bc34a; border: 1px solid #8bc34a; }
+    .grade-c { background: #4a3b00; color: var(--yellow); border: 1px solid var(--yellow); }
+    .grade-d { background: #4a2200; color: #ff9500; border: 1px solid #ff9500; }
+    .grade-e { background: #3a0a15; color: var(--red); border: 1px solid var(--red); }
+    .grade-n { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+    /* Nutrition table */
+    .nut-table { width: 100%; border-collapse: collapse; }
+    .nut-table tr { border-bottom: 1px solid var(--border); }
+    .nut-table tr:last-child { border-bottom: none; }
+    .nut-table td { padding: 10px 0; font-size: 0.95rem; }
+    .nut-table td:last-child { text-align: right; font-family: var(--mono); color: var(--green); }
+    .nut-label { font-weight: 500; color: var(--text); }
+    .nut-sub { color: var(--muted); font-size: 0.85rem; padding-left: 14px !important; }
+
+    /* Health insight rows */
+    .insight-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+    }
+    .insight-row:last-child { border-bottom: none; }
+    .insight-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .insight-label { font-size: 0.9rem; font-weight: 600; }
+    .insight-detail { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+    .tag-green { color: var(--green); }
+    .tag-yellow { color: var(--yellow); }
+    .tag-red { color: var(--red); }
+    .tag-blue { color: var(--blue); }
+
+    /* Diet badge grid */
+    .diet-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .diet-badge {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: border-color 0.2s;
+    }
+    .diet-badge .diet-icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+    .diet-badge.yes { border-color: var(--green); color: var(--green); background: #001a09; }
+    .diet-badge.no { border-color: var(--red); color: var(--red); background: #1a0008; }
+    .diet-badge.unknown { color: var(--muted); }
+
+    /* Ingredients */
+    .ingredients-box {
+        background: var(--surface2);
+        border-left: 3px solid var(--green);
+        border-radius: 0 8px 8px 0;
+        padding: 12px 14px;
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: var(--muted);
+        word-break: break-word;
+    }
+    mark { background: #ffd600; color: #000; border-radius: 3px; padding: 0 2px; font-weight: 700; }
+    mark.crit { background: var(--red); color: #fff; }
+
+    /* Allergy chips */
+    .chip-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .chip-crit { background: #3a0a15; border: 1px solid var(--red); color: var(--red); }
+    .chip-mod { background: #2a1a00; border: 1px solid var(--orange); color: var(--orange); }
+    .chip-del { cursor: pointer; font-size: 0.9rem; opacity: 0.7; }
+    .chip-del:hover { opacity: 1; }
+
+    /* Scan new item button */
+    .btn-scan-new {
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    /* Loading shimmer */
+    .shimmer {
+        background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.2s infinite;
+        border-radius: 6px;
+        height: 16px;
+        margin: 8px 0;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .loading-block { padding: 20px 0; }
+</style>
+
+
+</head>
+<body>
+
+<div class="app-header">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e676" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg>
+    <div class="logo">NUTRITION<span>/</span>LAB</div>
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('scan')">
+        <span class="tab-icon">📷</span>Scanner
+    </div>
+    <div class="tab" onclick="switchTab('results')">
+        <span class="tab-icon">📊</span>Results
+    </div>
+    <div class="tab" onclick="switchTab('allergies')">
+        <span class="tab-icon">⚠️</span>Allergies
+    </div>
+    <div class="tab" onclick="switchTab('diet')">
+        <span class="tab-icon">🥗</span>Diet
+    </div>
+</div>
+
+<!-- ══ SCAN TAB ══ -->
+
+<div id="tab-scan" class="panel active">
+    <div class="search-row">
+        <input type="text" id="foodSearch" placeholder="Search by name or brand…">
+        <button class="btn btn-green" onclick="searchByName()">Go</button>
+    </div>
+
+
+<button class="btn btn-scan" id="scanBtn" onclick="startScanner()">
+    ▶ SCAN BARCODE
+</button>
+
+<div id="reader"></div>
+
+<!-- Result lives here in scan tab -->
+<div id="resultCard">
+    <div id="allergenAlert"></div>
+
+    <div class="card">
+        <div class="product-name" id="pName"></div>
+        <div class="product-brand" id="pBrand"></div>
+        <div id="nScore"></div>
+
+        <div class="card-title" style="margin-top:14px;">Per 100g</div>
+        <table class="nut-table" id="nTable"></table>
+    </div>
+
+    <!-- Heart / Diabetic -->
+    <div class="card" id="healthCard">
+        <div class="card-title">❤️ Heart &amp; Metabolic Health</div>
+        <div id="healthInsights"></div>
+    </div>
+
+    <!-- Diet Flags -->
+    <div class="card" id="dietCard">
+        <div class="card-title">🌿 Dietary Compatibility</div>
+        <div class="diet-grid" id="dietGrid"></div>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="card">
+        <div class="card-title">Ingredients</div>
+        <div class="ingredients-box" id="pIngredients"></div>
+    </div>
+</div>
+
+
+</div>
+
+<!-- ══ RESULTS TAB ══ -->
+
+<div id="tab-results" class="panel">
+    <div class="card" style="text-align:center; padding:40px 20px;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">📦</div>
+        <div style="font-family:var(--mono); font-size:0.8rem; color:var(--muted);">
+            Scan or search a product<br>to see detailed results here
+        </div>
+    </div>
+</div>
+
+<!-- ══ ALLERGIES TAB ══ -->
+
+<div id="tab-allergies" class="panel">
+    <div class="card">
+        <div class="card-title">Add Allergen</div>
+        <input type="text" id="allergyInput" placeholder="e.g. fish, soy, almond, sesame" style="margin-bottom:10px;">
+        <select id="severitySelect" style="margin-bottom:12px;">
+            <option value="critical">🚨 Critical — Full alert + pulse animation</option>
+            <option value="moderate">⚠️ Moderate — Warning banner</option>
+        </select>
+        <button class="btn btn-green" onclick="saveAllergies()">Add Allergen(s)</button>
+    </div>
+
+
+<div class="card">
+    <div class="card-title">Saved Allergens</div>
+    <div id="allergyChips"><div style="color:var(--muted); font-size:0.9rem;">No allergens saved yet.</div></div>
+    <button class="btn btn-red" onclick="clearAllergies()" style="margin-top:14px;">Clear All</button>
+</div>
+
+<div class="card">
+    <div class="card-title">Quick Add — Common Allergens</div>
+    <div class="chip-container" id="quickAllergens"></div>
+</div>
+
+
+</div>
+
+<!-- ══ DIET TAB ══ -->
+
+<div id="tab-diet" class="panel">
+    <div class="card">
+        <div class="card-title">Dietary Preferences</div>
+        <p style="font-size:0.88rem; color:var(--muted); margin-bottom:14px; line-height:1.5;">
+            These flags are automatically detected from product data and ingredients when you scan. No setup needed.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="insight-row">
+                <div class="insight-icon">🕌</div>
+                <div>
+                    <div class="insight-label">Halal</div>
+                    <div class="insight-detail">Checked against halal/haram markers in ingredients and product flags</div>
+                </div>
+            </div>
+            <div class="insight-row">
+                <div class="insight-icon">✡️</div>
+                <div>
+                    <div class="insight-label">Kosher</div>
+                    <div class="insight-detail">Detected via kosher certification fields and ingredient screening</div>
+                </div>
+            </div>
+            <div class="insight-row">
+                <div class="insight-icon">🌱</div>
+                <div>
+                    <div class="insight-label">Vegan / Vegetarian</div>
+                    <div class="insight-detail">Cross-referenced with OpenFoodFacts labels and ingredient list</div>
+                </div>
+            </div>
+            <div class="insight-row">
+                <div class="insight-icon">❤️</div>
+                <div>
+                    <div class="insight-label">Heart Health</div>
+                    <div class="insight-detail">Evaluates saturated fat, sodium, trans fat, and fiber levels</div>
+                </div>
+            </div>
+            <div class="insight-row">
+                <div class="insight-icon">🩺</div>
+                <div>
+                    <div class="insight-label">Diabetic Awareness</div>
+                    <div class="insight-detail">Flags high sugar, high GI ingredients, and sugar alcohols</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ══ State ══════════════════════════════════════════════
+let userAllergies = JSON.parse(localStorage.getItem('allergies')) || { critical: [], moderate: [] };
+
+const COMMON_ALLERGENS = [
+    'milk','eggs','fish','shellfish','tree nuts','peanuts',
+    'wheat','gluten','soybeans','sesame','mustard','celery',
+    'lupin','molluscs','sulphites'
+];
+
+const HARAM_TERMS = ['pork','lard','gelatin','bacon','ham','pepperoni','carnipure','cochineal','carmine','alcohol','wine','beer','rum'];
+const MEAT_TERMS = ['beef','chicken','turkey','lamb','pork','fish','shrimp','anchovies','gelatin','lard','tallow','rennet','casein','whey','lactose','milk','egg'];
+const ANIMAL_TERMS = [...MEAT_TERMS, 'honey','beeswax','carmine','lanolin','shellac'];
+
+// ══ Tab switching ══════════════════════════════════════
+function switchTab(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    document.querySelectorAll('.tab')[['scan','results','allergies','diet'].indexOf(name)].classList.add('active');
+}
+
+// ══ Scanner ════════════════════════════════════════════
+const html5QrCode = new Html5Qrcode("reader");
+let scannerRunning = false;
+
+function startScanner() {
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('scanBtn').style.display = 'none';
+    if (scannerRunning) return;
+    scannerRunning = true;
+
+    html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+            html5QrCode.stop().then(() => { scannerRunning = false; });
+            document.getElementById('scanBtn').style.display = 'block';
+            fetchData(decodedText);
+        }
+    ).catch(() => {
+        alert("Camera error — must be HTTPS and camera permission granted.");
+        document.getElementById('scanBtn').style.display = 'block';
+        scannerRunning = false;
+    });
+}
+
+function resetToScan() {
+    document.getElementById('resultCard').style.display = 'none';
+    switchTab('scan');
+    startScanner();
+}
+
+// ══ Search ═════════════════════════════════════════════
+async function searchByName() {
+    const query = document.getElementById('foodSearch').value.trim();
+    if (!query) return;
+    const res = await fetch(
+        `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`
+    );
+    const data = await res.json();
+    if (data.products?.length > 0) {
+        fetchData(data.products[0].code);
+    } else {
+        alert("No results found for: " + query);
+    }
+}
+
+// ══ Fetch & Render ════════════════════════════════════
+async function fetchData(barcode) {
+    const resultCard = document.getElementById('resultCard');
+    const alertBox = document.getElementById('allergenAlert');
+
+    resultCard.style.display = 'block';
+    alertBox.innerHTML = `<div class="loading-block">
+        <div class="shimmer" style="width:60%"></div>
+        <div class="shimmer" style="width:80%"></div>
+        <div class="shimmer" style="width:40%"></div>
+    </div>`;
+
+    try {
+        const response = await fetch(
+            `https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=product_name,brands,ingredients_text,nutriments,nutrition_grades,labels_tags,categories_tags`
+        );
+        const data = await response.json();
+
+        if (!data || data.status !== 1) {
+            alertBox.innerHTML = `<div class="alert-moderate"><div class="alert-label">⚠️ Product not found in database</div></div>`;
+            return;
+        }
+
+        renderProduct(data.product);
+
+    } catch (e) {
+        alertBox.innerHTML = `<div class="alert-moderate"><div class="alert-label">⚠️ Connection error</div></div>`;
+    }
+}
+
+function renderProduct(product) {
+    const n = product.nutriments || {};
+    const round = (v, d=1) => (v !== undefined && v !== null && !isNaN(v)) ? parseFloat(v).toFixed(d) : "—";
+    const labels = (product.labels_tags || []).join(' ');
+    const cats   = (product.categories_tags || []).join(' ');
+
+    let rawIngredients = product.ingredients_text || "";
+    let lowerIngredients = rawIngredients.toLowerCase();
+
+    // ── Allergen detection ──────────────────────────
+    const critFound = [], modFound = [];
+    userAllergies.critical.forEach(t => { if (lowerIngredients.includes(t)) critFound.push(t); });
+    userAllergies.moderate.forEach(t => { if (lowerIngredients.includes(t)) modFound.push(t); });
+
+    // Highlight critical in red, moderate in yellow
+    let highlightedIngredients = rawIngredients;
+    userAllergies.critical.forEach(term => {
+        const rx = new RegExp(`\\b(${escapeRegex(term)})\\b`, 'gi');
+        highlightedIngredients = highlightedIngredients.replace(rx, `<mark class="crit">$&</mark>`);
+    });
+    userAllergies.moderate.forEach(term => {
+        const rx = new RegExp(`\\b(${escapeRegex(term)})\\b`, 'gi');
+        highlightedIngredients = highlightedIngredients.replace(rx, `<mark>$&</mark>`);
+    });
+
+    // ── Alert box ───────────────────────────────────
+    let alertHtml = `<button class="btn-scan-new" onclick="resetToScan()">◀ Scan New Item</button>`;
+    if (critFound.length) {
+        alertHtml += `<div class="alert-critical">
+            <div class="alert-label" style="color:var(--red);">🚨 CRITICAL ALLERGEN DETECTED</div>
+            <div style="font-size:0.85rem; margin-top:4px; color:#ff8099;">${critFound.join(', ')}</div>
+        </div>`;
+    } else if (modFound.length) {
+        alertHtml += `<div class="alert-moderate">
+            <div class="alert-label" style="color:var(--orange);">⚠️ Allergen Warning</div>
+            <div style="font-size:0.85rem; margin-top:4px; color:#ffb74d;">${modFound.join(', ')}</div>
+        </div>`;
+    } else if (userAllergies.critical.length || userAllergies.moderate.length) {
+        alertHtml += `<div class="alert-safe">✅ No tracked allergens detected</div>`;
+    }
+    document.getElementById('allergenAlert').innerHTML = alertHtml;
+
+    // ── Product header ──────────────────────────────
+    document.getElementById('pName').innerText = product.product_name || "Unknown Product";
+    document.getElementById('pBrand').innerText = product.brands || "";
+
+    // ── Nutri-Score ─────────────────────────────────
+    const score = (product.nutrition_grades || "").toUpperCase() || "N/A";
+    const gradeClass = { A:'grade-a', B:'grade-b', C:'grade-c', D:'grade-d', E:'grade-e' }[score] || 'grade-n';
+    document.getElementById('nScore').innerHTML =
+        `<div class="nutri-badge ${gradeClass}">NUTRI-SCORE ${score}</div>`;
+
+    // ── Nutrition table ─────────────────────────────
+    const fat = parseFloat(n['fat_100g'] || 0);
+    const satFat = parseFloat(n['saturated-fat_100g'] || 0);
+    const transFat = parseFloat(n['trans-fat_100g'] || 0);
+    const sodium = parseFloat(n['sodium_100g'] || 0);
+    const sugar = parseFloat(n['sugars_100g'] || 0);
+    const fiber = parseFloat(n['fiber_100g'] || 0);
+    const protein = parseFloat(n['proteins_100g'] || 0);
+    const carbs = parseFloat(n['carbohydrates_100g'] || 0);
+    const kcal = parseFloat(n['energy-kcal_100g'] || 0);
+    const cholesterol = parseFloat(n['cholesterol_100g'] || 0);
+
+    document.getElementById('nTable').innerHTML = `
+        <tr><td class="nut-label">Calories</td><td>${round(kcal, 0)} kcal</td></tr>
+        <tr><td class="nut-label">Total Fat</td><td>${round(fat)}g</td></tr>
+        <tr><td class="nut-sub">Saturated Fat</td><td>${round(satFat)}g</td></tr>
+        <tr><td class="nut-sub">Trans Fat</td><td>${round(transFat)}g</td></tr>
+        <tr><td class="nut-label">Carbohydrates</td><td>${round(carbs)}g</td></tr>
+        <tr><td class="nut-sub">Sugars</td><td>${round(sugar)}g</td></tr>
+        <tr><td class="nut-sub">Fiber</td><td>${round(fiber)}g</td></tr>
+        <tr><td class="nut-label">Protein</td><td>${round(protein)}g</td></tr>
+        <tr><td class="nut-label">Sodium</td><td>${round(sodium * 1000, 0)}mg</td></tr>
+        ${cholesterol ? `<tr><td class="nut-label">Cholesterol</td><td>${round(cholesterol * 1000, 0)}mg</td></tr>` : ''}
+    `;
+
+    // ── Heart & Diabetic Insights ────────────────────
+    const insights = [];
+
+    // Saturated fat: >5g/100g = concern
+    if (satFat >= 5) {
+        insights.push({ icon:'🫀', label:'High Saturated Fat', cls:'tag-red',
+            detail:`${round(satFat)}g/100g — linked to elevated LDL cholesterol` });
+    } else if (satFat >= 2) {
+        insights.push({ icon:'🫀', label:'Moderate Saturated Fat', cls:'tag-yellow',
+            detail:`${round(satFat)}g/100g — within acceptable range` });
+    } else {
+        insights.push({ icon:'🫀', label:'Low Saturated Fat', cls:'tag-green',
+            detail:`${round(satFat)}g/100g — heart-friendly` });
+    }
+
+    // Trans fat
+    if (transFat > 0.1) {
+        insights.push({ icon:'⚡', label:'Trans Fat Detected', cls:'tag-red',
+            detail:`${round(transFat)}g/100g — avoid if managing heart disease` });
+    }
+
+    // Sodium: >600mg/100g = high
+    const sodiumMg = sodium * 1000;
+    if (sodiumMg >= 600) {
+        insights.push({ icon:'🧂', label:'High Sodium', cls:'tag-red',
+            detail:`${round(sodiumMg, 0)}mg/100g — limit for blood pressure & heart health` });
+    } else if (sodiumMg >= 300) {
+        insights.push({ icon:'🧂', label:'Moderate Sodium', cls:'tag-yellow',
+            detail:`${round(sodiumMg, 0)}mg/100g — monitor if hypertensive` });
+    } else {
+        insights.push({ icon:'🧂', label:'Low Sodium', cls:'tag-green',
+            detail:`${round(sodiumMg, 0)}mg/100g` });
+    }
+
+    // Fiber — heart positive
+    if (fiber >= 6) {
+        insights.push({ icon:'🌾', label:'High Fiber', cls:'tag-green',
+            detail:`${round(fiber)}g/100g — supports heart &amp; blood sugar control` });
+    } else if (fiber >= 3) {
+        insights.push({ icon:'🌾', label:'Good Fiber Content', cls:'tag-green',
+            detail:`${round(fiber)}g/100g` });
+    }
+
+    // Sugar — diabetic flag
+    if (sugar >= 22.5) {
+        insights.push({ icon:'🩺', label:'Very High Sugar', cls:'tag-red',
+            detail:`${round(sugar)}g/100g — major concern for blood glucose management` });
+    } else if (sugar >= 12.5) {
+        insights.push({ icon:'🩺', label:'High Sugar', cls:'tag-yellow',
+            detail:`${round(sugar)}g/100g — monitor portions if diabetic or pre-diabetic` });
+    } else if (sugar <= 5) {
+        insights.push({ icon:'🩺', label:'Low Sugar', cls:'tag-green',
+            detail:`${round(sugar)}g/100g — diabetes-friendly` });
+    }
+
+    // High GI ingredient flags
+    const highGI = ['glucose','dextrose','maltodextrin','corn syrup','high fructose','white rice','white bread'];
+    const foundHGI = highGI.filter(h => lowerIngredients.includes(h));
+    if (foundHGI.length) {
+        insights.push({ icon:'📈', label:'High-GI Ingredients', cls:'tag-yellow',
+            detail:`Contains: ${foundHGI.slice(0,3).join(', ')} — may spike blood glucose` });
+    }
+
+    // Cholesterol
+    if (cholesterol * 1000 >= 100) {
+        insights.push({ icon:'💉', label:'High Cholesterol', cls:'tag-red',
+            detail:`${round(cholesterol * 1000, 0)}mg/100g — limit if managing CVD risk` });
+    }
+
+    document.getElementById('healthInsights').innerHTML = insights.map(i => `
+        <div class="insight-row">
+            <div class="insight-icon">${i.icon}</div>
+            <div>
+                <div class="insight-label ${i.cls}">${i.label}</div>
+                <div class="insight-detail">${i.detail}</div>
+            </div>
+        </div>
+    `).join('') || '<div style="color:var(--muted); font-size:0.9rem;">No health data available</div>';
+
+    // ── Dietary Flags ────────────────────────────────
+    const haramFound = HARAM_TERMS.some(t => lowerIngredients.includes(t));
+    const labelHalal = labels.includes('halal');
+    const labelKosher = labels.includes('kosher');
+    const labelVegan = labels.includes('vegan') || labels.includes('en:vegan');
+    const labelVeg = labels.includes('vegetarian') || labels.includes('en:vegetarian');
+    const containsMeat = MEAT_TERMS.some(t => lowerIngredients.includes(t));
+    const containsAnimal = ANIMAL_TERMS.some(t => lowerIngredients.includes(t));
+
+    // Halal logic
+    let halalStatus, halalIcon;
+    if (labelHalal && !haramFound) { halalStatus = 'yes'; halalIcon = '✅'; }
+    else if (haramFound) { halalStatus = 'no'; halalIcon = '❌'; }
+    else { halalStatus = 'unknown'; halalIcon = '❓'; }
+
+    // Kosher logic
+    let kosherStatus, kosherIcon;
+    if (labelKosher) { kosherStatus = 'yes'; kosherIcon = '✅'; }
+    else { kosherStatus = 'unknown'; kosherIcon = '❓'; }
+
+    // Vegan logic
+    let veganStatus, veganIcon;
+    if (labelVegan && !containsAnimal) { veganStatus = 'yes'; veganIcon = '✅'; }
+    else if (containsAnimal && !labelVegan) { veganStatus = 'no'; veganIcon = '❌'; }
+    else { veganStatus = 'unknown'; veganIcon = '❓'; }
+
+    // Vegetarian logic
+    let vegStatus, vegIcon;
+    if (labelVeg || labelVegan) { vegStatus = 'yes'; vegIcon = '✅'; }
+    else if (containsMeat) { vegStatus = 'no'; vegIcon = '❌'; }
+    else { vegStatus = 'unknown'; vegIcon = '❓'; }
+
+    // Low-carb / keto
+    const isLowCarb = carbs <= 10;
+    const ketoBadge = isLowCarb ? 'yes' : carbs <= 20 ? 'unknown' : 'no';
+    const ketoIcon  = isLowCarb ? '✅' : carbs <= 20 ? '❓' : '❌';
+
+    // Low sugar
+    const isSugarFree = sugar <= 0.5;
+    const lowSugarBadge = sugar <= 5 ? 'yes' : sugar <= 12.5 ? 'unknown' : 'no';
+    const lowSugarIcon = sugar <= 5 ? '✅' : sugar <= 12.5 ? '❓' : '❌';
+
+    const dietBadges = [
+        { icon:'🕌', label:'Halal', status: halalStatus, mark: halalIcon },
+        { icon:'✡️', label:'Kosher', status: kosherStatus, mark: kosherIcon },
+        { icon:'🌱', label:'Vegan', status: veganStatus, mark: veganIcon },
+        { icon:'🥦', label:'Vegetarian', status: vegStatus, mark: vegIcon },
+        { icon:'🥩', label:'Low Carb / Keto', status: ketoBadge, mark: ketoIcon },
+        { icon:'🍬', label:'Low Sugar', status: lowSugarBadge, mark: lowSugarIcon },
+    ];
+
+    document.getElementById('dietGrid').innerHTML = dietBadges.map(b => `
+        <div class="diet-badge ${b.status}">
+            <span class="diet-icon">${b.icon}</span>
+            <div>${b.mark} ${b.label}</div>
+        </div>
+    `).join('');
+
+    // ── Ingredients ──────────────────────────────────
+    document.getElementById('pIngredients').innerHTML =
+        highlightedIngredients || '<em style="color:var(--muted)">No ingredient data available</em>';
+
+    document.getElementById('resultCard').style.display = 'block';
+}
+
+// ══ Allergy management ════════════════════════════════
+function saveAllergies() {
+    const input = document.getElementById('allergyInput').value.trim().toLowerCase();
+    const severity = document.getElementById('severitySelect').value;
+    if (!input) return;
+
+    const terms = input.split(',').map(t => t.trim()).filter(Boolean);
+    userAllergies[severity].push(...terms);
+    // deduplicate
+    userAllergies.critical = [...new Set(userAllergies.critical)];
+    userAllergies.moderate = [...new Set(userAllergies.moderate)];
+
+    localStorage.setItem('allergies', JSON.stringify(userAllergies));
+    document.getElementById('allergyInput').value = "";
+    renderAllergyChips();
+}
+
+function removeAllergen(term, severity) {
+    userAllergies[severity] = userAllergies[severity].filter(t => t !== term);
+    localStorage.setItem('allergies', JSON.stringify(userAllergies));
+    renderAllergyChips();
+}
+
+function clearAllergies() {
+    if (!confirm("Clear all saved allergens?")) return;
+    userAllergies = { critical: [], moderate: [] };
+    localStorage.removeItem('allergies');
+    renderAllergyChips();
+}
+
+function renderAllergyChips() {
+    const container = document.getElementById('allergyChips');
+    const critChips = userAllergies.critical.map(t =>
+        `<span class="chip chip-crit">${t}<span class="chip-del" onclick="removeAllergen('${t}','critical')">✕</span></span>`
+    ).join('');
+    const modChips = userAllergies.moderate.map(t =>
+        `<span class="chip chip-mod">${t}<span class="chip-del" onclick="removeAllergen('${t}','moderate')">✕</span></span>`
+    ).join('');
+
+    const all = critChips + modChips;
+    container.innerHTML = all
+        ? `<div class="chip-container">${all}</div>`
+        : `<div style="color:var(--muted); font-size:0.9rem;">No allergens saved yet.</div>`;
+}
+
+function quickAddAllergen(term) {
+    if (userAllergies.critical.includes(term) || userAllergies.moderate.includes(term)) return;
+    document.getElementById('allergyInput').value = term;
+    switchTab('allergies');
+}
+
+function renderQuickAllergens() {
+    document.getElementById('quickAllergens').innerHTML = COMMON_ALLERGENS.map(t =>
+        `<span class="chip chip-mod" style="cursor:pointer;" onclick="quickAddAllergen('${t}')">${t}</span>`
+    ).join('');
+}
+
+function escapeRegex(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ══ Init ═══════════════════════════════════════════════
+renderAllergyChips();
+renderQuickAllergens();
+</script>
+
+</body>
+</html>
