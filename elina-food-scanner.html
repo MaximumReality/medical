@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <link rel="apple-touch-icon" href="https://maximumreality.github.io/medical/IMG_8255.jpeg">
+    <link rel="apple-touch-icon" href="https://maximumreality.github.io/medical/IMG_8255.jpeg">
     <title>Elina's Food Scanner</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode"></script>
@@ -31,564 +30,562 @@
             --sans: 'Nunito', system-ui, sans-serif;
         }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-    body {
-        font-family: var(--sans);
-        background: var(--cream);
-        color: var(--ink);
-        min-height: 100vh;
-        padding-bottom: 80px;
-    }
+        body {
+            font-family: var(--sans);
+            background: var(--cream);
+            color: var(--ink);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
 
-    /* ── Organic background texture ── */
-    body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image:
-            radial-gradient(ellipse at 20% 10%, rgba(196,149,106,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 80%, rgba(122,158,126,0.08) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: 0;
-    }
+        /* ── Organic background texture ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse at 20% 10%, rgba(196,149,106,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(122,158,126,0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-    .app-wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; }
+        .app-wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; }
 
-    /* ── Header ── */
-    .app-header {
-        background: var(--deep);
-        padding: 20px 20px 16px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-    .app-header::after {
-        content: '';
-        position: absolute;
-        bottom: -1px;
-        left: 0; right: 0;
-        height: 20px;
-        background: var(--cream);
-        clip-path: ellipse(55% 100% at 50% 100%);
-    }
-    .header-eyebrow {
-        font-family: var(--sans);
-        font-size: 0.68rem;
-        font-weight: 700;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--clay);
-        margin-bottom: 4px;
-    }
-    .header-title {
-        font-family: var(--serif);
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: var(--cream);
-        line-height: 1.1;
-    }
-    .header-title span { color: var(--clay); }
-    .header-sub {
-        font-size: 0.8rem;
-        color: rgba(253,246,236,0.6);
-        margin-top: 6px;
-    }
+        /* ── Header ── */
+        .app-header {
+            background: var(--deep);
+            padding: 20px 20px 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0; right: 0;
+            height: 20px;
+            background: var(--cream);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .header-eyebrow {
+            font-family: var(--sans);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 4px;
+        }
+        .header-title {
+            font-family: var(--serif);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--cream);
+            line-height: 1.1;
+        }
+        .header-title span { color: var(--clay); }
+        .header-sub {
+            font-size: 0.8rem;
+            color: rgba(253,246,236,0.6);
+            margin-top: 6px;
+        }
 
-    /* ── Allergy Legend ── */
-    .legend {
-        display: flex;
-        gap: 6px;
-        padding: 14px 16px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        border-bottom: 1px solid var(--sand);
-        background: var(--warm);
-    }
-    .legend::-webkit-scrollbar { display: none; }
-    .legend-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    .pill-anaphylaxis { background: var(--red); color: #fff; }
-    .pill-allergy { background: var(--orange-light); color: var(--orange); border: 1px solid #f0b87a; }
-    .pill-safe { background: var(--green-light); color: var(--green); border: 1px solid #9dcfaa; }
+        /* ── Allergy Legend ── */
+        .legend {
+            display: flex;
+            gap: 6px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid var(--sand);
+            background: var(--warm);
+        }
+        .legend::-webkit-scrollbar { display: none; }
+        .legend-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .pill-anaphylaxis { background: var(--red); color: #fff; }
+        .pill-allergy { background: var(--orange-light); color: var(--orange); border: 1px solid #f0b87a; }
+        .pill-safe { background: var(--green-light); color: var(--green); border: 1px solid #9dcfaa; }
 
-    /* ── Panel ── */
-    .panel { padding: 18px 16px; }
+        /* ── Panel ── */
+        .panel { padding: 18px 16px; }
 
-    /* ── Search ── */
-    .search-wrap {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 14px;
-    }
-    .search-wrap input {
-        flex: 1;
-        background: #fff;
-        border: 1.5px solid var(--sand);
-        border-radius: 10px;
-        padding: 12px 14px;
-        font-family: var(--sans);
-        font-size: 0.95rem;
-        color: var(--ink);
-        outline: none;
-        transition: border-color 0.2s;
-    }
-    .search-wrap input:focus { border-color: var(--clay); }
-    .search-wrap input::placeholder { color: #bbb; }
-    .btn-search {
-        background: var(--clay);
-        color: #fff;
-        border: none;
-        border-radius: 10px;
-        padding: 12px 18px;
-        font-family: var(--sans);
-        font-weight: 700;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-    .btn-search:active { background: var(--terra); }
+        /* ── Search ── */
+        .search-wrap {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .search-wrap input {
+            flex: 1;
+            background: #fff;
+            border: 1.5px solid var(--sand);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            color: var(--ink);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-wrap input:focus { border-color: var(--clay); }
+        .search-wrap input::placeholder { color: #bbb; }
+        .btn-search {
+            background: var(--clay);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 18px;
+            font-family: var(--sans);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-search:active { background: var(--terra); }
 
-    /* ── Scan button ── */
-    .btn-scan {
-        width: 100%;
-        background: var(--deep);
-        color: var(--cream);
-        border: none;
-        border-radius: 14px;
-        padding: 18px;
-        font-family: var(--serif);
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: transform 0.1s, background 0.2s;
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-scan::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(196,149,106,0.15), transparent);
-    }
-    .btn-scan:active { transform: scale(0.98); }
-    .scan-icon { font-size: 1.4rem; }
+        /* ── Scan button ── */
+        .btn-scan {
+            width: 100%;
+            background: var(--deep);
+            color: var(--cream);
+            border: none;
+            border-radius: 14px;
+            padding: 18px;
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.1s, background 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-scan::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(196,149,106,0.15), transparent);
+        }
+        .btn-scan:active { transform: scale(0.98); }
+        .scan-icon { font-size: 1.4rem; }
 
-    /* ── Scanner ── */
-    #reader {
-        width: 100%;
-        border-radius: 14px;
-        overflow: hidden;
-        background: #000;
-        margin-bottom: 16px;
-        border: 2px solid var(--sand);
-    }
+        /* ── Scanner ── */
+        #reader {
+            width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 16px;
+            border: 2px solid var(--sand);
+        }
 
-    /* ══ ALERT TIERS ══════════════════════════════════ */
+        /* ══ ALERT TIERS ══════════════════════════════════ */
 
-    /* ANAPHYLAXIS — full screen takeover feel */
-    .alert-anaphylaxis {
-        background: var(--red);
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 14px;
-        text-align: center;
-        animation: anapulse 1s infinite;
-        position: relative;
-        overflow: hidden;
-    }
-    .alert-anaphylaxis::before {
-        content: '⚠';
-        position: absolute;
-        font-size: 8rem;
-        opacity: 0.06;
-        top: -20px;
-        right: -10px;
-    }
-    @keyframes anapulse {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.6), 0 4px 20px rgba(192,57,43,0.3); }
-        50% { box-shadow: 0 0 0 10px rgba(192,57,43,0), 0 4px 20px rgba(192,57,43,0.3); }
-    }
-    .alert-anaphylaxis .tier-label {
-        font-family: var(--sans);
-        font-size: 0.65rem;
-        font-weight: 800;
-        letter-spacing: 0.25em;
-        text-transform: uppercase;
-        color: rgba(255,255,255,0.7);
-        margin-bottom: 6px;
-    }
-    .alert-anaphylaxis .tier-headline {
-        font-family: var(--serif);
-        font-size: 1.5rem;
-        font-weight: 900;
-        color: #fff;
-        margin-bottom: 6px;
-    }
-    .alert-anaphylaxis .tier-detail {
-        font-size: 0.85rem;
-        color: rgba(255,255,255,0.85);
-    }
+        /* ANAPHYLAXIS — full screen takeover feel */
+        .alert-anaphylaxis {
+            background: var(--red);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 14px;
+            text-align: center;
+            animation: anapulse 1s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .alert-anaphylaxis::before {
+            content: '⚠';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.06;
+            top: -20px;
+            right: -10px;
+        }
+        @keyframes anapulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.6), 0 4px 20px rgba(192,57,43,0.3); }
+            50% { box-shadow: 0 0 0 10px rgba(192,57,43,0), 0 4px 20px rgba(192,57,43,0.3); }
+        }
+        .alert-anaphylaxis .tier-label {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 6px;
+        }
+        .alert-anaphylaxis .tier-headline {
+            font-family: var(--serif);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .alert-anaphylaxis .tier-detail {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+        }
 
-    /* ALLERGY — strong warning */
-    .alert-allergy {
-        background: var(--orange-light);
-        border: 2px solid var(--orange);
-        border-radius: 14px;
-        padding: 16px;
-        margin-bottom: 14px;
-    }
-    .alert-allergy .tier-label {
-        font-size: 0.65rem;
-        font-weight: 800;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--orange);
-        margin-bottom: 4px;
-    }
-    .alert-allergy .tier-headline {
-        font-family: var(--serif);
-        font-size: 1.15rem;
-        font-weight: 700;
-        color: var(--orange);
-        margin-bottom: 4px;
-    }
-    .alert-allergy .tier-detail { font-size: 0.85rem; color: var(--terra); }
+        /* ALLERGY — strong warning */
+        .alert-allergy {
+            background: var(--orange-light);
+            border: 2px solid var(--orange);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+        .alert-allergy .tier-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 4px;
+        }
+        .alert-allergy .tier-headline {
+            font-family: var(--serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--orange);
+            margin-bottom: 4px;
+        }
+        .alert-allergy .tier-detail { font-size: 0.85rem; color: var(--terra); }
 
-    /* SAFE ── */
-    .alert-safe {
-        background: var(--green-light);
-        border: 1.5px solid #9dcfaa;
-        border-radius: 14px;
-        padding: 14px 16px;
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--green);
-        font-weight: 700;
-    }
-    .alert-safe .safe-icon { font-size: 1.5rem; }
+        /* SAFE ── */
+        .alert-safe {
+            background: var(--green-light);
+            border: 1.5px solid #9dcfaa;
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--green);
+            font-weight: 700;
+        }
+        .alert-safe .safe-icon { font-size: 1.5rem; }
 
-    /* ── Scan new button ── */
-    .btn-scan-new {
-        width: 100%;
-        background: #fff;
-        border: 1.5px solid var(--sand);
-        border-radius: 10px;
-        padding: 12px;
-        font-family: var(--sans);
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: var(--deep);
-        cursor: pointer;
-        margin-bottom: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
+        /* ── Scan new button ── */
+        .btn-scan-new {
+            width: 100%;
+            background: #fff;
+            border: 1.5px solid var(--sand);
+            border-radius: 10px;
+            padding: 12px;
+            font-family: var(--sans);
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--deep);
+            cursor: pointer;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
 
-    /* ── Product card ── */
-    .product-card {
-        background: #fff;
-        border: 1.5px solid var(--sand);
-        border-radius: 16px;
-        padding: 18px;
-        margin-bottom: 14px;
-    }
-    .product-name {
-        font-family: var(--serif);
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--ink);
-        margin-bottom: 3px;
-        line-height: 1.2;
-    }
-    .product-brand {
-        font-size: 0.85rem;
-        color: var(--clay);
-        font-weight: 600;
-        margin-bottom: 14px;
-    }
+        /* ── Product card ── */
+        .product-card {
+            background: #fff;
+            border: 1.5px solid var(--sand);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .product-name {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 3px;
+            line-height: 1.2;
+        }
+        .product-brand {
+            font-size: 0.85rem;
+            color: var(--clay);
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
 
-    /* Nutri-Score */
-    .nutri-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .nutri-badge {
-        padding: 5px 14px;
-        border-radius: 20px;
-        font-family: var(--sans);
-        font-size: 0.8rem;
-        font-weight: 800;
-        letter-spacing: 0.05em;
-    }
-    .grade-a { background: #038141; color: #fff; }
-    .grade-b { background: #85bb2f; color: #fff; }
-    .grade-c { background: #fecb02; color: #5c3d2e; }
-    .grade-d { background: #ee8100; color: #fff; }
-    .grade-e { background: #e63e11; color: #fff; }
-    .grade-n { background: var(--sand); color: var(--deep); }
+        /* Nutri-Score */
+        .nutri-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+        .nutri-badge {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+        .grade-a { background: #038141; color: #fff; }
+        .grade-b { background: #85bb2f; color: #fff; }
+        .grade-c { background: #fecb02; color: #5c3d2e; }
+        .grade-d { background: #ee8100; color: #fff; }
+        .grade-e { background: #e63e11; color: #fff; }
+        .grade-n { background: var(--sand); color: var(--deep); }
 
-    /* Section title */
-    .section-title {
-        font-family: var(--sans);
-        font-size: 0.65rem;
-        font-weight: 800;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--clay);
-        margin-bottom: 12px;
-        padding-bottom: 6px;
-        border-bottom: 1px solid var(--sand);
-    }
+        /* Section title */
+        .section-title {
+            font-family: var(--sans);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--clay);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--sand);
+        }
 
-    /* Nutrition grid */
-    .nut-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 16px;
-    }
-    .nut-cell {
-        background: var(--warm);
-        border-radius: 10px;
-        padding: 10px 12px;
-    }
-    .nut-cell.full { grid-column: 1 / -1; }
-    .nut-value {
-        font-family: var(--serif);
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--deep);
-        line-height: 1;
-    }
-    .nut-value.highlight { color: var(--clay); }
-    .nut-key {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--clay);
-        margin-top: 3px;
-    }
-    .nut-sub-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4px;
-        margin-top: 6px;
-    }
-    .nut-sub {
-        font-size: 0.78rem;
-        color: var(--terra);
-        display: flex;
-        justify-content: space-between;
-    }
-    .nut-sub span { font-weight: 600; }
+        /* Nutrition grid */
+        .nut-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .nut-cell {
+            background: var(--warm);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .nut-cell.full { grid-column: 1 / -1; }
+        .nut-value {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--deep);
+            line-height: 1;
+        }
+        .nut-value.highlight { color: var(--clay); }
+        .nut-key {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--clay);
+            margin-top: 3px;
+        }
+        .nut-sub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .nut-sub {
+            font-size: 0.78rem;
+            color: var(--terra);
+            display: flex;
+            justify-content: space-between;
+        }
+        .nut-sub span { font-weight: 600; }
 
-    /* Insight rows */
-    .insight-card {
-        background: #fff;
-        border: 1.5px solid var(--sand);
-        border-radius: 16px;
-        padding: 16px 18px;
-        margin-bottom: 14px;
-    }
-    .insight-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        padding: 10px 0;
-        border-bottom: 1px solid var(--warm);
-    }
-    .insight-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .insight-row:first-child { padding-top: 0; }
-    .i-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
-    .i-label { font-size: 0.9rem; font-weight: 700; }
-    .i-detail { font-size: 0.8rem; color: #888; margin-top: 2px; line-height: 1.4; }
-    .tag-green { color: var(--green); }
-    .tag-yellow { color: var(--yellow); }
-    .tag-red { color: var(--red); }
-    .tag-clay { color: var(--clay); }
+        /* Insight rows */
+        .insight-card {
+            background: #fff;
+            border: 1.5px solid var(--sand);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+        }
+        .insight-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--warm);
+        }
+        .insight-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .insight-row:first-child { padding-top: 0; }
+        .i-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+        .i-label { font-size: 0.9rem; font-weight: 700; }
+        .i-detail { font-size: 0.8rem; color: #888; margin-top: 2px; line-height: 1.4; }
+        .tag-green { color: var(--green); }
+        .tag-yellow { color: var(--yellow); }
+        .tag-red { color: var(--red); }
+        .tag-clay { color: var(--clay); }
 
-    /* Diet badges */
-    .diet-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-    .diet-badge {
-        background: var(--warm);
-        border: 1.5px solid var(--sand);
-        border-radius: 12px;
-        padding: 10px 6px;
-        text-align: center;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--deep);
-    }
-    .diet-badge .d-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
-    .diet-badge.yes { border-color: #9dcfaa; background: var(--green-light); color: var(--green); }
-    .diet-badge.no { border-color: #f0b87a; background: var(--orange-light); color: var(--orange); }
-    .diet-badge.unknown { color: var(--clay); }
+        /* Diet badges */
+        .diet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .diet-badge {
+            background: var(--warm);
+            border: 1.5px solid var(--sand);
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--deep);
+        }
+        .diet-badge .d-icon { font-size: 1.3rem; display: block; margin-bottom: 3px; }
+        .diet-badge.yes { border-color: #9dcfaa; background: var(--green-light); color: var(--green); }
+        .diet-badge.no { border-color: #f0b87a; background: var(--orange-light); color: var(--orange); }
+        .diet-badge.unknown { color: var(--clay); }
 
-    /* Allergen chip list */
-    .allergen-found {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-        margin-top: 6px;
-    }
-    .af-chip {
-        padding: 3px 9px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background: rgba(255,255,255,0.3);
-        border: 1px solid rgba(255,255,255,0.4);
-        color: #fff;
-    }
-    .af-chip.orange {
-        background: rgba(212,105,10,0.12);
-        border: 1px solid var(--orange);
-        color: var(--orange);
-    }
+        /* Allergen chip list */
+        .allergen-found {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 6px;
+        }
+        .af-chip {
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: #fff;
+        }
+        .af-chip.orange {
+            background: rgba(212,105,10,0.12);
+            border: 1px solid var(--orange);
+            color: var(--orange);
+        }
 
-    /* Ingredients */
-    .ingredients-box {
-        background: var(--warm);
-        border-left: 4px solid var(--clay);
-        border-radius: 0 10px 10px 0;
-        padding: 12px 14px;
-        font-size: 0.85rem;
-        line-height: 1.8;
-        color: #666;
-        word-break: break-word;
-    }
-    mark.ana { background: var(--red); color: #fff; border-radius: 3px; padding: 1px 4px; font-weight: 800; }
-    mark.allergy { background: #ffd280; color: var(--deep); border-radius: 3px; padding: 1px 4px; font-weight: 700; }
+        /* Ingredients */
+        .ingredients-box {
+            background: var(--warm);
+            border-left: 4px solid var(--clay);
+            border-radius: 0 10px 10px 0;
+            padding: 12px 14px;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #666;
+            word-break: break-word;
+        }
+        mark.ana { background: var(--red); color: #fff; border-radius: 3px; padding: 1px 4px; font-weight: 800; }
+        mark.allergy { background: #ffd280; color: var(--deep); border-radius: 3px; padding: 1px 4px; font-weight: 700; }
 
-    /* Shimmer */
-    .shimmer {
-        background: linear-gradient(90deg, var(--warm) 25%, var(--sand) 50%, var(--warm) 75%);
-        background-size: 200%;
-        animation: shimmer 1.2s infinite;
-        border-radius: 8px;
-        height: 14px;
-        margin: 8px 0;
-    }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        /* Shimmer */
+        .shimmer {
+            background: linear-gradient(90deg, var(--warm) 25%, var(--sand) 50%, var(--warm) 75%);
+            background-size: 200%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 8px;
+            height: 14px;
+            margin: 8px 0;
+        }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    /* Footer note */
-    .footer-note {
-        text-align: center;
-        font-size: 0.72rem;
-        color: #bbb;
-        padding: 20px 16px 0;
-        line-height: 1.5;
-    }
+        /* Footer note */
+        .footer-note {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #bbb;
+            padding: 20px 16px 0;
+            line-height: 1.5;
+        }
 
-    /* Fade in */
-    .fade-in { animation: fadeIn 0.4s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-</style>
-```
-
+        /* Fade in */
+        .fade-in { animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
 
 <div class="app-wrap">
 
-<!-- Header -->
-<div class="app-header">
-    <div class="header-eyebrow">Personal Food Safety</div>
-    <div class="header-title">Elina's<br><span>Food Scanner</span></div>
-    <div class="header-sub">Personalized for your family · Powered by OpenFoodFacts</div>
-</div>
-
-<!-- Alert legend -->
-<div class="legend">
-    <div class="legend-pill pill-anaphylaxis">🚨 Anaphylaxis Risk</div>
-    <div class="legend-pill pill-allergy">⚠️ Allergy Reaction</div>
-    <div class="legend-pill pill-safe">✅ Cleared</div>
-    <div class="legend-pill" style="background:var(--green-light); color:var(--sage); border:1px solid var(--sage-light);">🦀 Crab &amp; Shrimp OK</div>
-    <div class="legend-pill" style="background:var(--green-light); color:var(--sage); border:1px solid var(--sage-light);">🥜 Peanuts &amp; Cashews OK</div>
-</div>
-
-<div class="panel">
-
-    <!-- Search -->
-    <div class="search-wrap">
-        <input type="text" id="foodSearch" placeholder="Search food by name or brand…">
-        <button class="btn-search" onclick="searchByName()">Search</button>
+    <!-- Header -->
+    <div class="app-header">
+        <div class="header-eyebrow">Personal Food Safety</div>
+        <div class="header-title">Elina's<br><span>Food Scanner</span></div>
+        <div class="header-sub">Personalized for your family · Powered by OpenFoodFacts</div>
     </div>
 
-    <!-- Scan -->
-    <button class="btn-scan" id="scanBtn" onclick="startScanner()">
-        <span class="scan-icon">📷</span>
-        Scan Barcode
-    </button>
+    <!-- Alert legend -->
+    <div class="legend">
+        <div class="legend-pill pill-anaphylaxis">🚨 Anaphylaxis Risk</div>
+        <div class="legend-pill pill-allergy">⚠️ Allergy Reaction</div>
+        <div class="legend-pill pill-safe">✅ Cleared</div>
+        <div class="legend-pill" style="background:var(--green-light); color:var(--sage); border:1px solid var(--sage-light);">🦀 Crab &amp; Shrimp OK</div>
+        <div class="legend-pill" style="background:var(--green-light); color:var(--sage); border:1px solid var(--sage-light);">🥜 Peanuts &amp; Cashews OK</div>
+    </div>
 
-    <div id="reader"></div>
+    <div class="panel">
 
-    <!-- Results -->
-    <div id="resultCard" style="display:none;" class="fade-in">
+        <!-- Search -->
+        <div class="search-wrap">
+            <input type="text" id="foodSearch" placeholder="Brand + name, e.g. Quaker oatmeal…">
+            <button class="btn-search" onclick="searchByName()">Search</button>
+        </div>
+        <div style="font-size:0.75rem; color:var(--clay); margin-top:-8px; margin-bottom:14px; padding-left:2px;">💡 Include brand name for best US results</div>
 
-        <!-- Alert zone -->
-        <div id="alertZone"></div>
+        <!-- Scan -->
+        <button class="btn-scan" id="scanBtn" onclick="startScanner()">
+            <span class="scan-icon">📷</span>
+            Scan Barcode
+        </button>
 
-        <!-- Product info -->
-        <div class="product-card" id="productCard" style="display:none;">
-            <div class="product-name" id="pName"></div>
-            <div class="product-brand" id="pBrand"></div>
+        <div id="reader"></div>
 
-            <div class="nutri-row">
-                <div id="nScore"></div>
-                <div style="font-size:0.78rem; color:#aaa;">per 100g</div>
+        <!-- Results -->
+        <div id="resultCard" style="display:none;" class="fade-in">
+
+            <!-- Alert zone -->
+            <div id="alertZone"></div>
+
+            <!-- Product info -->
+            <div class="product-card" id="productCard" style="display:none;">
+                <div class="product-name" id="pName"></div>
+                <div class="product-brand" id="pBrand"></div>
+
+                <div class="nutri-row">
+                    <div id="nScore"></div>
+                    <div style="font-size:0.78rem; color:#aaa;">per 100g</div>
+                </div>
+
+                <div class="section-title">Nutrition Facts</div>
+                <div class="nut-grid" id="nutGrid"></div>
+
             </div>
 
-            <div class="section-title">Nutrition Facts</div>
-            <div class="nut-grid" id="nutGrid"></div>
+            <!-- Heart & Metabolic -->
+            <div class="insight-card" id="healthCard" style="display:none;">
+                <div class="section-title">❤️ Heart &amp; Metabolic</div>
+                <div id="healthInsights"></div>
+            </div>
 
+            <!-- Dietary -->
+            <div class="insight-card" id="dietCard" style="display:none;">
+                <div class="section-title">🌿 Dietary Compatibility</div>
+                <div class="diet-grid" id="dietGrid"></div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="insight-card" id="ingrCard" style="display:none;">
+                <div class="section-title">Full Ingredients</div>
+                <div class="ingredients-box" id="pIngredients"></div>
+            </div>
+
+            <div class="footer-note">
+                Data from OpenFoodFacts · Always verify packaging for anaphylaxis risk<br>
+                🦀 Crab &amp; shrimp · 🥜 Peanuts, cashews &amp; pistachios are cleared for safe consumption
+            </div>
         </div>
 
-        <!-- Heart & Metabolic -->
-        <div class="insight-card" id="healthCard" style="display:none;">
-            <div class="section-title">❤️ Heart &amp; Metabolic</div>
-            <div id="healthInsights"></div>
-        </div>
-
-        <!-- Dietary -->
-        <div class="insight-card" id="dietCard" style="display:none;">
-            <div class="section-title">🌿 Dietary Compatibility</div>
-            <div class="diet-grid" id="dietGrid"></div>
-        </div>
-
-        <!-- Ingredients -->
-        <div class="insight-card" id="ingrCard" style="display:none;">
-            <div class="section-title">Full Ingredients</div>
-            <div class="ingredients-box" id="pIngredients"></div>
-        </div>
-
-        <div class="footer-note">
-            Data from OpenFoodFacts · Always verify packaging for anaphylaxis risk<br>
-            🦀 Crab &amp; shrimp · 🥜 Peanuts, cashews &amp; pistachios are cleared for safe consumption
-        </div>
     </div>
-
-</div>
-
 </div>
 
 <script>
@@ -657,18 +654,67 @@ function resetToScan() {
 }
 
 // ══ Search ═════════════════════════════════════════════
+async function fetchWithTimeout(url, options, ms) {
+    ms = ms || 8000;
+    options = options || {};
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+        const res = await fetch(url, Object.assign({}, options, { signal: controller.signal }));
+        clearTimeout(timer);
+        return res;
+    } catch (e) {
+        clearTimeout(timer);
+        throw e;
+    }
+}
+
 async function searchByName() {
     const query = document.getElementById('foodSearch').value.trim();
     if (!query) return;
-    try {
-        const res = await fetch(
-            `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`,
-            { headers: { 'Accept': 'application/json' } }
-        );
-        const data = await res.json();
-        if (data.products?.length > 0) fetchData(data.products[0].code);
-        else alert("No results found for: " + query);
-    } catch (e) { alert("Search failed — check your internet connection and try again.\n\n" + e.message); }
+
+    const btn = document.querySelector('.btn-search');
+    btn.textContent = '...';
+    btn.disabled = true;
+
+    const endpoints = [
+        `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5&lc=en&cc=us`,
+        `https://us.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=5`
+    ];
+
+    let lastError = '';
+    for (let i = 0; i < endpoints.length; i++) {
+        try {
+            const res = await fetchWithTimeout(endpoints[i], { headers: { 'Accept': 'application/json' } }, 8000);
+            const data = await res.json();
+            if (data.products && data.products.length > 0) {
+                const sorted = data.products.sort(function(a, b) {
+                    const aEn = (a.product_name || '').match(/[a-zA-Z]/) ? 1 : 0;
+                    const bEn = (b.product_name || '').match(/[a-zA-Z]/) ? 1 : 0;
+                    return bEn - aEn;
+                });
+                btn.textContent = 'Search';
+                btn.disabled = false;
+                fetchData(sorted[0].code);
+                return;
+            } else {
+                lastError = 'not_found';
+            }
+        } catch (e) {
+            lastError = e.name === 'AbortError' ? 'timeout' : e.message;
+        }
+    }
+
+    btn.textContent = 'Search';
+    btn.disabled = false;
+
+    if (lastError === 'not_found') {
+        alert('No results found for "' + query + '".\n\nTip: Include the brand name — e.g. "Quaker oatmeal" or "Great Value chicken broth"');
+    } else if (lastError === 'timeout') {
+        alert('Search timed out. OpenFoodFacts is slow right now — try again in a moment.');
+    } else {
+        alert('Search failed. Try again in a moment.\n\nIf this keeps happening, try the barcode scanner instead.');
+    }
 }
 
 // ══ Fetch ══════════════════════════════════════════════
@@ -691,23 +737,47 @@ async function fetchData(barcode) {
     resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     try {
-        const res = await fetch(
-            `https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=product_name,brands,ingredients_text,allergens_tags,nutriments,nutrition_grades,labels_tags,categories_tags`,
-            { headers: { 'Accept': 'application/json', 'User-Agent': 'ElinaFoodScanner/1.0' } }
-        );
-        const data = await res.json();
+        let data = null;
+
+        // Try v2 first, fall back to v0 if it fails
+        try {
+            const res = await fetch(
+                `https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=product_name,brands,ingredients_text,allergens_tags,nutriments,nutrition_grades,labels_tags,categories_tags`,
+                { headers: { 'Accept': 'application/json', 'User-Agent': 'ElinaFoodScanner/1.0' } }
+            );
+            data = await res.json();
+        } catch {
+            // v2 failed — try v0
+            try {
+                const res2 = await fetch(
+                    `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`,
+                    { headers: { 'Accept': 'application/json' } }
+                );
+                data = await res2.json();
+            } catch {
+                data = null;
+            }
+        }
 
         if (!data || data.status !== 1) {
             alertZone.innerHTML = `
                 <button class="btn-scan-new" onclick="resetToScan()">◀ Scan New Item</button>
-                <div class="alert-allergy"><div class="tier-label">Not Found</div><div class="tier-headline">Product not in database</div></div>`;
+                <div class="alert-allergy">
+                    <div class="tier-label">Not Found</div>
+                    <div class="tier-headline">Product not in database</div>
+                    <div class="tier-detail" style="margin-top:6px;">Try searching by name above, or check your connection</div>
+                </div>`;
             return;
         }
         renderProduct(data.product);
-    } catch {
+    } catch (e) {
         alertZone.innerHTML = `
             <button class="btn-scan-new" onclick="resetToScan()">◀ Scan New Item</button>
-            <div class="alert-allergy"><div class="tier-label">Error</div><div class="tier-headline">Connection failed</div></div>`;
+            <div class="alert-allergy">
+                <div class="tier-label">Connection Error</div>
+                <div class="tier-headline">Could not reach food database</div>
+                <div class="tier-detail" style="margin-top:6px;">Check WiFi/data and try again. OpenFoodFacts may be temporarily unavailable.</div>
+            </div>`;
     }
 }
 
@@ -942,6 +1012,5 @@ function renderProduct(product) {
 
 function escRx(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 </script>
-
 </body>
 </html>
