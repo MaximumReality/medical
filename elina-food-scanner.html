@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="apple-touch-icon" href="https://maximumreality.github.io/medical/IMG_8255.jpeg">
+        <link rel="apple-touch-icon" href="https://maximumreality.github.io/medical/IMG_8255.jpeg">
     <title>Elina's Food Scanner</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode"></script>
@@ -31,7 +31,7 @@
             --sans: 'Nunito', system-ui, sans-serif;
         }
 
-
+```
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
@@ -504,14 +504,14 @@
     .fade-in { animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 </style>
-
+```
 
 </head>
 <body>
 
 <div class="app-wrap">
 
-
+```
 <!-- Header -->
 <div class="app-header">
     <div class="header-eyebrow">Personal Food Safety</div>
@@ -590,7 +590,7 @@
     </div>
 
 </div>
-
+```
 
 </div>
 
@@ -665,12 +665,13 @@ async function searchByName() {
     if (!query) return;
     try {
         const res = await fetch(
-            `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`
+            `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=1`,
+            { headers: { 'Accept': 'application/json' } }
         );
         const data = await res.json();
         if (data.products?.length > 0) fetchData(data.products[0].code);
         else alert("No results found for: " + query);
-    } catch { alert("Connection error."); }
+    } catch (e) { alert("Search failed — check your internet connection and try again.\n\n" + e.message); }
 }
 
 // ══ Fetch ══════════════════════════════════════════════
@@ -694,7 +695,8 @@ async function fetchData(barcode) {
 
     try {
         const res = await fetch(
-            `https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=product_name,brands,ingredients_text,allergens_tags,nutriments,nutrition_grades,labels_tags,categories_tags`
+            `https://world.openfoodfacts.org/api/v2/product/${barcode}.json?fields=product_name,brands,ingredients_text,allergens_tags,nutriments,nutrition_grades,labels_tags,categories_tags`,
+            { headers: { 'Accept': 'application/json', 'User-Agent': 'ElinaFoodScanner/1.0' } }
         );
         const data = await res.json();
 
