@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OChem Tactical Terminal</title>
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .terminal-header {
+            border-bottom: 2px solid var(--neon-blue);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+        }
+
+        .terminal-header h1 {
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .module-tag {
+            background: var(--neon-purple);
+            color: white;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-left: 4px solid var(--neon-purple);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        h2 {
+            color: var(--neon-blue);
+            font-size: 1.1rem;
+            margin-top: 0;
+        }
+
+        .geometry-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .geometry-table th, .geometry-table td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .geometry-table th {
+            background: #222;
+            color: var(--neon-purple);
+        }
+
+        .clinical-note {
+            background: rgba(188, 19, 254, 0.1);
+            border: 1px dashed var(--neon-purple);
+            padding: 10px;
+            font-style: italic;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--neon-blue);
+            color: black;
+            font-weight: bold;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-header">
+        <h1>O-CHEM STRATEGY V1</h1>
+        <div class="module-tag">PROJECT: CRNA_DOCTORATE</div>
+    </div>
+
+    <section class="card">
+        <h2>Phase 1: The Language of Lines</h2>
+        <p>Forget the text—O-Chem is a <strong>Visual Code</strong>. Stop looking for atoms and start seeing the <strong>Skeleton</strong>.</p>
+        <ul>
+            <li><strong>The Bend:</strong> Every corner is a Carbon.</li>
+            <li><strong>The Invisibles:</strong> Carbon wants 4 bonds. If you see fewer lines, fill the gaps with hidden Hydrogens.</li>
+            <li><strong>The Shorthand:</strong> A zigzag line is a chain of energy.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Phase 2: Seeing Molecules in 3D</h2>
+        <p>VSEPR Logic: Electrons are "roommates" who hate each other. They push apart to find the most space.</p>
+        
+        <table class="geometry-table">
+            <tr>
+                <th>Shape</th>
+                <th>Angle</th>
+                <th>Visual</th>
+            </tr>
+            <tr>
+                <td>Linear</td>
+                <td>180°</td>
+                <td>Straight line</td>
+            </tr>
+            <tr>
+                <td>Tetrahedral</td>
+                <td>109.5°</td>
+                <td>3D Pyramid</td>
+            </tr>
+            <tr>
+                <td>Bent</td>
+                <td>~104.5°</td>
+                <td>Water (V-shape)</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="card">
+        <h2>Clinical Triage: Anesthesia</h2>
+        <div class="clinical-note">
+            <strong>Propofol:</strong> Spherical geometry = passes blood-brain barrier instantly.<br>
+            <strong>Isoflurane:</strong> Tetrahedral centers = high volatility for gas delivery.<br>
+            <strong>Fentanyl:</strong> Flexible chain = fits the receptor lock perfectly.
+        </div>
+    </section>
+
+    <div style="height: 40px;"></div> <div class="status-bar">
+        CONNECTED // USER: CURVE_KILLER // STATUS: 100% AVG
+    </div>
+
+</body>
+</html>
