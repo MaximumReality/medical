@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRNA Molecular Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12; --card: #12161f; --border: #1e2535; --amber: #e8a94a;
+    --teal: #4ab8c8; --violet: #9b7fd4; --rose: #c87a9b; --green: #4ac87a; 
+    --blue: #7ab8e8; --white: #e8e4dc; --muted: #6b7280; --text: #c8c4bc;
+  }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Libre Baskerville', serif; min-height: 100vh; padding: 20px; }
+  .container { max-width: 900px; margin: 0 auto; }
+  .header { text-align: center; padding: 32px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--white); margin-bottom: 8px; }
+  .title em { color: var(--amber); font-style: italic; }
+  .subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 32px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.3s; }
+  .card:hover { transform: translateY(-2px); }
+  .card-inner { position: relative; width: 100%; min-height: 280px; transition: transform 0.6s; transform-style: preserve-3d; }
+  .card.flipped .card-inner { transform: rotateY(180deg); }
+  .card-front, .card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .card-back { transform: rotateY(180deg); }
+  .drug-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+  .drug-use { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--amber); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px; }
+  .tap-hint { font-size: 12px; color: var(--muted); font-style: italic; }
+  .structure { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--teal); line-height: 1.8; margin-bottom: 16px; background: rgba(74,184,200,0.05); padding: 16px; border-radius: 6px; border: 1px solid rgba(74,184,200,0.1); }
+  .pattern { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .pattern strong { color: var(--amber); }
+  .legend { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  .legend-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; }
+  .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+  .print-btn { width: 100%; padding: 14px; background: transparent; border: 1px solid var(--amber); border-radius: 6px; color: var(--amber); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; }
+  @media (max-width: 850px) { .grid { grid-template-columns: 1fr; } }
+  @media print { body { background: white; color: black; } .card { page-break-inside: avoid; border: 1px solid #ccc; } .print-btn, .header { display: none; } .card-front { display: none; } .card-back { transform: none; position: relative; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1 class="title">Molecular Pattern Recognition // <em>CRNA Flashcard Deck</em></h1>
+    <div class="subtitle">Module 2 Companion · Functional Groups · Tap to Flip</div>
+  </div>
+  
+  <div class="grid">
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Propofol</div>
+          <div class="drug-use">Diprivan · IV Induction</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">
+            &nbsp;&nbsp;&nbsp;&nbsp;OH<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;|<br>
+            CH3-CH-CH3&nbsp;&nbsp;CH3-CH-CH3<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;/<br>
+            &nbsp;&nbsp;&nbsp;⬡ Benzene
+          </div>
+          <div class="pattern"><strong>Phenol –OH</strong> + aromatic ring = fast brain entry, emulsion formulation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Ethanol</div>
+          <div class="drug-use">Hand Sanitizer · Simplest Alcohol</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">CH3 — CH2 — OH</div>
+          <div class="pattern"><strong>Alcohol –OH</strong> = hydrophilic. Mixes with water, kills bacteria on contact</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Fentanyl</div>
+          <div class="drug-use">Opioid · 100x Morphine</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">⬡—N—CH2—CH2—⬡<br>&nbsp;&nbsp;&nbsp;&nbsp;|<br>&nbsp;&nbsp;&nbsp;&nbsp;C=O—CH2—CH3</div>
+          <div class="pattern"><strong>Tertiary amine</strong> + 2 <strong>aromatic rings</strong> = extreme lipophilicity, fast BBB crossing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Sevoflurane</div>
+          <div class="drug-use">Inhaled Anesthetic</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">F—CH—O—CH2—O—CH(CF3)2</div>
+          <div class="pattern"><strong>Ether linkages</strong> + 7 <strong>fluorines</strong> = volatile, low blood:gas, fast offset</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Lidocaine</div>
+          <div class="drug-use">Local Anesthetic</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">CH3—⬡—NH—C=O—CH2—N(CH2CH3)2<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CH3</div>
+          <div class="pattern"><strong>Amine</strong> controls charge state → membrane crossing. <strong>Amide carbonyl</strong> = metabolism site</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="drug-name">Aspirin</div>
+          <div class="drug-use">NSAID · Acetylsalicylic Acid</div>
+          <div class="tap-hint">Tap to reveal structure</div>
+        </div>
+        <div class="card-back">
+          <div class="structure">&nbsp;&nbsp;&nbsp;&nbsp;O=C—O—CH3<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>&nbsp;&nbsp;&nbsp;&nbsp;⬡<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>&nbsp;&nbsp;&nbsp;&nbsp;COOH</div>
+          <div class="pattern"><strong>Carboxylic acid –COOH</strong> = renal clearance. <strong>Ester –COO–</strong> = GI hydrolysis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Functional Group Color Key</div>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background:#4ab8c8"></div>Alcohol –OH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#9b7fd4"></div>Amine N</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e8a94a"></div>Carbonyl C=O</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c87a9b"></div>Carboxylic Acid –COOH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4ac87a"></div>Ester –COO–</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7ab8e8"></div>Aromatic Ring ⬡</div>
+    </div>
+  </div>
+
+  <button class="print-btn" onclick="window.print()">Print Cards</button>
+</div>
+</body>
+</html>
