@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Molecular Literacy // Module 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12;
+    --bg2: #0f1219;
+    --bg3: #141820;
+    --card: #12161f;
+    --border: #1e2535;
+    --amber: #e8a94a;
+    --amber-dim: #a87835;
+    --teal: #4ab8c8;
+    --teal-dim: #2d7a87;
+    --white: #e8e4dc;
+    --muted: #6b7280;
+    --red: #c85a4a;
+    --green: #4ac87a;
+    --text: #c8c4bc;
+    --violet: #9b7fd4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Libre Baskerville', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 15%, rgba(232,169,74,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 78% 12%, rgba(74,184,200,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 65%, rgba(155,127,212,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(74,184,200,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 8% 85%, rgba(255,255,255,0.08) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 92%, rgba(255,255,255,0.06) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .system-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .system-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  .main-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .main-title em { color: var(--amber); font-style: italic; }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 16px;
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  /* MODULE NAV */
+  .module-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .mod-dot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .mod-dot.done {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(74,200,122,0.06);
+  }
+
+  .mod-dot.current {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: rgba(232,169,74,0.08);
+  }
+
+  .mod-dot.locked { opacity: 0.35; }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.3s; }
+  .section:nth-child(6) { animation-delay: 0.4s; }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--white); font-weight: 700; }
+  em { color: var(--amber); font-style: italic; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+
+  .callout.amber { border-left-color: var(--amber); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.violet { border-left-color: var(--violet); }
+
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .callout.amber .callout-label { color: var(--amber); }
+  .callout.green .callout-label { color: var(--green); }
+  .callout.violet .callout-label { color: var(--violet); }
+
+  .callout p { font-size: 14px; margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* SKELETON BUILDER — the big interactive element */
+  .skeleton-stage {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .skeleton-controls {
+    display: flex;
+    gap: 2px;
+    padding: 12px 12px 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .skel-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px 4px 0 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: none;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .skel-btn.active {
+    background: var(--bg3);
+    color: var(--amber);
+    border-color: var(--amber-dim);
+    border-bottom-color: var(--bg3);
+  }
+
+  .skeleton-display {
+    padding: 28px 24px;
+  }
+
+  .skel-panel { display: none; }
+  .skel-panel.active { display: block; }
+
+  .molecule-ascii {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(14px, 3.8vw, 20px);
+    color: var(--teal);
+    line-height: 1.9;
+    letter-spacing: 0.08em;
+    padding: 20px;
+    background: rgba(74,184,200,0.04);
+    border: 1px solid rgba(74,184,200,0.1);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    text-align: center;
+    white-space: pre;
+  }
+
+  .molecule-ascii .c-atom { color: var(--white); font-weight: 600; }
+  .molecule-ascii .h-atom { color: rgba(74,184,200,0.45); }
+  .molecule-ascii .bond { color: var(--amber-dim); }
+  .molecule-ascii .hidden { color: rgba(74,184,200,0.2); font-style: italic; }
+  .molecule-ascii .highlight { color: var(--amber); font-weight: 600; }
+
+  .decode-steps {
+    list-style: none;
+    margin-top: 16px;
+  }
+
+  .decode-step {
+    display: flex;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(30,37,53,0.8);
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .decode-step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    min-width: 24px;
+    padding-top: 2px;
+  }
+
+  /* RULE CARDS */
+  .rule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+
+  .rule-card:hover { border-color: var(--teal-dim); }
+
+  .rule-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    color: var(--amber);
+    opacity: 0.4;
+    line-height: 1;
+    min-width: 32px;
+    font-weight: 600;
+  }
+
+  .rule-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--white);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .rule-content p {
+    font-size: 13px;
+    line-height: 1.65;
+    margin-bottom: 0;
+  }
+
+  /* QUIZ */
+  .quiz-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+
+  .quiz-q {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--white);
+    margin-bottom: 8px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .quiz-context {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 3.5vw, 18px);
+    color: var(--teal);
+    padding: 14px 16px;
+    background: rgba(74,184,200,0.05);
+    border: 1px solid rgba(74,184,200,0.12);
+    border-radius: 4px;
+    margin: 14px 0;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .quiz-opt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: var(--text);
+    background: transparent;
+    text-align: left;
+    width: 100%;
+    font-family: 'Libre Baskerville', serif;
+  }
+
+  .quiz-opt:hover:not(:disabled) { border-color: var(--teal-dim); color: var(--white); }
+  .quiz-opt.correct { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
+  .quiz-opt.wrong { border-color: var(--red); color: var(--red); background: rgba(200,90,74,0.06); }
+  .quiz-opt:disabled { cursor: default; }
+
+  .opt-indicator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 18px;
+  }
+
+  .quiz-feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-fb { background: rgba(74,200,122,0.08); border: 1px solid rgba(74,200,122,0.2); color: var(--green); }
+  .quiz-feedback.wrong-fb { background: rgba(200,90,74,0.08); border: 1px solid rgba(200,90,74,0.2); color: #e08878; }
+
+  /* HYDROGEN COUNTER — interactive */
+  .h-counter {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .h-counter-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--violet);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .h-molecule {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(14px, 4vw, 20px);
+    color: var(--teal);
+    padding: 16px;
+    background: rgba(74,184,200,0.04);
+    border: 1px solid rgba(74,184,200,0.1);
+    border-radius: 4px;
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+  }
+
+  .carbon-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .c-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 80px;
+  }
+
+  .c-chip:hover { border-color: var(--violet); }
+  .c-chip.solved { border-color: var(--green); background: rgba(74,200,122,0.08); }
+
+  .c-chip-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .c-chip-bonds {
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .c-chip-answer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 600;
+    min-height: 20px;
+  }
+
+  .reveal-all-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: 1px solid var(--violet);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--violet);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reveal-all-btn:hover { background: rgba(155,127,212,0.1); }
+
+  /* COMPLETION */
+  .commitment {
+    background: linear-gradient(135deg, rgba(232,169,74,0.06), rgba(74,184,200,0.06));
+    border: 1px solid var(--amber-dim);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .commitment-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .commitment p {
+    font-size: 14px;
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
+
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    border-radius: 6px;
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+  }
+
+  .next-btn:hover {
+    background: rgba(232,169,74,0.08);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  .win-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(74,184,200,0.1));
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .win-banner.show { display: block; }
+
+  .win-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--amber);
+    padding: 12px 0 12px 20px;
+    margin: 20px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  blockquote cite {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-style: normal;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="system-label">Molecular Literacy System</div>
+    <h1 class="main-title">The <em>Alphabet</em></h1>
+    <div class="subtitle">MODULE 01 &nbsp;·&nbsp; CARBON SKELETONS &nbsp;·&nbsp; LINE NOTATION &nbsp;·&nbsp; THE HIDDEN RULE</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0% complete</div>
+  </div>
+
+  <!-- MODULE NAV -->
+  <div class="module-nav">
+    <div class="mod-dot done">00 · Fear Removal ✓</div>
+    <div class="mod-dot current">01 · The Alphabet</div>
+    <div class="mod-dot locked">02 · Words</div>
+    <div class="mod-dot locked">03 · Sentences</div>
+    <div class="mod-dot locked">04 · Grammar</div>
+  </div>
+
+  <!-- SECTION 1: WHY SHORTHAND EXISTS -->
+  <div class="section">
+    <div class="section-tag">01 · Why Shorthand</div>
+    <h2 class="section-title">Scientists Are Lazy. That's Actually Good.</h2>
+
+    <p>Imagine if every time you texted someone, you had to write out every single letter of every word with no abbreviations, no shortcuts, no autocomplete. You'd never finish a sentence.</p>
+
+    <p>Early chemists had the same problem. Writing out <strong>every atom</strong> in every molecule was tedious, error-prone, and took up enormous space. Propofol has 12 carbons, 18 hydrogens, and 1 oxygen. Writing that out in full every time is impractical.</p>
+
+    <p>So they invented a shorthand. It's called <strong>skeletal notation</strong> — sometimes called line-angle notation or line structure. And once you know the three rules, you can read it fluently.</p>
+
+    <div class="callout amber">
+      <div class="callout-label">The Promise</div>
+      <p>By the end of this module, you will be able to look at a line structure — a molecule that looks like a zigzag or geometric shape — and immediately know: how many carbons, how many hydrogens, and where the interesting parts are.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 2: THE THREE RULES -->
+  <div class="section">
+    <div class="section-tag">02 · The Three Rules</div>
+    <h2 class="section-title">The Entire Alphabet in Three Rules</h2>
+
+    <p>All of skeletal notation comes down to three rules. Learn these and the rest is just practice.</p>
+
+    <div class="rule-grid">
+      <div class="rule-card">
+        <div class="rule-number">1</div>
+        <div class="rule-content">
+          <h3>Every bend or endpoint is a carbon atom</h3>
+          <p>In a line structure, you never write the letter C for carbon. Instead, every place where a line <em>changes direction</em> (a bend) or <em>ends</em> (a terminal point) is understood to be a carbon atom. The lines themselves are the bonds between carbons. The carbons are invisible — but they're always there.</p>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">2</div>
+        <div class="rule-content">
+          <h3>Hydrogen is invisible — but countable</h3>
+          <p>Hydrogens bonded to carbon are not drawn. They are assumed to exist. You know they're there because of Rule 3. When you see a bare endpoint or bend, picture it surrounded by invisible hydrogen atoms completing its bonds.</p>
+        </div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-number">3</div>
+        <div class="rule-content">
+          <h3>Carbon always has exactly 4 bonds</h3>
+          <p>This is the engine that drives everything. Carbon is <em>always</em> bonded to exactly 4 things. If you can see 2 bonds drawn on a carbon, it has 2 invisible hydrogens. If you can see 3 bonds, it has 1 invisible hydrogen. If you can see all 4 bonds, it has zero hidden hydrogens. Carbon is never satisfied with less than 4.</p>
+        </div>
+      </div>
+    </div>
+
+    <blockquote>
+      Carbon always wants four bonds. Always. That's not a rule to memorize — it's carbon's personality.
+      <cite>— The 4-Bond Rule</cite>
+    </blockquote>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: INTERACTIVE SKELETON DECODER -->
+  <div class="section">
+    <div class="section-tag">03 · See It in Action</div>
+    <h2 class="section-title">Reading Your First Skeletons</h2>
+
+    <p>Here are four molecules decoded step by step. Each one is a little more complex than the last. Work through them in order — by the fourth one, you'll be reading like you've done this before.</p>
+
+    <div class="skeleton-stage">
+      <div class="skeleton-controls">
+        <button class="skel-btn active" onclick="showSkel(0)">Methane</button>
+        <button class="skel-btn" onclick="showSkel(1)">Propane</button>
+        <button class="skel-btn" onclick="showSkel(2)">Butane</button>
+        <button class="skel-btn" onclick="showSkel(3)">Isopropanol</button>
+      </div>
+
+      <div class="skeleton-display">
+
+        <!-- METHANE -->
+        <div class="skel-panel active" id="skel0">
+          <div class="molecule-ascii">C</div>
+          <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:16px;">The simplest organic molecule. One carbon. Nothing else drawn.</p>
+          <ul class="decode-steps">
+            <li class="decode-step">
+              <span class="step-num">01</span>
+              <span>See the lone <strong>C</strong>. That's one carbon atom. (In real skeletal notation this would just be a dot or endpoint — we're showing the C here for clarity.)</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">02</span>
+              <span>Carbon needs 4 bonds. We see 0 bonds drawn. So: 4 − 0 = <strong>4 invisible hydrogens.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">03</span>
+              <span>Full molecule: CH₄. One carbon, four hydrogens. This is <em>methane</em> — natural gas. The fuel in your stove.</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">✓</span>
+              <span style="color:var(--green);">You just decoded your first molecule. It took three steps.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- PROPANE -->
+        <div class="skel-panel" id="skel1">
+          <div class="molecule-ascii">∧</div>
+          <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:16px;">A V-shape or zigzag with one bend. Two lines, one bend.</p>
+          <ul class="decode-steps">
+            <li class="decode-step">
+              <span class="step-num">01</span>
+              <span>Count the bends + endpoints. Left endpoint = 1 carbon. The bend = 1 carbon. Right endpoint = 1 carbon. <strong>Total: 3 carbons.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">02</span>
+              <span>The two <em>endpoint</em> carbons each have 1 bond drawn (to the middle carbon). So they each need 4 − 1 = <strong>3 hydrogens.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">03</span>
+              <span>The middle (bend) carbon has 2 bonds drawn (one to each end). So it needs 4 − 2 = <strong>2 hydrogens.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">04</span>
+              <span>Total: C₃H₈. Three carbons, eight hydrogens. This is <em>propane</em> — the gas in outdoor grills and camp stoves.</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">✓</span>
+              <span style="color:var(--green);">Every bend is a carbon. Every carbon fills its remaining bonds with hydrogen. That's the whole system.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BUTANE -->
+        <div class="skel-panel" id="skel2">
+          <div class="molecule-ascii">∧∨  (W-shape)</div>
+          <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:16px;">Three lines, two bends, two endpoints. A longer chain.</p>
+          <ul class="decode-steps">
+            <li class="decode-step">
+              <span class="step-num">01</span>
+              <span>Count: left endpoint + bend + bend + right endpoint = <strong>4 carbons.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">02</span>
+              <span>The two <em>endpoint</em> carbons: 1 bond drawn each → 4 − 1 = <strong>3 H each.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">03</span>
+              <span>The two <em>middle bend</em> carbons: 2 bonds drawn each → 4 − 2 = <strong>2 H each.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">04</span>
+              <span>Total: C₄H₁₀. This is <em>butane</em> — the fuel in a lighter. You've held this molecule in your hand.</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">✓</span>
+              <span style="color:var(--green);">Notice the pattern: endpoint carbons always have 3 H. Middle carbons in a chain always have 2 H. You'll see this again and again.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- ISOPROPANOL -->
+        <div class="skel-panel" id="skel3">
+          <div class="molecule-ascii">∧ with —OH on the bend</div>
+          <p style="font-size:13px; color:var(--muted); text-align:center; margin-bottom:16px;">A V-shape, but the middle carbon has something extra: an OH group.</p>
+          <ul class="decode-steps">
+            <li class="decode-step">
+              <span class="step-num">01</span>
+              <span>Same V-shape as propane — 3 carbons. But this time, the middle carbon has an <strong>OH attached.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">02</span>
+              <span>The middle carbon now has 3 bonds drawn: one to each end carbon, one to OH. So: 4 − 3 = <strong>1 hydrogen.</strong></span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">03</span>
+              <span>The OH group — remember from Module 0? That's the <em>hydroxyl group.</em> It makes this molecule an alcohol.</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">04</span>
+              <span>This is <em>isopropanol</em> — rubbing alcohol. 91% isopropanol is what's in that brown bottle in every medicine cabinet. You've used this molecule.</span>
+            </li>
+            <li class="decode-step">
+              <span class="step-num">✓</span>
+              <span style="color:var(--green);">One extra group on the middle carbon changed the whole story of the molecule. That's how functional groups work — small additions, enormous behavioral changes.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 4: HYDROGEN COUNTER GAME -->
+  <div class="section">
+    <div class="section-tag">04 · Practice</div>
+    <h2 class="section-title">Count the Hidden Hydrogens</h2>
+
+    <p>Here's butane again. Each carbon is labeled. For each one, figure out how many hidden hydrogens it has using the 4-bond rule. Tap a carbon to reveal the answer.</p>
+
+    <div class="h-counter">
+      <div class="h-counter-title">Butane · C₄H₁₀ · Tap each carbon</div>
+
+      <div class="h-molecule">
+        C1 — C2 — C3 — C4
+      </div>
+
+      <div class="carbon-list">
+        <div class="c-chip" id="chip0" onclick="revealCarbon(0)">
+          <div class="c-chip-label">Carbon 1</div>
+          <div class="c-chip-bonds">Bonds visible: 1</div>
+          <div class="c-chip-answer" id="ans0"></div>
+        </div>
+        <div class="c-chip" id="chip1" onclick="revealCarbon(1)">
+          <div class="c-chip-label">Carbon 2</div>
+          <div class="c-chip-bonds">Bonds visible: 2</div>
+          <div class="c-chip-answer" id="ans1"></div>
+        </div>
+        <div class="c-chip" id="chip2" onclick="revealCarbon(2)">
+          <div class="c-chip-label">Carbon 3</div>
+          <div class="c-chip-bonds">Bonds visible: 2</div>
+          <div class="c-chip-answer" id="ans2"></div>
+        </div>
+        <div class="c-chip" id="chip3" onclick="revealCarbon(3)">
+          <div class="c-chip-label">Carbon 4</div>
+          <div class="c-chip-bonds">Bonds visible: 1</div>
+          <div class="c-chip-answer" id="ans3"></div>
+        </div>
+      </div>
+
+      <button class="reveal-all-btn" onclick="revealAll()">Reveal All</button>
+    </div>
+
+    <div class="callout violet">
+      <div class="callout-label">The Pattern You Just Found</div>
+      <p>In any straight carbon chain: <strong>end carbons always have 3 H, middle carbons always have 2 H.</strong> This is not a coincidence — it's a direct result of the 4-bond rule. You can use this as a fast-check when reading any molecule.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 5: QUIZ -->
+  <div class="section">
+    <div class="section-tag">05 · Recognition Quiz</div>
+    <h2 class="section-title">Read the Structure</h2>
+
+    <p>No memorization. Just apply the three rules you know.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-block" id="q1">
+      <div class="quiz-q">Question 1 of 3 — How many carbon atoms are in this molecule?</div>
+      <div class="quiz-context">∧∨∧ &nbsp; (4 lines, 3 bends, 2 endpoints)</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'3')">
+          <span class="opt-indicator">A</span> 3 carbons
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'4')">
+          <span class="opt-indicator">B</span> 4 carbons
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q1',true,'5')">
+          <span class="opt-indicator">C</span> 5 carbons
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q1',false,'6')">
+          <span class="opt-indicator">D</span> 6 carbons
+        </button>
+      </div>
+      <div class="quiz-feedback" id="q1-fb"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-block" id="q2" style="margin-top:16px;">
+      <div class="quiz-q">Question 2 of 3 — A carbon in the middle of a chain has 2 bonds drawn. How many hydrogens does it have?</div>
+      <div class="quiz-context">— C — &nbsp; (2 visible bonds)</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'1')">
+          <span class="opt-indicator">A</span> 1 hydrogen
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q2',true,'2')">
+          <span class="opt-indicator">B</span> 2 hydrogens
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'3')">
+          <span class="opt-indicator">C</span> 3 hydrogens
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q2',false,'4')">
+          <span class="opt-indicator">D</span> 4 hydrogens
+        </button>
+      </div>
+      <div class="quiz-feedback" id="q2-fb"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-block" id="q3" style="margin-top:16px;">
+      <div class="quiz-q">Question 3 of 3 — A carbon at the end of a chain has an OH group attached, plus 1 bond to the next carbon. How many hidden hydrogens does it have?</div>
+      <div class="quiz-context">HO — C — &nbsp; (1 bond to chain + 1 to OH = 2 visible bonds)</div>
+      <div class="quiz-options">
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'0')">
+          <span class="opt-indicator">A</span> 0 hydrogens
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'1')">
+          <span class="opt-indicator">B</span> 1 hydrogen
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q3',true,'2')">
+          <span class="opt-indicator">C</span> 2 hydrogens
+        </button>
+        <button class="quiz-opt" onclick="answer(this,'q3',false,'3')">
+          <span class="opt-indicator">D</span> 3 hydrogens
+        </button>
+      </div>
+      <div class="quiz-feedback" id="q3-fb"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 6: CRNA CONNECTION -->
+  <div class="section">
+    <div class="section-tag">06 · Clinical Connection</div>
+    <h2 class="section-title">Why a CRNA Reads Carbon Chains</h2>
+
+    <p>The length of a carbon chain is not decorative. It directly determines how a drug behaves in the body.</p>
+
+    <p><strong>Shorter chains</strong> — fewer carbons — tend to be more water-soluble. They enter and leave the bloodstream faster. They're easier for the kidneys to filter out.</p>
+
+    <p><strong>Longer chains</strong> — more carbons — tend to be more fat-soluble. They cross into fatty tissues more easily, including brain tissue. They stay in the body longer. They accumulate.</p>
+
+    <div class="callout">
+      <div class="callout-label">Real Example</div>
+      <p>Sevoflurane — one of the most common inhalation anesthetics you'll use — is a small molecule. Its short carbon skeleton and fluorine atoms make it highly volatile (becomes a gas easily) and fast-acting. Patients wake up quickly after sevoflurane because the molecule leaves their system fast.</p>
+      <p>That behavior is <em>written</em> in the structure. When you can read the structure, you understand the behavior — not just the dosage chart.</p>
+    </div>
+
+    <p>You are not memorizing facts about sevoflurane. You are building the framework to <strong>understand why</strong> it behaves the way it does. That's a different kind of knowledge — and it's the kind that stays.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COMPLETION -->
+  <div class="commitment" id="completeSection">
+    <div class="commitment-title">Module 1 Complete</div>
+    <p>You now know the three rules of skeletal notation. You can count carbons from a line structure. You can calculate hidden hydrogens. You read four real molecules and decoded butane from scratch.</p>
+    <p>The alphabet is yours. Next we learn words.</p>
+    <button class="next-btn" id="completeBtn" onclick="completeModule()">▸ &nbsp; MARK MODULE 1 COMPLETE</button>
+  </div>
+
+  <div class="win-banner" id="winBanner">
+    <div class="win-title">Module 1 Unlocked ✓</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--teal); letter-spacing:0.2em; margin-top:8px;">
+      NEXT: MODULE 02 — WORDS &nbsp;·&nbsp; FUNCTIONAL GROUPS &nbsp;·&nbsp; ACTION ZONES
+    </div>
+    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">You can read carbon skeletons. Now we give them meaning.</p>
+  </div>
+
+</div>
+
+<script>
+  const carbonAnswers = [3, 2, 2, 3];
+  const carbonLabels = ['3 H (endpoint: 4 − 1 = 3)', '2 H (middle: 4 − 2 = 2)', '2 H (middle: 4 − 2 = 2)', '3 H (endpoint: 4 − 1 = 3)'];
+  let quizScore = 0;
+  let quizAnswered = [false, false, false];
+  let skelsVisited = new Set([0]);
+  let carbonsRevealed = 0;
+
+  function showSkel(index) {
+    document.querySelectorAll('.skel-panel').forEach((p, i) => p.classList.toggle('active', i === index));
+    document.querySelectorAll('.skel-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+    skelsVisited.add(index);
+    updateProgress();
+  }
+
+  function revealCarbon(i) {
+    const chip = document.getElementById('chip' + i);
+    const ans = document.getElementById('ans' + i);
+    if (chip.classList.contains('solved')) return;
+    chip.classList.add('solved');
+    ans.textContent = carbonLabels[i];
+    carbonsRevealed++;
+    updateProgress();
+  }
+
+  function revealAll() {
+    for (let i = 0; i < 4; i++) revealCarbon(i);
+  }
+
+  const feedbacks = {
+    q1: {
+      correct: "Correct. 3 bends + 2 endpoints = 5 carbons. Every change of direction is a carbon. Every endpoint is a carbon. Count them all.",
+      wrong: "Not quite. Count every bend AND every endpoint. This shape has 3 bends and 2 endpoints: 3 + 2 = 5 carbons total."
+    },
+    q2: {
+      correct: "Exactly right. Carbon needs 4 bonds. 2 are drawn. 4 − 2 = 2 hidden hydrogens. The 4-bond rule always closes the gap.",
+      wrong: "Remember the 4-bond rule: carbon always has exactly 4 bonds total. If 2 are drawn, the remaining 4 − 2 = 2 must be hidden hydrogens."
+    },
+    q3: {
+      correct: "Right. The carbon has 2 visible bonds (one to OH, one to the chain). 4 − 2 = 2 hidden hydrogens. The OH counts as a bond just like any other.",
+      wrong: "Count all visible bonds — including the OH attachment. That carbon has a bond to OH and a bond to the chain: 2 visible bonds total. 4 − 2 = 2 hidden hydrogens."
+    }
+  };
+
+  function answer(btn, qid, correct, label) {
+    const block = document.getElementById(qid);
+    const idx = ['q1','q2','q3'].indexOf(qid);
+    if (quizAnswered[idx]) return;
+    quizAnswered[idx] = true;
+
+    block.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+    btn.classList.add(correct ? 'correct' : 'wrong');
+
+    const fb = document.getElementById(qid + '-fb');
+    fb.textContent = correct ? '✓ ' + feedbacks[qid].correct : '✗ ' + feedbacks[qid].wrong;
+    fb.className = 'quiz-feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+
+    if (correct) quizScore++;
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const skelPct = (skelsVisited.size / 4) * 25;
+    const carbonPct = (carbonsRevealed / 4) * 25;
+    const quizPct = (quizAnswered.filter(Boolean).length / 3) * 35;
+    const total = Math.min(Math.round(skelPct + carbonPct + quizPct), 90);
+    document.getElementById('progressFill').style.width = total + '%';
+    document.getElementById('progressLabel').textContent = total + '% complete';
+  }
+
+  function completeModule() {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = '100% complete — module unlocked';
+    document.getElementById('winBanner').classList.add('show');
+    const btn = document.getElementById('completeBtn');
+    btn.disabled = true;
+    btn.textContent = '✓  Module 1 Complete';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
