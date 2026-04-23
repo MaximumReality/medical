@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Molecular Literacy // Module 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12;
+    --bg2: #0f1219;
+    --bg3: #141820;
+    --card: #12161f;
+    --border: #1e2535;
+    --amber: #e8a94a;
+    --amber-dim: #a87835;
+    --teal: #4ab8c8;
+    --teal-dim: #2d7a87;
+    --white: #e8e4dc;
+    --muted: #6b7280;
+    --red: #c85a4a;
+    --green: #4ac87a;
+    --text: #c8c4bc;
+    --violet: #9b7fd4;
+    --rose: #c87a9b;
+
+    /* Functional group colors */
+    --fg-alcohol: #4ab8c8;
+    --fg-amine: #9b7fd4;
+    --fg-carbonyl: #e8a94a;
+    --fg-acid: #c87a9b;
+    --fg-ester: #4ac87a;
+    --fg-aromatic: #7ab8e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Libre Baskerville', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 25%, rgba(155,127,212,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 10%, rgba(74,184,200,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 70%, rgba(232,169,74,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 92% 55%, rgba(122,184,232,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 88%, rgba(200,122,155,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 40%, rgba(74,200,122,0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .system-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .system-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  .main-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .main-title em { color: var(--amber); font-style: italic; }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 16px;
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--violet), var(--teal), var(--amber));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .module-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .mod-dot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .mod-dot.done { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
+  .mod-dot.current { border-color: var(--amber); color: var(--amber); background: rgba(232,169,74,0.08); }
+  .mod-dot.locked { opacity: 0.35; }
+
+  .section { margin-bottom: 32px; animation: fadeUp 0.6s ease both; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.2s; }
+  .section:nth-child(5) { animation-delay: 0.3s; }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  p { font-size: 15px; line-height: 1.8; color: var(--text); margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+  strong { color: var(--white); font-weight: 700; }
+  em { color: var(--amber); font-style: italic; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+
+  .callout.amber { border-left-color: var(--amber); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.violet { border-left-color: var(--violet); }
+
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .callout.amber .callout-label { color: var(--amber); }
+  .callout.green .callout-label { color: var(--green); }
+  .callout.violet .callout-label { color: var(--violet); }
+  .callout p { font-size: 14px; margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* REFERENCE IMAGE */
+  .ref-image-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .ref-image-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .ref-image-block img {
+    width: 100%;
+    display: block;
+    filter: invert(1) brightness(0.85);
+    background: #fff;
+  }
+
+  .ref-image-caption {
+    padding: 10px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* FUNCTIONAL GROUP CARDS — the main vocabulary deck */
+  .fg-deck {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .fg-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+
+  .fg-card:hover { border-color: var(--border); }
+
+  .fg-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .fg-color-bar {
+    width: 4px;
+    align-self: stretch;
+    min-height: 64px;
+    flex-shrink: 0;
+  }
+
+  .fg-header-inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    gap: 12px;
+  }
+
+  .fg-name-block { flex: 1; }
+
+  .fg-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .fg-signature {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    margin-top: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  .fg-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .fg-toggle {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.3s;
+    margin-left: 8px;
+    line-height: 1;
+  }
+
+  .fg-card.open .fg-toggle { transform: rotate(45deg); }
+
+  .fg-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 20px 20px 20px 24px;
+  }
+
+  .fg-card.open .fg-body { display: block; }
+
+  .fg-structure {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 3.5vw, 17px);
+    padding: 14px 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    line-height: 1.9;
+  }
+
+  .fg-facts {
+    list-style: none;
+    margin-bottom: 14px;
+  }
+
+  .fg-facts li {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(30,37,53,0.6);
+    color: var(--text);
+  }
+
+  .fg-facts li:last-child { border-bottom: none; }
+
+  .fg-fact-dot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding-top: 2px;
+    min-width: 14px;
+  }
+
+  .fg-drug {
+    background: rgba(30,37,53,0.6);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+
+  .fg-drug-label {
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .fg-drug-name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  /* FLASHCARD QUIZ */
+  .flashcard-arena {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    margin: 20px 0;
+    text-align: center;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .flash-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .flash-counter {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .flash-structure {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(16px, 5vw, 26px);
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+    line-height: 1.7;
+    padding: 16px 20px;
+    background: rgba(74,184,200,0.05);
+    border: 1px solid rgba(74,184,200,0.1);
+    border-radius: 6px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .flash-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .flash-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .flash-opt {
+    padding: 12px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .flash-opt:hover:not(:disabled) { border-color: var(--teal-dim); color: var(--white); }
+  .flash-opt.correct { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.08); }
+  .flash-opt.wrong { border-color: var(--red); color: var(--red); background: rgba(200,90,74,0.06); }
+  .flash-opt:disabled { cursor: default; }
+
+  .flash-feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.6;
+    width: 100%;
+    text-align: left;
+  }
+
+  .flash-feedback.show { display: block; }
+  .flash-feedback.correct-fb { background: rgba(74,200,122,0.08); border: 1px solid rgba(74,200,122,0.2); color: var(--green); }
+  .flash-feedback.wrong-fb { background: rgba(200,90,74,0.08); border: 1px solid rgba(200,90,74,0.2); color: #e08878; }
+
+  .flash-next-btn {
+    display: none;
+    margin-top: 14px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    border-radius: 4px;
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .flash-next-btn:hover { background: rgba(232,169,74,0.08); }
+  .flash-next-btn.show { display: inline-block; }
+
+  .flash-score-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  /* DRUG MATCH GAME */
+  .match-game {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+
+  .match-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .match-instruction {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .match-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .match-drug {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: 600;
+    min-width: 120px;
+    flex-shrink: 0;
+  }
+
+  .match-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .match-select {
+    flex: 1;
+    min-width: 160px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 9px 12px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    letter-spacing: 0.05em;
+    transition: border-color 0.2s;
+  }
+
+  .match-select:focus { outline: none; border-color: var(--teal-dim); }
+  .match-select.correct { border-color: var(--green); color: var(--green); }
+  .match-select.wrong { border-color: var(--red); color: var(--red); }
+
+  .match-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    min-width: 20px;
+  }
+
+  .match-check-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid var(--teal);
+    border-radius: 6px;
+    color: var(--teal);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .match-check-btn:hover { background: rgba(74,184,200,0.08); }
+
+  .match-feedback-block {
+    display: none;
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .match-feedback-block.show { display: block; }
+
+  /* COMPLETION */
+  .commitment {
+    background: linear-gradient(135deg, rgba(155,127,212,0.06), rgba(74,184,200,0.06));
+    border: 1px solid var(--amber-dim);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .commitment-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .commitment p {
+    font-size: 14px;
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
+
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    border-radius: 6px;
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+  }
+
+  .next-btn:hover { background: rgba(232,169,74,0.08); color: var(--white); transform: translateY(-1px); }
+
+  .win-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(155,127,212,0.1));
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .win-banner.show { display: block; }
+
+  .win-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--violet);
+    padding: 12px 0 12px 20px;
+    margin: 20px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  blockquote cite {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-style: normal;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="system-label">Molecular Literacy System</div>
+    <h1 class="main-title">The <em>Words</em></h1>
+    <div class="subtitle">MODULE 02 &nbsp;·&nbsp; FUNCTIONAL GROUPS &nbsp;·&nbsp; ACTION ZONES &nbsp;·&nbsp; DRUG VOCABULARY</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0% complete</div>
+  </div>
+
+  <!-- MODULE NAV -->
+  <div class="module-nav">
+    <div class="mod-dot done">00 · Fear Removal ✓</div>
+    <div class="mod-dot done">01 · The Alphabet ✓</div>
+    <div class="mod-dot current">02 · Words</div>
+    <div class="mod-dot locked">03 · Sentences</div>
+    <div class="mod-dot locked">04 · Grammar</div>
+  </div>
+
+  <!-- SECTION 1: THE CONCEPT -->
+  <div class="section">
+    <div class="section-tag">01 · The Concept</div>
+    <h2 class="section-title">Words Give the Skeleton Meaning</h2>
+
+    <p>In Module 1 you learned the alphabet — how to read the carbon skeleton of any molecule. You can count carbons, find hidden hydrogens, and decode a line structure from scratch.</p>
+
+    <p>But a skeleton by itself doesn't tell you much. A chain of carbons is just a chain of carbons. It becomes interesting — and chemically alive — when something gets attached to it.</p>
+
+    <p>Those attachments are called <strong>functional groups.</strong> They are the words of molecular language. Each one has a specific shape you learn to recognize on sight, and each one carries a predictable meaning: <em>how this molecule will dissolve, react, bind, and behave.</em></p>
+
+    <div class="callout violet">
+      <div class="callout-label">The Key Insight</div>
+      <p>Two molecules can have identical carbon skeletons and behave completely differently — because of a single functional group. One might be a fuel. The other might be a medication. <strong>The functional group is the difference.</strong></p>
+    </div>
+
+    <p>There are over 20 named functional groups in organic chemistry. You don't need all of them today. As a future CRNA, six groups appear in almost every drug you'll ever administer. We're going to learn those six — deeply, visually, clinically.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 2: REFERENCE IMAGE -->
+  <div class="section">
+    <div class="section-tag">02 · Full Reference</div>
+    <h2 class="section-title">The Complete Map</h2>
+
+    <p>Before we zoom in on the six that matter most, here is the full functional group reference. You don't need to memorize this — but start letting it become familiar. The more you look at it, the more shapes you'll recognize.</p>
+
+    <div class="ref-image-block">
+      <div class="ref-image-label">
+        <span>Functional Groups in Organic Chemistry</span>
+        <span style="color:var(--teal);">21 groups · Full reference</span>
+      </div>
+      <img src="https://maximumreality.github.io/medical/ochem-img/functional-groups-oc.JPG"
+           alt="Functional Groups in Organic Chemistry — complete reference chart"
+           loading="lazy">
+      <div class="ref-image-caption">Reference: all 21 named functional groups. We will focus on the 6 most clinically relevant for CRNA practice.</div>
+    </div>
+
+    <p>Notice that most groups involve oxygen (O), nitrogen (N), or both — plus sometimes a halogen like fluorine (F). Carbon and hydrogen form the skeleton. Everything else is a functional group.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: THE SIX GROUPS -->
+  <div class="section">
+    <div class="section-tag">03 · The Six Words</div>
+    <h2 class="section-title">Your Core Vocabulary</h2>
+
+    <p>Tap each group to expand it. Read through them in order — each one builds on the last.</p>
+
+    <div class="fg-deck" id="fgDeck">
+
+      <!-- 1. ALCOHOL -->
+      <div class="fg-card" id="fg0" onclick="toggleFG(0)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-alcohol)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Alcohol</div>
+              <div class="fg-signature" style="color:var(--fg-alcohol)">— O — H &nbsp;·&nbsp; the —OH group</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-alcohol); border-color:var(--fg-alcohol)">water-lover</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(74,184,200,0.05); border:1px solid rgba(74,184,200,0.12); color:var(--fg-alcohol)">
+            R — OH
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-alcohol)">▸</span><span><strong>What it looks like:</strong> An oxygen atom bonded to a hydrogen, hanging off the carbon chain. Written as —OH. Always at a bend or endpoint.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-alcohol)">▸</span><span><strong>What it means:</strong> The OH group is hydrophilic — it loves water. Molecules with —OH dissolve in water readily. This determines how a drug distributes in blood and tissue.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-alcohol)">▸</span><span><strong>Recognize it instantly:</strong> Anywhere you see an O followed by H hanging off a carbon, that's an alcohol. The O and H are always written together: OH.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-alcohol)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Propofol (Diprivan)</div>
+            The phenol ring in propofol contains an —OH group. This makes propofol slightly water-soluble despite being mostly lipid-soluble — a balance that helps it cross into the brain fast while still being injectable in an emulsion.
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. AMINE -->
+      <div class="fg-card" id="fg1" onclick="toggleFG(1)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-amine)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Amine</div>
+              <div class="fg-signature" style="color:var(--fg-amine)">— N — &nbsp;·&nbsp; nitrogen-containing</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-amine); border-color:var(--fg-amine)">base · pH changer</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(155,127,212,0.05); border:1px solid rgba(155,127,212,0.12); color:var(--fg-amine)">
+            R — NH₂ &nbsp;(primary)<br>R — NH — R &nbsp;(secondary)<br>R — N — R₂ &nbsp;(tertiary)
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-amine)">▸</span><span><strong>What it looks like:</strong> A nitrogen atom (N) bonded to the carbon chain, with 1, 2, or 3 hydrogens attached depending on type. Nitrogen has 3 bonds — count what's attached.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-amine)">▸</span><span><strong>What it means:</strong> Amines are basic — they raise pH. This is critical for anesthesia. Local anesthetics work by crossing cell membranes in their uncharged (base) form, then becoming charged inside the cell to block sodium channels.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-amine)">▸</span><span><strong>Recognize it instantly:</strong> See an N in a structure? That's almost always an amine. N is the giveaway.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-amine)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Lidocaine · Bupivacaine · Fentanyl</div>
+            All local anesthetics and most opioids contain an amine group. The amine is literally the mechanism — it's what changes charge state to cross the nerve membrane. No amine, no block.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CARBONYL -->
+      <div class="fg-card" id="fg2" onclick="toggleFG(2)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-carbonyl)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Carbonyl</div>
+              <div class="fg-signature" style="color:var(--fg-carbonyl)">C = O &nbsp;·&nbsp; carbon double-bonded to oxygen</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-carbonyl); border-color:var(--fg-carbonyl)">reaction hub</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(232,169,74,0.05); border:1px solid rgba(232,169,74,0.12); color:var(--fg-carbonyl)">
+            R — C = O — R &nbsp;(ketone)<br>R — C = O — H &nbsp;(aldehyde)
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-carbonyl)">▸</span><span><strong>What it looks like:</strong> A carbon with a double bond to oxygen. Written as C=O. The double bond is the key — one line means single bond, two lines means double bond. Oxygen pulling hard on those electrons.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-carbonyl)">▸</span><span><strong>What it means:</strong> The C=O bond is polarized — the oxygen pulls electrons toward itself, making the carbon slightly positive. This makes it highly reactive — a site where other molecules attack. Many metabolic reactions happen here.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-carbonyl)">▸</span><span><strong>Recognize it instantly:</strong> Two lines between C and O. That double bond is unmistakable once you know to look for it.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-carbonyl)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Ketamine · Midazolam</div>
+            Ketamine has a carbonyl group that contributes to its reactivity at NMDA receptors. Midazolam (the benzodiazepine you'll use for pre-op sedation) has a carbonyl that gets metabolized in the liver via that reactive carbon.
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CARBOXYLIC ACID -->
+      <div class="fg-card" id="fg3" onclick="toggleFG(3)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-acid)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Carboxylic Acid</div>
+              <div class="fg-signature" style="color:var(--fg-acid)">— COOH &nbsp;·&nbsp; carbonyl + alcohol</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-acid); border-color:var(--fg-acid)">acid · ionizer</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(200,122,155,0.05); border:1px solid rgba(200,122,155,0.12); color:var(--fg-acid)">
+            R — C(=O) — OH<br><br>
+            <span style="font-size:0.75em; color:var(--muted)">Or written compactly: R—COOH</span>
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-acid)">▸</span><span><strong>What it looks like:</strong> A carbonyl (C=O) with an OH right next to it on the same carbon. It's two groups fused together. COOH is always written together as a unit.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-acid)">▸</span><span><strong>What it means:</strong> It donates a hydrogen ion (H⁺) in solution, making it acidic. Many drugs are carboxylic acids — they ionize at body pH, which controls how they cross membranes and how fast they're eliminated by the kidneys.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-acid)">▸</span><span><strong>Recognize it instantly:</strong> Look for COOH as a unit, always at the end of a chain. It's the combination of C=O and OH on the same carbon that defines it.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-acid)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Aspirin (acetylsalicylic acid) · Ibuprofen</div>
+            Both NSAIDs — drugs you'll manage peri-operatively — are carboxylic acids. Their COOH groups determine their half-life, renal clearance, and why they can cause stomach irritation (donating H⁺ in the stomach lining).
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. ESTER -->
+      <div class="fg-card" id="fg4" onclick="toggleFG(4)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-ester)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Ester</div>
+              <div class="fg-signature" style="color:var(--fg-ester)">— COO — &nbsp;·&nbsp; the hydrolysis target</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-ester); border-color:var(--fg-ester)">metabolized fast</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(74,200,122,0.05); border:1px solid rgba(74,200,122,0.12); color:var(--fg-ester)">
+            R — C(=O) — O — R
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-ester)">▸</span><span><strong>What it looks like:</strong> Similar to carboxylic acid, but the OH is replaced by an O connecting to another carbon chain. Two carbons with an oxygen bridge between them, and a C=O on one side.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-ester)">▸</span><span><strong>What it means:</strong> Esters are cleaved by water (hydrolysis) — and by enzymes called esterases in the blood. This makes ester-containing drugs metabolize very quickly. Short duration, fast offset.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-ester)">▸</span><span><strong>Recognize it instantly:</strong> The —COO— pattern: carbonyl carbon, then an oxygen, then another carbon. That oxygen bridge between two carbons is the signature.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-ester)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Succinylcholine · Cocaine · Procaine</div>
+            Succinylcholine — your rapid-sequence intubation drug — is an ester. Plasma cholinesterases cleave that ester bond almost immediately, which is exactly why it has such a short duration. Fast on, fast off. The ester is the mechanism of its brevity.
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. AROMATIC RING -->
+      <div class="fg-card" id="fg5" onclick="toggleFG(5)">
+        <div class="fg-card-header">
+          <div class="fg-color-bar" style="background:var(--fg-aromatic)"></div>
+          <div class="fg-header-inner">
+            <div class="fg-name-block">
+              <div class="fg-name">Aromatic Ring</div>
+              <div class="fg-signature" style="color:var(--fg-aromatic)">benzene core &nbsp;·&nbsp; the hexagon</div>
+            </div>
+            <div class="fg-badge" style="color:var(--fg-aromatic); border-color:var(--fg-aromatic)">stable · lipophilic</div>
+            <div class="fg-toggle">+</div>
+          </div>
+        </div>
+        <div class="fg-body">
+          <div class="fg-structure" style="background:rgba(122,184,232,0.05); border:1px solid rgba(122,184,232,0.12); color:var(--fg-aromatic)">
+            ⬡ &nbsp; Six-carbon hexagon<br>
+            with alternating double bonds<br>
+            <span style="font-size:0.75em; color:var(--muted)">(often drawn as a circle inside a hexagon)</span>
+          </div>
+          <ul class="fg-facts">
+            <li><span class="fg-fact-dot" style="color:var(--fg-aromatic)">▸</span><span><strong>What it looks like:</strong> A perfect hexagon, sometimes with a circle inside it, sometimes with alternating double bonds. Always 6 carbons. This is called a benzene ring.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-aromatic)">▸</span><span><strong>What it means:</strong> Aromatic rings are extremely stable — the electrons are delocalized around the whole ring rather than sitting in fixed bonds. This stability makes the molecule resistant to metabolism. It also makes it fat-soluble, helping it cross the blood-brain barrier.</span></li>
+            <li><span class="fg-fact-dot" style="color:var(--fg-aromatic)">▸</span><span><strong>Recognize it instantly:</strong> A hexagon in any structure = benzene ring = aromatic. Once you know this shape, you'll see it in almost every psychoactive drug ever made.</span></li>
+          </ul>
+          <div class="fg-drug">
+            <div class="fg-drug-label" style="color:var(--fg-aromatic)">Clinical Example</div>
+            <div class="fg-drug-name" style="color:var(--white)">Propofol · Fentanyl · Midazolam · Lidocaine</div>
+            Nearly every anesthetic agent in your future career contains an aromatic ring. The hexagon is what helps these drugs cross the blood-brain barrier efficiently. Propofol is essentially a benzene ring with two isopropyl groups and an —OH. That's the whole molecule.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 4: FLASHCARD QUIZ -->
+  <div class="section">
+    <div class="section-tag">04 · Recognition Practice</div>
+    <h2 class="section-title">Identify the Functional Group</h2>
+
+    <p>Look at the structure or description shown. Name the functional group. No memorization — use pattern recognition.</p>
+
+    <div class="flashcard-arena" id="flashArena">
+      <div class="flash-label">Functional Group Recognition</div>
+      <div class="flash-counter" id="flashCounter">1 / 6</div>
+
+      <div class="flash-structure" id="flashStructure">—</div>
+      <div class="flash-hint" id="flashHint"></div>
+
+      <div class="flash-options" id="flashOptions"></div>
+
+      <div class="flash-feedback" id="flashFeedback"></div>
+      <button class="flash-next-btn" id="flashNextBtn" onclick="nextFlash()">Next →</button>
+      <div class="flash-score-display" id="flashScoreDisplay"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 5: DRUG MATCH -->
+  <div class="section">
+    <div class="section-tag">05 · Clinical Application</div>
+    <h2 class="section-title">Match the Drug to Its Key Group</h2>
+
+    <p>Each drug below owes a major behavioral property to one of the six functional groups. Match them.</p>
+
+    <div class="match-game">
+      <div class="match-title">Drug → Functional Group &nbsp;·&nbsp; Match the mechanism</div>
+      <div class="match-instruction">Select the functional group most responsible for the described behavior.</div>
+
+      <div class="match-row">
+        <div class="match-drug">Succinylcholine</div>
+        <div class="match-arrow">→</div>
+        <select class="match-select" id="m0">
+          <option value="">— select —</option>
+          <option value="alcohol">Alcohol (—OH)</option>
+          <option value="amine">Amine (—N—)</option>
+          <option value="carbonyl">Carbonyl (C=O)</option>
+          <option value="acid">Carboxylic Acid (—COOH)</option>
+          <option value="ester">Ester (—COO—)</option>
+          <option value="aromatic">Aromatic Ring (⬡)</option>
+        </select>
+        <div class="match-result" id="mr0"></div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin: -6px 0 14px 0; padding-left:4px; font-style:italic;">Clue: metabolized in seconds by plasma enzymes that cleave a specific bond</p>
+
+      <div class="match-row">
+        <div class="match-drug">Lidocaine</div>
+        <div class="match-arrow">→</div>
+        <select class="match-select" id="m1">
+          <option value="">— select —</option>
+          <option value="alcohol">Alcohol (—OH)</option>
+          <option value="amine">Amine (—N—)</option>
+          <option value="carbonyl">Carbonyl (C=O)</option>
+          <option value="acid">Carboxylic Acid (—COOH)</option>
+          <option value="ester">Ester (—COO—)</option>
+          <option value="aromatic">Aromatic Ring (⬡)</option>
+        </select>
+        <div class="match-result" id="mr1"></div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin: -6px 0 14px 0; padding-left:4px; font-style:italic;">Clue: crosses the nerve membrane in uncharged form, blocks sodium channels when charged</p>
+
+      <div class="match-row">
+        <div class="match-drug">Propofol</div>
+        <div class="match-arrow">→</div>
+        <select class="match-select" id="m2">
+          <option value="">— select —</option>
+          <option value="alcohol">Alcohol (—OH)</option>
+          <option value="amine">Amine (—N—)</option>
+          <option value="carbonyl">Carbonyl (C=O)</option>
+          <option value="acid">Carboxylic Acid (—COOH)</option>
+          <option value="ester">Ester (—COO—)</option>
+          <option value="aromatic">Aromatic Ring (⬡)</option>
+        </select>
+        <div class="match-result" id="mr2"></div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin: -6px 0 14px 0; padding-left:4px; font-style:italic;">Clue: this group provides the slight water solubility that makes propofol injectable despite being lipophilic</p>
+
+      <div class="match-row">
+        <div class="match-drug">Fentanyl</div>
+        <div class="match-arrow">→</div>
+        <select class="match-select" id="m3">
+          <option value="">— select —</option>
+          <option value="alcohol">Alcohol (—OH)</option>
+          <option value="amine">Amine (—N—)</option>
+          <option value="carbonyl">Carbonyl (C=O)</option>
+          <option value="acid">Carboxylic Acid (—COOH)</option>
+          <option value="ester">Ester (—COO—)</option>
+          <option value="aromatic">Aromatic Ring (⬡)</option>
+        </select>
+        <div class="match-result" id="mr3"></div>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin: -6px 0 20px 0; padding-left:4px; font-style:italic;">Clue: the group that gives fentanyl extreme lipophilicity and rapid brain penetration</p>
+
+      <button class="match-check-btn" onclick="checkMatch()">Check Answers</button>
+
+      <div class="match-feedback-block" id="matchFeedback"></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 6: THE BIG PICTURE -->
+  <div class="section">
+    <div class="section-tag">06 · Clinical Connection</div>
+    <h2 class="section-title">Reading a Drug Label Like a Chemist</h2>
+
+    <blockquote>
+      Every drug name ending in -ol contains an alcohol. Every -amine or -caine contains an amine. Every -ate contains an ester. The name is a map.
+      <cite>— Molecular Literacy, applied</cite>
+    </blockquote>
+
+    <p>Drug nomenclature is not arbitrary. The endings of drug names are often direct clues to their functional groups:</p>
+
+    <div class="callout green">
+      <div class="callout-label">Name → Group → Behavior</div>
+      <p><strong>-ol</strong> (propof<em>ol</em>, metoprol<em>ol</em>) → alcohol group → water interaction, liver metabolism</p>
+      <p><strong>-aine / -caine</strong> (lidoc<em>aine</em>, bupivc<em>aine</em>) → amine → membrane crossing, pH-dependent action</p>
+      <p><strong>-ate</strong> (succin<em>ate</em>, acetyl<em>ate</em>) → ester → rapid hydrolysis, short duration</p>
+      <p><strong>-one</strong> (keta<em>mine</em>... wait, that's an amine) → ketone/carbonyl → reactive center, metabolic target</p>
+    </div>
+
+    <p>You now have enough vocabulary to start making educated guesses about how a drug will behave just from its name and rough structure — before you ever read the pharmacology chapter.</p>
+
+    <p>That's not a small thing. That's reading the molecule.</p>
+  </div>
+
+  <!-- COMPLETION -->
+  <div class="commitment">
+    <div class="commitment-title">Module 2 Complete</div>
+    <p>You know the six functional groups that define most drugs you'll ever administer. You can identify them on sight, name what they do, and connect them to real clinical behavior.</p>
+    <p>Module 3 is where we put the skeleton and the words together — and start reading full molecules as sentences.</p>
+    <button class="next-btn" id="completeBtn" onclick="completeModule()">▸ &nbsp; MARK MODULE 2 COMPLETE</button>
+  </div>
+
+  <div class="win-banner" id="winBanner">
+    <div class="win-title">Module 2 Unlocked ✓</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--teal); letter-spacing:0.2em; margin-top:8px;">
+      NEXT: MODULE 03 — SENTENCES &nbsp;·&nbsp; READING FULL MOLECULES &nbsp;·&nbsp; REAL DRUGS
+    </div>
+    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">Skeleton + words = meaning. You're almost fluent.</p>
+  </div>
+
+</div>
+
+<script>
+  // FG card tracking
+  const fgOpened = new Set();
+
+  function toggleFG(i) {
+    const card = document.getElementById('fg' + i);
+    const wasOpen = card.classList.contains('open');
+    card.classList.toggle('open', !wasOpen);
+    if (!wasOpen) fgOpened.add(i);
+    updateProgress();
+  }
+
+  // FLASHCARD DATA
+  const flashCards = [
+    {
+      structure: "R — OH",
+      hint: "An oxygen-hydrogen pair attached to a carbon chain",
+      answer: "Alcohol",
+      options: ["Alcohol", "Amine", "Ester", "Carbonyl"],
+      feedback: "Correct. The —OH (hydroxyl) group is the signature of an alcohol. Oxygen bonded to hydrogen, hanging off a carbon. Water-loving, hydrophilic."
+    },
+    {
+      structure: "R — NH₂",
+      hint: "A nitrogen atom with two hydrogens attached",
+      answer: "Amine",
+      options: ["Amine", "Carboxylic Acid", "Alcohol", "Aromatic Ring"],
+      feedback: "Right. Any nitrogen in a structure is almost certainly an amine. Amines are basic — they're what gives local anesthetics their pH-dependent membrane-crossing ability."
+    },
+    {
+      structure: "R — C = O — R",
+      hint: "Two lines between carbon and oxygen — a double bond",
+      answer: "Carbonyl",
+      options: ["Carbonyl", "Ester", "Amine", "Alcohol"],
+      feedback: "Yes. The C=O double bond is unmistakable. It's polarized — the oxygen pulls electrons, making the carbon reactive. This is where metabolic reactions often happen."
+    },
+    {
+      structure: "R — COOH",
+      hint: "A carbonyl and a hydroxyl on the same carbon — at the end of a chain",
+      answer: "Carboxylic Acid",
+      options: ["Carboxylic Acid", "Ester", "Carbonyl", "Alcohol"],
+      feedback: "Exactly. COOH is always written as a unit. It's the fusion of C=O and OH on the same carbon. Acidic, ionizes at body pH — controls membrane crossing and renal clearance."
+    },
+    {
+      structure: "R — C(=O) — O — R",
+      hint: "Carbonyl followed by an oxygen bridge to another carbon",
+      answer: "Ester",
+      options: ["Ester", "Carboxylic Acid", "Aromatic Ring", "Amine"],
+      feedback: "Correct. The —COO— pattern: carbonyl then oxygen bridge. Esters are cleaved fast by plasma esterases. Succinylcholine's short duration is entirely because of this group."
+    },
+    {
+      structure: "⬡ (hexagon with circle or alternating bonds)",
+      hint: "Six carbons arranged in a ring — the most stable structure in organic chemistry",
+      answer: "Aromatic Ring",
+      options: ["Aromatic Ring", "Carbonyl", "Amine", "Ester"],
+      feedback: "Yes. The hexagon = benzene ring = aromatic. Extremely stable, fat-soluble, crosses the blood-brain barrier. Present in nearly every psychoactive drug ever made."
+    }
+  ];
+
+  let flashIdx = 0;
+  let flashScore = 0;
+  let flashAnswered = false;
+
+  function renderFlash() {
+    const card = flashCards[flashIdx];
+    document.getElementById('flashCounter').textContent = (flashIdx + 1) + ' / ' + flashCards.length;
+    document.getElementById('flashStructure').textContent = card.structure;
+    document.getElementById('flashHint').textContent = card.hint;
+    document.getElementById('flashFeedback').className = 'flash-feedback';
+    document.getElementById('flashFeedback').textContent = '';
+    document.getElementById('flashNextBtn').className = 'flash-next-btn';
+    document.getElementById('flashScoreDisplay').textContent = '';
+    flashAnswered = false;
+
+    const opts = document.getElementById('flashOptions');
+    opts.innerHTML = '';
+    // Shuffle options
+    const shuffled = [...card.options].sort(() => Math.random() - 0.5);
+    shuffled.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'flash-opt';
+      btn.textContent = opt;
+      btn.onclick = () => answerFlash(btn, opt === card.answer, card.feedback, card.answer);
+      opts.appendChild(btn);
+    });
+  }
+
+  function answerFlash(btn, correct, feedback, correctAnswer) {
+    if (flashAnswered) return;
+    flashAnswered = true;
+    document.querySelectorAll('.flash-opt').forEach(b => {
+      b.disabled = true;
+      if (b.textContent === correctAnswer) b.classList.add('correct');
+    });
+    if (!correct) btn.classList.add('wrong');
+    if (correct) flashScore++;
+
+    const fb = document.getElementById('flashFeedback');
+    fb.textContent = (correct ? '✓ ' : '✗ Correct answer: ' + correctAnswer + '. ') + feedback;
+    fb.className = 'flash-feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
+
+    if (flashIdx < flashCards.length - 1) {
+      document.getElementById('flashNextBtn').className = 'flash-next-btn show';
+    } else {
+      document.getElementById('flashScoreDisplay').textContent =
+        'Score: ' + flashScore + ' / ' + flashCards.length + ' — ' +
+        (flashScore === flashCards.length ? 'Perfect.' : flashScore >= 4 ? 'Strong.' : 'Keep reviewing.');
+      document.getElementById('flashNextBtn').className = 'flash-next-btn show';
+      document.getElementById('flashNextBtn').textContent = 'Finish';
+    }
+    updateProgress();
+  }
+
+  function nextFlash() {
+    if (flashIdx < flashCards.length - 1) {
+      flashIdx++;
+      renderFlash();
+    } else {
+      document.getElementById('flashArena').innerHTML =
+        '<div style="text-align:center; padding:20px;">' +
+        '<div style="font-family:\'Cormorant Garamond\',serif; font-size:1.8rem; color:var(--green); margin-bottom:10px;">Deck Complete ✓</div>' +
+        '<div style="font-family:\'JetBrains Mono\',monospace; font-size:11px; color:var(--muted); letter-spacing:0.15em;">Score: ' + flashScore + ' / ' + flashCards.length + '</div>' +
+        '</div>';
+    }
+    updateProgress();
+  }
+
+  // DRUG MATCH
+  const matchAnswers = ['ester', 'amine', 'alcohol', 'aromatic'];
+  const matchExplanations = [
+    'Succinylcholine → Ester. Plasma cholinesterases cleave the ester bond almost instantly — that\'s the entire basis of its 5-10 minute duration.',
+    'Lidocaine → Amine. The tertiary amine changes charge state at different pH levels. Uncharged = crosses membrane. Charged = blocks sodium channel inside cell.',
+    'Propofol → Alcohol. The phenol —OH group gives propofol just enough hydrophilicity to be formulated as an injectable emulsion, despite being primarily lipophilic.',
+    'Fentanyl → Aromatic Ring. Fentanyl has two phenyl (aromatic) rings, making it highly lipophilic. It crosses the blood-brain barrier within minutes — 100x more potent than morphine partly because of this.'
+  ];
+
+  let matchChecked = false;
+
+  function checkMatch() {
+    if (matchChecked) return;
+    matchChecked = true;
+    let score = 0;
+    const explanations = [];
+
+    matchAnswers.forEach((correct, i) => {
+      const sel = document.getElementById('m' + i);
+      const res = document.getElementById('mr' + i);
+      sel.disabled = true;
+      if (sel.value === correct) {
+        sel.classList.add('correct');
+        res.textContent = '✓';
+        res.style.color = 'var(--green)';
+        score++;
+      } else {
+        sel.classList.add('wrong');
+        res.textContent = '✗';
+        res.style.color = 'var(--red)';
+      }
+      explanations.push((sel.value === correct ? '✓ ' : '✗ ') + matchExplanations[i]);
+    });
+
+    const fb = document.getElementById('matchFeedback');
+    fb.className = 'match-feedback-block show';
+    fb.style.background = score === 4 ? 'rgba(74,200,122,0.08)' : 'rgba(232,169,74,0.06)';
+    fb.style.border = '1px solid ' + (score === 4 ? 'rgba(74,200,122,0.2)' : 'rgba(232,169,74,0.2)');
+    fb.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace; font-size:10px; letter-spacing:0.15em; color:' +
+      (score === 4 ? 'var(--green)' : 'var(--amber)') + '; margin-bottom:12px; text-transform:uppercase;">' +
+      score + ' / 4 correct</div>' +
+      explanations.map(e => '<p style="font-size:13px; line-height:1.65; margin-bottom:10px; color:var(--text);">' + e + '</p>').join('');
+    updateProgress();
+  }
+
+  // PROGRESS
+  function updateProgress() {
+    const fgPct = (fgOpened.size / 6) * 30;
+    const flashPct = Math.min((flashIdx / flashCards.length) * 35, 35);
+    const matchPct = matchChecked ? 25 : 0;
+    const total = Math.min(Math.round(fgPct + flashPct + matchPct), 90);
+    document.getElementById('progressFill').style.width = total + '%';
+    document.getElementById('progressLabel').textContent = total + '% complete';
+  }
+
+  function completeModule() {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = '100% complete — module unlocked';
+    document.getElementById('winBanner').classList.add('show');
+    const btn = document.getElementById('completeBtn');
+    btn.disabled = true;
+    btn.textContent = '✓  Module 2 Complete';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  // Init
+  renderFlash();
+</script>
+</body>
+</html>
