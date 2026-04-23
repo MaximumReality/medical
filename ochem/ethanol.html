@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#fff}svg{max-width:100%;height:auto}</style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <style>
+      .skeleton {
+        stroke: #e8e4dc;
+        stroke-width: 3.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+      .bond-h {
+        stroke: #6b7280;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        fill: none;
+      }
+      .atom-c {
+        fill: #e8e4dc;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .atom-h {
+        fill: #6b7280;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .atom-o {
+        fill: #4ab8c8;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+      .label-text {
+        fill: #4ab8c8;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        text-anchor: middle;
+      }
+      .label-line {
+        stroke: #4ab8c8;
+        stroke-width: 1.5;
+        stroke-dasharray: 4 3;
+        fill: none;
+      }
+    </style>
+  </defs>
+
+  <!-- C-C main skeleton -->
+  <line class="skeleton" x1="280" y1="200" x2="400" y2="200"/>
+  
+  <!-- C-O bond -->
+  <line class="skeleton" x1="400" y1="200" x2="480" y2="140"/>
+
+  <!-- CH3 hydrogens on C1 -->
+  <g id="ch3-group">
+    <line class="bond-h" x1="280" y1="200" x2="220" y2="260"/>
+    <text class="atom-h" x="205" y="270">H</text>
+    
+    <line class="bond-h" x1="280" y1="200" x2="220" y2="140"/>
+    <text class="atom-h" x="205" y="130">H</text>
+    
+    <line class="bond-h" x1="280" y1="200" x2="200" y2="200"/>
+    <text class="atom-h" x="185" y="200">H</text>
+  </g>
+
+  <!-- CH2 hydrogens on C2 -->
+  <g id="ch2-group">
+    <line class="bond-h" x1="400" y1="200" x2="400" y2="280"/>
+    <text class="atom-h" x="400" y="300">H</text>
+    
+    <line class="bond-h" x1="400" y1="200" x2="340" y2="140"/>
+    <text class="atom-h" x="325" y="130">H</text>
+  </g>
+
+  <!-- OH hydrogen -->
+  <line class="bond-h" x1="480" y1="140" x2="540" y2="90"/>
+  <text class="atom-h" x="555" y="80">H</text>
+
+  <!-- Carbon atoms -->
+  <circle cx="280" cy="200" r="18" fill="#1a1a1a" opacity="0.7"/>
+  <text class="atom-c" x="280" y="200">C</text>
+  
+  <circle cx="400" cy="200" r="18" fill="#1a1a1a" opacity="0.7"/>
+  <text class="atom-c" x="400" y="200">C</text>
+
+  <!-- Oxygen atom -->
+  <circle cx="480" cy="140" r="18" fill="#1a1a1a" opacity="0.7"/>
+  <text class="atom-o" x="480" y="140">O</text>
+
+  <!-- CH3 label -->
+  <text class="atom-c" x="280" y="170" font-size="16" opacity="0.8">CH₃</text>
+  
+  <!-- CH2 label -->
+  <text class="atom-c" x="400" y="170" font-size="16" opacity="0.8">CH₂</text>
+
+  <!-- Alcohol -OH label -->
+  <line class="label-line" x1="510" y1="115" x2="590" y2="80"/>
+  <text class="label-text" x="650" y="75">Alcohol -OH</text>
+</svg>
+</body>
+</html>
