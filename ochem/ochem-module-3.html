@@ -8,6 +8,8 @@
 <style>
   :root {
     --bg: #0a0c12;
+    --bg2: #0f1219;
+    --bg3: #141820;
     --card: #12161f;
     --border: #1e2535;
     --amber: #e8a94a;
@@ -21,8 +23,14 @@
     --text: #c8c4bc;
     --violet: #9b7fd4;
     --rose: #c87a9b;
-    --blue: #7ab8e8;
-    --bg3: #141820;
+    --sky: #7ab8e8;
+
+    --fg-alcohol: #4ab8c8;
+    --fg-amine: #9b7fd4;
+    --fg-carbonyl: #e8a94a;
+    --fg-acid: #c87a9b;
+    --fg-ester: #4ac87a;
+    --fg-aromatic: #7ab8e8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,7 +39,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Libre Baskerville', serif;
-    min-height: 100dvh;
+    min-height: 100vh;
     overflow-x: hidden;
   }
 
@@ -40,12 +48,12 @@
     position: fixed;
     inset: 0;
     background-image:
-      radial-gradient(1px 1px at 18% 22%, rgba(74,184,200,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 8%, rgba(155,127,212,0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 55% 68%, rgba(232,169,74,0.1) 0%, transparent 100%),
-      radial-gradient(1px 1px at 92% 50%, rgba(122,184,232,0.12) 0%, transparent 100%),
-      radial-gradient(1px 1px at 5% 80%, rgba(200,122,155,0.1) 0%, transparent 100%),
-      radial-gradient(1px 1px at 40% 95%, rgba(74,200,122,0.08) 0%, transparent 100%);
+      radial-gradient(1px 1px at 12% 18%, rgba(74,184,200,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 82% 8%, rgba(155,127,212,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 38% 72%, rgba(232,169,74,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 91% 60%, rgba(122,184,232,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 90%, rgba(74,200,122,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 35%, rgba(200,122,155,0.08) 0%, transparent 100%);
     pointer-events: none;
     z-index: 0;
   }
@@ -104,48 +112,12 @@
     margin-top: 16px;
   }
 
-  .progress-bar {
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 24px;
-    overflow: hidden;
-  }
+  .progress-bar { height: 2px; background: var(--border); border-radius: 2px; margin-top: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--violet), var(--amber)); border-radius: 2px; transition: width 0.6s ease; }
+  .progress-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; margin-top: 6px; text-align: right; }
 
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--rose), var(--violet), var(--teal));
-    border-radius: 2px;
-    transition: width 0.6s ease;
-  }
-
-  .progress-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    margin-top: 6px;
-    text-align: right;
-  }
-
-  .module-nav {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-  }
-
-  .mod-dot {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-
+  .module-nav { display: flex; gap: 6px; margin-bottom: 40px; flex-wrap: wrap; }
+  .mod-dot { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
   .mod-dot.done { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
   .mod-dot.current { border-color: var(--amber); color: var(--amber); background: rgba(232,169,74,0.08); }
   .mod-dot.locked { opacity: 0.35; }
@@ -167,12 +139,7 @@
     gap: 10px;
   }
 
-  .section-tag::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
+  .section-tag::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 
   .section-title {
     font-family: 'Cormorant Garamond', serif;
@@ -189,38 +156,31 @@
   em { color: var(--amber); font-style: italic; }
   .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 
-  .callout {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--teal);
-    border-radius: 4px;
-    padding: 20px 22px;
-    margin: 20px 0;
-  }
-
+  .callout { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 4px; padding: 20px 22px; margin: 20px 0; }
   .callout.amber { border-left-color: var(--amber); }
   .callout.green { border-left-color: var(--green); }
   .callout.violet { border-left-color: var(--violet); }
-  .callout.rose { border-left-color: var(--rose); }
-
-  .callout-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
+  .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 10px; }
   .callout.amber .callout-label { color: var(--amber); }
   .callout.green .callout-label { color: var(--green); }
   .callout.violet .callout-label { color: var(--violet); }
-  .callout.rose .callout-label { color: var(--rose); }
   .callout p { font-size: 14px; margin-bottom: 8px; }
   .callout p:last-child { margin-bottom: 0; }
 
-  /* ── MOLECULE READER — the main interactive element ── */
-  .mol-reader {
+  blockquote {
+    border-left: 3px solid var(--amber);
+    padding: 12px 0 12px 20px;
+    margin: 20px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+  }
+  blockquote cite { display: block; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-style: normal; color: var(--muted); letter-spacing: 0.15em; margin-top: 8px; }
+
+  /* ─── MOLECULE DISSECTION TOOL ─── */
+  .dissect-shell {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -228,391 +188,370 @@
     margin: 20px 0;
   }
 
-  .mol-reader-tabs {
+  .dissect-tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
   }
 
-  .mol-reader-tabs::-webkit-scrollbar { display: none; }
-
-  .mol-tab {
+  .dissect-tab {
+    flex: 1;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    padding: 12px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 8px;
     border: none;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
-    white-space: nowrap;
-    text-transform: uppercase;
     transition: all 0.2s;
+    text-align: center;
+  }
+
+  .dissect-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+  .dissect-panel { display: none; padding: 24px; }
+  .dissect-panel.active { display: block; }
+
+  /* molecule ASCII art display */
+  .mol-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(11px, 3vw, 15px);
+    line-height: 2;
+    letter-spacing: 0.05em;
+    padding: 20px;
+    background: rgba(74,184,200,0.03);
+    border: 1px solid rgba(74,184,200,0.08);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* color-coded parts */
+  .part-skeleton { color: var(--white); }
+  .part-alcohol { color: var(--fg-alcohol); font-weight: 600; }
+  .part-amine { color: var(--fg-amine); font-weight: 600; }
+  .part-carbonyl { color: var(--fg-carbonyl); font-weight: 600; }
+  .part-acid { color: var(--fg-acid); font-weight: 600; }
+  .part-ester { color: var(--fg-ester); font-weight: 600; }
+  .part-aromatic { color: var(--fg-aromatic); font-weight: 600; }
+  .part-dim { color: rgba(200,196,188,0.3); }
+
+  /* step-through reader */
+  .step-track {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .step-pip {
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+
+  .step-pip.active { background: var(--amber); }
+  .step-pip.done { background: var(--green); }
+
+  .step-display {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    min-height: 100px;
+  }
+
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .step-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .step-nav {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .step-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .step-btn:hover { border-color: var(--amber-dim); color: var(--amber); }
+  .step-btn.primary { border-color: var(--amber); color: var(--amber); }
+  .step-btn.primary:hover { background: rgba(232,169,74,0.08); }
+  .step-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .step-complete-badge {
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border: 1px solid rgba(74,200,122,0.3);
+    border-radius: 20px;
+    background: rgba(74,200,122,0.06);
+  }
+
+  .step-complete-badge.show { display: inline-block; }
+
+  /* color legend */
+  .color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .legend-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
     flex-shrink: 0;
   }
 
-  .mol-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+  /* ─── COLD READ CHALLENGE ─── */
+  .cold-read {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    margin: 20px 0;
+  }
 
-  .mol-panel { display: none; padding: 28px 24px; }
-  .mol-panel.active { display: block; }
+  .cold-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-  .mol-name {
+  .cold-label::after { content: ''; flex: 1; height: 1px; background: rgba(200,122,155,0.2); }
+
+  .cold-drug-name {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: var(--white);
     margin-bottom: 4px;
   }
 
-  .mol-class {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  /* Annotated structure display */
-  .mol-structure-block {
-    background: rgba(74,184,200,0.04);
-    border: 1px solid rgba(74,184,200,0.1);
-    border-radius: 6px;
-    padding: 20px 16px;
-    margin-bottom: 20px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(12px, 3.2vw, 15px);
-    line-height: 2.2;
-    letter-spacing: 0.06em;
-    text-align: center;
-  }
-
-  .atom-c { color: var(--white); font-weight: 600; }
-  .atom-skeleton { color: rgba(74,184,200,0.55); }
-  .atom-oh { color: var(--teal); font-weight: 600; }
-  .atom-n { color: var(--violet); font-weight: 600; }
-  .atom-co { color: var(--amber); font-weight: 600; }
-  .atom-ring { color: var(--blue); font-weight: 600; }
-  .atom-ester { color: var(--green); font-weight: 600; }
-  .atom-f { color: var(--rose); font-weight: 600; }
-
-  /* Color key */
-  .color-key {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .key-chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    padding: 5px 10px;
-    border-radius: 20px;
-    border: 1px solid;
-    text-transform: uppercase;
-  }
-
-  /* Step-by-step decode */
-  .decode-steps { list-style: none; }
-
-  .decode-step {
-    display: flex;
-    gap: 14px;
-    padding: 11px 0;
-    border-bottom: 1px solid rgba(30,37,53,0.7);
-    align-items: flex-start;
-  }
-
-  .decode-step:last-child { border-bottom: none; }
-
-  .step-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 3px;
-    min-width: 68px;
-    text-align: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .step-text { font-size: 13px; line-height: 1.65; }
-
-  /* clinical verdict */
-  .verdict {
-    border-radius: 6px;
-    padding: 14px 16px;
-    margin-top: 18px;
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  .verdict-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  /* ── BUILD-A-SENTENCE EXERCISE ── */
-  .sentence-builder {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin: 20px 0;
-  }
-
-  .sb-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .sb-subtitle {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .sb-molecule {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(12px, 3.5vw, 16px);
-    color: var(--teal);
-    padding: 16px;
-    background: rgba(74,184,200,0.04);
-    border: 1px solid rgba(74,184,200,0.1);
-    border-radius: 6px;
-    text-align: center;
-    letter-spacing: 0.08em;
-    line-height: 2;
-    margin-bottom: 20px;
-  }
-
-  .sb-question {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--white);
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  .sb-options {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .sb-opt {
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text);
-    font-family: 'Libre Baskerville', serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    width: 100%;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .sb-opt:hover:not(:disabled) { border-color: var(--teal-dim); color: var(--white); }
-  .sb-opt.correct { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
-  .sb-opt.wrong { border-color: var(--red); color: var(--red); background: rgba(200,90,74,0.06); }
-  .sb-opt:disabled { cursor: default; }
-
-  .sb-opt-key {
+  .cold-drug-class {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     color: var(--muted);
-    min-width: 16px;
-    padding-top: 1px;
-    flex-shrink: 0;
-  }
-
-  .sb-feedback {
-    display: none;
-    padding: 14px 16px;
-    border-radius: 4px;
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  .sb-feedback.show { display: block; }
-  .sb-feedback.correct-fb { background: rgba(74,200,122,0.08); border: 1px solid rgba(74,200,122,0.2); color: var(--green); }
-  .sb-feedback.wrong-fb { background: rgba(200,90,74,0.08); border: 1px solid rgba(200,90,74,0.2); color: #e08878; }
-
-  .sb-next {
-    display: none;
-    margin-top: 12px;
-    padding: 10px 22px;
-    background: transparent;
-    border: 1px solid var(--amber);
-    border-radius: 4px;
-    color: var(--amber);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
     letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .sb-next.show { display: inline-block; }
-  .sb-next:hover { background: rgba(232,169,74,0.08); }
-
-  .sb-progress-dots {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-
-  .sb-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: transparent;
-    transition: all 0.3s;
-  }
-
-  .sb-dot.active { border-color: var(--amber); background: var(--amber); }
-  .sb-dot.done { border-color: var(--green); background: var(--green); }
-
-  /* ── READING CHALLENGE ── */
-  .reading-challenge {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin: 20px 0;
-  }
-
-  .rc-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--violet);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .rc-intro {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
     margin-bottom: 20px;
   }
 
-  .rc-molecule {
+  .cold-structure {
     font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(12px, 3.5vw, 16px);
+    font-size: clamp(11px, 3vw, 15px);
     color: var(--teal);
     padding: 18px;
     background: rgba(74,184,200,0.04);
     border: 1px solid rgba(74,184,200,0.1);
     border-radius: 6px;
-    text-align: center;
-    letter-spacing: 0.1em;
-    line-height: 2.1;
     margin-bottom: 20px;
+    text-align: center;
+    line-height: 2;
+    white-space: pre-wrap;
   }
 
-  .rc-checks {
+  .cold-question {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .cold-checks {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 16px;
   }
 
-  .rc-check {
+  .cold-check {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
+    gap: 10px;
+    padding: 10px 14px;
     border: 1px solid var(--border);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
   }
 
-  .rc-check:hover { border-color: var(--violet); }
-  .rc-check.selected { border-color: var(--violet); background: rgba(155,127,212,0.06); }
-  .rc-check.correct { border-color: var(--green); background: rgba(74,200,122,0.06); }
-  .rc-check.wrong { border-color: var(--red); background: rgba(200,90,74,0.06); }
+  .cold-check:hover { border-color: var(--teal-dim); }
+  .cold-check input { accent-color: var(--teal); margin-top: 2px; flex-shrink: 0; }
+  .cold-check.selected { border-color: var(--teal); background: rgba(74,184,200,0.05); }
 
-  .rc-checkbox {
-    width: 18px;
-    height: 18px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    flex-shrink: 0;
-    margin-top: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    transition: all 0.2s;
-  }
-
-  .rc-check.selected .rc-checkbox { border-color: var(--violet); color: var(--violet); }
-  .rc-check.correct .rc-checkbox { border-color: var(--green); color: var(--green); }
-  .rc-check.wrong .rc-checkbox { border-color: var(--red); color: var(--red); }
-
-  .rc-check-text { font-size: 13px; line-height: 1.6; }
-
-  .rc-submit {
-    display: block;
+  .cold-submit {
     width: 100%;
     padding: 13px;
     background: transparent;
-    border: 1px solid var(--violet);
+    border: 1px solid var(--rose);
     border-radius: 6px;
-    color: var(--violet);
+    color: var(--rose);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 4px;
   }
 
-  .rc-submit:hover { background: rgba(155,127,212,0.08); }
+  .cold-submit:hover { background: rgba(200,122,155,0.08); }
 
-  .rc-result {
+  .cold-reveal {
     display: none;
-    margin-top: 14px;
-    padding: 14px 16px;
+    margin-top: 16px;
+    padding: 18px;
+    background: rgba(30,37,53,0.6);
+    border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 13px;
-    line-height: 1.7;
   }
 
-  .rc-result.show { display: block; }
+  .cold-reveal.show { display: block; }
+
+  .cold-reveal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--amber);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .cold-reveal-item {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,37,53,0.8);
+    color: var(--text);
+  }
+
+  .cold-reveal-item:last-child { border-bottom: none; }
+  .cold-reveal-icon { font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 18px; }
+
+  /* ─── READING GUIDE ─── */
+  .reading-guide {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .rg-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+
+  .rg-steps {
+    list-style: none;
+  }
+
+  .rg-step {
+    display: flex;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(30,37,53,0.6);
+    align-items: flex-start;
+  }
+
+  .rg-step:last-child { border-bottom: none; }
+
+  .rg-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--amber);
+    opacity: 0.4;
+    min-width: 28px;
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .rg-content h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--white);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .rg-content p {
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 0;
+  }
 
   /* COMPLETION */
   .commitment {
-    background: linear-gradient(135deg, rgba(200,122,155,0.06), rgba(74,184,200,0.06));
+    background: linear-gradient(135deg, rgba(74,184,200,0.06), rgba(155,127,212,0.06));
     border: 1px solid var(--amber-dim);
     border-radius: 8px;
     padding: 28px 24px;
@@ -628,12 +567,7 @@
     font-weight: 600;
   }
 
-  .commitment p {
-    font-size: 14px;
-    color: var(--text);
-    max-width: 480px;
-    margin: 0 auto 16px;
-  }
+  .commitment p { font-size: 14px; color: var(--text); max-width: 480px; margin: 0 auto 16px; }
 
   .next-btn {
     display: block;
@@ -656,7 +590,7 @@
 
   .win-banner {
     display: none;
-    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(200,122,155,0.1));
+    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(74,184,200,0.1));
     border: 1px solid var(--green);
     border-radius: 8px;
     padding: 24px;
@@ -674,29 +608,76 @@
     margin-bottom: 8px;
   }
 
-  blockquote {
-    border-left: 3px solid var(--rose);
-    padding: 12px 0 12px 20px;
-    margin: 20px 0;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.15rem;
-    font-style: italic;
-    color: var(--white);
-    line-height: 1.6;
-  }
-
-  blockquote cite {
-    display: block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-style: normal;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    margin-top: 8px;
-  }
-
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── MODULE NAVIGATION ── */
+  .module-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10,12,18,0.96);
+    border-top: 1px solid #1e2535;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    gap: 10px;
+  }
+
+  .nav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 5px;
+    border: 1px solid #1e2535;
+    background: transparent;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav-btn:hover {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next:hover {
+    background: rgba(232,169,74,0.1);
+    color: #e8e4dc;
+  }
+
+  .nav-btn.disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .nav-center {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: #2d7a87;
+    text-transform: uppercase;
+    text-align: center;
+    flex: 1;
+  }
+
 </style>
 </head>
 <body>
@@ -706,7 +687,7 @@
   <div class="header">
     <div class="system-label">Molecular Literacy System</div>
     <h1 class="main-title">The <em>Sentences</em></h1>
-    <div class="subtitle">MODULE 03 &nbsp;·&nbsp; FULL MOLECULES &nbsp;·&nbsp; READING REAL DRUGS &nbsp;·&nbsp; CLINICAL FLUENCY</div>
+    <div class="subtitle">MODULE 03 &nbsp;·&nbsp; FULL MOLECULES &nbsp;·&nbsp; DRUG DISSECTION &nbsp;·&nbsp; COLD READS</div>
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
@@ -716,532 +697,578 @@
   <!-- MODULE NAV -->
   <div class="module-nav">
     <div class="mod-dot done">00 · Fear Removal ✓</div>
-    <div class="mod-dot done">01 · Alphabet ✓</div>
+    <div class="mod-dot done">01 · The Alphabet ✓</div>
     <div class="mod-dot done">02 · Words ✓</div>
     <div class="mod-dot current">03 · Sentences</div>
     <div class="mod-dot locked">04 · Grammar</div>
   </div>
 
-  <!-- SECTION 1: THE CONCEPT -->
+  <!-- SECTION 1 -->
   <div class="section">
-    <div class="section-tag">01 · The Synthesis</div>
-    <h2 class="section-title">You Have the Alphabet. You Have the Words. Now Read.</h2>
+    <div class="section-tag">01 · The Moment</div>
+    <h2 class="section-title">This Is Where It Comes Together</h2>
 
-    <p>You know how to count carbons from a skeleton. You know what an —OH group means, what an amine does, what an aromatic ring tells you about lipophilicity. Those were the pieces.</p>
+    <p>You have the alphabet — you can read carbon skeletons, count atoms, find hidden hydrogens. You have the vocabulary — you recognize functional groups on sight and know what each one means clinically.</p>
 
-    <p>Module 3 is where the pieces become a language. A complete molecule is a <em>sentence</em> — a carbon skeleton with functional groups attached, each one contributing a clause to the story of how that drug behaves.</p>
+    <p>A sentence is what happens when you combine them. A full molecule. A real drug. Something that will one day flow through a patient's IV while you monitor their airway and their life.</p>
+
+    <p>Reading a full molecule is not harder than reading its parts. It's just doing both things at once — and then asking the right question: <em>given this structure, what will this molecule do?</em></p>
 
     <blockquote>
-      Reading a molecule is reading a prediction. Before you ever open a pharmacology textbook, the structure is already telling you: where I go, how fast I work, how long I last, how the body will remove me.
+      The molecule is a sentence. The skeleton is the subject. The functional groups are the verbs. Read both and you understand the meaning.
       <cite>— Molecular Literacy, Module 3</cite>
     </blockquote>
 
-    <p>In this module we will read four real drugs — completely, step by step — and then you will try one on your own. By the end, you will be able to look at a structure and tell a story about it.</p>
-
     <div class="callout amber">
-      <div class="callout-label">Reading Protocol</div>
-      <p>Every time you read a new molecule, follow this sequence:</p>
-      <p><strong>1. Find the skeleton.</strong> Count the carbons. Note the chain length or ring structures.</p>
-      <p><strong>2. Find the functional groups.</strong> Scan for O, N, double bonds, rings. Name each one.</p>
-      <p><strong>3. Read the behavior.</strong> Each group tells you something. Put it together.</p>
+      <div class="callout-label">The Reading Protocol</div>
+      <p>Every time you encounter a new molecule, apply this sequence: <strong>Triage first</strong> (find the functional groups — they're the action zones). <strong>Read the skeleton</strong> (how big, how long, any rings?). <strong>Ask what it means</strong> (water-soluble? lipophilic? metabolized fast or slow?).</p>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 2: MOLECULE READER -->
+  <!-- SECTION 2: THE READING PROTOCOL -->
   <div class="section">
-    <div class="section-tag">02 · Step-by-Step Reads</div>
-    <h2 class="section-title">Four Drugs, Read Completely</h2>
+    <div class="section-tag">02 · The Method</div>
+    <h2 class="section-title">How to Read Any Molecule</h2>
 
-    <p>Each molecule is decoded using the three-step reading protocol. Work through all four tabs.</p>
+    <p>This is the five-step reading protocol. Memorize this process, not molecules. Apply it to every structure you'll ever see.</p>
 
-    <div class="mol-reader" id="molReader">
-      <div class="mol-reader-tabs">
-        <button class="mol-tab active" onclick="showMol(0)">Propofol</button>
-        <button class="mol-tab" onclick="showMol(1)">Lidocaine</button>
-        <button class="mol-tab" onclick="showMol(2)">Succinylcholine</button>
-        <button class="mol-tab" onclick="showMol(3)">Sevoflurane</button>
+    <div class="reading-guide">
+      <div class="rg-header">The Five-Step Reading Protocol</div>
+      <ul class="rg-steps">
+        <li class="rg-step">
+          <div class="rg-num">1</div>
+          <div class="rg-content">
+            <h4>Find any nitrogen (N) or oxygen (O)</h4>
+            <p>These are your landmarks. Every functional group either contains N, O, or both. Scan the structure for these atoms first — they mark your action zones.</p>
+          </div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">2</div>
+          <div class="rg-content">
+            <h4>Name each functional group you find</h4>
+            <p>Use your Module 2 vocabulary. —OH is alcohol. N is amine. C=O is carbonyl. —COOH is acid. —COO— is ester. Hexagon is aromatic. Name them all before moving on.</p>
+          </div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">3</div>
+          <div class="rg-content">
+            <h4>Read the skeleton size</h4>
+            <p>Count the carbons (bends + endpoints). Longer chain = more lipophilic = slower clearance. Aromatic ring present = very lipophilic = brain penetration likely.</p>
+          </div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">4</div>
+          <div class="rg-content">
+            <h4>Predict water vs. fat solubility</h4>
+            <p>More OH or COOH groups = more water-soluble = blood-friendly, kidney-cleared. More aromatic rings + long carbon chains = more fat-soluble = tissue-accumulating, brain-penetrating.</p>
+          </div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">5</div>
+          <div class="rg-content">
+            <h4>Ask: what does this molecule want to do?</h4>
+            <p>Does it want to dissolve in water and leave quickly? Does it want to accumulate in fat tissue and act slowly? Does it have an amine that changes behavior with pH? That's the clinical story.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: DISSECTION TOOL -->
+  <div class="section">
+    <div class="section-tag">03 · Dissection Lab</div>
+    <h2 class="section-title">Read Three Drugs Step by Step</h2>
+
+    <p>Each drug below is walked through using the five-step protocol. Work through the steps in order. The molecule display updates to highlight each part as you read it.</p>
+
+    <div class="dissect-shell" id="dissectShell">
+      <div class="dissect-tabs">
+        <button class="dissect-tab active" onclick="switchDrug(0)">Propofol</button>
+        <button class="dissect-tab" onclick="switchDrug(1)">Lidocaine</button>
+        <button class="dissect-tab" onclick="switchDrug(2)">Aspirin</button>
       </div>
 
       <!-- PROPOFOL -->
-      <div class="mol-panel active" id="mol0">
-        <div class="mol-name">Propofol</div>
-        <div class="mol-class">General anesthetic · GABA-A agonist · Your induction agent</div>
-
-        <div class="color-key">
-          <span class="key-chip" style="color:var(--blue); border-color:var(--blue)">⬡ aromatic ring</span>
-          <span class="key-chip" style="color:var(--teal); border-color:var(--teal)">—OH alcohol</span>
-          <span class="key-chip" style="color:rgba(74,184,200,0.45); border-color:var(--border)">carbon skeleton</span>
-        </div>
-
-        <div class="mol-structure-block">
-          <span class="atom-ring">⬡</span><span class="atom-oh">—OH</span><br>
-          <span class="atom-skeleton">(benzene ring)</span><br>
-          <span class="atom-skeleton">with two isopropyl arms:</span><br>
-          <span class="atom-skeleton">—CH(CH₃)₂ &nbsp;on each side</span>
-        </div>
-
-        <ul class="decode-steps">
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(122,184,232,0.1); color:var(--blue);">Step 1 · Skeleton</span>
-            <span class="step-text">The core is a <strong>benzene ring</strong> — six carbons in a hexagon. On each side, there's an isopropyl group: a carbon with two methyl groups branching off it. That's 6 + 3 + 3 = 12 carbons total. Short chain, compact molecule.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,184,200,0.1); color:var(--teal);">Step 2 · Groups</span>
-            <span class="step-text"><strong>Aromatic ring:</strong> makes propofol lipophilic — fat-loving. This is what allows it to cross the blood-brain barrier rapidly. <strong>Hydroxyl —OH:</strong> makes it just water-soluble enough to be formulated as an injectable. Without the OH, it couldn't be administered IV.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,200,122,0.1); color:var(--green);">Step 3 · Behavior</span>
-            <span class="step-text">Lipophilic ring = fast brain entry. —OH = injectable despite fat-solubility. The two bulky isopropyl arms create steric hindrance — they physically block the metabolism enzymes from reaching the molecule too quickly, extending its effect. Onset: 30–60 seconds. That's the sentence.</span>
-          </li>
-        </ul>
-
-        <div class="verdict" style="background:rgba(122,184,232,0.06); border:1px solid rgba(122,184,232,0.15);">
-          <div class="verdict-label" style="color:var(--blue);">Clinical Sentence</div>
-          "Propofol is a compact lipophilic molecule that crosses the blood-brain barrier in seconds thanks to its aromatic ring, stays injectable thanks to its —OH group, and has its duration controlled by the bulky arms that slow metabolism."
+      <div class="dissect-panel active" id="dp0">
+        <div class="mol-display" id="mol-display-0">Loading...</div>
+        <div class="color-legend" id="legend-0"></div>
+        <div class="step-track" id="track-0"></div>
+        <div class="step-display" id="step-display-0"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-0" onclick="stepDrug(0,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-0">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-0" onclick="stepDrug(0,1)">Next Step →</button>
         </div>
       </div>
 
       <!-- LIDOCAINE -->
-      <div class="mol-panel" id="mol1">
-        <div class="mol-name">Lidocaine</div>
-        <div class="mol-class">Local anesthetic · Sodium channel blocker · Also antiarrhythmic</div>
-
-        <div class="color-key">
-          <span class="key-chip" style="color:var(--blue); border-color:var(--blue)">⬡ aromatic ring</span>
-          <span class="key-chip" style="color:var(--violet); border-color:var(--violet)">—N— amine</span>
-          <span class="key-chip" style="color:var(--amber); border-color:var(--amber)">C=O carbonyl</span>
-        </div>
-
-        <div class="mol-structure-block">
-          <span class="atom-ring">⬡</span>
-          <span class="atom-co">—C(=O)—</span>
-          <span class="atom-n">NH—</span>
-          <span class="atom-skeleton">CH₂—</span>
-          <span class="atom-n">N(C₂H₅)₂</span><br>
-          <span class="atom-skeleton">(aromatic · amide · diethylamine)</span>
-        </div>
-
-        <ul class="decode-steps">
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(122,184,232,0.1); color:var(--blue);">Step 1 · Skeleton</span>
-            <span class="step-text">Lidocaine has a <strong>benzene ring</strong> at one end and a small carbon chain in the middle, ending in a nitrogen with two ethyl groups attached. It's an "amide-type" local anesthetic — meaning the link between the ring and the chain is an amide bond (C=O next to NH).</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(155,127,212,0.1); color:var(--violet);">Step 2 · Groups</span>
-            <span class="step-text"><strong>Aromatic ring:</strong> lipophilicity, membrane penetration. <strong>Amide (C=O + NH):</strong> the linkage that makes lidocaine resistant to plasma esterases — unlike ester anesthetics, this bond doesn't get cleaved in the blood. <strong>Tertiary amine (N with two ethyl arms):</strong> the pH-sensitive mechanism — uncharged at tissue pH, crosses membrane; becomes charged inside cell, blocks sodium channel.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,200,122,0.1); color:var(--green);">Step 3 · Behavior</span>
-            <span class="step-text">The amide bond = longer duration than ester anesthetics (not cleaved by plasma enzymes). The amine = the actual blocking mechanism. The ring = penetrates nerve membranes. This is why lidocaine lasts 1–2 hours and works so reliably. The whole molecule is engineered by its groups.</span>
-          </li>
-        </ul>
-
-        <div class="verdict" style="background:rgba(155,127,212,0.06); border:1px solid rgba(155,127,212,0.15);">
-          <div class="verdict-label" style="color:var(--violet);">Clinical Sentence</div>
-          "Lidocaine's amide bond resists plasma enzymes for durability, its aromatic ring enables membrane penetration, and its amine switches between charged and uncharged states to cross the nerve membrane and block sodium channels from inside."
+      <div class="dissect-panel" id="dp1">
+        <div class="mol-display" id="mol-display-1">Loading...</div>
+        <div class="color-legend" id="legend-1"></div>
+        <div class="step-track" id="track-1"></div>
+        <div class="step-display" id="step-display-1"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-1" onclick="stepDrug(1,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-1">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-1" onclick="stepDrug(1,1)">Next Step →</button>
         </div>
       </div>
 
-      <!-- SUCCINYLCHOLINE -->
-      <div class="mol-panel" id="mol2">
-        <div class="mol-name">Succinylcholine</div>
-        <div class="mol-class">Depolarizing neuromuscular blocker · RSI drug · Fastest onset/offset</div>
-
-        <div class="color-key">
-          <span class="key-chip" style="color:var(--green); border-color:var(--green)">—COO— ester (x2)</span>
-          <span class="key-chip" style="color:var(--violet); border-color:var(--violet)">—N⁺— quaternary amine (x2)</span>
-          <span class="key-chip" style="color:rgba(74,184,200,0.45); border-color:var(--border)">short chain</span>
-        </div>
-
-        <div class="mol-structure-block">
-          <span class="atom-n">(CH₃)₃N⁺</span>
-          <span class="atom-skeleton">—CH₂CH₂—</span>
-          <span class="atom-ester">OOC</span>
-          <span class="atom-skeleton">—CH₂CH₂—</span>
-          <span class="atom-ester">COO—</span>
-          <span class="atom-skeleton">CH₂CH₂—</span>
-          <span class="atom-n">N⁺(CH₃)₃</span><br>
-          <span class="atom-skeleton">(two choline units joined by a succinate bridge)</span>
-        </div>
-
-        <ul class="decode-steps">
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,200,122,0.1); color:var(--green);">Step 1 · Skeleton</span>
-            <span class="step-text">Succinylcholine is essentially <strong>two acetylcholine molecules</strong> joined end-to-end by a short carbon bridge. Short chain throughout — no rings. This water-soluble, compact structure means it gets distributed quickly and eliminated quickly.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,200,122,0.1); color:var(--green);">Step 2 · Groups</span>
-            <span class="step-text"><strong>Two ester bonds (—COO—):</strong> plasma pseudocholinesterases target these immediately. The moment succinylcholine enters the bloodstream, enzymes begin hydrolysing those ester bonds. <strong>Two quaternary amines (N⁺):</strong> permanently charged — can't cross the blood-brain barrier or cell membranes. Stays in the neuromuscular junction.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(74,200,122,0.1); color:var(--green);">Step 3 · Behavior</span>
-            <span class="step-text">Permanent charge = can only work at the NMJ, nowhere else. Two ester bonds = enzymatic destruction begins immediately. This is why you get 8–12 minutes of paralysis and then it's gone. You cannot reverse it — you wait for the esters to be cleaved. The molecule is its own timer.</span>
-          </li>
-        </ul>
-
-        <div class="verdict" style="background:rgba(74,200,122,0.06); border:1px solid rgba(74,200,122,0.15);">
-          <div class="verdict-label" style="color:var(--green);">Clinical Sentence</div>
-          "Succinylcholine's two ester bonds are its countdown clock — plasma enzymes start cleaving them the moment it enters blood — and its permanent positive charge keeps it locked at the neuromuscular junction, giving you fast paralysis with a predictable, brief duration."
+      <!-- ASPIRIN -->
+      <div class="dissect-panel" id="dp2">
+        <div class="mol-display" id="mol-display-2">Loading...</div>
+        <div class="color-legend" id="legend-2"></div>
+        <div class="step-track" id="track-2"></div>
+        <div class="step-display" id="step-display-2"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-2" onclick="stepDrug(2,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-2">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-2" onclick="stepDrug(2,1)">Next Step →</button>
         </div>
       </div>
-
-      <!-- SEVOFLURANE -->
-      <div class="mol-panel" id="mol3">
-        <div class="mol-name">Sevoflurane</div>
-        <div class="mol-class">Volatile inhalation anesthetic · Smooth induction · Fast wake-up</div>
-
-        <div class="color-key">
-          <span class="key-chip" style="color:var(--rose); border-color:var(--rose)">—F fluorine atoms (x7)</span>
-          <span class="key-chip" style="color:rgba(74,184,200,0.45); border-color:var(--border)">ether linkage</span>
-          <span class="key-chip" style="color:rgba(74,184,200,0.45); border-color:var(--border)">tiny skeleton</span>
-        </div>
-
-        <div class="mol-structure-block">
-          <span class="atom-f">F₃C</span>
-          <span class="atom-skeleton">—CH(</span><span class="atom-f">F</span><span class="atom-skeleton">)—O—CH₂</span><span class="atom-f">F</span><br>
-          <span class="atom-skeleton">(fluoromethyl 2,2,2-trifluoro-1-(trifluoromethyl)ethyl ether)</span><br>
-          <span class="atom-skeleton">7 fluorine atoms · 4 carbons · 1 oxygen</span>
-        </div>
-
-        <ul class="decode-steps">
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(200,122,155,0.1); color:var(--rose);">Step 1 · Skeleton</span>
-            <span class="step-text">Tiny molecule — only 4 carbons and 1 oxygen. An ether linkage (oxygen bridging two carbon chains) forms the backbone. What's unusual is how many <strong>fluorine atoms</strong> are attached: 7 of them, replacing nearly all the hydrogens. This is the story of sevoflurane.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(200,122,155,0.1); color:var(--rose);">Step 2 · Groups</span>
-            <span class="step-text"><strong>Fluorine atoms:</strong> fluorine is the most electronegative element. Replacing hydrogens with fluorine makes the molecule highly stable (hard to break down), very volatile (becomes a gas easily at room temperature), and poorly soluble in blood. Low blood solubility is the key to everything here. <strong>Ether oxygen:</strong> contributes to anesthetic potency — ethers have been used as anesthetics since the 1800s.</span>
-          </li>
-          <li class="decode-step">
-            <span class="step-tag" style="background:rgba(200,122,155,0.1); color:var(--rose);">Step 3 · Behavior</span>
-            <span class="step-text">Low blood solubility = the drug doesn't dissolve into blood — it goes straight to the brain and straight back out. This is why sevoflurane has a fast on and fast off. Patients wake up quickly, smoothly, with minimal hangover. The seven fluorine atoms are the reason. The molecule is almost entirely made of them.</span>
-          </li>
-        </ul>
-
-        <div class="verdict" style="background:rgba(200,122,155,0.06); border:1px solid rgba(200,122,155,0.15);">
-          <div class="verdict-label" style="color:var(--rose);">Clinical Sentence</div>
-          "Sevoflurane's seven fluorine atoms make it so poorly soluble in blood that it behaves almost like a pure gas — rushing to the brain on induction and leaving just as fast on emergence, producing one of the cleanest wake-ups in modern anesthesia."
-        </div>
-      </div>
-
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 3: BUILD-A-SENTENCE EXERCISE -->
+  <!-- SECTION 4: COLD READ CHALLENGE -->
   <div class="section">
-    <div class="section-tag">03 · Guided Practice</div>
-    <h2 class="section-title">Read This Molecule Yourself</h2>
+    <div class="section-tag">04 · Cold Read</div>
+    <h2 class="section-title">Read This Drug on Your Own</h2>
 
-    <p>This is <strong>morphine</strong> — the reference opioid, the molecule everything else is compared to. You've never formally studied it. Use the reading protocol to decode it step by step.</p>
+    <p>You haven't seen this molecule before. Apply the five-step protocol. Identify every functional group you can find and predict how this drug behaves. Then check your reading.</p>
 
-    <div class="sentence-builder" id="sentenceBuilder">
-      <div class="sb-title">Morphine · Step-by-Step Read</div>
-      <div class="sb-subtitle">Answer each question using what you already know. There are 4 questions total.</div>
+    <div class="cold-read" id="coldRead">
+      <div class="cold-label">Cold Read Challenge · Fentanyl</div>
+      <div class="cold-drug-name">Fentanyl</div>
+      <div class="cold-drug-class">Synthetic opioid · µ-receptor agonist · CRNA core drug</div>
 
-      <div class="sb-progress-dots" id="sbDots">
-        <div class="sb-dot active" id="dot0"></div>
-        <div class="sb-dot" id="dot1"></div>
-        <div class="sb-dot" id="dot2"></div>
-        <div class="sb-dot" id="dot3"></div>
+      <div class="cold-structure" id="coldStructure">Described structure:
+
+Two aromatic rings (phenyl groups)
+Connected by a piperidine ring (N in a 6-membered ring)
+N-phenethyl group on one side
+N-phenyl-propanamide on the other
+Contains: C=O (carbonyl/amide), N (tertiary amine), multiple aromatic rings
+
+Simplified: Ph-CH₂CH₂-N(-C(=O)-CH₂CH₃)(C₅H₁₀)-Ph</div>
+
+      <div class="cold-question">Based on this structure, which of the following would you predict about fentanyl? Select all that apply.</div>
+
+      <div class="cold-checks" id="coldChecks">
+        <label class="cold-check" id="cc0" onclick="toggleCheck(0)">
+          <input type="checkbox" id="cb0"> It is highly lipophilic (fat-soluble) and crosses the blood-brain barrier rapidly
+        </label>
+        <label class="cold-check" id="cc1" onclick="toggleCheck(1)">
+          <input type="checkbox" id="cb1"> The nitrogen (amine) group means its activity is pH-dependent
+        </label>
+        <label class="cold-check" id="cc2" onclick="toggleCheck(2)">
+          <input type="checkbox" id="cb2"> It has a short half-life due to ester hydrolysis in plasma
+        </label>
+        <label class="cold-check" id="cc3" onclick="toggleCheck(3)">
+          <input type="checkbox" id="cb3"> It is more potent than morphine because of its ability to penetrate tissue fast
+        </label>
+        <label class="cold-check" id="cc4" onclick="toggleCheck(4)">
+          <input type="checkbox" id="cb4"> The carbonyl group makes it a potential site for metabolic reactions in the liver
+        </label>
+        <label class="cold-check" id="cc5" onclick="toggleCheck(5)">
+          <input type="checkbox" id="cb5"> It is primarily water-soluble and cleared rapidly by the kidneys
+        </label>
       </div>
 
-      <div class="sb-molecule" id="sbMolecule">
-        Morphine structure (simplified):<br>
-        — Fused ring system (5 rings total, including 1 aromatic benzene ring)<br>
-        — Two —OH groups (one phenolic, one alcoholic)<br>
-        — One nitrogen (N) in a ring: tertiary amine<br>
-        — Multiple C—O—C bridges (ether linkages)<br>
-        — 17 carbons total
-      </div>
+      <button class="cold-submit" onclick="checkColdRead()">Submit My Reading</button>
 
-      <div class="sb-question" id="sbQuestion"></div>
-      <div class="sb-options" id="sbOptions"></div>
-      <div class="sb-feedback" id="sbFeedback"></div>
-      <button class="sb-next" id="sbNext" onclick="nextSB()">Next question →</button>
+      <div class="cold-reveal" id="coldReveal">
+        <div class="cold-reveal-title">Full Reading — Fentanyl</div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">Highly lipophilic — correct.</strong> Multiple aromatic rings + long carbon chains = extreme fat solubility. Fentanyl is 600x more lipophilic than morphine. It penetrates the CNS within 90 seconds of IV administration.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">pH-dependent via amine — correct.</strong> The tertiary amine (piperidine ring nitrogen) is the pH-sensitive component. At physiologic pH most fentanyl is uncharged — ideal for membrane crossing.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--red)">✗</span>
+          <span><strong style="color:var(--white)">Ester hydrolysis — incorrect.</strong> Fentanyl does NOT have an ester group. It has an amide (C=O bonded to N). Amides are much more resistant to hydrolysis. Fentanyl's duration is not ester-dependent — it redistributes into fat tissue.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">More potent due to fast tissue penetration — correct.</strong> The aromatic rings are the key. They make fentanyl 100x more potent than morphine by volume because of how fast and completely it crosses into CNS tissue.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">Carbonyl as metabolic site — correct.</strong> The amide carbonyl (C=O) is metabolized hepatically — N-dealkylation by CYP3A4. That's why hepatic dysfunction changes fentanyl clearance significantly.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--red)">✗</span>
+          <span><strong style="color:var(--white)">Primarily water-soluble — incorrect.</strong> The opposite is true. Multiple aromatic rings dominate the structure. Fentanyl accumulates in fat, skeletal muscle, and lung tissue. This is why repeat dosing causes a reservoir effect and delayed respiratory depression.</span>
+        </div>
+        <div style="margin-top:14px; padding:14px; background:rgba(232,169,74,0.06); border-radius:4px; border:1px solid rgba(232,169,74,0.15);">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--amber); text-transform:uppercase; margin-bottom:8px;">Clinical Translation</div>
+          <p style="font-size:13px; line-height:1.7; color:var(--text); margin:0;">You just explained why fentanyl requires careful titration with repeat doses, why it causes delayed respiratory depression in obese patients (large fat reservoir), and why it's incomparably fast-acting for induction — all from reading the structure. That's molecular literacy in clinical practice.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 4: READING CHALLENGE -->
+  <!-- SECTION 5: THE BIGGER PICTURE -->
   <div class="section">
-    <div class="section-tag">04 · Reading Challenge</div>
-    <h2 class="section-title">Unknown Molecule — What Do You Know?</h2>
+    <div class="section-tag">05 · What You Can Now Do</div>
+    <h2 class="section-title">You Can Read Drugs</h2>
 
-    <p>Here is a molecule you haven't seen before. Read it using only the patterns you know. Select everything that is true.</p>
-
-    <div class="reading-challenge">
-      <div class="rc-title">Ketamine — Read the Structure</div>
-      <div class="rc-intro">Ketamine is a dissociative anesthetic. You have never studied its structure formally. Use your reading skills. Select all correct statements.</div>
-
-      <div class="rc-molecule">
-        Ketamine (simplified):<br>
-        — Aromatic ring (benzene) with a Cl (chlorine) attached<br>
-        — C=O carbonyl group (ketone)<br>
-        — N—CH₃ secondary amine<br>
-        — Short carbon chain connecting ring to amine<br>
-        — No ester bonds · No —OH group<br>
-        — 13 carbons total
-      </div>
-
-      <div class="rc-checks" id="rcChecks">
-        <div class="rc-check" onclick="toggleRC(this, true)" data-correct="true">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">The aromatic ring suggests ketamine is lipophilic and capable of crossing the blood-brain barrier.</div>
-        </div>
-        <div class="rc-check" onclick="toggleRC(this, false)" data-correct="false">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">The ester bond means ketamine will be metabolized quickly by plasma cholinesterases.</div>
-        </div>
-        <div class="rc-check" onclick="toggleRC(this, true)" data-correct="true">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">The amine group (N—CH₃) will be pH-sensitive, changing charge state across membranes.</div>
-        </div>
-        <div class="rc-check" onclick="toggleRC(this, false)" data-correct="false">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">The absence of an —OH group means ketamine cannot be administered intravenously.</div>
-        </div>
-        <div class="rc-check" onclick="toggleRC(this, true)" data-correct="true">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">The C=O carbonyl is a reactive site — likely where liver metabolism begins.</div>
-        </div>
-        <div class="rc-check" onclick="toggleRC(this, false)" data-correct="false">
-          <div class="rc-checkbox"></div>
-          <div class="rc-check-text">Ketamine's 13-carbon chain makes it highly water-soluble like short-chain molecules.</div>
-        </div>
-      </div>
-
-      <button class="rc-submit" id="rcSubmit" onclick="checkRC()">Check My Reading</button>
-      <div class="rc-result" id="rcResult"></div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <!-- SECTION 5: WHERE YOU ARE NOW -->
-  <div class="section">
-    <div class="section-tag">05 · Progress Check</div>
-    <h2 class="section-title">What You Can Now Do</h2>
-
-    <p>Stop for a moment and understand what just happened.</p>
-
-    <p>You decoded propofol, lidocaine, succinylcholine, and sevoflurane. You read morphine step by step without being shown the answers first. You analyzed ketamine — a drug you've never studied — and identified correct structural predictions from scratch.</p>
-
-    <p>You are not memorizing. You are <em>reading.</em></p>
+    <p>Stop here for a moment and recognize what you've built across these three modules.</p>
 
     <div class="callout green">
-      <div class="callout-label">What You Can Do Right Now</div>
-      <p>Given any drug structure, you can: identify all functional groups, predict lipophilicity vs. water solubility, estimate speed of onset based on ring presence, predict duration based on ester vs. amide bonds, explain mechanism of action in broad terms.</p>
-      <p style="margin-top:8px;">That is not introductory chemistry knowledge. That is the foundation of clinical pharmacology.</p>
+      <div class="callout-label">Your Current Capabilities</div>
+      <p>You can look at a line structure and count every carbon atom. You can calculate hidden hydrogens for any carbon in the chain. You can identify an alcohol, amine, carbonyl, carboxylic acid, ester, or aromatic ring on sight. You can use those groups to predict water vs. fat solubility. You can read a full drug molecule, name its parts, and tell a clinical story about its behavior.</p>
+      <p>You have done all of this without memorizing a single drug molecule. You have been reading them.</p>
     </div>
 
-    <p>Module 4 — Grammar — is the last layer: what happens when molecules <em>change.</em> Reactions, metabolism, how the body modifies drugs. But that's for later. Right now, you can read sentences. That's enormous.</p>
+    <p>When you eventually sit in an organic chemistry classroom, the professor will put a structure on the board and ask the class to identify the functional groups. You will already know the answer before the question is finished.</p>
+
+    <p>That's not because you studied harder. It's because you studied <em>differently.</em></p>
   </div>
 
   <!-- COMPLETION -->
   <div class="commitment">
     <div class="commitment-title">Module 3 Complete</div>
-    <p>You read four full drug molecules. You decoded morphine. You analyzed ketamine cold. The language is becoming fluent.</p>
-    <p>One module remains. Module 4 — Grammar — is where the molecules start talking back.</p>
+    <p>You dissected propofol, lidocaine, and aspirin. You cold-read fentanyl. You have a five-step reading protocol you can apply to any molecule you'll ever encounter.</p>
+    <p>One module left. Module 4 is grammar — how molecules change, why they change, and what happens to drugs as the body processes them.</p>
     <button class="next-btn" id="completeBtn" onclick="completeModule()">▸ &nbsp; MARK MODULE 3 COMPLETE</button>
   </div>
 
   <div class="win-banner" id="winBanner">
     <div class="win-title">Module 3 Unlocked ✓</div>
     <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--teal); letter-spacing:0.2em; margin-top:8px;">
-      NEXT: MODULE 04 — GRAMMAR &nbsp;·&nbsp; REACTIONS &nbsp;·&nbsp; HOW MOLECULES CHANGE
+      NEXT: MODULE 04 — GRAMMAR &nbsp;·&nbsp; REACTIONS &nbsp;·&nbsp; HOW DRUGS CHANGE IN THE BODY
     </div>
-    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">You can read the molecules. Now watch them move.</p>
+    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">You can read the molecule. Now learn how it transforms.</p>
   </div>
 
 </div>
 
 <script>
-  // MOL READER TRACKING
-  const molsVisited = new Set([0]);
+  // ─── DRUG DISSECTION DATA ───
+  const drugs = [
+    {
+      name: "Propofol",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "One oxygen atom — that's your landmark",
+          body: "Scan propofol's structure. There is one oxygen atom, attached as —OH to the benzene ring. No nitrogen. So we have exactly one functional group to find. Simple molecule.",
+          display: `      Benzene ring (⬡)
+         |
+  [OH]←— carbon on ring
+         |
+   isopropyl   isopropyl
+   (CH(CH₃)₂) (CH(CH₃)₂)`,
+          highlight: "alcohol"
+        },
+        {
+          color: "var(--fg-alcohol)",
+          number: "Step 2 · Name the functional group",
+          title: "Alcohol (phenol) — the —OH group",
+          body: "The —OH on a benzene ring is specifically called a phenol. It behaves like an alcohol — hydrophilic, reactive, water-interacting. This one —OH group is what makes propofol injectable despite being a fat-soluble molecule. Without it, you couldn't dissolve it in the lipid emulsion used for IV administration.",
+          display: `      ⬡ (benzene)
+      |
+   →[OH]← ALCOHOL GROUP
+      |
+  The lone oxygen. The injectable anchor.`,
+          highlight: "alcohol"
+        },
+        {
+          color: "var(--fg-aromatic)",
+          number: "Step 3 · Read the skeleton",
+          title: "Benzene ring + two bulky isopropyl arms",
+          body: "The core is a 6-carbon benzene ring (aromatic). On two positions of that ring, large isopropyl groups extend outward — CH(CH₃)₂ on each side. These are pure carbon chains, no functional groups. They're the 'bulk' of the molecule.",
+          display: `  (CH₃)₂CH  →[⬡]←  CH(CH₃)₂
+               |
+              OH
 
-  function showMol(i) {
-    document.querySelectorAll('.mol-panel').forEach((p, idx) => p.classList.toggle('active', idx === i));
-    document.querySelectorAll('.mol-tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
-    molsVisited.add(i);
-    updateProgress();
-  }
+Aromatic ring + two carbon arms.`,
+          highlight: "aromatic"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Mostly lipophilic — with one water anchor",
+          body: "Benzene ring = fat-soluble. Two isopropyl groups = fat-soluble. One —OH = water anchor. Net result: propofol is predominantly lipophilic but can be formulated as an emulsion (fat droplets in water). This is why it's the milky white liquid — it's literally dissolved in a soybean oil emulsion.",
+          display: `FAT-SOLUBLE: benzene + isopropyl arms
+WATER ANCHOR: the single —OH
+NET: lipophilic dominant → crosses BBB fast`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "Fast in, fast out — the isopropyl groups are the mechanism",
+          body: "The two large isopropyl groups are not decoration. They create steric bulk that prevents the liver from metabolizing propofol too quickly, but also ensure rapid redistribution from the CNS into peripheral fat. Patient goes under in 40 seconds. Wake-up is clean and fast. The entire pharmacokinetic profile is written in this structure.",
+          display: `Propofol: ⬡(OH)(iPr)₂
 
-  // BUILD-A-SENTENCE (morphine questions)
-  const sbQuestions = [
-    {
-      q: "Step 1 — Skeleton: Morphine has 17 carbons and a fused ring system. What does the large, complex ring structure likely tell you about how this molecule behaves compared to a small molecule like sevoflurane?",
-      options: [
-        "It will be eliminated faster because larger molecules always clear quicker.",
-        "It will be harder to metabolize quickly and will have a longer duration than small volatile molecules.",
-        "The ring system has no bearing on metabolism or duration.",
-        "It will be more water-soluble because rings attract water."
-      ],
-      correct: 1,
-      feedback: "Correct. A large fused ring system is metabolically complex — the liver has to work harder to break it down. Morphine's duration (4–6 hours) reflects this structural complexity compared to sevoflurane, which is tiny and leaves the body with almost no metabolism needed."
+Fast onset → lipophilic BBB crossing
+Clean emergence → rapid redistribution
+White emulsion → lipid vehicle required`,
+          highlight: null
+        }
+      ]
     },
     {
-      q: "Step 2 — Functional Groups: Morphine has two —OH groups. Based on what you know about the hydroxyl group, what does this predict about morphine's solubility?",
-      options: [
-        "Morphine will be entirely fat-soluble — the OH groups have no effect on water solubility.",
-        "Two —OH groups will make morphine significantly water-soluble — more than propofol, which has only one.",
-        "The —OH groups will make morphine insoluble in everything.",
-        "—OH groups only affect smell, not solubility."
-      ],
-      correct: 1,
-      feedback: "Right. Two hydroxyl groups increase water-solubility substantially. This is actually why morphine crosses the blood-brain barrier much more slowly than fentanyl — it's more water-soluble and less lipophilic. Fentanyl, with its two aromatic rings and no —OH, penetrates the CNS in minutes. Morphine takes longer."
+      name: "Lidocaine",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "Two nitrogens and one oxygen",
+          body: "Scan lidocaine. You find: one oxygen (in a carbonyl, C=O), and two nitrogen atoms (one in an amide, one as a tertiary amine). Three functional group landmarks. This is a more complex molecule than propofol — three action zones instead of one.",
+          display: `Aromatic ring — [amide C=O] — [N tertiary]
+                   ↑                    ↑
+               oxygen here         nitrogen here
+
+Plus: N inside the amide itself.
+Three landmarks. Three jobs.`,
+          highlight: null
+        },
+        {
+          color: "var(--fg-amine)",
+          number: "Step 2 · Name the groups",
+          title: "Amide + tertiary amine + aromatic ring",
+          body: "The C=O bonded directly to a nitrogen is called an amide (a special combination of carbonyl + amine). The separate N with two carbon chains attached is a tertiary amine — the one responsible for pH-dependent membrane crossing. The hexagon is the aromatic ring giving fat solubility.",
+          display: `⬡ — C(=O) — NH — [chain] — N(CH₂CH₃)₂
+↑        ↑             ↑               ↑
+aromatic  amide C=O  amide N      tertiary amine
+(lipophilic) (metabolic hub)    (the pH switch)`,
+          highlight: "amine"
+        },
+        {
+          color: "var(--fg-aromatic)",
+          number: "Step 3 · Read the skeleton",
+          title: "Medium-sized — aromatic core with a flexible chain",
+          body: "The aromatic ring provides the lipophilic anchor. A short flexible carbon chain connects it to the tertiary amine on the other end. Two methyl groups on the ring (dimethyl substitution) add bulk that slows hepatic metabolism — this is why lidocaine lasts longer than some earlier local anesthetics.",
+          display: `2,6-dimethyl benzene ring
+    → amide linker
+        → 2-carbon chain
+            → diethylamine
+
+The methyl groups are a metabolic shield.`,
+          highlight: "aromatic"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Balanced — designed to cross membranes at the right moment",
+          body: "Aromatic ring + carbon chain = lipophilic enough to cross nerve membranes. Tertiary amine = can become charged (ionized) at lower pH. The balance is intentional: uncharged form crosses the membrane (fat-soluble), charged form blocks the channel from inside (water-soluble interaction). This is the mechanism of local anesthesia.",
+          display: `OUTSIDE NERVE (pH ~7.4): mostly uncharged → crosses membrane
+INSIDE NERVE (pH ~7.1): more charged → blocks Na+ channel
+
+The amine is a pH-activated key.`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "Why lidocaine works — written in the structure",
+          body: "You now understand lidocaine's entire mechanism from its structure: the aromatic ring makes it fat-soluble enough to diffuse through the lipid nerve membrane. The amine changes charge state at nerve pH to lock into the sodium channel. The amide bond (not ester) means plasma esterases won't destroy it — it has to go to the liver. That's why lidocaine lasts 1-2 hours instead of 5 minutes.",
+          display: `Lidocaine: amide-type local anesthetic
+→ Aromatic ring: membrane crossing
+→ Tertiary amine: pH-activated block
+→ Amide bond: resistant to plasma hydrolysis
+→ Liver metabolism: 1-2 hour duration`,
+          highlight: null
+        }
+      ]
     },
     {
-      q: "Step 2 continued — Morphine has a tertiary amine (nitrogen in a ring). You've seen this before. What is the amine's role?",
-      options: [
-        "It makes morphine an acid that lowers blood pH.",
-        "It is the group responsible for morphine's opioid receptor binding — amines interact directly with receptor binding pockets.",
-        "The amine has no clinical significance.",
-        "It makes morphine an ester that is cleaved quickly."
-      ],
-      correct: 1,
-      feedback: "Exactly. The tertiary amine in morphine — and in every opioid — is the group that interacts with mu-opioid receptors. The nitrogen's electron lone pair is critical to receptor binding. This is why all opioids contain a nitrogen. It is not optional — it's the mechanism."
-    },
-    {
-      q: "Step 3 — Reading the Behavior: Putting it all together. Based on morphine's structure — large fused rings, two —OH groups, one amine, no esters — which clinical sentence is most accurate?",
-      options: [
-        "Morphine will have fast onset, short duration, and be used primarily for rapid sequence intubation.",
-        "Morphine will have moderate-to-slow CNS penetration due to its water-solubility, long duration due to its metabolic complexity, and its amine is the opioid receptor binding site.",
-        "Morphine will be volatile and administered by inhalation because of its ring structure.",
-        "Morphine's two —OH groups make it impossible to administer intravenously."
-      ],
-      correct: 1,
-      feedback: "Perfect. You just wrote the pharmacology of morphine from structure alone. Slow CNS entry (water-soluble, unlike fentanyl). Long duration (complex ring system, slow metabolism). Amine = receptor binding. This is molecular literacy applied — and you did it without a textbook."
+      name: "Aspirin",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "Four oxygen atoms — no nitrogen",
+          body: "Aspirin has four oxygen atoms and no nitrogen. That means multiple oxygenated functional groups. Four oxygens on a relatively small molecule means it will be more water-soluble than propofol. Scan and locate them all before naming anything.",
+          display: `Benzene ring with two oxygen-containing groups:
+  — one on each side of the ring
+
+Four oxygens total.
+No nitrogen.
+Acidic molecule incoming.`,
+          highlight: null
+        },
+        {
+          color: "var(--fg-acid)",
+          number: "Step 2 · Name the groups",
+          title: "Carboxylic acid + ester — two distinct groups",
+          body: "On one side of the benzene ring: —COOH (carboxylic acid). On the other: —OCOCH₃ (an ester — the acetyl group). Two completely different functional groups. The carboxylic acid makes aspirin acidic. The ester is the 'acetyl' in acetylsalicylic acid — and it's the part responsible for aspirin's actual mechanism.",
+          display: `      ⬡ (benzene ring)
+     / \\
+[COOH]   [O-CO-CH₃]
+   ↑           ↑
+carboxylic   ester
+acid         (acetyl group)`,
+          highlight: "acid"
+        },
+        {
+          color: "var(--fg-ester)",
+          number: "Step 3 · The acetyl group's job",
+          title: "The ester is the weapon — it acetylates COX permanently",
+          body: "The ester group (—OCOCH₃) is what makes aspirin irreversible. In the body, the ester cleaves — the acetyl group transfers onto the COX enzyme (cyclooxygenase), permanently blocking it. No other NSAID does this. Ibuprofen is reversible. Aspirin is not. The ester chemistry is the entire basis of its unique mechanism.",
+          display: `Aspirin + COX enzyme:
+  Ester cleaves →
+    Acetyl group transfers to COX →
+      COX permanently blocked →
+        Platelet function inhibited for platelet's lifetime
+
+The ester is the mechanism. Irreversible.`,
+          highlight: "ester"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Mostly water-soluble — absorbed in the stomach",
+          body: "The carboxylic acid group (—COOH) ionizes at body pH, making aspirin predominantly water-soluble. However, in the acidic stomach (low pH), the COOH stays protonated (uncharged) — this actually helps absorption through the stomach lining. The benzene ring provides some lipophilicity for membrane crossing.",
+          display: `In stomach (pH ~2): COOH protonated → uncharged → crosses
+In blood (pH ~7.4): COOH ionized → charged → water-soluble
+In urine (pH variable): ionization controls how fast it's cleared
+
+Urine alkalinization increases aspirin excretion (aspirin overdose treatment).`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "The whole pharmacology in two functional groups",
+          body: "You now understand: why aspirin is acidic (COOH), why it causes stomach irritation (COOH donating H⁺ to stomach lining), why it's irreversible (ester transfers acetyl to COX), why you hold it pre-operatively (irreversible platelet inhibition lasts the platelet's entire 7-10 day lifespan), and why you alkalinize urine in overdose (shifts COOH ionization to trap it in urine). All from two functional groups on a benzene ring.",
+          display: `Aspirin: salicylate + acetyl ester
+→ COOH: acidity, stomach effect, renal clearance
+→ Ester: irreversible COX acetylation
+→ Hold 7-10 days pre-op: platelet lifespan
+→ Benzene: some lipophilicity for absorption
+
+Two groups. The entire clinical story.`,
+          highlight: null
+        }
+      ]
     }
   ];
 
-  let sbIdx = 0;
-  let sbAnswered = false;
-  let sbScore = 0;
+  // ─── DISSECTION STATE ───
+  const drugSteps = [0, 0, 0];
+  const drugCompleted = [false, false, false];
 
-  function renderSB() {
-    const q = sbQuestions[sbIdx];
-    document.getElementById('sbQuestion').textContent = q.q;
-    document.getElementById('sbFeedback').className = 'sb-feedback';
-    document.getElementById('sbFeedback').textContent = '';
-    document.getElementById('sbNext').className = 'sb-next';
-    sbAnswered = false;
-
-    const opts = document.getElementById('sbOptions');
-    opts.innerHTML = '';
-    const keys = ['A', 'B', 'C', 'D'];
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'sb-opt';
-      btn.innerHTML = '<span class="sb-opt-key">' + keys[i] + '</span>' + opt;
-      btn.onclick = () => answerSB(btn, i === q.correct, q.feedback, q.correct, keys);
-      opts.appendChild(btn);
-    });
-
-    // dots
-    for (let i = 0; i < 4; i++) {
-      const dot = document.getElementById('dot' + i);
-      dot.className = 'sb-dot' + (i < sbIdx ? ' done' : i === sbIdx ? ' active' : '');
-    }
+  function buildDrug(d) {
+    const drug = drugs[d];
+    renderStep(d);
+    buildTrack(d);
   }
 
-  function answerSB(btn, correct, feedback, correctIdx, keys) {
-    if (sbAnswered) return;
-    sbAnswered = true;
-    document.querySelectorAll('.sb-opt').forEach((b, i) => {
-      b.disabled = true;
-      if (i === correctIdx) b.classList.add('correct');
+  function buildTrack(d) {
+    const track = document.getElementById('track-' + d);
+    track.innerHTML = '';
+    drugs[d].steps.forEach((s, i) => {
+      const pip = document.createElement('div');
+      pip.className = 'step-pip' + (i === drugSteps[d] ? ' active' : (i < drugSteps[d] ? ' done' : ''));
+      pip.onclick = () => { drugSteps[d] = i; renderStep(d); buildTrack(d); };
+      track.appendChild(pip);
     });
-    if (!correct) btn.classList.add('wrong');
-    if (correct) sbScore++;
-
-    const fb = document.getElementById('sbFeedback');
-    fb.textContent = (correct ? '✓ ' : '✗ ') + feedback;
-    fb.className = 'sb-feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
-
-    document.getElementById('sbNext').className = 'sb-next show';
-    document.getElementById('sbNext').textContent = sbIdx < 3 ? 'Next question →' : 'Finish';
-    updateProgress();
   }
 
-  function nextSB() {
-    if (sbIdx < sbQuestions.length - 1) {
-      document.getElementById('dot' + sbIdx).className = 'sb-dot done';
-      sbIdx++;
-      renderSB();
-    } else {
-      document.getElementById('dot3').className = 'sb-dot done';
-      document.getElementById('sentenceBuilder').innerHTML =
-        '<div style="text-align:center; padding:20px;">' +
-        '<div style="font-family:\'Cormorant Garamond\',serif; font-size:1.8rem; color:var(--green); margin-bottom:10px;">Morphine Read ✓</div>' +
-        '<div style="font-family:\'JetBrains Mono\',monospace; font-size:11px; color:var(--muted); letter-spacing:0.15em;">Score: ' + sbScore + ' / 4 &nbsp;·&nbsp; You read morphine from structure alone.</div>' +
-        '</div>';
+  function renderStep(d) {
+    const step = drugs[d].steps[drugSteps[d]];
+    const total = drugs[d].steps.length;
+    const current = drugSteps[d];
+
+    // Molecule display
+    document.getElementById('mol-display-' + d).textContent = step.display;
+
+    // Step display
+    document.getElementById('step-display-' + d).innerHTML =
+      '<div class="step-number" style="color:' + step.color + '">' + step.number + '</div>' +
+      '<div class="step-title">' + step.title + '</div>' +
+      '<div class="step-body">' + step.body + '</div>';
+
+    // Nav buttons
+    document.getElementById('prev-' + d).disabled = current === 0;
+    const nextBtn = document.getElementById('next-' + d);
+
+    if (current === total - 1) {
+      nextBtn.textContent = 'Complete ✓';
+      nextBtn.onclick = () => completeDrug(d);
+      drugCompleted[d] = true;
+      document.getElementById('badge-' + d).classList.add('show');
       updateProgress();
-    }
-  }
-
-  // READING CHALLENGE (ketamine)
-  const rcSelected = new Set();
-  let rcChecked = false;
-
-  function toggleRC(el, correct) {
-    if (rcChecked) return;
-    el.classList.toggle('selected');
-    const key = el.querySelector('.rc-check-text').textContent;
-    if (rcSelected.has(key)) {
-      rcSelected.delete(key);
-      el.querySelector('.rc-checkbox').textContent = '';
     } else {
-      rcSelected.add(key);
-      el.querySelector('.rc-checkbox').textContent = '✓';
+      nextBtn.textContent = 'Next Step →';
+      nextBtn.onclick = () => stepDrug(d, 1);
     }
-  }
 
-  function checkRC() {
-    if (rcChecked) return;
-    rcChecked = true;
-    document.getElementById('rcSubmit').disabled = true;
-
-    const checks = document.querySelectorAll('.rc-check');
-    let correct = 0;
-    let total = 0;
-    checks.forEach(ch => {
-      const isCorrect = ch.dataset.correct === 'true';
-      const isSelected = ch.classList.contains('selected');
-      if (isCorrect) total++;
-      if (isCorrect && isSelected) { ch.classList.add('correct'); correct++; }
-      else if (!isCorrect && isSelected) { ch.classList.add('wrong'); }
-      else if (isCorrect && !isSelected) { ch.classList.add('correct'); } // show missed ones
-    });
-
-    const result = document.getElementById('rcResult');
-    result.className = 'rc-result show';
-    result.style.background = correct === total ? 'rgba(74,200,122,0.08)' : 'rgba(232,169,74,0.06)';
-    result.style.border = '1px solid ' + (correct === total ? 'rgba(74,200,122,0.2)' : 'rgba(232,169,74,0.2)');
-    result.innerHTML =
-      '<div style="font-family:\'JetBrains Mono\',monospace; font-size:10px; letter-spacing:0.15em; color:' +
-      (correct >= 2 ? 'var(--green)' : 'var(--amber)') + '; margin-bottom:10px; text-transform:uppercase;">' +
-      correct + ' / ' + total + ' correct reads</div>' +
-      '<p style="font-size:13px; line-height:1.65; color:var(--text);">' +
-      'The correct statements: (1) aromatic ring = lipophilic, crosses BBB — ketamine does reach the brain fast; ' +
-      '(2) amine = pH-sensitive membrane crossing; ' +
-      '(3) carbonyl = metabolic target — the liver oxidizes this first. ' +
-      'The false ones: ketamine has NO ester bond (amide/ether structure), so plasma cholinesterases don\'t touch it. ' +
-      'And absence of —OH does not prevent IV administration — solubility depends on the full molecule, not one group. ' +
-      'Ketamine is actually highly water-soluble and very easily administered IV.</p>';
+    buildTrack(d);
     updateProgress();
   }
 
-  // PROGRESS
+  function stepDrug(d, dir) {
+    const newStep = drugSteps[d] + dir;
+    if (newStep < 0 || newStep >= drugs[d].steps.length) return;
+    drugSteps[d] = newStep;
+    renderStep(d);
+  }
+
+  function completeDrug(d) {
+    drugCompleted[d] = true;
+    document.getElementById('badge-' + d).classList.add('show');
+    updateProgress();
+  }
+
+  let activeDrug = 0;
+  const dissectVisited = new Set([0]);
+
+  function switchDrug(d) {
+    activeDrug = d;
+    dissectVisited.add(d);
+    document.querySelectorAll('.dissect-tab').forEach((t, i) => t.classList.toggle('active', i === d));
+    document.querySelectorAll('.dissect-panel').forEach((p, i) => p.classList.toggle('active', i === d));
+    updateProgress();
+  }
+
+  // ─── COLD READ ───
+  const correctAnswers = [true, true, false, true, true, false];
+  const checkStates = [false, false, false, false, false, false];
+  let coldSubmitted = false;
+
+  function toggleCheck(i) {
+    if (coldSubmitted) return;
+    checkStates[i] = !checkStates[i];
+    document.getElementById('cb' + i).checked = checkStates[i];
+    document.getElementById('cc' + i).classList.toggle('selected', checkStates[i]);
+  }
+
+  function checkColdRead() {
+    if (coldSubmitted) return;
+    coldSubmitted = true;
+    document.getElementById('coldReveal').classList.add('show');
+    document.querySelector('.cold-submit').disabled = true;
+    document.querySelector('.cold-submit').textContent = 'Reading Submitted ✓';
+    document.querySelector('.cold-submit').style.borderColor = 'var(--green)';
+    document.querySelector('.cold-submit').style.color = 'var(--green)';
+    updateProgress();
+    setTimeout(() => {
+      document.getElementById('coldReveal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
+
+  // ─── PROGRESS ───
   function updateProgress() {
-    const molPct = (molsVisited.size / 4) * 30;
-    const sbPct = Math.min(((sbIdx + (sbAnswered ? 1 : 0)) / 4) * 35, 35);
-    const rcPct = rcChecked ? 25 : 0;
-    const total = Math.min(Math.round(molPct + sbPct + rcPct), 90);
+    const dissectPct = (drugCompleted.filter(Boolean).length / 3) * 45;
+    const visitPct = (dissectVisited.size / 3) * 10;
+    const coldPct = coldSubmitted ? 35 : 0;
+    const total = Math.min(Math.round(dissectPct + visitPct + coldPct), 90);
     document.getElementById('progressFill').style.width = total + '%';
     document.getElementById('progressLabel').textContent = total + '% complete';
   }
@@ -1258,8 +1285,15 @@
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  // Init
-  renderSB();
+  // ─── INIT ───
+  [0, 1, 2].forEach(d => buildDrug(d));
 </script>
+
+<nav class="module-nav-bar">
+  <a href="ochem-module-2.html" class="nav-btn prev">← Prev</a>
+  <div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 03 · Sentences</div>
+  <a href="ochem-module-4.html" class="nav-btn next">Next →</a>
+</nav>
+
 </body>
 </html>
