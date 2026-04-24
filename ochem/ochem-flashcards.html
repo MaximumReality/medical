@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Molecular Literacy // Flashcard Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12;
+    --card: #12161f;
+    --card2: #151923;
+    --border: #1e2535;
+    --amber: #e8a94a;
+    --amber-dim: #a87835;
+    --teal: #4ab8c8;
+    --teal-dim: #2d7a87;
+    --white: #e8e4dc;
+    --muted: #6b7280;
+    --red: #c85a4a;
+    --green: #4ac87a;
+    --text: #c8c4bc;
+    --violet: #9b7fd4;
+    --rose: #c87a9b;
+    --blue: #7ab8e8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Libre Baskerville', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 70% 40% at 10% 0%, rgba(232,169,74,0.05) 0%, transparent 70%),
+      radial-gradient(1px 1px at 25% 20%, rgba(232,169,74,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(74,184,200,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 75%, rgba(155,127,212,0.12) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 16px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 40px 0 28px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .system-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .system-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  .main-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.7rem, 6vw, 2.6rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .main-title em { color: var(--amber); font-style: italic; }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 10px;
+  }
+
+  /* SCORE BAR */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .score-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .score-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .score-nums {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .reset-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .reset-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* FILTER TABS */
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s ease 0.15s both;
+  }
+
+  .filter-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active { border-color: var(--amber); color: var(--amber); background: rgba(232,169,74,0.07); }
+  .filter-btn:hover:not(.active) { border-color: var(--teal-dim); color: var(--teal); }
+
+  /* CARD GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  /* INDIVIDUAL CARD */
+  .fc {
+    perspective: 1000px;
+    cursor: pointer;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .fc:nth-child(1) { animation-delay: 0.05s; }
+  .fc:nth-child(2) { animation-delay: 0.1s; }
+  .fc:nth-child(3) { animation-delay: 0.15s; }
+  .fc:nth-child(4) { animation-delay: 0.2s; }
+  .fc:nth-child(5) { animation-delay: 0.25s; }
+  .fc:nth-child(6) { animation-delay: 0.3s; }
+
+  .fc-inner {
+    position: relative;
+    width: 100%;
+    transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .fc.flipped .fc-inner { transform: rotateY(180deg); }
+
+  .fc-front, .fc-back {
+    width: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    transition: border-color 0.2s;
+  }
+
+  .fc-front {
+    padding: 28px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 180px;
+    justify-content: center;
+  }
+
+  .fc-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 22px;
+    transform: rotateY(180deg);
+    min-height: 180px;
+  }
+
+  /* make back match front height via JS */
+  .fc:hover .fc-front { border-color: var(--teal-dim); }
+  .fc.flipped .fc-back { border-color: var(--amber-dim); }
+
+  .fc-color-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .drug-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+
+  .drug-class {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .tap-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* BACK CONTENT */
+  .back-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .structure-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(11px, 2.8vw, 13px);
+    color: var(--teal);
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    padding: 12px 14px;
+    background: rgba(74,184,200,0.05);
+    border: 1px solid rgba(74,184,200,0.1);
+    border-radius: 4px;
+    margin-bottom: 12px;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .groups-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .group-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .meaning {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .meaning strong { color: var(--white); }
+
+  /* MARK KNOWN / UNKNOWN */
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .mark-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mark-btn.know {
+    color: var(--green);
+    border-color: rgba(74,200,122,0.3);
+  }
+
+  .mark-btn.know:hover, .mark-btn.know.active {
+    background: rgba(74,200,122,0.1);
+    border-color: var(--green);
+  }
+
+  .mark-btn.review {
+    color: var(--rose);
+    border-color: rgba(200,122,155,0.3);
+  }
+
+  .mark-btn.review:hover, .mark-btn.review.active {
+    background: rgba(200,122,155,0.1);
+    border-color: var(--rose);
+  }
+
+  /* STATUS BADGE on front */
+  .status-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .status-badge.know { background: rgba(74,200,122,0.15); color: var(--green); border: 1px solid rgba(74,200,122,0.3); opacity: 1; }
+  .status-badge.review { background: rgba(200,122,155,0.15); color: var(--rose); border: 1px solid rgba(200,122,155,0.3); opacity: 1; }
+
+  /* LEGEND */
+  .legend {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-top: 24px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .legend-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* HIDDEN cards when filtered */
+  .fc.hidden { display: none; }
+
+  /* PRINT */
+  @media print {
+    body { background: #fff; color: #000; }
+    .score-bar, .filter-bar, .legend, body::before { display: none; }
+    .fc-front { display: none !important; }
+    .fc-back {
+      position: relative !important;
+      transform: none !important;
+      background: #fff;
+      border: 1px solid #ccc;
+      break-inside: avoid;
+    }
+    .card-actions { display: none; }
+    .structure-display { color: #333; background: #f5f5f5; border-color: #ddd; }
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="system-label">Molecular Literacy System</div>
+    <h1 class="main-title">CRNA <em>Flashcard Deck</em></h1>
+    <div class="subtitle">Functional Groups · Pattern Recognition · Tap to Flip</div>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-label">Known</div>
+    <div class="score-track"><div class="score-fill" id="scoreFill"></div></div>
+    <div class="score-nums" id="scoreNums">0 / 12</div>
+    <button class="reset-btn" onclick="resetAll()">Reset</button>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filter('all', this)">All Cards</button>
+    <button class="filter-btn" onclick="filter('review', this)">Needs Review</button>
+    <button class="filter-btn" onclick="filter('known', this)">Known</button>
+    <button class="filter-btn" onclick="filter('anesthetic', this)">Anesthetics</button>
+    <button class="filter-btn" onclick="filter('analgesic', this)">Analgesics</button>
+    <button class="filter-btn" onclick="filter('local', this)">Local Anesthetics</button>
+  </div>
+
+  <!-- CARD GRID -->
+  <div class="grid" id="cardGrid"></div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-title">Functional Group Color Key</div>
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background:#4ab8c8"></div>Alcohol —OH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#9b7fd4"></div>Amine —N—</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e8a94a"></div>Carbonyl C=O</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#c87a9b"></div>Carboxylic Acid —COOH</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4ac87a"></div>Ester —COO—</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7ab8e8"></div>Aromatic Ring ⬡</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CARDS = [
+  {
+    id: 0,
+    name: "Propofol",
+    aka: "Diprivan",
+    category: "anesthetic",
+    color: "#7ab8e8",
+    classLabel: "IV General Anesthetic",
+    structure: "    OH\n     |\n⬡ benzene ring\n  / \\\niPr  iPr",
+    groups: [
+      { label: "Alcohol —OH", color: "#4ab8c8" },
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" }
+    ],
+    meaning: "<strong>Phenol —OH</strong> = injectable despite lipophilicity. <strong>Aromatic ring</strong> = fast BBB crossing. <strong>Isopropyl arms</strong> = slow metabolism, extend effect."
+  },
+  {
+    id: 1,
+    name: "Ketamine",
+    aka: "Ketalar",
+    category: "anesthetic",
+    color: "#e8a94a",
+    classLabel: "Dissociative Anesthetic",
+    structure: "⬡—Cl\n |\nC=O\n |\nN—CH₃",
+    groups: [
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" },
+      { label: "Carbonyl C=O", color: "#e8a94a" },
+      { label: "Amine —N—", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>Aromatic ring</strong> = lipophilic, fast BBB entry. <strong>Carbonyl</strong> = reactive center, liver metabolism site. <strong>Amine</strong> = NMDA receptor binding. Chlorine = increases potency."
+  },
+  {
+    id: 2,
+    name: "Midazolam",
+    aka: "Versed",
+    category: "anesthetic",
+    color: "#9b7fd4",
+    classLabel: "Benzodiazepine · Pre-op Sedation",
+    structure: "fused ring system\n(benzene + diazepine)\n + C=O\n + N atoms",
+    groups: [
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" },
+      { label: "Carbonyl C=O", color: "#e8a94a" },
+      { label: "Amine —N—", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>Fused rings</strong> = lipophilic, fast onset. <strong>Carbonyl</strong> = metabolized by CYP3A4 → 1-hydroxymidazolam (still active). Dose-reduce in liver failure: CYP3A4 is impaired."
+  },
+  {
+    id: 3,
+    name: "Sevoflurane",
+    aka: "Ultane",
+    category: "anesthetic",
+    color: "#c87a9b",
+    classLabel: "Volatile Inhaled Anesthetic",
+    structure: "F₃C—CH(F)—O—CH₂F\n(7 fluorines · 4 carbons\n 1 oxygen ether)",
+    groups: [
+      { label: "Ether —O—", color: "#4ab8c8" },
+      { label: "Fluorines ×7", color: "#c87a9b" }
+    ],
+    meaning: "<strong>7 fluorines</strong> = low blood:gas solubility = fast on, fast off. <strong>Ether linkage</strong> = anesthetic potency. Tiny molecule = volatile at room temp. Cleanest wake-up profile in common use."
+  },
+  {
+    id: 4,
+    name: "Fentanyl",
+    aka: "Sublimaze",
+    category: "analgesic",
+    color: "#9b7fd4",
+    classLabel: "Opioid · 100× Morphine",
+    structure: "⬡—N—CH₂CH₂—⬡\n    |\n   C=O\n    |\n  CH₂CH₃",
+    groups: [
+      { label: "Amine —N—", color: "#9b7fd4" },
+      { label: "Aromatic Ring ⬡ ×2", color: "#7ab8e8" },
+      { label: "Carbonyl C=O", color: "#e8a94a" }
+    ],
+    meaning: "<strong>2 aromatic rings</strong> = extreme lipophilicity = rapid BBB crossing = 100× more potent than morphine. <strong>Amine</strong> = mu-opioid receptor binding. Accumulates in fat with prolonged infusion — context-sensitive half-time rises."
+  },
+  {
+    id: 5,
+    name: "Morphine",
+    aka: "MS Contin · Reference Opioid",
+    category: "analgesic",
+    color: "#4ac87a",
+    classLabel: "Opioid · Reference Standard",
+    structure: "5 fused rings\n(1 aromatic)\n+ 2× —OH\n+ amine N\n+ ether bridges",
+    groups: [
+      { label: "Alcohol —OH ×2", color: "#4ab8c8" },
+      { label: "Amine —N—", color: "#9b7fd4" },
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" }
+    ],
+    meaning: "<strong>2× —OH</strong> = more water-soluble than fentanyl = slower BBB crossing = slower onset. <strong>Amine</strong> = opioid receptor binding. Metabolized to M6G (more potent) — accumulates in renal failure. Duration 4–6 hrs."
+  },
+  {
+    id: 6,
+    name: "Remifentanil",
+    aka: "Ultiva",
+    category: "analgesic",
+    color: "#4ac87a",
+    classLabel: "Ester Opioid · Ultra Short-Acting",
+    structure: "⬡—N—backbone\n    |\n —COO— (ester)\n    |\n —COO— (ester)",
+    groups: [
+      { label: "Amine —N—", color: "#9b7fd4" },
+      { label: "Ester —COO— ×2", color: "#4ac87a" },
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" }
+    ],
+    meaning: "<strong>2 ester bonds</strong> = plasma esterases cleave continuously = half-life 3–4 min regardless of infusion duration. No accumulation. <strong>Amine</strong> = opioid binding. Perfect for procedures requiring rapid offset."
+  },
+  {
+    id: 7,
+    name: "Lidocaine",
+    aka: "Xylocaine",
+    category: "local",
+    color: "#9b7fd4",
+    classLabel: "Amide Local Anesthetic",
+    structure: "CH₃—⬡—NH—C=O\n  |          |\n CH₃    CH₂—N(Et)₂",
+    groups: [
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" },
+      { label: "Amide C=O+NH", color: "#e8a94a" },
+      { label: "Amine —N—", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>Amide bond</strong> = NOT cleaved by plasma esterases = lasts 1–2 hrs. <strong>Amine</strong> = crosses membrane uncharged, blocks Na⁺ channel charged. Also antiarrhythmic via same Na⁺ channel mechanism."
+  },
+  {
+    id: 8,
+    name: "Bupivacaine",
+    aka: "Marcaine · Exparel",
+    category: "local",
+    color: "#9b7fd4",
+    classLabel: "Amide Local Anesthetic · Long-Acting",
+    structure: "⬡—NH—C=O\n       |\n    N-piperidine\n       |\n     butyl chain",
+    groups: [
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" },
+      { label: "Amide C=O+NH", color: "#e8a94a" },
+      { label: "Amine —N—", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>Amide + bulky butyl chain</strong> = slow metabolism = 4–8 hr duration. More lipophilic than lidocaine = deeper tissue penetration. Cardiotoxic in overdose: binds Na⁺ channels in heart. Intralipid is the antidote — lipid sink theory."
+  },
+  {
+    id: 9,
+    name: "Succinylcholine",
+    aka: "Anectine · SCh",
+    category: "anesthetic",
+    color: "#4ac87a",
+    classLabel: "Depolarizing NMB · RSI",
+    structure: "(CH₃)₃N⁺—CH₂CH₂\n      —OOC—CH₂CH₂\n      —COO—CH₂CH₂\n       —N⁺(CH₃)₃",
+    groups: [
+      { label: "Ester —COO— ×2", color: "#4ac87a" },
+      { label: "Quat. Amine N⁺ ×2", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>2 ester bonds</strong> = plasma pseudocholinesterases cleave in 8–12 min. <strong>Permanent + charge</strong> = stays at NMJ, no CNS entry. Fastest onset/offset of any NMB. Cannot be reversed — wait for ester hydrolysis."
+  },
+  {
+    id: 10,
+    name: "Aspirin",
+    aka: "Acetylsalicylic Acid",
+    category: "analgesic",
+    color: "#c87a9b",
+    classLabel: "NSAID · Antiplatelet",
+    structure: "    O=C—O—CH₃\n       |\n      ⬡\n       |\n     COOH",
+    groups: [
+      { label: "Ester —COO—", color: "#4ac87a" },
+      { label: "Carboxylic Acid", color: "#c87a9b" },
+      { label: "Aromatic Ring ⬡", color: "#7ab8e8" }
+    ],
+    meaning: "<strong>Ester bond</strong> = hydrolyzed in GI tract to salicylic acid (active). <strong>—COOH</strong> = acidic, ionizes at body pH, renal clearance. <strong>Ring</strong> = lipophilicity. Irreversibly acetylates COX — antiplatelet effect lasts platelet lifetime (7–10 days)."
+  },
+  {
+    id: 11,
+    name: "Neostigmine",
+    aka: "Bloxiverz",
+    category: "anesthetic",
+    color: "#e8a94a",
+    classLabel: "Acetylcholinesterase Inhibitor · NMB Reversal",
+    structure: "⬡—O—C(=O)—N(CH₃)₂\n |\nN⁺(CH₃)₃",
+    groups: [
+      { label: "Ester —COO—", color: "#4ac87a" },
+      { label: "Carbonyl C=O", color: "#e8a94a" },
+      { label: "Quat. Amine N⁺", color: "#9b7fd4" }
+    ],
+    meaning: "<strong>Ester-like bond</strong> = fits into acetylcholinesterase active site and blocks it = acetylcholine accumulates = muscle contraction resumes. <strong>Permanent + charge</strong> = cannot cross BBB = only works peripherally. Always give with atropine/glycopyrrolate (muscarinic side effects)."
+  }
+];
+
+const known = new Set();
+const needsReview = new Set();
+let currentFilter = 'all';
+
+function buildCards() {
+  const grid = document.getElementById('cardGrid');
+  grid.innerHTML = '';
+  CARDS.forEach((card, i) => {
+    const el = document.createElement('div');
+    el.className = 'fc';
+    el.id = 'fc-' + card.id;
+    el.dataset.category = card.category;
+
+    const statusClass = known.has(card.id) ? 'know' : needsReview.has(card.id) ? 'review' : '';
+    const statusText = known.has(card.id) ? '✓ Known' : needsReview.has(card.id) ? '↻ Review' : '';
+
+    const groupChips = card.groups.map(g =>
+      `<span class="group-chip" style="color:${g.color}; border-color:${g.color}40;">${g.label}</span>`
+    ).join('');
+
+    el.innerHTML = `
+      <div class="fc-inner">
+        <div class="fc-front">
+          <div class="fc-color-bar" style="background:${card.color}"></div>
+          <div class="status-badge ${statusClass}" id="badge-${card.id}">${statusText}</div>
+          <div class="drug-name">${card.name}</div>
+          <div class="drug-class" style="color:${card.color}">${card.aka} · ${card.classLabel}</div>
+          <div class="tap-hint">tap to reveal structure</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-color-bar" style="background:${card.color}"></div>
+          <div class="back-label">Structure · Functional Groups</div>
+          <div class="structure-display">${card.structure}</div>
+          <div class="groups-list">${groupChips}</div>
+          <div class="meaning">${card.meaning}</div>
+          <div class="card-actions">
+            <button class="mark-btn know ${known.has(card.id) ? 'active' : ''}"
+              onclick="markCard(event, ${card.id}, 'know')">✓ Know it</button>
+            <button class="mark-btn review ${needsReview.has(card.id) ? 'active' : ''}"
+              onclick="markCard(event, ${card.id}, 'review')">↻ Review</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    el.addEventListener('click', function(e) {
+      if (e.target.closest('.mark-btn')) return;
+      this.classList.toggle('flipped');
+      // equalize heights after flip
+      setTimeout(() => equalizeCard(this), 10);
+    });
+
+    grid.appendChild(el);
+  });
+
+  applyFilter(currentFilter);
+  updateScore();
+}
+
+function equalizeCard(fcEl) {
+  const front = fcEl.querySelector('.fc-front');
+  const back = fcEl.querySelector('.fc-back');
+  const h = Math.max(front.scrollHeight, back.scrollHeight, 180);
+  front.style.minHeight = h + 'px';
+  back.style.minHeight = h + 'px';
+  fcEl.querySelector('.fc-inner').style.height = h + 'px';
+}
+
+function markCard(e, id, type) {
+  e.stopPropagation();
+  if (type === 'know') {
+    if (known.has(id)) { known.delete(id); }
+    else { known.add(id); needsReview.delete(id); }
+  } else {
+    if (needsReview.has(id)) { needsReview.delete(id); }
+    else { needsReview.add(id); known.delete(id); }
+  }
+  buildCards();
+  // re-flip if was flipped
+  const fc = document.getElementById('fc-' + id);
+  if (fc) { fc.classList.add('flipped'); equalizeCard(fc); }
+}
+
+function updateScore() {
+  const pct = (known.size / CARDS.length) * 100;
+  document.getElementById('scoreFill').style.width = pct + '%';
+  document.getElementById('scoreNums').textContent = known.size + ' / ' + CARDS.length;
+}
+
+function filter(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter(type);
+}
+
+function applyFilter(type) {
+  document.querySelectorAll('.fc').forEach(fc => {
+    const id = parseInt(fc.id.replace('fc-', ''));
+    let show = true;
+    if (type === 'review') show = needsReview.has(id);
+    else if (type === 'known') show = known.has(id);
+    else if (type !== 'all') show = fc.dataset.category === type;
+    fc.classList.toggle('hidden', !show);
+  });
+}
+
+function resetAll() {
+  known.clear();
+  needsReview.clear();
+  document.querySelectorAll('.fc').forEach(fc => fc.classList.remove('flipped'));
+  buildCards();
+}
+
+// Init
+buildCards();
+</script>
+</body>
+</html>
