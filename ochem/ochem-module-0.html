@@ -4,861 +4,938 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Molecular Literacy // Module 0</title>
-<link href="https://fonts.googleapis.com/css2?
-family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cor
-morant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
---bg: #0a0c12;
---bg2: #0f1219;
---bg3: #141820;
---card: #12161f;
---border: #1e2535;
---amber: #e8a94a;
---amber-dim: #a87835;
---teal: #4ab8c8;
---teal-dim: #2d7a87;
---white: #e8e4dc;
---muted: #6b7280;
---red: #c85a4a;
---green: #4ac87a;
---text: #c8c4bc;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-background: var(--bg);
-color: var(--text);
-font-family: 'Libre Baskerville', serif;
-min-height: 100vh;
-overflow-x: hidden;
-}
-/* STAR FIELD */
-body::before {
-content: '';
-position: fixed;
-inset: 0;
-background-image:
-radial-gradient(1px 1px at 15% 20%, rgba(232,169,74,0.3) 0%, transparent 100%),
-radial-gradient(1px 1px at 72% 8%, rgba(74,184,200,0.2) 0%, transparent 100%),
-radial-gradient(1px 1px at 40% 60%, rgba(232,169,74,0.15) 0%, transparent 100%),
-radial-gradient(1px 1px at 88% 45%, rgba(74,184,200,0.2) 0%, transparent 100%),
-radial-gradient(1px 1px at 5% 80%, rgba(255,255,255,0.1) 0%, transparent 100%),
-radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.08) 0%, transparent 100%),
-radial-gradient(1px 1px at 95% 70%, rgba(232,169,74,0.2) 0%, transparent 100%);
-pointer-events: none;
-z-index: 0;
-}
-.container {
-max-width: 680px;
-margin: 0 auto;
-padding: 0 20px 80px;
-position: relative;
-z-index: 1;
-}
-/* HEADER */
-.header {
-padding: 48px 0 32px;
-border-bottom: 1px solid var(--border);
-margin-bottom: 40px;
-animation: fadeDown 0.8s ease both;
-}
-.system-label {
-font-family: 'JetBrains Mono', monospace;
-font-size: 10px;
-letter-spacing: 0.25em;
-color: var(--teal);
-text-transform: uppercase;
-margin-bottom: 12px;
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.system-label::before {
-content: '';
-display: inline-block;
-width: 20px;
-height: 1px;
-background: var(--teal);
-}
-.main-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: clamp(2rem, 8vw, 3.2rem);
-font-weight: 300;
-color: var(--white);
-line-height: 1.1;
-margin-bottom: 8px;
-letter-spacing: -0.01em;
-}
-.main-title em {
-color: var(--amber);
-font-style: italic;
-}
-.subtitle {
-font-family: 'JetBrains Mono', monospace;
-font-size: 11px;
-color: var(--muted);
-letter-spacing: 0.15em;
-margin-top: 16px;
-}
-/* PROGRESS BAR */
-.progress-bar {
-height: 2px;
-background: var(--border);
-border-radius: 2px;
-margin-top: 24px;
-overflow: hidden;
-}
-.progress-fill {
-height: 100%;
-width: 0%;
-background: linear-gradient(90deg, var(--teal), var(--amber));
-border-radius: 2px;
-transition: width 0.6s ease;
-}
-.progress-label {
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-color: var(--muted);
-letter-spacing: 0.1em;
-margin-top: 6px;
-text-align: right;
-}
-/* SECTIONS */
-.section {
-margin-bottom: 32px;
-animation: fadeUp 0.6s ease both;
-}
-.section:nth-child(2) { animation-delay: 0.1s; }
-.section:nth-child(3) { animation-delay: 0.2s; }
-.section:nth-child(4) { animation-delay: 0.3s; }
-.section:nth-child(5) { animation-delay: 0.4s; }
-.section-tag {
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-letter-spacing: 0.25em;
-color: var(--amber);
-text-transform: uppercase;
-margin-bottom: 14px;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.section-tag::after {
-content: '';
-flex: 1;
-height: 1px;
-background: linear-gradient(90deg, var(--border), transparent);
-}
-.section-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: clamp(1.4rem, 5vw, 1.9rem);
-font-weight: 600;
-color: var(--white);
-line-height: 1.2;
-margin-bottom: 16px;
-}
-p {
-font-size: 15px;
-line-height: 1.8;
-color: var(--text);
-margin-bottom: 14px;
-}
-p:last-child { margin-bottom: 0; }
-strong {
-color: var(--white);
-font-weight: 700;
-}
-em {
-color: var(--amber);
-font-style: italic;
-}
-/* CALLOUT CARDS */
-.callout {
-background: var(--card);
-border: 1px solid var(--border);
-border-left: 3px solid var(--teal);
-border-radius: 4px;
-padding: 20px 22px;
-margin: 20px 0;
-}
-}
-}
-.callout.amber {
-border-left-color: var(--amber);
-.callout.green {
-border-left-color: var(--green);
-.callout-label {
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-letter-spacing: 0.2em;
-color: var(--teal);
-text-transform: uppercase;
-margin-bottom: 10px;
-}
-.callout.amber .callout-label { color: var(--amber); }
-.callout.green .callout-label { color: var(--green); }
-.callout p { font-size: 14px; margin-bottom: 8px; }
-.callout p:last-child { margin-bottom: 0; }
-/* FEAR AUDIT */
-.fear-grid {
-display: flex;
-flex-direction: column;
-gap: 12px;
-margin: 20px 0;
-}
-.fear-item {
-background: var(--card);
-border: 1px solid var(--border);
-border-radius: 6px;
-overflow: hidden;
-cursor: pointer;
-transition: border-color 0.2s;
-}
-.fear-item:hover { border-color: var(--teal-dim); }
-.fear-item.open { border-color: var(--teal); }
-.fear-header {
-display: flex;
-align-items: center;
-gap: 12px;
-padding: 14px 16px;
-}
-.fear-icon {
-font-family: 'JetBrains Mono', monospace;
-font-size: 11px;
-color: var(--red);
-min-width: 20px;
-}
-.fear-item.open .fear-icon { color: var(--green); }
-.fear-text {
-font-size: 14px;
-color: var(--text);
-flex: 1;
-}
-.fear-toggle {
-font-family: 'JetBrains Mono', monospace;
-font-size: 16px;
-color: var(--muted);
-transition: transform 0.3s;
-}
-.fear-item.open .fear-toggle { transform: rotate(45deg); color: var(--teal); }
-.fear-answer {
-display: none;
-padding: 0 16px 16px 48px;
-font-size: 13px;
-line-height: 1.7;
-color: var(--teal);
-border-top: 1px solid var(--border);
-padding-top: 12px;
-margin-top: 0;
-}
-.fear-item.open .fear-answer { display: block; }
-/* MOLECULE REVEAL */
-.molecule-card {
-background: var(--card);
-border: 1px solid var(--border);
-border-radius: 8px;
-padding: 24px;
-margin: 20px 0;
-text-align: center;
-position: relative;
-overflow: hidden;
-}
-.molecule-card::before {
-content: '';
-position: absolute;
-inset: 0;
-background: radial-gradient(ellipse at center, rgba(74,184,200,0.04) 0%, transparent 70%);
-pointer-events: none;
-}
-.molecule-name {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.6rem;
-font-weight: 600;
-color: var(--amber);
-margin-bottom: 6px;
-}
-.molecule-aka {
-font-family: 'JetBrains Mono', monospace;
-font-size: 10px;
-color: var(--muted);
-letter-spacing: 0.15em;
-margin-bottom: 20px;
-}
-.molecule-visual {
-font-family: 'JetBrains Mono', monospace;
-font-size: clamp(13px, 3.5vw, 18px);
-color: var(--teal);
-letter-spacing: 0.1em;
-margin: 16px 0;
-padding: 16px;
-background: rgba(74,184,200,0.05);
-border-radius: 4px;
-border: 1px solid rgba(74,184,200,0.1);
-line-height: 2;
-}
-.molecule-fact {
-font-size: 13px;
-color: var(--muted);
-line-height: 1.6;
-margin-top: 12px;
-}
-/* TABS for molecules */
-.mol-tabs {
-display: flex;
-gap: 2px;
-margin-bottom: 0;
-border-bottom: 1px solid var(--border);
-}
-.mol-tab {
-font-family: 'JetBrains Mono', monospace;
-font-size: 10px;
-letter-spacing: 0.1em;
-padding: 8px 14px;
-border: none;
-background: transparent;
-color: var(--muted);
-cursor: pointer;
-border-bottom: 2px solid transparent;
-margin-bottom: -1px;
-transition: all 0.2s;
-text-transform: uppercase;
-}
-.mol-tab.active {
-color: var(--amber);
-border-bottom-color: var(--amber);
-}
-.mol-panel { display: none; padding-top: 20px; }
-.mol-panel.active { display: block; }
-/* COMMITMENT */
-.commitment {
-background: linear-gradient(135deg, rgba(232,169,74,0.06), rgba(74,184,200,0.06));
-border: 1px solid var(--amber-dim);
-border-radius: 8px;
-padding: 28px 24px;
-margin: 32px 0;
-text-align: center;
-}
-.commitment-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.5rem;
-color: var(--amber);
-margin-bottom: 12px;
-font-weight: 600;
-}
-.commitment p {
-font-size: 14px;
-color: var(--text);
-max-width: 480px;
-margin: 0 auto 16px;
-}
-/* NEXT BUTTON */
-.next-btn {
-display: block;
-width: 100%;
-padding: 16px 24px;
-background: transparent;
-border: 1px solid var(--amber);
-border-radius: 6px;
-color: var(--amber);
-font-family: 'JetBrains Mono', monospace;
-font-size: 11px;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-cursor: pointer;
-transition: all 0.3s;
-margin-top: 16px;
-}
-.next-btn:hover {
-background: rgba(232,169,74,0.08);
-border-color: var(--amber);
-color: var(--white);
-transform: translateY(-1px);
-}
-/* COMPLETED STATE */
-.win-banner {
-display: none;
-background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(74,184,200,0.1));
-border: 1px solid var(--green);
-border-radius: 8px;
-padding: 24px;
-text-align: center;
-margin-top: 24px;
-animation: fadeUp 0.5s ease both;
-}
-.win-banner.show { display: block; }
-.win-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.8rem;
-color: var(--green);
-margin-bottom: 8px;
-}
-.win-subtitle {
-font-family: 'JetBrains Mono', monospace;
-font-size: 10px;
-color: var(--muted);
-letter-spacing: 0.2em;
-text-transform: uppercase;
-}
-/* DIVIDER */
-.divider {
-border: none;
-border-top: 1px solid var(--border);
-margin: 40px 0;
-}
-/* QUOTE */
-blockquote {
-border-left: 3px solid var(--amber);
-padding: 12px 0 12px 20px;
-margin: 20px 0;
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.15rem;
-font-style: italic;
-color: var(--white);
-line-height: 1.6;
-}
-blockquote cite {
-display: block;
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-font-style: normal;
-color: var(--muted);
-letter-spacing: 0.15em;
-margin-top: 8px;
-}
-/* CHECKLIST */
-.checklist {
-list-style: none;
-margin: 16px 0;
-}
-.checklist li {
-display: flex;
-align-items: flex-start;
-gap: 12px;
-padding: 10px 0;
-border-bottom: 1px solid rgba(30,37,53,0.6);
-font-size: 14px;
-line-height: 1.6;
-}
-.checklist li:last-child { border-bottom: none; }
-.check-mark {
-font-family: 'JetBrains Mono', monospace;
-color: var(--green);
-font-size: 12px;
-margin-top: 2px;
-min-width: 16px;
-}
-/* MODULE NAV */
-.module-nav {
-display: flex;
-gap: 6px;
-margin-bottom: 32px;
-flex-wrap: wrap;
-}
-.mod-dot {
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-letter-spacing: 0.1em;
-padding: 6px 12px;
-border-radius: 20px;
-border: 1px solid var(--border);
-color: var(--muted);
-}
-.mod-dot.current {
-border-color: var(--amber);
-color: var(--amber);
-background: rgba(232,169,74,0.08);
-}
-.mod-dot.locked { opacity: 0.4; }
-/* ANIMATIONS */
-@keyframes fadeDown {
-from { opacity: 0; transform: translateY(-16px); }
-to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(16px); }
-to { opacity: 1; transform: translateY(0); }
-}
-@keyframes pulse {
-0%, 100% { opacity: 1; }
-50% { opacity: 0.5; }
-}
-}
-.blink {
-animation: pulse 1.5s ease infinite;
-/* ── MODULE NAVIGATION ── */
-.module-nav-bar {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-z-index: 100;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 12px 20px;
-background: rgba(10,12,18,0.96);
-border-top: 1px solid #1e2535;
-backdrop-filter: blur(12px);
--webkit-backdrop-filter: blur(12px);
-gap: 10px;
-}
-.nav-btn {
-font-family: 'JetBrains Mono', monospace;
-font-size: 10px;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-padding: 10px 16px;
-border-radius: 5px;
-border: 1px solid #1e2535;
-background: transparent;
-color: #6b7280;
-text-decoration: none;
-transition: all 0.2s;
-white-space: nowrap;
-display: flex;
-align-items: center;
-gap: 6px;
-flex-shrink: 0;
-}
-.nav-btn:hover {
-border-color: #e8a94a;
-color: #e8a94a;
-}
-.nav-btn.next {
-border-color: #e8a94a;
-color: #e8a94a;
-}
-.nav-btn.next:hover {
-background: rgba(232,169,74,0.1);
-color: #e8e4dc;
-}
-.nav-btn.disabled {
-opacity: 0.2;
-pointer-events: none;
-}
-.nav-center {
-font-family: 'JetBrains Mono', monospace;
-font-size: 9px;
-letter-spacing: 0.18em;
-color: #2d7a87;
-text-transform: uppercase;
-text-align: center;
-flex: 1;
-}
+  :root {
+    --bg: #0a0c12;
+    --bg2: #0f1219;
+    --bg3: #141820;
+    --card: #12161f;
+    --border: #1e2535;
+    --amber: #e8a94a;
+    --amber-dim: #a87835;
+    --teal: #4ab8c8;
+    --teal-dim: #2d7a87;
+    --white: #e8e4dc;
+    --muted: #6b7280;
+    --red: #c85a4a;
+    --green: #4ac87a;
+    --text: #c8c4bc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Libre Baskerville', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* STAR FIELD */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(232,169,74,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 8%, rgba(74,184,200,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 60%, rgba(232,169,74,0.15) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 45%, rgba(74,184,200,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 5% 80%, rgba(255,255,255,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.08) 0%, transparent 100%),
+      radial-gradient(1px 1px at 95% 70%, rgba(232,169,74,0.2) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  .header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .system-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .system-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--teal);
+  }
+
+  .main-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .main-title em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  .subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 16px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    border-radius: 2px;
+    transition: width 0.6s ease;
+  }
+
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  em {
+    color: var(--amber);
+    font-style: italic;
+  }
+
+  /* CALLOUT CARDS */
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--teal);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+
+  .callout.amber {
+    border-left-color: var(--amber);
+  }
+
+  .callout.green {
+    border-left-color: var(--green);
+  }
+
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .callout.amber .callout-label { color: var(--amber); }
+  .callout.green .callout-label { color: var(--green); }
+
+  .callout p { font-size: 14px; margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* FEAR AUDIT */
+  .fear-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .fear-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .fear-item:hover { border-color: var(--teal-dim); }
+  .fear-item.open { border-color: var(--teal); }
+
+  .fear-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .fear-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    min-width: 20px;
+  }
+
+  .fear-item.open .fear-icon { color: var(--green); }
+
+  .fear-text {
+    font-size: 14px;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .fear-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    color: var(--muted);
+    transition: transform 0.3s;
+  }
+
+  .fear-item.open .fear-toggle { transform: rotate(45deg); color: var(--teal); }
+
+  .fear-answer {
+    display: none;
+    padding: 0 16px 16px 48px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--teal);
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 0;
+  }
+
+  .fear-item.open .fear-answer { display: block; }
+
+  /* MOLECULE REVEAL */
+  .molecule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .molecule-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(74,184,200,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .molecule-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+
+  .molecule-aka {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+  }
+
+  .molecule-visual {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 3.5vw, 18px);
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    margin: 16px 0;
+    padding: 16px;
+    background: rgba(74,184,200,0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(74,184,200,0.1);
+    line-height: 2;
+  }
+
+  .molecule-fact {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+
+  /* TABS for molecules */
+  .mol-tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mol-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 8px 14px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .mol-tab.active {
+    color: var(--amber);
+    border-bottom-color: var(--amber);
+  }
+
+  .mol-panel { display: none; padding-top: 20px; }
+  .mol-panel.active { display: block; }
+
+  /* COMMITMENT */
+  .commitment {
+    background: linear-gradient(135deg, rgba(232,169,74,0.06), rgba(74,184,200,0.06));
+    border: 1px solid var(--amber-dim);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .commitment-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .commitment p {
+    font-size: 14px;
+    color: var(--text);
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
+
+  /* NEXT BUTTON */
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    border-radius: 6px;
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 16px;
+  }
+
+  .next-btn:hover {
+    background: rgba(232,169,74,0.08);
+    border-color: var(--amber);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  /* COMPLETED STATE */
+  .win-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(74,184,200,0.1));
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .win-banner.show { display: block; }
+
+  .win-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .win-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* QUOTE */
+  blockquote {
+    border-left: 3px solid var(--amber);
+    padding: 12px 0 12px 20px;
+    margin: 20px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.6;
+  }
+
+  blockquote cite {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-style: normal;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(30,37,53,0.6);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .checklist li:last-child { border-bottom: none; }
+
+  .check-mark {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--green);
+    font-size: 12px;
+    margin-top: 2px;
+    min-width: 16px;
+  }
+
+  /* MODULE NAV */
+  .module-nav {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .mod-dot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .mod-dot.current {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: rgba(232,169,74,0.08);
+  }
+
+  .mod-dot.locked { opacity: 0.4; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .blink {
+    animation: pulse 1.5s ease infinite;
+  }
+
+  /* ── MODULE NAVIGATION ── */
+  .module-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10,12,18,0.96);
+    border-top: 1px solid #1e2535;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    gap: 10px;
+  }
+
+  .nav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 5px;
+    border: 1px solid #1e2535;
+    background: transparent;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav-btn:hover {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next:hover {
+    background: rgba(232,169,74,0.1);
+    color: #e8e4dc;
+  }
+
+  .nav-btn.disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .nav-center {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: #2d7a87;
+    text-transform: uppercase;
+    text-align: center;
+    flex: 1;
+  }
+
 </style>
 </head>
 <body>
 <div class="container">
-<!-- HEADER -->
-<div class="header">
-<div class="system-label">Molecular Literacy System</div>
-<h1 class="main-title">This Is Not<br>What You <em>Think</em> It Is</h1>
-<div class="subtitle">MODULE 00 &nbsp;·&nbsp; FOUNDATIONS &nbsp;·&nbsp; FEAR REMOVAL
-PROTOCOL</div>
-<div class="progress-bar">
-<div class="progress-fill" id="progressFill"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="system-label">Molecular Literacy System</div>
+    <h1 class="main-title">This Is Not<br>What You <em>Think</em> It Is</h1>
+    <div class="subtitle">MODULE 00 &nbsp;·&nbsp; FOUNDATIONS &nbsp;·&nbsp; FEAR REMOVAL PROTOCOL</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0% complete</div>
+  </div>
+
+  <!-- MODULE NAV -->
+  <div class="module-nav">
+    <div class="mod-dot current">00 · This Is Not What You Think</div>
+    <div class="mod-dot locked">01 · The Alphabet</div>
+    <div class="mod-dot locked">02 · Words</div>
+    <div class="mod-dot locked">03 · Sentences</div>
+    <div class="mod-dot locked">04 · Grammar</div>
+  </div>
+
+  <!-- SECTION 1: THE REPUTATION -->
+  <div class="section" id="s1">
+    <div class="section-tag">01 · The Reputation</div>
+    <h2 class="section-title">Organic Chemistry Has a Lie to Tell You</h2>
+
+    <p>You've probably already heard it. "O-Chem is the weed-out class." "It's where pre-med dreams go to die." "Even smart people fail it." Maybe you've said some version of it yourself: <em>I'll have to see if I can even do organic chemistry.</em></p>
+
+    <p>Here's the truth: that reputation is real — but it's not about the subject. It's about how the subject is usually taught.</p>
+
+    <p>Most organic chemistry courses are taught as a <strong>memorization marathon.</strong> Hundreds of reactions. Thousands of molecules. Names, structures, mechanisms, exceptions — all treated like facts to be swallowed whole. It's exhausting, arbitrary, and for most people, it doesn't stick.</p>
+
+    <div class="callout amber">
+      <div class="callout-label">The Actual Problem</div>
+      <p>Organic chemistry isn't hard because the concepts are complex. It's hard because it's almost always taught the wrong way — as a collection of facts to memorize instead of a <strong>visual language to learn to read.</strong></p>
+    </div>
+
+    <p>You are not going to learn it that way. You're going to learn it the same way you learned English — not by memorizing a dictionary, but by recognizing <strong>patterns, shapes, and meaning.</strong></p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 2: THE REFRAME -->
+  <div class="section" id="s2">
+    <div class="section-tag">02 · The Reframe</div>
+    <h2 class="section-title">You Are Learning a Language</h2>
+
+    <p>Think about what it actually took to learn English. You didn't memorize a list of every word and its definition. You didn't study grammar rules in isolation. You <strong>immersed yourself in patterns</strong> until they became automatic.</p>
+
+    <p>You learned that certain letter combinations make certain sounds. That certain word shapes mean certain things. That sentences follow a logic, and when something breaks that logic, it <em>feels wrong</em> before you can even explain why.</p>
+
+    <p>Organic chemistry works exactly the same way. Molecules are written in a shorthand — a visual code. Once you learn to read that code, you don't see a maze of lines and letters. You see <strong>a story about how a substance will behave.</strong></p>
+
+    <blockquote>
+      "Structure dictates function. How a molecule is shaped determines how it acts."
+      <cite>— The First Law of Molecular Literacy</cite>
+    </blockquote>
+
+    <p>A CRNA doesn't need to memorize every molecule they'll ever encounter. They need to <strong>read a molecule and understand what it's likely to do</strong> — is it water-soluble? Where will it bind? How will the body process it? That's a reading skill, not a memory skill.</p>
+
+    <div class="callout">
+      <div class="callout-label">What We're Building</div>
+      <p>Not an organic chemistry course. A <strong>molecular literacy system.</strong> The difference is everything.</p>
+      <p>A course asks: <em>can you pass the test?</em><br>
+      A literacy system asks: <em>can you read the molecule?</em></p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 3: YOU ALREADY KNOW SOME -->
+  <div class="section" id="s3">
+    <div class="section-tag">03 · Proof of Concept</div>
+    <h2 class="section-title">You Already Know These Molecules</h2>
+
+    <p>Before we go any further — let's prove that organic chemistry is already part of your world. You interact with these molecules every single day. You already know what they <em>do.</em> We're just going to learn to <em>read</em> them.</p>
+
+    <div class="molecule-card">
+      <div class="mol-tabs">
+        <button class="mol-tab active" onclick="showMol(0)">Water</button>
+        <button class="mol-tab" onclick="showMol(1)">Ethanol</button>
+        <button class="mol-tab" onclick="showMol(2)">Aspirin</button>
+        <button class="mol-tab" onclick="showMol(3)">Propofol</button>
+      </div>
+
+      <div class="mol-panel active" id="mol0">
+        <div class="molecule-name">Water</div>
+        <div class="molecule-aka">H₂O · You've known this one your whole life</div>
+        <div class="molecule-visual">H — O — H</div>
+        <p class="molecule-fact">Two hydrogen atoms bonded to one oxygen. The bent shape of this molecule is why water does everything it does — dissolves things, carries nutrients, conducts signals. <strong>Shape = function.</strong> This is the first rule of molecular literacy, and water is your proof.</p>
+      </div>
+
+      <div class="mol-panel" id="mol1">
+        <div class="molecule-name">Ethanol</div>
+        <div class="molecule-aka">C₂H₅OH · Hand sanitizer. Also wine.</div>
+        <div class="molecule-visual">CH₃ — CH₂ — OH</div>
+        <p class="molecule-fact">See that <strong>OH</strong> at the end? That's called a hydroxyl group — one of the first "words" in our molecular vocabulary. Any molecule with an OH is an alcohol. It's why ethanol mixes with water and why it kills bacteria on contact. One small group, massive behavioral change.</p>
+      </div>
+
+      <div class="mol-panel" id="mol2">
+        <div class="molecule-name">Aspirin</div>
+        <div class="molecule-aka">Acetylsalicylic acid · The original pain reliever</div>
+        <div class="molecule-visual">
+          Hexagon (benzene ring)<br>
+          — COOH (acid group)<br>
+          — OCOCH₃ (ester group)
+        </div>
+        <p class="molecule-fact">Aspirin looks complicated but it's just a benzene ring with two functional groups attached. You don't need to know the name of every group right now — just notice that we can <em>describe</em> aspirin in plain language by identifying its recognizable parts. That's molecular reading.</p>
+      </div>
+
+      <div class="mol-panel" id="mol3">
+        <div class="molecule-name">Propofol</div>
+        <div class="molecule-aka">2,6-diisopropylphenol · What a CRNA knows intimately</div>
+        <div class="molecule-visual">
+          Benzene ring (6-carbon core)<br>
+          — OH (hydroxyl: makes it active)<br>
+          — Two isopropyl "arms"<br>
+            (control how fast it works)
+        </div>
+        <p class="molecule-fact">This is the molecule that will put patients to sleep under your care. The benzene ring is its core. The OH group is what makes it chemically active. The two bulky "arms" on either side control how fast it crosses into the brain. <strong>Every part of this molecule has a job.</strong> And you will learn to read all of it.</p>
+      </div>
+    </div>
+
+    <p>You just read four molecules. You didn't memorize anything. You <strong>understood something</strong> — which is the only thing that matters.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 4: FEAR AUDIT -->
+  <div class="section" id="s4">
+    <div class="section-tag">04 · Fear Audit</div>
+    <h2 class="section-title">Let's Name the Fears</h2>
+
+    <p>Here are the most common fears people have about organic chemistry. Tap each one. We're going to dismantle them one at a time.</p>
+
+    <div class="fear-grid">
+      <div class="fear-item" onclick="toggleFear(this)">
+        <div class="fear-header">
+          <div class="fear-icon">✗</div>
+          <div class="fear-text">"There's too much to memorize. I'll never retain it all."</div>
+          <div class="fear-toggle">+</div>
+        </div>
+        <div class="fear-answer">
+          You're right that there's too much to memorize — which is why we're not memorizing. We're building pattern recognition. A fluent reader doesn't "remember" each word they see. They recognize shapes automatically. That's the goal. By Module 2, you'll recognize functional groups the same way you recognize a stop sign — instantly, without effort.
+        </div>
+      </div>
+
+      <div class="fear-item" onclick="toggleFear(this)">
+        <div class="fear-header">
+          <div class="fear-icon">✗</div>
+          <div class="fear-text">"I'm not a 'chemistry person.' I don't have that kind of brain."</div>
+          <div class="fear-toggle">+</div>
+        </div>
+        <div class="fear-answer">
+          A nursing student who maintains a 100% average using systems she helped build is exactly the kind of brain chemistry rewards. You are analytical, pattern-driven, and motivated by outcomes that matter. That's not "not a chemistry brain" — that's precisely the profile. The "chemistry person" myth just means someone who was shown the right door first.
+        </div>
+      </div>
+
+      <div class="fear-item" onclick="toggleFear(this)">
+        <div class="fear-header">
+          <div class="fear-icon">✗</div>
+          <div class="fear-text">"What if I take it and I just can't do it?"</div>
+          <div class="fear-toggle">+</div>
+        </div>
+        <div class="fear-answer">
+          You are starting this system potentially two years before the class. Two years of building intuition, vocabulary, and confidence before you walk in the door. By the time you sit in that classroom, this will not be new territory. It will be a review of things you already understand. You're not hoping to survive ochem. You're preparing to exceed it.
+        </div>
+      </div>
+
+      <div class="fear-item" onclick="toggleFear(this)">
+        <div class="fear-header">
+          <div class="fear-icon">✗</div>
+          <div class="fear-text">"What does any of this have to do with being a CRNA?"</div>
+          <div class="fear-toggle">+</div>
+        </div>
+        <div class="fear-answer">
+          Everything. Every drug you administer as a CRNA is a molecule. Propofol, sevoflurane, fentanyl, ketamine — they work the way they do because of their shape. Understanding molecular structure means understanding why a drug crosses the blood-brain barrier fast, why one has a longer half-life, why a slight structural change creates a totally different effect. This isn't background knowledge. This is clinical knowledge.
+        </div>
+      </div>
+
+      <div class="fear-item" onclick="toggleFear(this)">
+        <div class="fear-header">
+          <div class="fear-icon">✗</div>
+          <div class="fear-text">"I don't know where to start. The subject feels overwhelming."</div>
+          <div class="fear-toggle">+</div>
+        </div>
+        <div class="fear-answer">
+          You just started. You're in Module 0. You've already read four molecules — water, ethanol, aspirin, and propofol. You know the first law: structure dictates function. You understand why we use pattern recognition instead of memorization. That's not nothing. That's a foundation. One module at a time, one pattern at a time. The subject is only overwhelming when you try to swallow it whole.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SECTION 5: THE PATH -->
+  <div class="section" id="s5">
+    <div class="section-tag">05 · The Road</div>
+    <h2 class="section-title">What Comes Next</h2>
+
+    <p>Here is the full arc of what we're building. Each module is a layer. Each layer makes the next one easier.</p>
+
+    <ul class="checklist">
+      <li>
+        <span class="check-mark">✓</span>
+        <div><strong>Module 0 — This Is Not What You Think It Is</strong><br>
+        Fear removal. Reframing. First contact with real molecules. <em>(You are here.)</em></div>
+      </li>
+      <li>
+        <span class="check-mark">→</span>
+        <div><strong>Module 1 — The Alphabet</strong><br>
+        What lines mean. Carbon skeletons. Why hydrogens are invisible. Reading your first full structure.</div>
+      </li>
+      <li>
+        <span class="check-mark">→</span>
+        <div><strong>Module 2 — Words (Functional Groups)</strong><br>
+        Alcohols, amines, acids, carbonyls. Recognizing them on sight. Clinical connections for each.</div>
+      </li>
+      <li>
+        <span class="check-mark">→</span>
+        <div><strong>Module 3 — Sentences (Full Molecules)</strong><br>
+        Combining patterns. Reading complete structures. Breaking down real drugs.</div>
+      </li>
+      <li>
+        <span class="check-mark">→</span>
+        <div><strong>Module 4 — Grammar (Reactions)</strong><br>
+        How molecules change. Why they change. Predicting what happens when drugs metabolize.</div>
+      </li>
+    </ul>
+
+    <div class="callout green">
+      <div class="callout-label">The Goal</div>
+      <p>By the time you walk into an organic chemistry classroom, you will not be a student encountering this material for the first time. You will be someone reviewing a language you already speak.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- COMMITMENT -->
+  <div class="commitment" id="s6">
+    <div class="commitment-title">Module 0 Complete</div>
+    <p>You've reframed the subject. You've faced the fears. You've read your first molecules. You know where this is going and why it matters.</p>
+    <p>The path from here to CRNA runs through a lot of hard work. Organic chemistry is one door on that path. You are already building the key.</p>
+    <button class="next-btn" onclick="completeModule()">▸ &nbsp; MARK MODULE 0 COMPLETE</button>
+  </div>
+
+  <!-- WIN BANNER -->
+  <div class="win-banner" id="winBanner">
+    <div class="win-title">Module 0 Unlocked ✓</div>
+    <div class="win-subtitle" style="margin-top:8px; color: var(--teal);">Next: Module 1 — The Alphabet &nbsp;·&nbsp; Carbon Skeletons &amp; Hidden Rules</div>
+    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">The molecules are waiting to be read.</p>
+  </div>
+
 </div>
-<div class="progress-label" id="progressLabel">0% complete</div>
-</div>
-<!-- MODULE NAV -->
-<div class="module-nav">
-<div class="mod-dot current">00 · This Is Not What You Think</div>
-<div class="mod-dot locked">01 · The Alphabet</div>
-<div class="mod-dot locked">02 · Words</div>
-<div class="mod-dot locked">03 · Sentences</div>
-<div class="mod-dot locked">04 · Grammar</div>
-</div>
-<!-- SECTION 1: THE REPUTATION -->
-<div class="section" id="s1">
-<div class="section-tag">01 · The Reputation</div>
-<h2 class="section-title">Organic Chemistry Has a Lie to Tell You</h2>
-<p>You've probably already heard it. "O-Chem is the weed-out class." "It's where pre-med dreams go to die."
-"Even smart people fail it." Maybe you've said some version of it yourself: <em>I'll have to see if I can even do
-organic chemistry.</em></p>
-<p>Here's the truth: that reputation is real — but it's not about the subject. It's about how the subject is usually
-taught.</p>
-<p>Most organic chemistry courses are taught as a <strong>memorization marathon.</strong> Hundreds of
-reactions. Thousands of molecules. Names, structures, mechanisms, exceptions — all treated like facts to be
-swallowed whole. It's exhausting, arbitrary, and for most people, it doesn't stick.</p>
-<div class="callout amber">
-<div class="callout-label">The Actual Problem</div>
-<p>Organic chemistry isn't hard because the concepts are complex. It's hard because it's almost always
-taught the wrong way — as a collection of facts to memorize instead of a <strong>visual language to learn to
-read.</strong></p>
-</div>
-<p>You are not going to learn it that way. You're going to learn it the same way you learned English — not by
-memorizing a dictionary, but by recognizing <strong>patterns, shapes, and meaning.</strong></p>
-</div>
-<hr class="divider">
-<!-- SECTION 2: THE REFRAME -->
-<div class="section" id="s2">
-<div class="section-tag">02 · The Reframe</div>
-<h2 class="section-title">You Are Learning a Language</h2>
-<p>Think about what it actually took to learn English. You didn't memorize a list of every word and its definition.
-You didn't study grammar rules in isolation. You <strong>immersed yourself in patterns</strong> until they
-became automatic.</p>
-<p>You learned that certain letter combinations make certain sounds. That certain word shapes mean certain
-things. That sentences follow a logic, and when something breaks that logic, it <em>feels wrong</em> before
-you can even explain why.</p>
-<p>Organic chemistry works exactly the same way. Molecules are written in a shorthand — a visual code.
-Once you learn to read that code, you don't see a maze of lines and letters. You see <strong>a story about how a
-substance will behave.</strong></p>
-<blockquote>
-"Structure dictates function. How a molecule is shaped determines how it acts."
-<cite>— The First Law of Molecular Literacy</cite>
-</blockquote>
-<p>A CRNA doesn't need to memorize every molecule they'll ever encounter. They need to <strong>read a
-molecule and understand what it's likely to do</strong> — is it water-soluble? Where will it bind? How will the
-body process it? That's a reading skill, not a memory skill.</p>
-<div class="callout">
-<div class="callout-label">What We're Building</div>
-<p>Not an organic chemistry course. A <strong>molecular literacy system.</strong> The difference is
-everything.</p>
-<p>A course asks: <em>can you pass the test?</em><br>
-A literacy system asks: <em>can you read the molecule?</em></p>
-</div>
-</div>
-<hr class="divider">
-<!-- SECTION 3: YOU ALREADY KNOW SOME -->
-<div class="section" id="s3">
-<div class="section-tag">03 · Proof of Concept</div>
-<h2 class="section-title">You Already Know These Molecules</h2>
-<p>Before we go any further — let's prove that organic chemistry is already part of your world. You interact
-with these molecules every single day. You already know what they <em>do.</em> We're just going to learn to
-<em>read</em> them.</p>
-<div class="molecule-card">
-<div class="mol-tabs">
-<button class="mol-tab active" onclick="showMol(0)">Water</button>
-<button class="mol-tab" onclick="showMol(1)">Ethanol</button>
-<button class="mol-tab" onclick="showMol(2)">Aspirin</button>
-<button class="mol-tab" onclick="showMol(3)">Propofol</button>
-</div>
-<div class="mol-panel active" id="mol0">
-<div class="molecule-name">Water</div>
-<div class="molecule-aka">H₂O · You've known this one your whole life</div>
-<div class="molecule-visual">H — O — H</div>
-<p class="molecule-fact">Two hydrogen atoms bonded to one oxygen. The bent shape of this molecule is
-why water does everything it does — dissolves things, carries nutrients, conducts signals. <strong>Shape =
-function.</strong> This is the first rule of molecular literacy, and water is your proof.</p>
-</div>
-<div class="mol-panel" id="mol1">
-<div class="molecule-name">Ethanol</div>
-<div class="molecule-aka">C₂H₅OH · Hand sanitizer. Also wine.</div>
-<div class="molecule-visual">CH₃ — CH₂ — OH</div>
-<p class="molecule-fact">See that <strong>OH</strong> at the end? That's called a hydroxyl group — one
-of the first "words" in our molecular vocabulary. Any molecule with an OH is an alcohol. It's why ethanol mixes
-with water and why it kills bacteria on contact. One small group, massive behavioral change.</p>
-</div>
-<div class="mol-panel" id="mol2">
-<div class="molecule-name">Aspirin</div>
-<div class="molecule-aka">Acetylsalicylic acid · The original pain reliever</div>
-<div class="molecule-visual">
-Hexagon (benzene ring)<br>
-— COOH (acid group)<br>
-— OCOCH₃ (ester group)
-</div>
-<p class="molecule-fact">Aspirin looks complicated but it's just a benzene ring with two functional groups
-attached. You don't need to know the name of every group right now — just notice that we can <em>describe</
-em> aspirin in plain language by identifying its recognizable parts. That's molecular reading.</p>
-</div>
-<div class="mol-panel" id="mol3">
-<div class="molecule-name">Propofol</div>
-<div class="molecule-aka">2,6-diisopropylphenol · What a CRNA knows intimately</div>
-<div class="molecule-visual">
-Benzene ring (6-carbon core)<br>
-— OH (hydroxyl: makes it active)<br>
-— Two isopropyl "arms"<br>
-(control how fast it works)
-</div>
-<p class="molecule-fact">This is the molecule that will put patients to sleep under your care. The benzene
-ring is its core. The OH group is what makes it chemically active. The two bulky "arms" on either side control how
-fast it crosses into the brain. <strong>Every part of this molecule has a job.</strong> And you will learn to read all
-of it.</p>
-</div>
-</div>
-<p>You just read four molecules. You didn't memorize anything. You <strong>understood something</strong>
-— which is the only thing that matters.</p>
-</div>
-<hr class="divider">
-<!-- SECTION 4: FEAR AUDIT -->
-<div class="section" id="s4">
-<div class="section-tag">04 · Fear Audit</div>
-<h2 class="section-title">Let's Name the Fears</h2>
-<p>Here are the most common fears people have about organic chemistry. Tap each one. We're going to
-dismantle them one at a time.</p>
-<div class="fear-grid">
-<div class="fear-item" onclick="toggleFear(this)">
-<div class="fear-header">
-<div class="fear-icon">✗</div>
-<div class="fear-text">"There's too much to memorize. I'll never retain it all."</div>
-<div class="fear-toggle">+</div>
-</div>
-<div class="fear-answer">
-You're right that there's too much to memorize — which is why we're not memorizing. We're building
-pattern recognition. A fluent reader doesn't "remember" each word they see. They recognize shapes
-automatically. That's the goal. By Module 2, you'll recognize functional groups the same way you recognize a
-stop sign — instantly, without effort.
-</div>
-</div>
-<div class="fear-item" onclick="toggleFear(this)">
-<div class="fear-header">
-<div class="fear-icon">✗</div>
-<div class="fear-text">"I'm not a 'chemistry person.' I don't have that kind of brain."</div>
-<div class="fear-toggle">+</div>
-</div>
-<div class="fear-answer">
-A nursing student who maintains a 100% average using systems she helped build is exactly the kind of
-brain chemistry rewards. You are analytical, pattern-driven, and motivated by outcomes that matter. That's not
-"not a chemistry brain" — that's precisely the profile. The "chemistry person" myth just means someone who was
-shown the right door first.
-</div>
-</div>
-<div class="fear-item" onclick="toggleFear(this)">
-<div class="fear-header">
-<div class="fear-icon">✗</div>
-<div class="fear-text">"What if I take it and I just can't do it?"</div>
-<div class="fear-toggle">+</div>
-</div>
-<div class="fear-answer">
-You are starting this system potentially two years before the class. Two years of building intuition,
-vocabulary, and confidence before you walk in the door. By the time you sit in that classroom, this will not be new
-territory. It will be a review of things you already understand. You're not hoping to survive ochem. You're
-preparing to exceed it.
-</div>
-</div>
-<div class="fear-item" onclick="toggleFear(this)">
-<div class="fear-header">
-<div class="fear-icon">✗</div>
-<div class="fear-text">"What does any of this have to do with being a CRNA?"</div>
-<div class="fear-toggle">+</div>
-</div>
-<div class="fear-answer">
-Everything. Every drug you administer as a CRNA is a molecule. Propofol, sevoflurane, fentanyl, ketamine
-— they work the way they do because of their shape. Understanding molecular structure means understanding
-why a drug crosses the blood-brain barrier fast, why one has a longer half-life, why a slight structural change
-creates a totally different effect. This isn't background knowledge. This is clinical knowledge.
-</div>
-</div>
-<div class="fear-item" onclick="toggleFear(this)">
-<div class="fear-header">
-<div class="fear-icon">✗</div>
-<div class="fear-text">"I don't know where to start. The subject feels overwhelming."</div>
-<div class="fear-toggle">+</div>
-</div>
-<div class="fear-answer">
-You just started. You're in Module 0. You've already read four molecules — water, ethanol, aspirin, and
-propofol. You know the first law: structure dictates function. You understand why we use pattern recognition
-instead of memorization. That's not nothing. That's a foundation. One module at a time, one pattern at a time.
-The subject is only overwhelming when you try to swallow it whole.
-</div>
-</div>
-</div>
-</div>
-<hr class="divider">
-<!-- SECTION 5: THE PATH -->
-<div class="section" id="s5">
-<div class="section-tag">05 · The Road</div>
-<h2 class="section-title">What Comes Next</h2>
-<p>Here is the full arc of what we're building. Each module is a layer. Each layer makes the next one easier.</
-p>
-<ul class="checklist">
-<li>
-<span class="check-mark">✓</span>
-<div><strong>Module 0 — This Is Not What You Think It Is</strong><br>
-Fear removal. Reframing. First contact with real molecules. <em>(You are here.)</em></div>
-</li>
-<li>
-<span class="check-mark">→</span>
-<div><strong>Module 1 — The Alphabet</strong><br>
-What lines mean. Carbon skeletons. Why hydrogens are invisible. Reading your first full structure.</div>
-</li>
-<li>
-<span class="check-mark">→</span>
-<div><strong>Module 2 — Words (Functional Groups)</strong><br>
-Alcohols, amines, acids, carbonyls. Recognizing them on sight. Clinical connections for each.</div>
-</li>
-<li>
-<span class="check-mark">→</span>
-<div><strong>Module 3 — Sentences (Full Molecules)</strong><br>
-Combining patterns. Reading complete structures. Breaking down real drugs.</div>
-</li>
-<li>
-<span class="check-mark">→</span>
-<div><strong>Module 4 — Grammar (Reactions)</strong><br>
-How molecules change. Why they change. Predicting what happens when drugs metabolize.</div>
-</li>
-</ul>
-<div class="callout green">
-<div class="callout-label">The Goal</div>
-<p>By the time you walk into an organic chemistry classroom, you will not be a student encountering this
-material for the first time. You will be someone reviewing a language you already speak.</p>
-</div>
-</div>
-<hr class="divider">
-<!-- COMMITMENT -->
-<div class="commitment" id="s6">
-<div class="commitment-title">Module 0 Complete</div>
-<p>You've reframed the subject. You've faced the fears. You've read your first molecules. You know where this
-is going and why it matters.</p>
-<p>The path from here to CRNA runs through a lot of hard work. Organic chemistry is one door on that path.
-You are already building the key.</p>
-<button class="next-btn" onclick="completeModule()">▸ &nbsp; MARK MODULE 0 COMPLETE</button>
-</div>
-<!-- WIN BANNER -->
-<div class="win-banner" id="winBanner">
-<div class="win-title">Module 0 Unlocked ✓</div>
-<div class="win-subtitle" style="margin-top:8px; color: var(--teal);">Next: Module 1 — The Alphabet
-&nbsp;·&nbsp; Carbon Skeletons &amp; Hidden Rules</div>
-<p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-
-spacing:0.05em;">The molecules are waiting to be read.</p>
-</div>
-</div>
+
 <script>
-// Molecule tabs
-function showMol(index) {
-document.querySelectorAll('.mol-panel').forEach((p, i) => {
-p.classList.toggle('active', i === index);
-});
-document.querySelectorAll('.mol-tab').forEach((t, i) => {
-t.classList.toggle('active', i === index);
-});
-updateProgress();
-}
-// Fear items
-function toggleFear(el) {
-const wasOpen = el.classList.contains('open');
-el.classList.toggle('open', !wasOpen);
-el.querySelector('.fear-icon').textContent = !wasOpen ? '✓' : '✗';
-updateProgress();
-}
-// Progress tracking
-function updateProgress() {
-const totalMols = 4;
-const totalFears = 5;
-const openFears = document.querySelectorAll('.fear-item.open').length;
-const activeMol = document.querySelectorAll('.mol-tab.active').length > 0 ? 1 : 0;
-// Rough progress: fears opened + any mol viewed
-const visited = openFears + (document.querySelector('.mol-tab:not(:first-child).active') ? 1 : 0);
-const total = totalFears + 1;
-const pct = Math.min(Math.round((visited / total) * 85), 85);
-document.getElementById('progressFill').style.width = pct + '%';
-document.getElementById('progressLabel').textContent = pct + '% complete';
-}
-function completeModule() {
-document.getElementById('progressFill').style.width = '100%';
-document.getElementById('progressLabel').textContent = '100% complete — module unlocked';
-document.getElementById('winBanner').classList.add('show');
-document.querySelector('.next-btn').disabled = true;
-document.querySelector('.next-btn').textContent = '✓ Module 0 Complete';
-document.querySelector('.next-btn').style.borderColor = 'var(--green)';
-document.querySelector('.next-btn').style.color = 'var(--green)';
-window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
+  // Molecule tabs
+  function showMol(index) {
+    document.querySelectorAll('.mol-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.mol-tab').forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+    });
+    updateProgress();
+  }
+
+  // Fear items
+  function toggleFear(el) {
+    const wasOpen = el.classList.contains('open');
+    el.classList.toggle('open', !wasOpen);
+    el.querySelector('.fear-icon').textContent = !wasOpen ? '✓' : '✗';
+    updateProgress();
+  }
+
+  // Progress tracking
+  function updateProgress() {
+    const totalMols = 4;
+    const totalFears = 5;
+    const openFears = document.querySelectorAll('.fear-item.open').length;
+    const activeMol = document.querySelectorAll('.mol-tab.active').length > 0 ? 1 : 0;
+
+    // Rough progress: fears opened + any mol viewed
+    const visited = openFears + (document.querySelector('.mol-tab:not(:first-child).active') ? 1 : 0);
+    const total = totalFears + 1;
+    const pct = Math.min(Math.round((visited / total) * 85), 85);
+
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = pct + '% complete';
+  }
+
+  function completeModule() {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = '100% complete — module unlocked';
+    document.getElementById('winBanner').classList.add('show');
+    document.querySelector('.next-btn').disabled = true;
+    document.querySelector('.next-btn').textContent = '✓  Module 0 Complete';
+    document.querySelector('.next-btn').style.borderColor = 'var(--green)';
+    document.querySelector('.next-btn').style.color = 'var(--green)';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
 </script>
+
 <nav class="module-nav-bar">
-<span class="nav-btn disabled">← Prev</span>
-<div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 00 · Fear Removal</div>
-<a href="ochem-module-1.html" class="nav-btn next">Next →</a>
+  <span class="nav-btn disabled">← Prev</span>
+  <div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 00 · Fear Removal</div>
+  <a href="ochem-module-1.html" class="nav-btn next">Next →</a>
 </nav>
+
 </body>
 </html>
