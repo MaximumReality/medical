@@ -770,6 +770,74 @@
 
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── MODULE NAVIGATION ── */
+  .module-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10,12,18,0.96);
+    border-top: 1px solid #1e2535;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    gap: 10px;
+  }
+
+  .nav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 5px;
+    border: 1px solid #1e2535;
+    background: transparent;
+    color: #6b7280;
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav-btn:hover {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next {
+    border-color: #e8a94a;
+    color: #e8a94a;
+  }
+
+  .nav-btn.next:hover {
+    background: rgba(232,169,74,0.1);
+    color: #e8e4dc;
+  }
+
+  .nav-btn.disabled {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .nav-center {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: #2d7a87;
+    text-transform: uppercase;
+    text-align: center;
+    flex: 1;
+  }
+
 </style>
 </head>
 <body>
@@ -1238,5 +1306,12 @@
   // Init
   renderPred();
 </script>
+
+<nav class="module-nav-bar">
+  <a href="ochem-module-3.html" class="nav-btn prev">← Prev</a>
+  <div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 04 · Grammar</div>
+  <span class="nav-btn disabled">Next →</span>
+</nav>
+
 </body>
 </html>
