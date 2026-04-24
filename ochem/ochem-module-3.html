@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Molecular Literacy // Module 4</title>
+<title>Molecular Literacy // Module 3</title>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0a0c12;
+    --bg2: #0f1219;
+    --bg3: #141820;
     --card: #12161f;
     --border: #1e2535;
     --amber: #e8a94a;
@@ -21,9 +23,14 @@
     --text: #c8c4bc;
     --violet: #9b7fd4;
     --rose: #c87a9b;
-    --blue: #7ab8e8;
-    --bg3: #141820;
-    --gold: #d4a842;
+    --sky: #7ab8e8;
+
+    --fg-alcohol: #4ab8c8;
+    --fg-amine: #9b7fd4;
+    --fg-carbonyl: #e8a94a;
+    --fg-acid: #c87a9b;
+    --fg-ester: #4ac87a;
+    --fg-aromatic: #7ab8e8;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,23 +39,21 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Libre Baskerville', serif;
-    min-height: 100dvh;
+    min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* Subtle gradient atmosphere — this module feels warmer, like completion */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background:
-      radial-gradient(ellipse 60% 40% at 15% 0%, rgba(232,169,74,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 30% at 85% 100%, rgba(155,127,212,0.05) 0%, transparent 70%),
-      radial-gradient(1px 1px at 22% 18%, rgba(232,169,74,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 78% 12%, rgba(74,184,200,0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 50% 72%, rgba(155,127,212,0.15) 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 55%, rgba(74,200,122,0.1) 0%, transparent 100%),
-      radial-gradient(1px 1px at 8% 88%, rgba(200,122,155,0.1) 0%, transparent 100%);
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(74,184,200,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 82% 8%, rgba(155,127,212,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 38% 72%, rgba(232,169,74,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 91% 60%, rgba(122,184,232,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 90%, rgba(74,200,122,0.1) 0%, transparent 100%),
+      radial-gradient(1px 1px at 68% 35%, rgba(200,122,155,0.08) 0%, transparent 100%);
     pointer-events: none;
     z-index: 0;
   }
@@ -107,56 +112,20 @@
     margin-top: 16px;
   }
 
-  .progress-bar {
-    height: 2px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 24px;
-    overflow: hidden;
-  }
+  .progress-bar { height: 2px; background: var(--border); border-radius: 2px; margin-top: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--violet), var(--amber)); border-radius: 2px; transition: width 0.6s ease; }
+  .progress-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; margin-top: 6px; text-align: right; }
 
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--amber), var(--gold), var(--green));
-    border-radius: 2px;
-    transition: width 0.6s ease;
-  }
-
-  .progress-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    margin-top: 6px;
-    text-align: right;
-  }
-
-  .module-nav {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
-  }
-
-  .mod-dot {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    color: var(--muted);
-  }
-
+  .module-nav { display: flex; gap: 6px; margin-bottom: 40px; flex-wrap: wrap; }
+  .mod-dot { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); }
   .mod-dot.done { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
   .mod-dot.current { border-color: var(--amber); color: var(--amber); background: rgba(232,169,74,0.08); }
+  .mod-dot.locked { opacity: 0.35; }
 
   .section { margin-bottom: 32px; animation: fadeUp 0.6s ease both; }
   .section:nth-child(3) { animation-delay: 0.1s; }
   .section:nth-child(4) { animation-delay: 0.2s; }
   .section:nth-child(5) { animation-delay: 0.3s; }
-  .section:nth-child(6) { animation-delay: 0.4s; }
 
   .section-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -170,12 +139,7 @@
     gap: 10px;
   }
 
-  .section-tag::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border), transparent);
-  }
+  .section-tag::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 
   .section-title {
     font-family: 'Cormorant Garamond', serif;
@@ -192,40 +156,19 @@
   em { color: var(--amber); font-style: italic; }
   .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
 
-  .callout {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--teal);
-    border-radius: 4px;
-    padding: 20px 22px;
-    margin: 20px 0;
-  }
-
+  .callout { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--teal); border-radius: 4px; padding: 20px 22px; margin: 20px 0; }
   .callout.amber { border-left-color: var(--amber); }
   .callout.green { border-left-color: var(--green); }
   .callout.violet { border-left-color: var(--violet); }
-  .callout.gold { border-left-color: var(--gold); }
-  .callout.rose { border-left-color: var(--rose); }
-
-  .callout-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
+  .callout-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--teal); text-transform: uppercase; margin-bottom: 10px; }
   .callout.amber .callout-label { color: var(--amber); }
   .callout.green .callout-label { color: var(--green); }
   .callout.violet .callout-label { color: var(--violet); }
-  .callout.gold .callout-label { color: var(--gold); }
-  .callout.rose .callout-label { color: var(--rose); }
   .callout p { font-size: 14px; margin-bottom: 8px; }
   .callout p:last-child { margin-bottom: 0; }
 
   blockquote {
-    border-left: 3px solid var(--gold);
+    border-left: 3px solid var(--amber);
     padding: 12px 0 12px 20px;
     margin: 20px 0;
     font-family: 'Cormorant Garamond', serif;
@@ -234,19 +177,10 @@
     color: var(--white);
     line-height: 1.6;
   }
+  blockquote cite { display: block; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-style: normal; color: var(--muted); letter-spacing: 0.15em; margin-top: 8px; }
 
-  blockquote cite {
-    display: block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-style: normal;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    margin-top: 8px;
-  }
-
-  /* ── REACTION ANIMATOR ── */
-  .rxn-stage {
+  /* ─── MOLECULE DISSECTION TOOL ─── */
+  .dissect-shell {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -254,148 +188,178 @@
     margin: 20px 0;
   }
 
-  .rxn-tabs {
+  .dissect-tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-    scrollbar-width: none;
   }
 
-  .rxn-tabs::-webkit-scrollbar { display: none; }
-
-  .rxn-tab {
+  .dissect-tab {
+    flex: 1;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    padding: 12px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 8px;
     border: none;
     background: transparent;
     color: var(--muted);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
-    white-space: nowrap;
-    text-transform: uppercase;
     transition: all 0.2s;
-    flex-shrink: 0;
+    text-align: center;
   }
 
-  .rxn-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
+  .dissect-tab.active { color: var(--amber); border-bottom-color: var(--amber); }
 
-  .rxn-panel { display: none; padding: 28px 24px; }
-  .rxn-panel.active { display: block; }
+  .dissect-panel { display: none; padding: 24px; }
+  .dissect-panel.active { display: block; }
 
-  .rxn-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 4px;
+  /* molecule ASCII art display */
+  .mol-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(11px, 3vw, 15px);
+    line-height: 2;
+    letter-spacing: 0.05em;
+    padding: 20px;
+    background: rgba(74,184,200,0.03);
+    border: 1px solid rgba(74,184,200,0.08);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
-  .rxn-type {
+  /* color-coded parts */
+  .part-skeleton { color: var(--white); }
+  .part-alcohol { color: var(--fg-alcohol); font-weight: 600; }
+  .part-amine { color: var(--fg-amine); font-weight: 600; }
+  .part-carbonyl { color: var(--fg-carbonyl); font-weight: 600; }
+  .part-acid { color: var(--fg-acid); font-weight: 600; }
+  .part-ester { color: var(--fg-ester); font-weight: 600; }
+  .part-aromatic { color: var(--fg-aromatic); font-weight: 600; }
+  .part-dim { color: rgba(200,196,188,0.3); }
+
+  /* step-through reader */
+  .step-track {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .step-pip {
+    width: 28px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+
+  .step-pip.active { background: var(--amber); }
+  .step-pip.done { background: var(--green); }
+
+  .step-display {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    min-height: 100px;
+  }
+
+  .step-number {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  /* The transformation display */
-  .transformation {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 20px 0;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .txn-molecule {
-    flex: 1;
-    min-width: 120px;
-    text-align: center;
-    padding: 16px 12px;
-    border-radius: 6px;
-  }
-
-  .txn-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     margin-bottom: 8px;
   }
 
-  .txn-structure {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(11px, 2.8vw, 14px);
-    line-height: 1.9;
-    letter-spacing: 0.06em;
-  }
-
-  .txn-name {
+  .step-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
     font-weight: 600;
-    margin-top: 8px;
+    color: var(--white);
+    margin-bottom: 8px;
   }
 
-  .txn-arrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 22px;
-    color: var(--amber);
-    padding: 0 12px;
-    flex-shrink: 0;
-    animation: arrowPulse 2s ease infinite;
-  }
-
-  @keyframes arrowPulse {
-    0%, 100% { opacity: 0.5; transform: scaleX(1); }
-    50% { opacity: 1; transform: scaleX(1.15); }
-  }
-
-  .txn-catalyst {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.12em;
-    color: var(--amber);
-    text-align: center;
-    margin-bottom: 6px;
-  }
-
-  .rxn-explanation {
+  .step-body {
     font-size: 13px;
     line-height: 1.7;
     color: var(--text);
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
   }
 
-  .rxn-clinical {
-    background: rgba(30,37,53,0.6);
-    border-radius: 4px;
-    padding: 12px 14px;
+  .step-nav {
+    display: flex;
+    gap: 8px;
     margin-top: 14px;
-    font-size: 12px;
-    line-height: 1.65;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .step-btn {
     font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.03em;
-    color: var(--muted);
-  }
-
-  .rxn-clinical-label {
-    font-size: 8px;
-    letter-spacing: 0.2em;
+    font-size: 10px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 6px;
-    color: var(--amber);
+    padding: 9px 18px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
-  /* ── METABOLISM PATHWAY ── */
-  .pathway {
+  .step-btn:hover { border-color: var(--amber-dim); color: var(--amber); }
+  .step-btn.primary { border-color: var(--amber); color: var(--amber); }
+  .step-btn.primary:hover { background: rgba(232,169,74,0.08); }
+  .step-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .step-complete-badge {
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    padding: 6px 14px;
+    border: 1px solid rgba(74,200,122,0.3);
+    border-radius: 20px;
+    background: rgba(74,200,122,0.06);
+  }
+
+  .step-complete-badge.show { display: inline-block; }
+
+  /* color legend */
+  .color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .legend-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── COLD READ CHALLENGE ─── */
+  .cold-read {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -403,369 +367,245 @@
     margin: 20px 0;
   }
 
-  .pathway-title {
+  .cold-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9px;
     letter-spacing: 0.2em;
-    color: var(--violet);
+    color: var(--rose);
     text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cold-label::after { content: ''; flex: 1; height: 1px; background: rgba(200,122,155,0.2); }
+
+  .cold-drug-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .cold-drug-class {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
     margin-bottom: 20px;
   }
 
-  .pathway-steps {
-    position: relative;
-    padding-left: 28px;
-  }
-
-  .pathway-steps::before {
-    content: '';
-    position: absolute;
-    left: 8px;
-    top: 12px;
-    bottom: 12px;
-    width: 1px;
-    background: linear-gradient(180deg, var(--amber), var(--violet), var(--green));
-  }
-
-  .pathway-step {
-    position: relative;
+  .cold-structure {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(11px, 3vw, 15px);
+    color: var(--teal);
+    padding: 18px;
+    background: rgba(74,184,200,0.04);
+    border: 1px solid rgba(74,184,200,0.1);
+    border-radius: 6px;
     margin-bottom: 20px;
-    cursor: pointer;
+    text-align: center;
+    line-height: 2;
+    white-space: pre-wrap;
   }
 
-  .pathway-step:last-child { margin-bottom: 0; }
-
-  .pathway-step::before {
-    content: '';
-    position: absolute;
-    left: -24px;
-    top: 10px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
-    background: var(--bg);
-    transition: all 0.3s;
-    z-index: 1;
+  .cold-question {
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-style: italic;
   }
 
-  .pathway-step.revealed::before { background: var(--amber); border-color: var(--amber); }
-  .pathway-step:hover::before { border-color: var(--teal); }
+  .cold-checks {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
 
-  .pathway-step-header {
+  .cold-check {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    margin-bottom: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
   }
 
-  .pathway-phase {
+  .cold-check:hover { border-color: var(--teal-dim); }
+  .cold-check input { accent-color: var(--teal); margin-top: 2px; flex-shrink: 0; }
+  .cold-check.selected { border-color: var(--teal); background: rgba(74,184,200,0.05); }
+
+  .cold-submit {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    border: 1px solid var(--rose);
+    border-radius: 6px;
+    color: var(--rose);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.15em;
+    font-size: 10px;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 3px 8px;
-    border-radius: 3px;
-    flex-shrink: 0;
-    margin-top: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
 
-  .pathway-step-name {
+  .cold-submit:hover { background: rgba(200,122,155,0.08); }
+
+  .cold-reveal {
+    display: none;
+    margin-top: 16px;
+    padding: 18px;
+    background: rgba(30,37,53,0.6);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .cold-reveal.show { display: block; }
+
+  .cold-reveal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--amber);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .cold-reveal-item {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,37,53,0.8);
+    color: var(--text);
+  }
+
+  .cold-reveal-item:last-child { border-bottom: none; }
+  .cold-reveal-icon { font-family: 'JetBrains Mono', monospace; font-size: 11px; min-width: 18px; }
+
+  /* ─── READING GUIDE ─── */
+  .reading-guide {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+
+  .rg-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+  }
+
+  .rg-steps {
+    list-style: none;
+  }
+
+  .rg-step {
+    display: flex;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(30,37,53,0.6);
+    align-items: flex-start;
+  }
+
+  .rg-step:last-child { border-bottom: none; }
+
+  .rg-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--amber);
+    opacity: 0.4;
+    min-width: 28px;
+    line-height: 1;
+    font-weight: 600;
+  }
+
+  .rg-content h4 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.05rem;
     color: var(--white);
     font-weight: 600;
-  }
-
-  .pathway-detail {
-    display: none;
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--text);
-    margin-top: 8px;
-    padding-left: 0;
-  }
-
-  .pathway-step.revealed .pathway-detail { display: block; }
-
-  .pathway-reveal-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid var(--violet);
-    border-radius: 6px;
-    color: var(--violet);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 16px;
-  }
-
-  .pathway-reveal-btn:hover { background: rgba(155,127,212,0.08); }
-
-  /* ── PREDICTION QUIZ ── */
-  .predict-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 24px;
-    margin: 20px 0;
-  }
-
-  .predict-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    color: var(--teal);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .predict-intro {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-
-  .predict-scenario {
-    background: rgba(74,184,200,0.04);
-    border: 1px solid rgba(74,184,200,0.1);
-    border-radius: 6px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-
-  .predict-scenario-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--teal);
-    margin-bottom: 8px;
-  }
-
-  .predict-scenario-text {
-    font-size: 14px;
-    line-height: 1.65;
-    color: var(--white);
-  }
-
-  .predict-q {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    color: var(--white);
-    font-weight: 600;
-    margin-bottom: 12px;
-    line-height: 1.4;
-  }
-
-  .predict-opts {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .predict-opt {
-    padding: 12px 16px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--text);
-    font-family: 'Libre Baskerville', serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    width: 100%;
-    display: flex;
-    gap: 10px;
-  }
-
-  .predict-opt:hover:not(:disabled) { border-color: var(--teal-dim); color: var(--white); }
-  .predict-opt.correct { border-color: var(--green); color: var(--green); background: rgba(74,200,122,0.06); }
-  .predict-opt.wrong { border-color: var(--red); color: var(--red); background: rgba(200,90,74,0.06); }
-  .predict-opt:disabled { cursor: default; }
-
-  .predict-key {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    min-width: 16px;
-    flex-shrink: 0;
-    padding-top: 1px;
-  }
-
-  .predict-feedback {
-    display: none;
-    margin-top: 14px;
-    padding: 14px 16px;
-    border-radius: 4px;
-    font-size: 13px;
-    line-height: 1.65;
-  }
-
-  .predict-feedback.show { display: block; }
-  .predict-feedback.correct-fb { background: rgba(74,200,122,0.08); border: 1px solid rgba(74,200,122,0.2); color: var(--green); }
-  .predict-feedback.wrong-fb { background: rgba(200,90,74,0.08); border: 1px solid rgba(200,90,74,0.2); color: #e08878; }
-
-  .predict-next {
-    display: none;
-    margin-top: 12px;
-    padding: 10px 22px;
-    background: transparent;
-    border: 1px solid var(--amber);
-    border-radius: 4px;
-    color: var(--amber);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .predict-next.show { display: inline-block; }
-  .predict-next:hover { background: rgba(232,169,74,0.08); }
-
-  /* ── GRADUATION ── */
-  .graduation {
-    background: linear-gradient(135deg, rgba(232,169,74,0.07), rgba(74,200,122,0.07), rgba(155,127,212,0.07));
-    border: 1px solid rgba(232,169,74,0.3);
-    border-radius: 12px;
-    padding: 40px 28px;
-    margin: 40px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .graduation::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, rgba(232,169,74,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .grad-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    color: var(--amber);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .grad-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 6vw, 2.6rem);
-    color: var(--white);
-    font-weight: 300;
-    line-height: 1.2;
-    margin-bottom: 20px;
-  }
-
-  .grad-title em { color: var(--amber); font-style: italic; }
-
-  .grad-body {
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--text);
-    max-width: 500px;
-    margin: 0 auto 28px;
-  }
-
-  .grad-stats {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    margin: 24px 0;
-    flex-wrap: wrap;
-  }
-
-  .grad-stat {
-    text-align: center;
-  }
-
-  .grad-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.4rem;
-    color: var(--amber);
-    font-weight: 600;
-    line-height: 1;
     margin-bottom: 4px;
   }
 
-  .grad-stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .rg-content p {
+    font-size: 13px;
+    line-height: 1.65;
+    margin: 0;
   }
 
-  .complete-btn {
-    display: inline-block;
-    padding: 16px 36px;
+  /* COMPLETION */
+  .commitment {
+    background: linear-gradient(135deg, rgba(74,184,200,0.06), rgba(155,127,212,0.06));
+    border: 1px solid var(--amber-dim);
+    border-radius: 8px;
+    padding: 28px 24px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .commitment-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--amber);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .commitment p { font-size: 14px; color: var(--text); max-width: 480px; margin: 0 auto 16px; }
+
+  .next-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 24px;
     background: transparent;
     border: 1px solid var(--amber);
     border-radius: 6px;
     color: var(--amber);
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s;
     margin-top: 8px;
   }
 
-  .complete-btn:hover {
-    background: rgba(232,169,74,0.1);
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(232,169,74,0.15);
-  }
+  .next-btn:hover { background: rgba(232,169,74,0.08); color: var(--white); transform: translateY(-1px); }
 
-  /* WIN STATE */
-  .win-state {
+  .win-banner {
     display: none;
+    background: linear-gradient(135deg, rgba(74,200,122,0.1), rgba(74,184,200,0.1));
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 24px;
     text-align: center;
-    padding: 20px 0;
-    animation: fadeUp 0.8s ease both;
+    margin-top: 24px;
+    animation: fadeUp 0.5s ease both;
   }
 
-  .win-state.show { display: block; }
+  .win-banner.show { display: block; }
 
-  .win-headline {
+  .win-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 7vw, 3rem);
+    font-size: 1.8rem;
     color: var(--green);
-    font-weight: 300;
-    line-height: 1.2;
-    margin-bottom: 12px;
-  }
-
-  .win-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-  }
-
-  .win-message {
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--text);
-    max-width: 500px;
-    margin: 0 auto;
+    margin-bottom: 8px;
   }
 
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
@@ -846,8 +686,8 @@
   <!-- HEADER -->
   <div class="header">
     <div class="system-label">Molecular Literacy System</div>
-    <h1 class="main-title">The <em>Grammar</em></h1>
-    <div class="subtitle">MODULE 04 &nbsp;·&nbsp; REACTIONS &nbsp;·&nbsp; METABOLISM &nbsp;·&nbsp; HOW MOLECULES CHANGE</div>
+    <h1 class="main-title">The <em>Sentences</em></h1>
+    <div class="subtitle">MODULE 03 &nbsp;·&nbsp; FULL MOLECULES &nbsp;·&nbsp; DRUG DISSECTION &nbsp;·&nbsp; COLD READS</div>
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
@@ -857,460 +697,602 @@
   <!-- MODULE NAV -->
   <div class="module-nav">
     <div class="mod-dot done">00 · Fear Removal ✓</div>
-    <div class="mod-dot done">01 · Alphabet ✓</div>
+    <div class="mod-dot done">01 · The Alphabet ✓</div>
     <div class="mod-dot done">02 · Words ✓</div>
-    <div class="mod-dot done">03 · Sentences ✓</div>
-    <div class="mod-dot current">04 · Grammar</div>
+    <div class="mod-dot current">03 · Sentences</div>
+    <div class="mod-dot locked">04 · Grammar</div>
   </div>
 
-  <!-- SECTION 1: THE CONCEPT -->
+  <!-- SECTION 1 -->
   <div class="section">
-    <div class="section-tag">01 · The Final Layer</div>
-    <h2 class="section-title">Languages Change. So Do Molecules.</h2>
+    <div class="section-tag">01 · The Moment</div>
+    <h2 class="section-title">This Is Where It Comes Together</h2>
 
-    <p>You can read a molecule now. You know what its skeleton means, what its functional groups predict, how to tell a story about its behavior from structure alone. That is real literacy.</p>
+    <p>You have the alphabet — you can read carbon skeletons, count atoms, find hidden hydrogens. You have the vocabulary — you recognize functional groups on sight and know what each one means clinically.</p>
 
-    <p>But molecules are not static. The body is not a library — it's a <em>factory.</em> The moment a drug enters the bloodstream, enzymes begin transforming it. Functional groups get modified. New groups get added. Bonds get broken. Sometimes the result is an inactive waste product. Sometimes it's a molecule more potent than what you started with.</p>
+    <p>A sentence is what happens when you combine them. A full molecule. A real drug. Something that will one day flow through a patient's IV while you monitor their airway and their life.</p>
+
+    <p>Reading a full molecule is not harder than reading its parts. It's just doing both things at once — and then asking the right question: <em>given this structure, what will this molecule do?</em></p>
 
     <blockquote>
-      Grammar is what happens when words interact. Metabolism is what happens when molecules meet the body.
-      <cite>— Molecular Literacy, Module 4</cite>
+      The molecule is a sentence. The skeleton is the subject. The functional groups are the verbs. Read both and you understand the meaning.
+      <cite>— Molecular Literacy, Module 3</cite>
     </blockquote>
 
-    <p>Understanding molecular grammar — how reactions work and why — is what separates someone who knows drug names from someone who understands drug behavior. As a CRNA, you will be the person in the room who understands both.</p>
-
     <div class="callout amber">
-      <div class="callout-label">What This Module Covers</div>
-      <p><strong>Reaction types:</strong> oxidation, hydrolysis, conjugation — the three moves the body uses on almost every drug.</p>
-      <p><strong>Phase I & II metabolism:</strong> what the liver actually does and why it matters clinically.</p>
-      <p><strong>Prediction practice:</strong> given a structure and a reaction, what does the product look like?</p>
+      <div class="callout-label">The Reading Protocol</div>
+      <p>Every time you encounter a new molecule, apply this sequence: <strong>Triage first</strong> (find the functional groups — they're the action zones). <strong>Read the skeleton</strong> (how big, how long, any rings?). <strong>Ask what it means</strong> (water-soluble? lipophilic? metabolized fast or slow?).</p>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 2: REACTION TYPES -->
+  <!-- SECTION 2: THE READING PROTOCOL -->
   <div class="section">
-    <div class="section-tag">02 · The Three Moves</div>
-    <h2 class="section-title">How the Body Edits Molecules</h2>
+    <div class="section-tag">02 · The Method</div>
+    <h2 class="section-title">How to Read Any Molecule</h2>
 
-    <p>The body has essentially three editing moves it applies to drugs. Learn these and you can predict what happens to almost any drug in the body.</p>
+    <p>This is the five-step reading protocol. Memorize this process, not molecules. Apply it to every structure you'll ever see.</p>
 
-    <div class="rxn-stage" id="rxnStage">
-      <div class="rxn-tabs">
-        <button class="rxn-tab active" onclick="showRxn(0)">Oxidation</button>
-        <button class="rxn-tab" onclick="showRxn(1)">Hydrolysis</button>
-        <button class="rxn-tab" onclick="showRxn(2)">Conjugation</button>
-      </div>
-
-      <!-- OXIDATION -->
-      <div class="rxn-panel active" id="rxn0">
-        <div class="rxn-title">Oxidation</div>
-        <div class="rxn-type">Phase I · CYP450 enzymes · Most common first step</div>
-
-        <div class="transformation">
-          <div class="txn-molecule" style="background:rgba(232,169,74,0.05); border:1px solid rgba(232,169,74,0.15);">
-            <div class="txn-label" style="color:var(--amber);">Before</div>
-            <div class="txn-structure" style="color:var(--teal);">R — CH₃<br><span style="color:var(--muted); font-size:0.8em;">methyl group</span></div>
-            <div class="txn-name" style="color:var(--amber);">Parent drug</div>
+    <div class="reading-guide">
+      <div class="rg-header">The Five-Step Reading Protocol</div>
+      <ul class="rg-steps">
+        <li class="rg-step">
+          <div class="rg-num">1</div>
+          <div class="rg-content">
+            <h4>Find any nitrogen (N) or oxygen (O)</h4>
+            <p>These are your landmarks. Every functional group either contains N, O, or both. Scan the structure for these atoms first — they mark your action zones.</p>
           </div>
-
-          <div style="text-align:center; flex-shrink:0;">
-            <div class="txn-catalyst">CYP450<br>+ O₂</div>
-            <div class="txn-arrow">→</div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">2</div>
+          <div class="rg-content">
+            <h4>Name each functional group you find</h4>
+            <p>Use your Module 2 vocabulary. —OH is alcohol. N is amine. C=O is carbonyl. —COOH is acid. —COO— is ester. Hexagon is aromatic. Name them all before moving on.</p>
           </div>
-
-          <div class="txn-molecule" style="background:rgba(74,200,122,0.05); border:1px solid rgba(74,200,122,0.15);">
-            <div class="txn-label" style="color:var(--green);">After</div>
-            <div class="txn-structure" style="color:var(--teal);">R — CH₂OH<br><span style="color:var(--muted); font-size:0.8em;">hydroxyl group added</span></div>
-            <div class="txn-name" style="color:var(--green);">Metabolite</div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">3</div>
+          <div class="rg-content">
+            <h4>Read the skeleton size</h4>
+            <p>Count the carbons (bends + endpoints). Longer chain = more lipophilic = slower clearance. Aromatic ring present = very lipophilic = brain penetration likely.</p>
           </div>
-        </div>
-
-        <div class="rxn-explanation">
-          <strong>What happened:</strong> The liver's CYP450 enzymes added an oxygen to a carbon. A methyl group (CH₃) became a hydroxymethyl group (CH₂OH) — an alcohol. This is the body's most common first edit on a drug.<br><br>
-          <strong>Why it matters:</strong> Adding —OH does two things: it makes the molecule more water-soluble (easier to excrete in urine), and it creates a handle the liver can grab for Phase II processing. Oxidation is essentially the body saying: <em>"I need to get rid of this — let me make it more water-soluble first."</em>
-        </div>
-
-        <div class="rxn-clinical">
-          <div class="rxn-clinical-label">Clinical Example</div>
-          Midazolam is oxidized by CYP3A4 to 1-hydroxymidazolam — still pharmacologically active. This is why some patients get prolonged sedation: the metabolite is still working. If a patient is on a CYP3A4 inhibitor (like certain antifungals), midazolam isn't oxidized as fast — it accumulates. Understanding oxidation explains drug interactions before you memorize them.
-        </div>
-      </div>
-
-      <!-- HYDROLYSIS -->
-      <div class="rxn-panel" id="rxn1">
-        <div class="rxn-title">Hydrolysis</div>
-        <div class="rxn-type">Phase I · Esterases / water · The ester cleavage reaction</div>
-
-        <div class="transformation">
-          <div class="txn-molecule" style="background:rgba(74,200,122,0.05); border:1px solid rgba(74,200,122,0.15);">
-            <div class="txn-label" style="color:var(--green);">Before</div>
-            <div class="txn-structure" style="color:var(--teal);">R—C(=O)—O—R<br><span style="color:var(--muted); font-size:0.8em;">ester bond</span></div>
-            <div class="txn-name" style="color:var(--green);">Ester drug</div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">4</div>
+          <div class="rg-content">
+            <h4>Predict water vs. fat solubility</h4>
+            <p>More OH or COOH groups = more water-soluble = blood-friendly, kidney-cleared. More aromatic rings + long carbon chains = more fat-soluble = tissue-accumulating, brain-penetrating.</p>
           </div>
-
-          <div style="text-align:center; flex-shrink:0;">
-            <div class="txn-catalyst">esterase<br>+ H₂O</div>
-            <div class="txn-arrow">→</div>
+        </li>
+        <li class="rg-step">
+          <div class="rg-num">5</div>
+          <div class="rg-content">
+            <h4>Ask: what does this molecule want to do?</h4>
+            <p>Does it want to dissolve in water and leave quickly? Does it want to accumulate in fat tissue and act slowly? Does it have an amine that changes behavior with pH? That's the clinical story.</p>
           </div>
-
-          <div class="txn-molecule" style="background:rgba(200,122,155,0.05); border:1px solid rgba(200,122,155,0.15);">
-            <div class="txn-label" style="color:var(--rose);">After</div>
-            <div class="txn-structure" style="color:var(--teal);">R—COOH + HO—R<br><span style="color:var(--muted); font-size:0.8em;">acid + alcohol fragments</span></div>
-            <div class="txn-name" style="color:var(--rose);">Two inactive pieces</div>
-          </div>
-        </div>
-
-        <div class="rxn-explanation">
-          <strong>What happened:</strong> Water (H₂O) was used to break the ester bond. The molecule was cut in two: a carboxylic acid and an alcohol. Both fragments are generally inactive and water-soluble — ready for excretion.<br><br>
-          <strong>Why it matters:</strong> This is the fastest metabolic reaction in the body. Plasma esterases are everywhere in the blood. Any drug with an ester bond is a ticking clock. The ester is the duration timer — you saw this with succinylcholine in Module 3.
-        </div>
-
-        <div class="rxn-clinical">
-          <div class="rxn-clinical-label">Clinical Example</div>
-          Succinylcholine (2 ester bonds → cleaved in ~10 min), remifentanil (ester opioid → half-life of 3–4 minutes, shortest of any opioid), and cocaine (ester bonds → metabolized by plasma esterases). Ester = fast. Amide = slow. This single distinction explains why lidocaine lasts longer than procaine, why remifentanil disappears while fentanyl lingers.
-        </div>
-      </div>
-
-      <!-- CONJUGATION -->
-      <div class="rxn-panel" id="rxn2">
-        <div class="rxn-title">Conjugation</div>
-        <div class="rxn-type">Phase II · Glucuronidation / sulfation · The exit stamp</div>
-
-        <div class="transformation">
-          <div class="txn-molecule" style="background:rgba(155,127,212,0.05); border:1px solid rgba(155,127,212,0.15);">
-            <div class="txn-label" style="color:var(--violet);">Before</div>
-            <div class="txn-structure" style="color:var(--teal);">R — OH<br><span style="color:var(--muted); font-size:0.8em;">hydroxyl group</span></div>
-            <div class="txn-name" style="color:var(--violet);">Phase I metabolite</div>
-          </div>
-
-          <div style="text-align:center; flex-shrink:0;">
-            <div class="txn-catalyst">UGT enzyme<br>+ glucuronic acid</div>
-            <div class="txn-arrow">→</div>
-          </div>
-
-          <div class="txn-molecule" style="background:rgba(74,184,200,0.05); border:1px solid rgba(74,184,200,0.15);">
-            <div class="txn-label" style="color:var(--teal);">After</div>
-            <div class="txn-structure" style="color:var(--teal);">R — O — glucuronide<br><span style="color:var(--muted); font-size:0.8em;">large polar tag attached</span></div>
-            <div class="txn-name" style="color:var(--teal);">Glucuronide conjugate</div>
-          </div>
-        </div>
-
-        <div class="rxn-explanation">
-          <strong>What happened:</strong> A large, highly water-soluble molecule (glucuronic acid) was attached to the drug's —OH group. The drug is now enormous and polar — too big to cross membranes, too water-soluble to stay in tissues. It exits in urine or bile.<br><br>
-          <strong>Why it matters:</strong> Conjugation is the body's final exit stamp. Phase I makes the drug grabbable. Phase II attaches the exit tag. Together they are the complete metabolic sentence: <em>find it → modify it → tag it → flush it.</em>
-        </div>
-
-        <div class="rxn-clinical">
-          <div class="rxn-clinical-label">Clinical Example</div>
-          Morphine undergoes glucuronidation to two products: morphine-3-glucuronide (inactive, may cause side effects) and morphine-6-glucuronide (MORE potent than morphine itself). In patients with renal failure, M6G accumulates because the kidneys can't excrete it — leading to prolonged, dangerously deep sedation. The grammar of metabolism becomes life-threatening pharmacology.
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 3: PHASE I / II PATHWAY -->
+  <!-- SECTION 3: DISSECTION TOOL -->
   <div class="section">
-    <div class="section-tag">03 · The Liver's Workflow</div>
-    <h2 class="section-title">Phase I → Phase II: The Full Sequence</h2>
+    <div class="section-tag">03 · Dissection Lab</div>
+    <h2 class="section-title">Read Three Drugs Step by Step</h2>
 
-    <p>Walk through the liver's complete processing sequence for a drug. Tap each step to reveal what's happening and why.</p>
+    <p>Each drug below is walked through using the five-step protocol. Work through the steps in order. The molecule display updates to highlight each part as you read it.</p>
 
-    <div class="pathway">
-      <div class="pathway-title">Drug Metabolism · Complete Pathway · Tap each step</div>
-
-      <div class="pathway-steps">
-
-        <div class="pathway-step" id="ps0" onclick="revealStep(0)">
-          <div class="pathway-step-header">
-            <span class="pathway-phase" style="background:rgba(232,169,74,0.1); color:var(--amber);">Entry</span>
-            <div class="pathway-step-name">Drug enters hepatic circulation</div>
-          </div>
-          <div class="pathway-detail">The drug arrives at the liver via the portal vein (oral drugs) or systemic circulation (IV drugs). Lipophilic drugs cross hepatocyte membranes easily — the more fat-soluble, the more liver exposure. This is the "first-pass effect" for oral medications: some drugs are so heavily metabolized by the liver on first pass that very little reaches systemic circulation. Propofol avoids this because it's given IV, bypassing the portal system entirely.</div>
-        </div>
-
-        <div class="pathway-step" id="ps1" onclick="revealStep(1)">
-          <div class="pathway-step-header">
-            <span class="pathway-phase" style="background:rgba(74,184,200,0.1); color:var(--teal);">Phase I</span>
-            <div class="pathway-step-name">CYP450 enzymes oxidize, reduce, or hydrolyze</div>
-          </div>
-          <div class="pathway-detail">Cytochrome P450 enzymes — embedded in the endoplasmic reticulum of liver cells — perform the first chemical edit. Usually oxidation: they add an —OH group or break a bond, making the molecule more polar. This often (not always) reduces activity. Some prodrugs are designed to be activated by this step — codeine to morphine is the classic example. The drug is inactive until CYP2D6 converts it.</div>
-        </div>
-
-        <div class="pathway-step" id="ps2" onclick="revealStep(2)">
-          <div class="pathway-step-header">
-            <span class="pathway-phase" style="background:rgba(155,127,212,0.1); color:var(--violet);">Phase II</span>
-            <div class="pathway-step-name">Conjugation attaches the exit tag</div>
-          </div>
-          <div class="pathway-detail">The Phase I metabolite — now bearing an —OH or other polar group — gets tagged with a large hydrophilic molecule: glucuronic acid (glucuronidation), sulfate (sulfation), or others. The resulting conjugate is large, water-soluble, and pharmacologically inactive. It cannot cross cell membranes. It is now cargo waiting for transport out of the body.</div>
-        </div>
-
-        <div class="pathway-step" id="ps3" onclick="revealStep(3)">
-          <div class="pathway-step-header">
-            <span class="pathway-phase" style="background:rgba(74,200,122,0.1); color:var(--green);">Exit</span>
-            <div class="pathway-step-name">Renal or biliary excretion</div>
-          </div>
-          <div class="pathway-detail">Small conjugates exit in urine (renal). Large conjugates exit in bile (biliary) into the intestine. This is why kidney and liver function both matter for drug dosing — and why you will adjust doses for patients with renal or hepatic impairment. The exit route depends on molecular weight: below ~300–400 Da goes to kidney; above that tends toward bile. The grammar of the molecule determines how it leaves.</div>
-        </div>
-
-        <div class="pathway-step" id="ps4" onclick="revealStep(4)">
-          <div class="pathway-step-header">
-            <span class="pathway-phase" style="background:rgba(232,169,74,0.1); color:var(--amber);">Exception</span>
-            <div class="pathway-step-name">Active metabolites — the plot twist</div>
-          </div>
-          <div class="pathway-detail">Not all metabolites are inactive. Morphine-6-glucuronide is more potent than morphine. Normeperidine (meperidine metabolite) causes seizures. Fentanyl's metabolite norfentanyl is inactive — which is why fentanyl has a cleaner, more predictable offset. When you understand the metabolic grammar of each drug, these aren't surprises — they're logical conclusions written in the structure from the start.</div>
-        </div>
-
+    <div class="dissect-shell" id="dissectShell">
+      <div class="dissect-tabs">
+        <button class="dissect-tab active" onclick="switchDrug(0)">Propofol</button>
+        <button class="dissect-tab" onclick="switchDrug(1)">Lidocaine</button>
+        <button class="dissect-tab" onclick="switchDrug(2)">Aspirin</button>
       </div>
 
-      <button class="pathway-reveal-btn" onclick="revealAllSteps()">Reveal All Steps</button>
+      <!-- PROPOFOL -->
+      <div class="dissect-panel active" id="dp0">
+        <div class="mol-display" id="mol-display-0">Loading...</div>
+        <div class="color-legend" id="legend-0"></div>
+        <div class="step-track" id="track-0"></div>
+        <div class="step-display" id="step-display-0"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-0" onclick="stepDrug(0,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-0">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-0" onclick="stepDrug(0,1)">Next Step →</button>
+        </div>
+      </div>
+
+      <!-- LIDOCAINE -->
+      <div class="dissect-panel" id="dp1">
+        <div class="mol-display" id="mol-display-1">Loading...</div>
+        <div class="color-legend" id="legend-1"></div>
+        <div class="step-track" id="track-1"></div>
+        <div class="step-display" id="step-display-1"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-1" onclick="stepDrug(1,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-1">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-1" onclick="stepDrug(1,1)">Next Step →</button>
+        </div>
+      </div>
+
+      <!-- ASPIRIN -->
+      <div class="dissect-panel" id="dp2">
+        <div class="mol-display" id="mol-display-2">Loading...</div>
+        <div class="color-legend" id="legend-2"></div>
+        <div class="step-track" id="track-2"></div>
+        <div class="step-display" id="step-display-2"></div>
+        <div class="step-nav">
+          <button class="step-btn" id="prev-2" onclick="stepDrug(2,-1)" disabled>← Back</button>
+          <div class="step-complete-badge" id="badge-2">Dissection Complete ✓</div>
+          <button class="step-btn primary" id="next-2" onclick="stepDrug(2,1)">Next Step →</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 4: PREDICTION QUIZ -->
+  <!-- SECTION 4: COLD READ CHALLENGE -->
   <div class="section">
-    <div class="section-tag">04 · Prediction Practice</div>
-    <h2 class="section-title">What Happens Next?</h2>
+    <div class="section-tag">04 · Cold Read</div>
+    <h2 class="section-title">Read This Drug on Your Own</h2>
 
-    <p>Apply the grammar. Given a drug and a reaction, predict the clinical outcome.</p>
+    <p>You haven't seen this molecule before. Apply the five-step protocol. Identify every functional group you can find and predict how this drug behaves. Then check your reading.</p>
 
-    <div class="predict-block" id="predictBlock">
-      <div class="predict-title">Clinical Prediction Quiz</div>
-      <div class="predict-intro" id="predictIntro">3 scenarios. Use molecular grammar to predict what happens.</div>
+    <div class="cold-read" id="coldRead">
+      <div class="cold-label">Cold Read Challenge · Fentanyl</div>
+      <div class="cold-drug-name">Fentanyl</div>
+      <div class="cold-drug-class">Synthetic opioid · µ-receptor agonist · CRNA core drug</div>
 
-      <div id="predictContent"></div>
+      <div class="cold-structure" id="coldStructure">Described structure:
+
+Two aromatic rings (phenyl groups)
+Connected by a piperidine ring (N in a 6-membered ring)
+N-phenethyl group on one side
+N-phenyl-propanamide on the other
+Contains: C=O (carbonyl/amide), N (tertiary amine), multiple aromatic rings
+
+Simplified: Ph-CH₂CH₂-N(-C(=O)-CH₂CH₃)(C₅H₁₀)-Ph</div>
+
+      <div class="cold-question">Based on this structure, which of the following would you predict about fentanyl? Select all that apply.</div>
+
+      <div class="cold-checks" id="coldChecks">
+        <label class="cold-check" id="cc0" onclick="toggleCheck(0)">
+          <input type="checkbox" id="cb0"> It is highly lipophilic (fat-soluble) and crosses the blood-brain barrier rapidly
+        </label>
+        <label class="cold-check" id="cc1" onclick="toggleCheck(1)">
+          <input type="checkbox" id="cb1"> The nitrogen (amine) group means its activity is pH-dependent
+        </label>
+        <label class="cold-check" id="cc2" onclick="toggleCheck(2)">
+          <input type="checkbox" id="cb2"> It has a short half-life due to ester hydrolysis in plasma
+        </label>
+        <label class="cold-check" id="cc3" onclick="toggleCheck(3)">
+          <input type="checkbox" id="cb3"> It is more potent than morphine because of its ability to penetrate tissue fast
+        </label>
+        <label class="cold-check" id="cc4" onclick="toggleCheck(4)">
+          <input type="checkbox" id="cb4"> The carbonyl group makes it a potential site for metabolic reactions in the liver
+        </label>
+        <label class="cold-check" id="cc5" onclick="toggleCheck(5)">
+          <input type="checkbox" id="cb5"> It is primarily water-soluble and cleared rapidly by the kidneys
+        </label>
+      </div>
+
+      <button class="cold-submit" onclick="checkColdRead()">Submit My Reading</button>
+
+      <div class="cold-reveal" id="coldReveal">
+        <div class="cold-reveal-title">Full Reading — Fentanyl</div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">Highly lipophilic — correct.</strong> Multiple aromatic rings + long carbon chains = extreme fat solubility. Fentanyl is 600x more lipophilic than morphine. It penetrates the CNS within 90 seconds of IV administration.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">pH-dependent via amine — correct.</strong> The tertiary amine (piperidine ring nitrogen) is the pH-sensitive component. At physiologic pH most fentanyl is uncharged — ideal for membrane crossing.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--red)">✗</span>
+          <span><strong style="color:var(--white)">Ester hydrolysis — incorrect.</strong> Fentanyl does NOT have an ester group. It has an amide (C=O bonded to N). Amides are much more resistant to hydrolysis. Fentanyl's duration is not ester-dependent — it redistributes into fat tissue.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">More potent due to fast tissue penetration — correct.</strong> The aromatic rings are the key. They make fentanyl 100x more potent than morphine by volume because of how fast and completely it crosses into CNS tissue.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--green)">✓</span>
+          <span><strong style="color:var(--white)">Carbonyl as metabolic site — correct.</strong> The amide carbonyl (C=O) is metabolized hepatically — N-dealkylation by CYP3A4. That's why hepatic dysfunction changes fentanyl clearance significantly.</span>
+        </div>
+        <div class="cold-reveal-item">
+          <span class="cold-reveal-icon" style="color:var(--red)">✗</span>
+          <span><strong style="color:var(--white)">Primarily water-soluble — incorrect.</strong> The opposite is true. Multiple aromatic rings dominate the structure. Fentanyl accumulates in fat, skeletal muscle, and lung tissue. This is why repeat dosing causes a reservoir effect and delayed respiratory depression.</span>
+        </div>
+        <div style="margin-top:14px; padding:14px; background:rgba(232,169,74,0.06); border-radius:4px; border:1px solid rgba(232,169,74,0.15);">
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--amber); text-transform:uppercase; margin-bottom:8px;">Clinical Translation</div>
+          <p style="font-size:13px; line-height:1.7; color:var(--text); margin:0;">You just explained why fentanyl requires careful titration with repeat doses, why it causes delayed respiratory depression in obese patients (large fat reservoir), and why it's incomparably fast-acting for induction — all from reading the structure. That's molecular literacy in clinical practice.</p>
+        </div>
+      </div>
     </div>
   </div>
 
   <hr class="divider">
 
-  <!-- SECTION 5: WHAT YOU NOW KNOW -->
+  <!-- SECTION 5: THE BIGGER PICTURE -->
   <div class="section">
-    <div class="section-tag">05 · The Full Picture</div>
-    <h2 class="section-title">The Language Is Complete</h2>
+    <div class="section-tag">05 · What You Can Now Do</div>
+    <h2 class="section-title">You Can Read Drugs</h2>
 
-    <p>Step back and look at what this system has built.</p>
+    <p>Stop here for a moment and recognize what you've built across these three modules.</p>
 
-    <p>You started in Module 0 knowing that organic chemistry had a reputation and a feeling associated with it. You ended that module with a different framework — <em>this is a language, not a maze.</em></p>
-
-    <p>In Module 1 you learned the alphabet — carbon skeletons, hidden hydrogens, the 4-bond rule. In Module 2 you learned the words — six functional groups and their clinical meanings. In Module 3 you read complete sentences — full drug molecules decoded from scratch, morphine analyzed cold, ketamine predicted from structure alone.</p>
-
-    <p>And now in Module 4 you understand grammar — how the body edits molecules, why ester drugs are short-acting, why morphine's metabolite can accumulate dangerously in renal failure, why CYP inhibitors cause drug interactions that can endanger patients.</p>
-
-    <div class="callout gold">
-      <div class="callout-label">What a CRNA Does With This</div>
-      <p>When you walk into an OR and draw up propofol, you will know: aromatic ring for fast brain entry, phenol —OH for injectability, isopropyl arms slowing metabolism. When you reach for succinylcholine, you will know: two ester bonds, countdown clock running the moment it hits plasma. When you adjust a fentanyl infusion, you will know: two phenyl rings, highly lipophilic, accumulates in fat stores with prolonged infusion.</p>
-      <p style="margin-top:8px;">You will not just know the drug names. You will know the drugs.</p>
+    <div class="callout green">
+      <div class="callout-label">Your Current Capabilities</div>
+      <p>You can look at a line structure and count every carbon atom. You can calculate hidden hydrogens for any carbon in the chain. You can identify an alcohol, amine, carbonyl, carboxylic acid, ester, or aromatic ring on sight. You can use those groups to predict water vs. fat solubility. You can read a full drug molecule, name its parts, and tell a clinical story about its behavior.</p>
+      <p>You have done all of this without memorizing a single drug molecule. You have been reading them.</p>
     </div>
 
-    <p>The class hasn't started yet. And you can already read the molecules.</p>
+    <p>When you eventually sit in an organic chemistry classroom, the professor will put a structure on the board and ask the class to identify the functional groups. You will already know the answer before the question is finished.</p>
+
+    <p>That's not because you studied harder. It's because you studied <em>differently.</em></p>
   </div>
 
-  <hr class="divider">
+  <!-- COMPLETION -->
+  <div class="commitment">
+    <div class="commitment-title">Module 3 Complete</div>
+    <p>You dissected propofol, lidocaine, and aspirin. You cold-read fentanyl. You have a five-step reading protocol you can apply to any molecule you'll ever encounter.</p>
+    <p>One module left. Module 4 is grammar — how molecules change, why they change, and what happens to drugs as the body processes them.</p>
+    <button class="next-btn" id="completeBtn" onclick="completeModule()">▸ &nbsp; MARK MODULE 3 COMPLETE</button>
+  </div>
 
-  <!-- GRADUATION -->
-  <div class="graduation" id="gradSection">
-    <div class="grad-eyebrow">Molecular Literacy System · Complete</div>
-    <h2 class="grad-title">You Built the <em>Foundation</em></h2>
-
-    <div class="grad-stats">
-      <div class="grad-stat">
-        <div class="grad-stat-num">5</div>
-        <div class="grad-stat-label">Modules</div>
-      </div>
-      <div class="grad-stat">
-        <div class="grad-stat-num">12+</div>
-        <div class="grad-stat-label">Real drugs read</div>
-      </div>
-      <div class="grad-stat">
-        <div class="grad-stat-num">6</div>
-        <div class="grad-stat-label">Functional groups</div>
-      </div>
-      <div class="grad-stat">
-        <div class="grad-stat-num">3</div>
-        <div class="grad-stat-label">Reaction types</div>
-      </div>
+  <div class="win-banner" id="winBanner">
+    <div class="win-title">Module 3 Unlocked ✓</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--teal); letter-spacing:0.2em; margin-top:8px;">
+      NEXT: MODULE 04 — GRAMMAR &nbsp;·&nbsp; REACTIONS &nbsp;·&nbsp; HOW DRUGS CHANGE IN THE BODY
     </div>
-
-    <p class="grad-body">This is a head start most pre-med students never get. By the time organic chemistry begins, this vocabulary will be old news. The fear will be replaced by familiarity. The confusion will be replaced by pattern recognition.</p>
-
-    <p class="grad-body">The path from here to CRNA is long and worthy of you. This was one step on it. Keep going.</p>
-
-    <button class="complete-btn" id="completeBtn" onclick="completeSystem()">
-      ▸ &nbsp; Complete the Molecular Literacy System
-    </button>
-  </div>
-
-  <!-- WIN STATE -->
-  <div class="win-state" id="winState">
-    <div class="win-headline">Molecular Literacy<br>Achieved ✓</div>
-    <div class="win-sub">All 5 modules complete &nbsp;·&nbsp; Foundation built</div>
-    <p class="win-message">
-      The molecules are no longer a mystery.<br>
-      They are a language you know how to read.<br><br>
-      <em style="color:var(--amber);">The OR is waiting.</em>
-    </p>
+    <p style="font-size:13px; color:var(--muted); margin-top:16px; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em;">You can read the molecule. Now learn how it transforms.</p>
   </div>
 
 </div>
 
 <script>
-  // RXN TABS
-  const rxnsVisited = new Set([0]);
-
-  function showRxn(i) {
-    document.querySelectorAll('.rxn-panel').forEach((p, idx) => p.classList.toggle('active', idx === i));
-    document.querySelectorAll('.rxn-tab').forEach((t, idx) => t.classList.toggle('active', idx === i));
-    rxnsVisited.add(i);
-    updateProgress();
-  }
-
-  // PATHWAY STEPS
-  const stepsRevealed = new Set();
-
-  function revealStep(i) {
-    document.getElementById('ps' + i).classList.add('revealed');
-    stepsRevealed.add(i);
-    updateProgress();
-  }
-
-  function revealAllSteps() {
-    for (let i = 0; i < 5; i++) revealStep(i);
-  }
-
-  // PREDICTION QUIZ
-  const predictions = [
+  // ─── DRUG DISSECTION DATA ───
+  const drugs = [
     {
-      scenario: "A patient with severe liver cirrhosis is given a standard induction dose of midazolam for anxiolysis before surgery. CYP3A4 enzyme activity in their liver is reduced to approximately 20% of normal.",
-      q: "Based on what you know about Phase I metabolism, what should you predict about this patient's response?",
-      options: [
-        "No change — midazolam doesn't need liver metabolism.",
-        "Faster clearance — damaged livers process drugs more quickly.",
-        "Prolonged and exaggerated sedation — midazolam isn't oxidized fast enough and accumulates.",
-        "Immediate reversal — the liver failure will neutralize the drug."
-      ],
-      correct: 2,
-      feedback: "Correct. Midazolam is a CYP3A4 substrate — it requires Phase I oxidation to be cleared. Reduced CYP3A4 = slowed oxidation = midazolam accumulates in plasma = deeper, longer sedation. You would reduce the dose significantly and monitor closely. This is molecular grammar applied to patient safety."
+      name: "Propofol",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "One oxygen atom — that's your landmark",
+          body: "Scan propofol's structure. There is one oxygen atom, attached as —OH to the benzene ring. No nitrogen. So we have exactly one functional group to find. Simple molecule.",
+          display: `      Benzene ring (⬡)
+         |
+  [OH]←— carbon on ring
+         |
+   isopropyl   isopropyl
+   (CH(CH₃)₂) (CH(CH₃)₂)`,
+          highlight: "alcohol"
+        },
+        {
+          color: "var(--fg-alcohol)",
+          number: "Step 2 · Name the functional group",
+          title: "Alcohol (phenol) — the —OH group",
+          body: "The —OH on a benzene ring is specifically called a phenol. It behaves like an alcohol — hydrophilic, reactive, water-interacting. This one —OH group is what makes propofol injectable despite being a fat-soluble molecule. Without it, you couldn't dissolve it in the lipid emulsion used for IV administration.",
+          display: `      ⬡ (benzene)
+      |
+   →[OH]← ALCOHOL GROUP
+      |
+  The lone oxygen. The injectable anchor.`,
+          highlight: "alcohol"
+        },
+        {
+          color: "var(--fg-aromatic)",
+          number: "Step 3 · Read the skeleton",
+          title: "Benzene ring + two bulky isopropyl arms",
+          body: "The core is a 6-carbon benzene ring (aromatic). On two positions of that ring, large isopropyl groups extend outward — CH(CH₃)₂ on each side. These are pure carbon chains, no functional groups. They're the 'bulk' of the molecule.",
+          display: `  (CH₃)₂CH  →[⬡]←  CH(CH₃)₂
+               |
+              OH
+
+Aromatic ring + two carbon arms.`,
+          highlight: "aromatic"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Mostly lipophilic — with one water anchor",
+          body: "Benzene ring = fat-soluble. Two isopropyl groups = fat-soluble. One —OH = water anchor. Net result: propofol is predominantly lipophilic but can be formulated as an emulsion (fat droplets in water). This is why it's the milky white liquid — it's literally dissolved in a soybean oil emulsion.",
+          display: `FAT-SOLUBLE: benzene + isopropyl arms
+WATER ANCHOR: the single —OH
+NET: lipophilic dominant → crosses BBB fast`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "Fast in, fast out — the isopropyl groups are the mechanism",
+          body: "The two large isopropyl groups are not decoration. They create steric bulk that prevents the liver from metabolizing propofol too quickly, but also ensure rapid redistribution from the CNS into peripheral fat. Patient goes under in 40 seconds. Wake-up is clean and fast. The entire pharmacokinetic profile is written in this structure.",
+          display: `Propofol: ⬡(OH)(iPr)₂
+
+Fast onset → lipophilic BBB crossing
+Clean emergence → rapid redistribution
+White emulsion → lipid vehicle required`,
+          highlight: null
+        }
+      ]
     },
     {
-      scenario: "You are comparing two local anesthetics: procaine (ester-type) and bupivacaine (amide-type). Both are injected at the same concentration for a nerve block.",
-      q: "Based on the ester vs. amide distinction and what you know about hydrolysis, which will have the longer duration and why?",
-      options: [
-        "Procaine — ester bonds are more stable than amide bonds.",
-        "Bupivacaine — amide bonds resist plasma esterase hydrolysis, so it clears more slowly.",
-        "They will have identical duration — bond type doesn't affect metabolism speed.",
-        "Procaine — it has more carbon atoms and therefore more resistance to enzymes."
-      ],
-      correct: 1,
-      feedback: "Right. Ester bonds are cleaved rapidly by plasma cholinesterases. Amide bonds are not — amide-type anesthetics must travel to the liver for CYP metabolism, which is a much slower process. Bupivacaine's amide bond is precisely why it lasts 4–8 hours while procaine lasts under an hour. The bond type is the duration."
+      name: "Lidocaine",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "Two nitrogens and one oxygen",
+          body: "Scan lidocaine. You find: one oxygen (in a carbonyl, C=O), and two nitrogen atoms (one in an amide, one as a tertiary amine). Three functional group landmarks. This is a more complex molecule than propofol — three action zones instead of one.",
+          display: `Aromatic ring — [amide C=O] — [N tertiary]
+                   ↑                    ↑
+               oxygen here         nitrogen here
+
+Plus: N inside the amide itself.
+Three landmarks. Three jobs.`,
+          highlight: null
+        },
+        {
+          color: "var(--fg-amine)",
+          number: "Step 2 · Name the groups",
+          title: "Amide + tertiary amine + aromatic ring",
+          body: "The C=O bonded directly to a nitrogen is called an amide (a special combination of carbonyl + amine). The separate N with two carbon chains attached is a tertiary amine — the one responsible for pH-dependent membrane crossing. The hexagon is the aromatic ring giving fat solubility.",
+          display: `⬡ — C(=O) — NH — [chain] — N(CH₂CH₃)₂
+↑        ↑             ↑               ↑
+aromatic  amide C=O  amide N      tertiary amine
+(lipophilic) (metabolic hub)    (the pH switch)`,
+          highlight: "amine"
+        },
+        {
+          color: "var(--fg-aromatic)",
+          number: "Step 3 · Read the skeleton",
+          title: "Medium-sized — aromatic core with a flexible chain",
+          body: "The aromatic ring provides the lipophilic anchor. A short flexible carbon chain connects it to the tertiary amine on the other end. Two methyl groups on the ring (dimethyl substitution) add bulk that slows hepatic metabolism — this is why lidocaine lasts longer than some earlier local anesthetics.",
+          display: `2,6-dimethyl benzene ring
+    → amide linker
+        → 2-carbon chain
+            → diethylamine
+
+The methyl groups are a metabolic shield.`,
+          highlight: "aromatic"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Balanced — designed to cross membranes at the right moment",
+          body: "Aromatic ring + carbon chain = lipophilic enough to cross nerve membranes. Tertiary amine = can become charged (ionized) at lower pH. The balance is intentional: uncharged form crosses the membrane (fat-soluble), charged form blocks the channel from inside (water-soluble interaction). This is the mechanism of local anesthesia.",
+          display: `OUTSIDE NERVE (pH ~7.4): mostly uncharged → crosses membrane
+INSIDE NERVE (pH ~7.1): more charged → blocks Na+ channel
+
+The amine is a pH-activated key.`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "Why lidocaine works — written in the structure",
+          body: "You now understand lidocaine's entire mechanism from its structure: the aromatic ring makes it fat-soluble enough to diffuse through the lipid nerve membrane. The amine changes charge state at nerve pH to lock into the sodium channel. The amide bond (not ester) means plasma esterases won't destroy it — it has to go to the liver. That's why lidocaine lasts 1-2 hours instead of 5 minutes.",
+          display: `Lidocaine: amide-type local anesthetic
+→ Aromatic ring: membrane crossing
+→ Tertiary amine: pH-activated block
+→ Amide bond: resistant to plasma hydrolysis
+→ Liver metabolism: 1-2 hour duration`,
+          highlight: null
+        }
+      ]
     },
     {
-      scenario: "A critically ill patient in the ICU has been on a remifentanil infusion for 48 hours for ventilator management. The team is preparing to wean ventilation and discontinue the infusion.",
-      q: "Remifentanil is an ester opioid with a half-life of 3–4 minutes. What is the clinical implication when the infusion stops?",
-      options: [
-        "The patient will remain sedated for 6–12 hours due to drug accumulation in fat tissue.",
-        "The patient will wake rapidly — the ester bonds are continuously hydrolyzed regardless of infusion duration, so no accumulation occurs.",
-        "The patient will need naloxone immediately because ester opioids are irreversible.",
-        "The half-life will have extended to several hours due to enzyme saturation after 48 hours."
-      ],
-      correct: 1,
-      feedback: "Exactly right. This is remifentanil's defining clinical feature — and it comes directly from the ester bond. Unlike fentanyl (which accumulates in fat over long infusions), remifentanil is continuously hydrolyzed in plasma throughout the infusion. Stop the infusion and within minutes the drug is gone. This is called 'context-sensitive half-time' and for remifentanil it stays flat at ~4 minutes regardless of infusion duration. The ester is the reason."
+      name: "Aspirin",
+      steps: [
+        {
+          color: "var(--amber)",
+          number: "Step 1 · Scan for N and O",
+          title: "Four oxygen atoms — no nitrogen",
+          body: "Aspirin has four oxygen atoms and no nitrogen. That means multiple oxygenated functional groups. Four oxygens on a relatively small molecule means it will be more water-soluble than propofol. Scan and locate them all before naming anything.",
+          display: `Benzene ring with two oxygen-containing groups:
+  — one on each side of the ring
+
+Four oxygens total.
+No nitrogen.
+Acidic molecule incoming.`,
+          highlight: null
+        },
+        {
+          color: "var(--fg-acid)",
+          number: "Step 2 · Name the groups",
+          title: "Carboxylic acid + ester — two distinct groups",
+          body: "On one side of the benzene ring: —COOH (carboxylic acid). On the other: —OCOCH₃ (an ester — the acetyl group). Two completely different functional groups. The carboxylic acid makes aspirin acidic. The ester is the 'acetyl' in acetylsalicylic acid — and it's the part responsible for aspirin's actual mechanism.",
+          display: `      ⬡ (benzene ring)
+     / \\
+[COOH]   [O-CO-CH₃]
+   ↑           ↑
+carboxylic   ester
+acid         (acetyl group)`,
+          highlight: "acid"
+        },
+        {
+          color: "var(--fg-ester)",
+          number: "Step 3 · The acetyl group's job",
+          title: "The ester is the weapon — it acetylates COX permanently",
+          body: "The ester group (—OCOCH₃) is what makes aspirin irreversible. In the body, the ester cleaves — the acetyl group transfers onto the COX enzyme (cyclooxygenase), permanently blocking it. No other NSAID does this. Ibuprofen is reversible. Aspirin is not. The ester chemistry is the entire basis of its unique mechanism.",
+          display: `Aspirin + COX enzyme:
+  Ester cleaves →
+    Acetyl group transfers to COX →
+      COX permanently blocked →
+        Platelet function inhibited for platelet's lifetime
+
+The ester is the mechanism. Irreversible.`,
+          highlight: "ester"
+        },
+        {
+          color: "var(--teal)",
+          number: "Step 4 · Predict solubility",
+          title: "Mostly water-soluble — absorbed in the stomach",
+          body: "The carboxylic acid group (—COOH) ionizes at body pH, making aspirin predominantly water-soluble. However, in the acidic stomach (low pH), the COOH stays protonated (uncharged) — this actually helps absorption through the stomach lining. The benzene ring provides some lipophilicity for membrane crossing.",
+          display: `In stomach (pH ~2): COOH protonated → uncharged → crosses
+In blood (pH ~7.4): COOH ionized → charged → water-soluble
+In urine (pH variable): ionization controls how fast it's cleared
+
+Urine alkalinization increases aspirin excretion (aspirin overdose treatment).`,
+          highlight: null
+        },
+        {
+          color: "var(--green)",
+          number: "Step 5 · The clinical story",
+          title: "The whole pharmacology in two functional groups",
+          body: "You now understand: why aspirin is acidic (COOH), why it causes stomach irritation (COOH donating H⁺ to stomach lining), why it's irreversible (ester transfers acetyl to COX), why you hold it pre-operatively (irreversible platelet inhibition lasts the platelet's entire 7-10 day lifespan), and why you alkalinize urine in overdose (shifts COOH ionization to trap it in urine). All from two functional groups on a benzene ring.",
+          display: `Aspirin: salicylate + acetyl ester
+→ COOH: acidity, stomach effect, renal clearance
+→ Ester: irreversible COX acetylation
+→ Hold 7-10 days pre-op: platelet lifespan
+→ Benzene: some lipophilicity for absorption
+
+Two groups. The entire clinical story.`,
+          highlight: null
+        }
+      ]
     }
   ];
 
-  let predIdx = 0;
-  let predAnswered = false;
-  let predScore = 0;
+  // ─── DISSECTION STATE ───
+  const drugSteps = [0, 0, 0];
+  const drugCompleted = [false, false, false];
 
-  function renderPred() {
-    const p = predictions[predIdx];
-    document.getElementById('predictIntro').textContent =
-      'Scenario ' + (predIdx + 1) + ' of 3';
+  function buildDrug(d) {
+    const drug = drugs[d];
+    renderStep(d);
+    buildTrack(d);
+  }
 
-    document.getElementById('predictContent').innerHTML =
-      '<div class="predict-scenario">' +
-      '<div class="predict-scenario-label">Clinical Scenario ' + (predIdx + 1) + '</div>' +
-      '<div class="predict-scenario-text">' + p.scenario + '</div>' +
-      '</div>' +
-      '<div class="predict-q">' + p.q + '</div>' +
-      '<div class="predict-opts" id="predOpts"></div>' +
-      '<div class="predict-feedback" id="predFeedback"></div>' +
-      '<button class="predict-next" id="predNext" onclick="nextPred()">' +
-      (predIdx < 2 ? 'Next scenario →' : 'Finish') + '</button>';
-
-    predAnswered = false;
-    const keys = ['A', 'B', 'C', 'D'];
-    const opts = document.getElementById('predOpts');
-    p.options.forEach((opt, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'predict-opt';
-      btn.innerHTML = '<span class="predict-key">' + keys[i] + '</span>' + opt;
-      btn.onclick = () => answerPred(btn, i === p.correct, p.feedback, p.correct);
-      opts.appendChild(btn);
+  function buildTrack(d) {
+    const track = document.getElementById('track-' + d);
+    track.innerHTML = '';
+    drugs[d].steps.forEach((s, i) => {
+      const pip = document.createElement('div');
+      pip.className = 'step-pip' + (i === drugSteps[d] ? ' active' : (i < drugSteps[d] ? ' done' : ''));
+      pip.onclick = () => { drugSteps[d] = i; renderStep(d); buildTrack(d); };
+      track.appendChild(pip);
     });
   }
 
-  function answerPred(btn, correct, feedback, correctIdx) {
-    if (predAnswered) return;
-    predAnswered = true;
-    document.querySelectorAll('.predict-opt').forEach((b, i) => {
-      b.disabled = true;
-      if (i === correctIdx) b.classList.add('correct');
-    });
-    if (!correct) btn.classList.add('wrong');
-    if (correct) predScore++;
+  function renderStep(d) {
+    const step = drugs[d].steps[drugSteps[d]];
+    const total = drugs[d].steps.length;
+    const current = drugSteps[d];
 
-    const fb = document.getElementById('predFeedback');
-    fb.textContent = (correct ? '✓ ' : '✗ ') + feedback;
-    fb.className = 'predict-feedback show ' + (correct ? 'correct-fb' : 'wrong-fb');
-    document.getElementById('predNext').className = 'predict-next show';
+    // Molecule display
+    document.getElementById('mol-display-' + d).textContent = step.display;
+
+    // Step display
+    document.getElementById('step-display-' + d).innerHTML =
+      '<div class="step-number" style="color:' + step.color + '">' + step.number + '</div>' +
+      '<div class="step-title">' + step.title + '</div>' +
+      '<div class="step-body">' + step.body + '</div>';
+
+    // Nav buttons
+    document.getElementById('prev-' + d).disabled = current === 0;
+    const nextBtn = document.getElementById('next-' + d);
+
+    if (current === total - 1) {
+      nextBtn.textContent = 'Complete ✓';
+      nextBtn.onclick = () => completeDrug(d);
+      drugCompleted[d] = true;
+      document.getElementById('badge-' + d).classList.add('show');
+      updateProgress();
+    } else {
+      nextBtn.textContent = 'Next Step →';
+      nextBtn.onclick = () => stepDrug(d, 1);
+    }
+
+    buildTrack(d);
     updateProgress();
   }
 
-  function nextPred() {
-    if (predIdx < predictions.length - 1) {
-      predIdx++;
-      renderPred();
-    } else {
-      document.getElementById('predictBlock').innerHTML =
-        '<div style="text-align:center; padding:20px;">' +
-        '<div style="font-family:\'Cormorant Garamond\',serif; font-size:1.8rem; color:var(--green); margin-bottom:10px;">Predictions Complete ✓</div>' +
-        '<div style="font-family:\'JetBrains Mono\',monospace; font-size:11px; color:var(--muted); letter-spacing:0.15em;">Score: ' + predScore + ' / 3 &nbsp;·&nbsp; Applied molecular grammar to clinical scenarios.</div>' +
-        '</div>';
-      updateProgress();
-    }
+  function stepDrug(d, dir) {
+    const newStep = drugSteps[d] + dir;
+    if (newStep < 0 || newStep >= drugs[d].steps.length) return;
+    drugSteps[d] = newStep;
+    renderStep(d);
   }
 
+  function completeDrug(d) {
+    drugCompleted[d] = true;
+    document.getElementById('badge-' + d).classList.add('show');
+    updateProgress();
+  }
+
+  let activeDrug = 0;
+  const dissectVisited = new Set([0]);
+
+  function switchDrug(d) {
+    activeDrug = d;
+    dissectVisited.add(d);
+    document.querySelectorAll('.dissect-tab').forEach((t, i) => t.classList.toggle('active', i === d));
+    document.querySelectorAll('.dissect-panel').forEach((p, i) => p.classList.toggle('active', i === d));
+    updateProgress();
+  }
+
+  // ─── COLD READ ───
+  const correctAnswers = [true, true, false, true, true, false];
+  const checkStates = [false, false, false, false, false, false];
+  let coldSubmitted = false;
+
+  function toggleCheck(i) {
+    if (coldSubmitted) return;
+    checkStates[i] = !checkStates[i];
+    document.getElementById('cb' + i).checked = checkStates[i];
+    document.getElementById('cc' + i).classList.toggle('selected', checkStates[i]);
+  }
+
+  function checkColdRead() {
+    if (coldSubmitted) return;
+    coldSubmitted = true;
+    document.getElementById('coldReveal').classList.add('show');
+    document.querySelector('.cold-submit').disabled = true;
+    document.querySelector('.cold-submit').textContent = 'Reading Submitted ✓';
+    document.querySelector('.cold-submit').style.borderColor = 'var(--green)';
+    document.querySelector('.cold-submit').style.color = 'var(--green)';
+    updateProgress();
+    setTimeout(() => {
+      document.getElementById('coldReveal').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  }
+
+  // ─── PROGRESS ───
   function updateProgress() {
-    const rxnPct = (rxnsVisited.size / 3) * 25;
-    const stepPct = (stepsRevealed.size / 5) * 25;
-    const predPct = Math.min(((predIdx + (predAnswered ? 1 : 0)) / 3) * 30, 30);
-    const total = Math.min(Math.round(rxnPct + stepPct + predPct), 90);
+    const dissectPct = (drugCompleted.filter(Boolean).length / 3) * 45;
+    const visitPct = (dissectVisited.size / 3) * 10;
+    const coldPct = coldSubmitted ? 35 : 0;
+    const total = Math.min(Math.round(dissectPct + visitPct + coldPct), 90);
     document.getElementById('progressFill').style.width = total + '%';
     document.getElementById('progressLabel').textContent = total + '% complete';
   }
 
-  function completeSystem() {
+  function completeModule() {
     document.getElementById('progressFill').style.width = '100%';
-    document.getElementById('progressLabel').textContent = '100% complete · All modules complete';
-    document.getElementById('gradSection').style.display = 'none';
-    document.getElementById('winState').classList.add('show');
+    document.getElementById('progressLabel').textContent = '100% complete — module unlocked';
+    document.getElementById('winBanner').classList.add('show');
+    const btn = document.getElementById('completeBtn');
+    btn.disabled = true;
+    btn.textContent = '✓  Module 3 Complete';
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  // Init
-  renderPred();
+  // ─── INIT ───
+  [0, 1, 2].forEach(d => buildDrug(d));
 </script>
 
 <nav class="module-nav-bar">
-  <a href="ochem-module-3.html" class="nav-btn prev">← Prev</a>
-  <div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 04 · Grammar</div>
-  <span class="nav-btn disabled">Next →</span>
+  <a href="ochem-module-2.html" class="nav-btn prev">← Prev</a>
+  <div class="nav-center">Molecular Literacy &nbsp;·&nbsp; 03 · Sentences</div>
+  <a href="ochem-module-4.html" class="nav-btn next">Next →</a>
 </nav>
 
 </body>
