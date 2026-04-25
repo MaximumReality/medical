@@ -73,43 +73,37 @@
       max-width: 1100px;
     }
 
-    /* CARD FLIP */
+    /* CARD TOGGLE — reliable show/hide, no 3D transform issues */
     .card {
-      perspective: 1400px;
       cursor: pointer;
-      min-height: 500px;
-    }
-
-    .card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 500px;
-      transform-style: preserve-3d;
-      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .card-face {
-      position: absolute;
-      inset: 0;
       border-radius: 16px;
       background: radial-gradient(circle at 30% 20%, #1a2236 0%, var(--card-bg) 60%);
       border: 1px solid var(--border);
       box-shadow: 0 20px 48px rgba(0,0,0,0.6);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .card:hover { box-shadow: 0 24px 56px rgba(0,0,0,0.7); }
+
+    .card-inner { width: 100%; }
+
+    .card-face {
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      width: 100%;
     }
 
     .card-face.back {
-      transform: rotateY(180deg);
-      overflow-y: auto;
+      display: none;
+    }
+
+    .card.flipped .card-face.front {
+      display: none;
+    }
+
+    .card.flipped .card-face.back {
+      display: flex;
     }
 
     /* ACCENT TOP BAR */
@@ -863,7 +857,15 @@
 
 <script>
   document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("click", () => card.classList.toggle("flipped"));
+    card.addEventListener("click", function(e) {
+      // Don't toggle if clicking a link
+      if (e.target.tagName === 'A') return;
+      this.classList.toggle("flipped");
+      // Scroll card into view when flipping to back (content is taller)
+      if (this.classList.contains("flipped")) {
+        setTimeout(() => this.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+      }
+    });
   });
 </script>
 
