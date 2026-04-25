@@ -202,8 +202,92 @@
           <div class="svg-container">
             <!-- Propofol SVG from your library (pasted here) -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" width="100%" height="180">
-              <!-- (Full Propofol SVG code from your earlier file goes here - I kept it compact for readability; paste the entire <svg>...</svg> block you had for Propofol) -->
-              <!-- For brevity in this response, replace this comment with the exact Propofol SVG you provided earlier -->
+              <div class="mol-card">
+      <div class="mol-card-header">
+        <div>
+          <div class="mol-name">Propofol</div>
+          <div class="mol-aka">Diprivan · 2,6-Diisopropylphenol</div>
+        </div>
+        <div class="mol-class-badge" style="color:#7ab8e8; border-color:#7ab8e840;">IV Anesthetic</div>
+      </div>
+
+      <div class="mol-svg-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" width="360" height="280">
+          <defs>
+            <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#4ab8c8" opacity="0.5"/>
+            </marker>
+          </defs>
+
+          <!-- Benzene ring centered at 180,155, radius 55 -->
+          <!-- Vertices: top=180,100  TR=148,128 ... wait, let me use proper hex coords -->
+          <!-- Center 180,155, r=55 -->
+          <!-- C1(top): 180,100  C2(TR): 228,128  C3(BR): 228,183  C4(B): 180,210  C5(BL): 132,183  C6(TL): 132,128 -->
+
+          <!-- Ring bonds -->
+          <line x1="180" y1="100" x2="228" y2="128" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="228" y1="128" x2="228" y2="183" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="228" y1="183" x2="180" y2="210" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="180" y1="210" x2="132" y2="183" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="132" y1="183" x2="132" y2="128" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="132" y1="128" x2="180" y2="100" stroke="#7ab8e8" stroke-width="2.5" stroke-linecap="round"/>
+
+          <!-- Alternating double bond indicators (inner ring, offset 8px) -->
+          <line x1="185" y1="108" x2="222" y2="130" stroke="#7ab8e8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <line x1="222" y1="178" x2="185" y2="202" stroke="#7ab8e8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <line x1="138" y1="178" x2="138" y2="133" stroke="#7ab8e8" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+
+          <!-- C1: OH group going up -->
+          <line x1="180" y1="100" x2="180" y2="62" stroke="#4ab8c8" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="180" y="50" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" fill="#4ab8c8" text-anchor="middle">OH</text>
+
+          <!-- C2 (TR=228,128): Right isopropyl -->
+          <line x1="228" y1="128" x2="268" y2="105" stroke="#c8c4bc" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Branch point 268,105 → up-right (CH3) and right (CH3) -->
+          <line x1="268" y1="105" x2="296" y2="82" stroke="#c8c4bc" stroke-width="2" stroke-linecap="round"/>
+          <line x1="268" y1="105" x2="300" y2="115" stroke="#c8c4bc" stroke-width="2" stroke-linecap="round"/>
+          <!-- CH label at branch -->
+          <text x="268" y="102" font-family="'JetBrains Mono',monospace" font-size="11" fill="#c8c4bc" text-anchor="middle" dominant-baseline="auto">CH</text>
+          <text x="304" y="76" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8a94a" text-anchor="start">CH₃</text>
+          <text x="305" y="118" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8a94a" text-anchor="start">CH₃</text>
+
+          <!-- C6 (TL=132,128): Left isopropyl -->
+          <line x1="132" y1="128" x2="92" y2="105" stroke="#c8c4bc" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="92" y1="105" x2="64" y2="82" stroke="#c8c4bc" stroke-width="2" stroke-linecap="round"/>
+          <line x1="92" y1="105" x2="60" y2="115" stroke="#c8c4bc" stroke-width="2" stroke-linecap="round"/>
+          <text x="92" y="102" font-family="'JetBrains Mono',monospace" font-size="11" fill="#c8c4bc" text-anchor="middle" dominant-baseline="auto">CH</text>
+          <text x="30" y="76" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8a94a" text-anchor="start">CH₃</text>
+          <text x="22" y="118" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8a94a" text-anchor="start">CH₃</text>
+
+          <!-- H atoms on C3, C4, C5 (muted) -->
+          <line x1="228" y1="183" x2="252" y2="200" stroke="#3d4555" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="258" y="207" font-family="'JetBrains Mono',monospace" font-size="11" fill="#3d4555" text-anchor="start">H</text>
+          <line x1="180" y1="210" x2="180" y2="238" stroke="#3d4555" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="180" y="250" font-family="'JetBrains Mono',monospace" font-size="11" fill="#3d4555" text-anchor="middle">H</text>
+          <line x1="132" y1="183" x2="108" y2="200" stroke="#3d4555" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="98" y="207" font-family="'JetBrains Mono',monospace" font-size="11" fill="#3d4555" text-anchor="end">H</text>
+
+          <!-- Annotations -->
+          <line x1="180" y1="62" x2="230" y2="30" stroke="#4ab8c8" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>
+          <text x="235" y="27" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4ab8c8" text-anchor="start">phenol —OH</text>
+
+          <line x1="228" y1="155" x2="290" y2="165" stroke="#7ab8e8" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+          <text x="293" y="168" font-family="'JetBrains Mono',monospace" font-size="10" fill="#7ab8e8" text-anchor="start">aromatic ring</text>
+
+          <line x1="268" y1="105" x2="290" y2="58" stroke="#e8a94a" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+          <text x="180" y="270" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6b7280" text-anchor="middle">isopropyl arms slow metabolism</text>
+        </svg>
+      </div>
+
+      <div class="mol-footer">
+        <div class="mol-groups">
+          <span class="mol-group-chip" style="color:#7ab8e8; border-color:#7ab8e840;">Aromatic Ring</span>
+          <span class="mol-group-chip" style="color:#4ab8c8; border-color:#4ab8c840;">Phenol —OH</span>
+          <span class="mol-group-chip" style="color:#e8a94a; border-color:#e8a94a40;">Isopropyl ×2</span>
+        </div>
+        <div class="mol-insight"><strong>Read it:</strong> Ring = fast BBB crossing. —OH = injectable. Bulky arms = slowed metabolism. Fast on, controlled off.</div>
+      </div>
+    </div>
             </svg>
           </div>
 
