@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Molecule Creatures Flashcards</title>
+  <style>
+    :root {
+      --bg: #05070d;
+      --card-bg: #0b0f1a;
+      --accent: #4fd1ff;
+      --text-main: #f7fafc;
+      --text-muted: #a0aec0;
+      --border: #1a202c;
+      /* Colors matching the visual mnemonics */
+      --propofol: #4fd1ff;
+      --ethanol: #e2e8f0;
+      --lidocaine: #63b3ed;
+      --sevo: #f687b3;
+      --fentanyl: #f6ad55;
+      --sux: #9f7aea;
+      --morphine: #68d391;
+      
+      /* Replace the URL below with your actual hosted image link */
+      --sprite-url: url('https://files.oaiusercontent.com/file-2mD1fG7D4XWbS7L1T8Z1Z9?se=2026-04-25T05%3A15%3A58Z&sp=r&sv=24.8.30&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D45c6e864-4672-4753-8390-e71788730b3d.webp&sig=G0%2BMz76W70Mv3N8FzH2pQ0/Gv60oT6X2k4S0L6T1Y8E%3D');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #05070d 55%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 3rem;
+    }
+
+    h1 {
+      font-family: "Cormorant Garamond", "Times New Roman", serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .card {
+      perspective: 1200px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 380px; /* Increased height for images */
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: radial-gradient(circle at top, #1a2236 0, var(--card-bg) 55%);
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      padding: 1.2rem;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-face.back {
+      transform: rotateY(180deg);
+      justify-content: center;
+    }
+
+    /* Sprite Image Styling */
+    .card-image {
+      width: 100%;
+      height: 160px;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      background-image: var(--sprite-url);
+      background-size: 200% 400%; /* 2 columns, 4 rows */
+      background-repeat: no-repeat;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Positions for each creature in the 2x4 grid */
+    .img-propofol { background-position: 0% 0%; }
+    .img-ethanol  { background-position: 100% 0%; }
+    .img-lido     { background-position: 0% 33.3%; }
+    .img-sevo     { background-position: 100% 33.3%; }
+    .img-fentanyl { background-position: 0% 66.6%; }
+    .img-sux      { background-position: 100% 66.6%; }
+    .img-morphine { background-position: 0% 100%; }
+
+    .tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .drug-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .creature-name {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    .bullet {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      margin-left: 0.9rem;
+      position: relative;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .bullet::before {
+      content: "•";
+      position: absolute;
+      left: -0.8rem;
+      color: var(--accent);
+    }
+
+    .hint {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+      padding-top: 10px;
+      opacity: 0.6;
+    }
+
+    /* Accent Glows */
+    .color-propofol { --accent: var(--propofol); box-shadow: 0 0 20px rgba(79, 209, 255, 0.15); }
+    .color-ethanol { --accent: var(--ethanol); }
+    .color-lidocaine { --accent: var(--lidocaine); }
+    .color-sevo { --accent: var(--sevo); }
+    .color-fentanyl { --accent: var(--fentanyl); }
+    .color-sux { --accent: var(--sux); }
+    .color-morphine { --accent: var(--morphine); }
+
+  </style>
+</head>
+<body>
+
+  <h1>Molecule Creatures // Flashcards</h1>
+  <div class="subtitle">CRNA Pharmacology · Visual Mnemonics · Tap to flip</div>
+
+  <div class="grid">
+
+    <div class="card color-propofol">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-propofol"></div>
+          <div class="tag">Sedative–Hypnotic</div>
+          <div class="drug-name">Propofol</div>
+          <div class="creature-name">“Sleepy Axolotl”</div>
+          <div class="pill">IV induction · Fast on/off</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">Gently tucks the patient into unconsciousness.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Isopropyl "ears" droop with sleepiness.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Rapid emergence; hemodynamically "soft" (BP drop).</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-ethanol">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-ethanol"></div>
+          <div class="tag">Reference Alcohol</div>
+          <div class="drug-name">Ethanol</div>
+          <div class="creature-name">“Goofy Balloon Dog”</div>
+          <div class="pill">Simple · Volatile · Benchmark</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">Lightweight and volatile; easy to recognize.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">OH group forms the goofy "nose."</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Standard reference for CNS depression and polarity.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-lidocaine">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-lido"></div>
+          <div class="tag">Local Anesthetic</div>
+          <div class="drug-name">Lidocaine</div>
+          <div class="creature-name">“Focused Arrow”</div>
+          <div class="pill">Na⁺ channel blocker</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">A precise arrow hitting sodium channels.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Aromatic ring acts as the piercing arrowhead.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Success depends on tissue pH and diffusion.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-sevo">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-sevo"></div>
+          <div class="tag">Volatile Agent</div>
+          <div class="drug-name">Sevoflurane</div>
+          <div class="creature-name">“Rake Gremlin”</div>
+          <div class="pill">Low blood:gas · Fast</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">Dives in and leaves at high speed.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Fluorine "tines" flared like wild hair.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Rapid on/off; ideal for pediatric mask inductions.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-fentanyl">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-fentanyl"></div>
+          <div class="tag">Opioid Analgesic</div>
+          <div class="drug-name">Fentanyl</div>
+          <div class="creature-name">“Traffic Guardian”</div>
+          <div class="pill">High potency · Respiratory stop</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">A stern signal that stops pain and breathing.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Phenyl rings stacked like red/yellow lights.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Risk of chest wall rigidity and apnea.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-sux">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-sux"></div>
+          <div class="tag">Depolarizing NMB</div>
+          <div class="drug-name">Sux</div>
+          <div class="creature-name">“Pull-Up Bar Creature”</div>
+          <div class="pill">Rapid paralysis · Short</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">Straining to hold the channel open.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Quaternary nitrogens "gripping" the bar.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Watch for Hyperkalemia and MH triggers.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card color-morphine">
+      <div class="card-inner">
+        <div class="card-face front">
+          <div class="card-image img-morphine"></div>
+          <div class="tag">Opioid Analgesic</div>
+          <div class="drug-name">Morphine</div>
+          <div class="creature-name">“Sleeping Caterpillar”</div>
+          <div class="pill">Heavy · Slow · Classic</div>
+          <div class="hint">Tap for clinical details</div>
+        </div>
+        <div class="card-face back">
+          <div class="section-label">Metaphor</div>
+          <div class="bullet">Cozy, heavy, and sinking into a pillow.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Visual Anchor</div>
+          <div class="bullet">Head resting on the phenolic OH pillow.</div>
+          <div class="section-label" style="margin-top:0.8rem;">Clinical</div>
+          <div class="bullet">Slower onset; potential histamine release.</div>
+          <div class="hint">Tap to flip back</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll(".card").forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("flipped");
+      });
+    });
+  </script>
+</body>
+</html>
