@@ -838,6 +838,151 @@
     flex: 1;
   }
 
+
+  /* ── FLOATING REFERENCE BUTTON & PANEL ── */
+  .ref-float-btn {
+    position: fixed;
+    bottom: 64px;
+    right: 16px;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    background: rgba(10,12,18,0.92);
+    border: 1px solid #2d7a87;
+    border-radius: 20px;
+    color: #4ab8c8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  .ref-float-btn:hover {
+    border-color: #4ab8c8;
+    background: rgba(74,184,200,0.1);
+    transform: translateY(-2px);
+  }
+
+  .ref-float-btn .ref-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* OVERLAY */
+  .ref-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .ref-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* PANEL */
+  .ref-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 400;
+    background: #0f1219;
+    border-top: 1px solid #1e2535;
+    border-radius: 16px 16px 0 0;
+    padding: 0 0 80px;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 88vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ref-panel.open {
+    transform: translateY(0);
+  }
+
+  .ref-panel-handle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid #1e2535;
+    position: sticky;
+    top: 0;
+    background: #0f1219;
+    z-index: 1;
+  }
+
+  .ref-panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: #4ab8c8;
+    text-transform: uppercase;
+  }
+
+  .ref-close-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #6b7280;
+    background: transparent;
+    border: 1px solid #1e2535;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+  }
+
+  .ref-close-btn:hover { color: #e8a94a; border-color: #e8a94a; }
+
+  .ref-panel-img {
+    width: 100%;
+    display: block;
+    filter: invert(1) brightness(0.82);
+  }
+
+  .ref-panel-caption {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #6b7280;
+    letter-spacing: 0.08em;
+    padding: 10px 20px 4px;
+    text-align: center;
+  }
+
+  .ref-color-key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 20px 0;
+    justify-content: center;
+  }
+
+  .ref-key-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
 </style>
 </head>
 <body>
@@ -1306,6 +1451,53 @@
   // Init
   renderPred();
 </script>
+
+
+<!-- FLOATING REFERENCE BUTTON -->
+<button class="ref-float-btn" onclick="openRef()" aria-label="Open functional group reference">
+  <span class="ref-icon">⬡</span>
+  <span>Groups</span>
+</button>
+
+<!-- OVERLAY -->
+<div class="ref-overlay" id="refOverlay" onclick="closeRef()"></div>
+
+<!-- SLIDE-UP PANEL -->
+<div class="ref-panel" id="refPanel">
+  <div class="ref-panel-handle">
+    <div class="ref-panel-title">⬡ &nbsp; Functional Group Reference &nbsp;·&nbsp; 21 Groups</div>
+    <button class="ref-close-btn" onclick="closeRef()">✕ Close</button>
+  </div>
+  <img class="ref-panel-img"
+       src="https://maximumreality.github.io/medical/ochem-img/functional-groups-oc.JPG"
+       alt="Functional Groups in Organic Chemistry — complete reference chart"
+       loading="lazy">
+  <div class="ref-panel-caption">All 21 named functional groups · tap outside or close to dismiss</div>
+  <div class="ref-color-key">
+    <span class="ref-key-chip" style="color:#4ab8c8; border-color:#4ab8c840;">Alcohol —OH</span>
+    <span class="ref-key-chip" style="color:#9b7fd4; border-color:#9b7fd440;">Amine —N—</span>
+    <span class="ref-key-chip" style="color:#e8a94a; border-color:#e8a94a40;">Carbonyl C=O</span>
+    <span class="ref-key-chip" style="color:#c87a9b; border-color:#c87a9b40;">Carboxylic Acid</span>
+    <span class="ref-key-chip" style="color:#4ac87a; border-color:#4ac87a40;">Ester —COO—</span>
+    <span class="ref-key-chip" style="color:#7ab8e8; border-color:#7ab8e840;">Aromatic Ring ⬡</span>
+  </div>
+</div>
+
+<script>
+  function openRef() {
+    document.getElementById('refOverlay').classList.add('open');
+    document.getElementById('refPanel').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeRef() {
+    document.getElementById('refOverlay').classList.remove('open');
+    document.getElementById('refPanel').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeRef();
+  });
+<\/script>
 
 <nav class="module-nav-bar">
   <a href="ochem-module-3.html" class="nav-btn prev">← Prev</a>
